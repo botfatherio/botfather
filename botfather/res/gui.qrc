@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>gui/loading.gif</file>
+        <file>gui/win10-Home-96.png</file>
+        <file>gui/win10-Play-96.png</file>
+        <file>gui/win10-Restart-96.png</file>
+        <file>gui/win10-SettingsMixer-96.png</file>
+        <file>gui/win10-Stop-96.png</file>
+    </qresource>
+</RCC>
