@@ -5,7 +5,6 @@
 #include <QDesktopServices>
 #include <QCloseEvent>
 #include "ui_control_window.h"
-#include "browser/browser.h"
 #include "shared/constants.h"
 
 ControlWindow::ControlWindow(QWidget *parent) :
@@ -18,16 +17,6 @@ ControlWindow::ControlWindow(QWidget *parent) :
 ControlWindow::~ControlWindow()
 {
 	delete ui;
-}
-
-void ControlWindow::on_actionHome_triggered()
-{
-	Browser::loadUrl(settings.value("BROWSER_STARTPAGE", constants::BROWSER_STARTPAGE).toString());
-}
-
-void ControlWindow::on_actionReload_triggered()
-{
-	Browser::refreshPage();
 }
 
 void ControlWindow::on_actionStart_triggered()
@@ -88,6 +77,11 @@ void ControlWindow::on_actionStop_triggered()
 void ControlWindow::bot_stopped()
 {
 	this->ui->actionStart->setEnabled(true);
+}
+
+void ControlWindow::on_actionLog_triggered()
+{
+	this->log_dialog.show();
 }
 
 void ControlWindow::on_actionSettings_triggered()
