@@ -24,7 +24,7 @@ public slots:
 	void on_actionStart_triggered();
 	void bot_started();
 	void on_actionStop_triggered();
-	void bot_stopped();
+	void bot_stopped(bool without_errors);
 	void on_actionLog_triggered();
 	void on_actionSettings_triggered();
 	void on_actionScripts_triggered();

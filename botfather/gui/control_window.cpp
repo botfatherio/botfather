@@ -53,8 +53,11 @@ void ControlWindow::on_actionStart_triggered()
 	connect(this->bot_thread, &QThread::finished, bot, &QObject::deleteLater);
 	
 	// Make ControlWindow methods be called when the bot started and stopped.
-	connect(bot, &Bot::started, this, &ControlWindow::bot_started);	
+	connect(bot, &Bot::started, this, &ControlWindow::bot_started);
 	connect(bot, &Bot::stopped, this, &ControlWindow::bot_stopped);
+	
+	// Enable logging visible for the user
+	connect(bot, &Bot::message, &this->log_dialog, &LogDialog::appendMessage);
 	
 	// Start the bot thread and thus the bot.
 	this->bot_thread->start();
@@ -74,9 +77,18 @@ void ControlWindow::on_actionStop_triggered()
 	this->bot_thread->requestInterruption();
 }
 
-void ControlWindow::bot_stopped()
+void ControlWindow::bot_stopped(bool without_errors)
 {
 	this->ui->actionStart->setEnabled(true);
+	
+	if (!without_errors) {
+		// Encourage the user to check the logs because errors occurred executing the script.
+		QMessageBox::warning(
+			this,
+			"Errors occurred",
+			"Script executiong wasn't successfully. Errors occurrred. Please check the log."
+		);
+	}
 }
 
 void ControlWindow::on_actionLog_triggered()
