@@ -16,7 +16,8 @@ public slots:
 
 signals:
 	void started();
-	void stopped();
+	void stopped(bool without_errors);
+	void message(QString log_message);
 	
 private:
 	QString m_script_path;
