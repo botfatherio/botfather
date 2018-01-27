@@ -80,37 +80,13 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionHome"/>
-   <addaction name="actionReload"/>
    <addaction name="actionStart"/>
    <addaction name="actionStop"/>
+   <addaction name="separator"/>
+   <addaction name="actionLog"/>
    <addaction name="actionSettings"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionHome">
-   <property name="icon">
-    <iconset resource="../res/gui.qrc">
-     <normaloff>:/gui/win10-Home-96.png</normaloff>:/gui/win10-Home-96.png</iconset>
-   </property>
-   <property name="text">
-    <string>Home</string>
-   </property>
-   <property name="toolTip">
-    <string>Back to home website</string>
-   </property>
-  </action>
-  <action name="actionReload">
-   <property name="icon">
-    <iconset resource="../res/gui.qrc">
-     <normaloff>:/gui/win10-Restart-96.png</normaloff>:/gui/win10-Restart-96.png</iconset>
-   </property>
-   <property name="text">
-    <string>Reload</string>
-   </property>
-   <property name="toolTip">
-    <string>Reload the current webpage</string>
-   </property>
-  </action>
   <action name="actionStart">
    <property name="icon">
     <iconset resource="../res/gui.qrc">
@@ -163,6 +139,18 @@
   <action name="actionScripts">
    <property name="text">
     <string>Get Scripts</string>
+   </property>
+  </action>
+  <action name="actionLog">
+   <property name="icon">
+    <iconset resource="../res/gui.qrc">
+     <normaloff>:/gui/win10-Ingredients List-96.png</normaloff>:/gui/win10-Ingredients List-96.png</iconset>
+   </property>
+   <property name="text">
+    <string>Log</string>
+   </property>
+   <property name="toolTip">
+    <string>Open the log window</string>
    </property>
   </action>
  </widget>
