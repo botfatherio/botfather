@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT += core gui qml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -45,7 +45,8 @@ SOURCES += \
     gui/control_window.cpp \
     gui/config_dialog.cpp \
     gui/browser_widget.cpp \
-    scripting/bot.cpp
+    scripting/bot.cpp \
+    gui/log_dialog.cpp
 
 HEADERS += \
     shared/constants.h \
@@ -55,11 +56,13 @@ HEADERS += \
     gui/control_window.h \
     gui/config_dialog.h \
     gui/browser_widget.h \
-    scripting/bot.h
+    scripting/bot.h \
+    gui/log_dialog.h
 
 FORMS += \
     gui/control_window.ui \
-    gui/config_dialog.ui
+    gui/config_dialog.ui \
+    gui/log_dialog.ui
 
 RESOURCES += \
     res/gui.qrc
