@@ -57,7 +57,6 @@ SOURCES += \
     gui/config_dialog.cpp \
     gui/browser_widget.cpp \
     scripting/bot.cpp \
-    scripting/helper.cpp \
     gui/log_dialog.cpp \
     vision/blob_tpl.cpp \
     vision/blob_tpl_factory.cpp \
@@ -66,7 +65,8 @@ SOURCES += \
     vision/image.cpp \
     vision/match.cpp \
     vision/vision.cpp \
-    vision/vision_api.cpp
+    vision/vision_api.cpp \
+    scripting/helper_api.cpp
 
 HEADERS += \
     shared/constants.h \
@@ -77,7 +77,6 @@ HEADERS += \
     gui/config_dialog.h \
     gui/browser_widget.h \
     scripting/bot.h \
-    scripting/helper.h \
     gui/log_dialog.h \
     vision/blob_tpl.h \
     vision/blob_tpl_factory.h \
@@ -86,7 +85,8 @@ HEADERS += \
     vision/image.h \
     vision/match.h \
     vision/vision.h \
-    vision/vision_api.h
+    vision/vision_api.h \
+    scripting/helper_api.h
 
 FORMS += \
     gui/control_window.ui \

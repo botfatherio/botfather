@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QDebug>
 #include "../vision/vision_api.h"
+#include "../scripting/helper_api.h"
 
 Bot::Bot(QString script_path) : m_script_path(script_path)
 {}
@@ -14,6 +15,7 @@ void Bot::runScript()
 	QJSEngine engine;
 	engine.installExtensions(QJSEngine::ConsoleExtension);
 	
+	HelperAPI::enable(&engine);
 	VisionAPI::enable(&engine);
 	
 	QFile script_file(this->m_script_path);
@@ -27,6 +29,7 @@ void Bot::runScript()
 	QTextStream stream(&script_file);
 	QString contents = stream.readAll();
 	script_file.close();
+	emit this->message("Executing bot script " + this->m_script_path);
 	
 	QJSValue result = engine.evaluate(contents, this->m_script_path);
 	
@@ -37,5 +40,6 @@ void Bot::runScript()
 		return;
 	}
 	
+	emit this->message("Bot script execution finished.");
 	emit this->stopped(true);
 }
