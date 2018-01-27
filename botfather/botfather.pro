@@ -15,6 +15,17 @@ unix:INCLUDEPATH += "/opt/cef/"
 unix:LIBS += -L/opt/cef/libcef_dll_wrapper/ -lcef_dll_wrapper
 unix:LIBS += -L./ -lcef
 unix:LIBS += -lX11
+unix:LIBS += -L/usr/lib -lopencv_stitching -lopencv_superres -lopencv_videostab \
+	     -lopencv_aruco -lopencv_bgsegm -lopencv_bioinspired -lopencv_ccalib \
+	     -lopencv_dpm -lopencv_freetype -lopencv_fuzzy -lopencv_line_descriptor \
+	     -lopencv_optflow -lopencv_reg -lopencv_saliency -lopencv_stereo \
+	     -lopencv_structured_light -lopencv_phase_unwrapping -lopencv_rgbd \
+	     -lopencv_surface_matching -lopencv_tracking -lopencv_datasets -lopencv_text \
+	     -lopencv_face -lopencv_plot -lopencv_dnn -lopencv_xfeatures2d -lopencv_shape \
+	     -lopencv_video -lopencv_ximgproc -lopencv_calib3d -lopencv_features2d \
+	     -lopencv_flann -lopencv_xobjdetect -lopencv_objdetect -lopencv_ml \
+	     -lopencv_xphoto -lopencv_highgui -lopencv_videoio -lopencv_imgcodecs \
+	     -lopencv_photo -lopencv_imgproc -lopencv_core
 unix:QMAKE_RPATHDIR += .
 
 QMAKE_CXXFLAGS_WARN_OFF -= -Wunused-parameter
@@ -46,7 +57,16 @@ SOURCES += \
     gui/config_dialog.cpp \
     gui/browser_widget.cpp \
     scripting/bot.cpp \
-    gui/log_dialog.cpp
+    scripting/helper.cpp \
+    gui/log_dialog.cpp \
+    vision/blob_tpl.cpp \
+    vision/blob_tpl_factory.cpp \
+    vision/hsv_color.cpp \
+    vision/hsv_color_factory.cpp \
+    vision/image.cpp \
+    vision/match.cpp \
+    vision/vision.cpp \
+    vision/vision_api.cpp
 
 HEADERS += \
     shared/constants.h \
@@ -57,7 +77,16 @@ HEADERS += \
     gui/config_dialog.h \
     gui/browser_widget.h \
     scripting/bot.h \
-    gui/log_dialog.h
+    scripting/helper.h \
+    gui/log_dialog.h \
+    vision/blob_tpl.h \
+    vision/blob_tpl_factory.h \
+    vision/hsv_color.h \
+    vision/hsv_color_factory.h \
+    vision/image.h \
+    vision/match.h \
+    vision/vision.h \
+    vision/vision_api.h
 
 FORMS += \
     gui/control_window.ui \

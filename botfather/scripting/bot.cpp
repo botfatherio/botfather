@@ -2,6 +2,7 @@
 #include <QJSEngine>
 #include <QFile>
 #include <QDebug>
+#include "../vision/vision_api.h"
 
 Bot::Bot(QString script_path) : m_script_path(script_path)
 {}
@@ -12,6 +13,8 @@ void Bot::runScript()
 	
 	QJSEngine engine;
 	engine.installExtensions(QJSEngine::ConsoleExtension);
+	
+	VisionAPI::enable(&engine);
 	
 	QFile script_file(this->m_script_path);
 	if (!script_file.open(QIODevice::ReadOnly)) {
