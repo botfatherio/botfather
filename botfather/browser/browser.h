@@ -12,11 +12,6 @@ public:
 	static void init(int argc, char **argv);
 	static void quit();
 	
-	static void loadUrl(QString url);
-	static QString getUrl();
-	static void refreshPage(bool ignore_cache = false);
-	static void executeJS(QString javascript);
-	
 private:
 	static void initCefSettings(CefSettings& settings);
 };

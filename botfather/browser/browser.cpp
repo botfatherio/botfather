@@ -122,30 +122,3 @@ void Browser::initCefSettings(CefSettings& settings)
 	// we don't need sandboxed processes at all.
 	settings.no_sandbox = true;
 }
-
-void Browser::loadUrl(QString url)
-{
-	BrowserClient::GetInstance()->GetBrowser()->GetMainFrame()->LoadURL(url.toStdString());
-}
-
-QString Browser::getUrl()
-{
-	return QString::fromStdString(BrowserClient::GetInstance()->GetBrowser()->GetMainFrame()->GetURL().ToString());
-}
-
-void Browser::refreshPage(bool ignore_cache)
-{
-	if (ignore_cache)
-		BrowserClient::GetInstance()->GetBrowser()->ReloadIgnoreCache();
-	else
-		BrowserClient::GetInstance()->GetBrowser()->Reload();
-}
-
-void Browser::executeJS(QString javascript)
-{
-	BrowserClient::GetInstance()->GetBrowser()->GetMainFrame()->ExecuteJavaScript(
-		javascript.toStdString(),
-		BrowserClient::GetInstance()->GetBrowser()->GetMainFrame()->GetURL(),
-		0
-	);
-}

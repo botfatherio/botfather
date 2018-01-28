@@ -66,7 +66,8 @@ SOURCES += \
     vision/match.cpp \
     vision/vision.cpp \
     vision/vision_api.cpp \
-    scripting/helper_api.cpp
+    scripting/helper_api.cpp \
+    browser/browser_api.cpp
 
 HEADERS += \
     shared/constants.h \
@@ -86,7 +87,8 @@ HEADERS += \
     vision/match.h \
     vision/vision.h \
     vision/vision_api.h \
-    scripting/helper_api.h
+    scripting/helper_api.h \
+    browser/browser_api.h
 
 FORMS += \
     gui/control_window.ui \

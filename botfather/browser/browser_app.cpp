@@ -25,15 +25,21 @@ void BrowserApp::OnContextInitialized()
 	window_info.SetAsWindowless(0);
 
 	// Create the browser window.
-	CefBrowserHost::CreateBrowserSync(
+	CefRefPtr<CefBrowser> browser = CefBrowserHost::CreateBrowserSync(
 		window_info,
 		handler.get(),
-		"chrome://version",
+		"about:blank",
 		browser_settings,
 		NULL
 	);
-
-	qDebug() << Q_FUNC_INFO << "Browser created!";
+	
+	// A url (like about:blank) must be loaded first. Otherwise loadString doesnt work.
+	browser->GetMainFrame()->LoadString(
+		"<html><body style='background:white;color:black;font-family:sans-serif;display:flex;justify-content:center;align-items:center'>"
+		"<p>Hit the &#9655; button to run a bot script.</p>"
+		"</body></html>",
+		"http://startpage/"
+	);
 }
 
 void BrowserApp::OnBeforeCommandLineProcessing(
