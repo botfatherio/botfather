@@ -13,7 +13,7 @@
 
 namespace {
 	BrowserClient * g_instance = nullptr;
-} // !namespace
+}
 
 BrowserClient::BrowserClient()
 {
@@ -27,9 +27,52 @@ BrowserClient::~BrowserClient()
 }
 
 // static
-BrowserClient * BrowserClient::GetInstance()
+BrowserClient * BrowserClient::instance()
 {
 	return g_instance;
+}
+
+CefRefPtr<CefBrowser> BrowserClient::getBrowser() const
+{
+	return this->main_browser_;
+}
+
+void BrowserClient::closeAllBrowsers(bool force_close)
+{
+	// As this function is only called when we atually inted to close
+	// the browser, allow the close process.
+	this->allow_browser_to_close_ = true;
+
+	// Anyway execute this function on the UI thread.
+	if (!CefCurrentlyOn(TID_UI)) {
+		CefPostTask(TID_UI, base::Bind(&BrowserClient::closeAllBrowsers, this, force_close));
+		return;
+	}
+
+	// Request that the main browser close.
+	if (this->main_browser_.get()) {
+		this->main_browser_->GetHost()->CloseBrowser(force_close);
+	}
+}
+
+void BrowserClient::blockRessource(QString ressource_url)
+{
+	this->modified_ressources.insert(ressource_url, "");
+}
+
+void BrowserClient::replaceRessource(QString old_ressource_url, QString new_ressource_url)
+{
+	this->modified_ressources.insert(old_ressource_url, new_ressource_url);
+}
+
+void BrowserClient::unmodifyRessource(QString ressource_url)
+{
+	this->modified_ressources.remove(ressource_url);
+}
+
+void BrowserClient::unmodifyRessources()
+{
+	this->modified_ressources.clear();
 }
 
 bool BrowserClient::DoClose(CefRefPtr<CefBrowser> browser)
@@ -66,31 +109,18 @@ void BrowserClient::OnBeforeClose(CefRefPtr<CefBrowser> browser)
 	this->main_browser_ = nullptr;
 }
 
-bool BrowserClient::OnBeforePopup(
-	CefRefPtr<CefBrowser> browser,
-	CefRefPtr<CefFrame> frame,
-	const CefString& target_url,
-	const CefString& target_frame_name,
-	CefLifeSpanHandler::WindowOpenDisposition target_disposition,
-	bool user_gesture,
-	const CefPopupFeatures& popupFeatures,
-	CefWindowInfo& windowInfo,
-	CefRefPtr<CefClient>& client,
-	CefBrowserSettings& settings,
-	bool* no_javascript_access)
+bool BrowserClient::OnBeforePopup(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, const CefString& target_url, const CefString& target_frame_name, CefLifeSpanHandler::WindowOpenDisposition target_disposition, bool user_gesture, const CefPopupFeatures& popupFeatures, CefWindowInfo& windowInfo, CefRefPtr<CefClient>& client, CefBrowserSettings& settings, bool* no_javascript_access)
 {
 	// TODO: Eventually block certain popups from being opened at all.
 
 	// Open popup url in osr browser.
-	GetBrowser()->GetMainFrame()->LoadURL(target_url);
+	getBrowser()->GetMainFrame()->LoadURL(target_url);
 
 	// And cancel the popup.
 	return true;
 }
 
-bool BrowserClient::GetViewRect(
-	CefRefPtr<CefBrowser> browser,
-	CefRect& rect)
+bool BrowserClient::GetViewRect(CefRefPtr<CefBrowser> browser, CefRect& rect)
 {
 	CEF_REQUIRE_UI_THREAD();
 
@@ -106,13 +136,7 @@ bool BrowserClient::GetViewRect(
 	return true;
 }
 
-void BrowserClient::OnPaint(
-	CefRefPtr<CefBrowser> browser,
-	PaintElementType type,
-	const RectList& dirtyRects,
-	const void* buffer,
-	int width,
-	int height)
+void BrowserClient::OnPaint(CefRefPtr<CefBrowser> browser, PaintElementType type, const RectList& dirtyRects, const void* buffer, int width, int height)
 {
 	CEF_REQUIRE_UI_THREAD();
 
@@ -126,20 +150,12 @@ void BrowserClient::OnPaint(
 	emit paintSignal(browser_image);
 }
 
-void BrowserClient::OnLoadEnd(
-	CefRefPtr<CefBrowser> browser,
-	CefRefPtr<CefFrame> frame,
-	int httpStatusCode)
+void BrowserClient::OnLoadEnd(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, int httpStatusCode)
 {
 	CEF_REQUIRE_UI_THREAD();
 }
 
-void BrowserClient::OnLoadError(
-	CefRefPtr<CefBrowser> browser,
-	CefRefPtr<CefFrame> frame,
-	ErrorCode errorCode,
-	const CefString& errorText,
-	const CefString& failedUrl)
+void BrowserClient::OnLoadError(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, ErrorCode errorCode, const CefString& errorText, const CefString& failedUrl)
 {
 	CEF_REQUIRE_UI_THREAD();
 
@@ -153,11 +169,7 @@ void BrowserClient::OnLoadError(
 	//qDebug("Failed to load URL " << std::string(failedUrl) << " with error " << std::string(errorText) << " (" << errorCode << ").");
 }
 
-void BrowserClient::OnLoadingStateChange(
-	CefRefPtr<CefBrowser> browser,
-	bool isLoading,
-	bool canGoBack,
-	bool canGoForward)
+void BrowserClient::OnLoadingStateChange(CefRefPtr<CefBrowser> browser, bool isLoading, bool canGoBack, bool canGoForward)
 {
 	CEF_REQUIRE_UI_THREAD();
 	Q_UNUSED(browser);
@@ -168,10 +180,7 @@ void BrowserClient::OnLoadingStateChange(
 	emit loadingStateSignal(isLoading);
 }
 
-void BrowserClient::OnLoadStart(
-	CefRefPtr<CefBrowser> browser,
-	CefRefPtr<CefFrame> frame,
-	CefLoadHandler::TransitionType transition_type)
+void BrowserClient::OnLoadStart(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefLoadHandler::TransitionType transition_type)
 {
 	CEF_REQUIRE_UI_THREAD();
 	Q_UNUSED(browser);
@@ -179,11 +188,7 @@ void BrowserClient::OnLoadStart(
 	Q_UNUSED(transition_type);
 }
 
-CefRequestHandler::ReturnValue BrowserClient::OnBeforeResourceLoad(
-	CefRefPtr<CefBrowser> browser,
-	CefRefPtr<CefFrame> frame,
-	CefRefPtr<CefRequest> request,
-	CefRefPtr<CefRequestCallback> callback)
+CefRequestHandler::ReturnValue BrowserClient::OnBeforeResourceLoad(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request, CefRefPtr<CefRequestCallback> callback)
 {
 	Q_UNUSED(browser);
 	Q_UNUSED(frame);
@@ -208,9 +213,7 @@ CefRequestHandler::ReturnValue BrowserClient::OnBeforeResourceLoad(
 	return RV_CONTINUE;
 }
 
-void BrowserClient::OnPluginCrashed(
-	CefRefPtr<CefBrowser> browser,
-	const CefString& plugin_path)
+void BrowserClient::OnPluginCrashed(CefRefPtr<CefBrowser> browser, const CefString& plugin_path)
 {
 	Q_UNUSED(browser);
 
@@ -220,9 +223,7 @@ void BrowserClient::OnPluginCrashed(
 	emit pluginCrashedSignal();
 }
 
-void BrowserClient::OnRenderProcessTerminated(
-	CefRefPtr<CefBrowser> browser,
-	CefRequestHandler::TerminationStatus status)
+void BrowserClient::OnRenderProcessTerminated(CefRefPtr<CefBrowser> browser, CefRequestHandler::TerminationStatus status)
 {
 	Q_UNUSED(browser);
 
@@ -244,47 +245,4 @@ void BrowserClient::OnRenderProcessTerminated(
 		break;
 	}
 	emit rendererCrashedSignal();
-}
-
-CefRefPtr<CefBrowser> BrowserClient::GetBrowser() const
-{
-	return this->main_browser_;
-}
-
-void BrowserClient::CloseAllBrowsers(bool force_close)
-{
-	// As this function is only called when we atually inted to close
-	// the browser, allow the close process.
-	this->allow_browser_to_close_ = true;
-
-	// Anyway execute this function on the UI thread.
-	if (!CefCurrentlyOn(TID_UI)) {
-		CefPostTask(TID_UI, base::Bind(&BrowserClient::CloseAllBrowsers, this, force_close));
-		return;
-	}
-
-	// Request that the main browser close.
-	if (this->main_browser_.get()) {
-		this->main_browser_->GetHost()->CloseBrowser(force_close);
-	}
-}
-
-void BrowserClient::blockRessource(QString ressource_url)
-{
-	this->modified_ressources.insert(ressource_url, "");
-}
-
-void BrowserClient::replaceRessource(QString old_ressource_url, QString new_ressource_url)
-{
-	this->modified_ressources.insert(old_ressource_url, new_ressource_url);
-}
-
-void BrowserClient::unmodifyRessource(QString ressource_url)
-{
-	this->modified_ressources.remove(ressource_url);
-}
-
-void BrowserClient::unmodifyRessources()
-{
-	this->modified_ressources.clear();
 }

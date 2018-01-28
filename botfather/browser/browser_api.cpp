@@ -14,67 +14,67 @@ void BrowserAPI::enable(QJSEngine *engine_p)
 
 void BrowserAPI::blockRessource(QString ressource)
 {
-	BrowserClient::GetInstance()->blockRessource(ressource);
+	BrowserClient::instance()->blockRessource(ressource);
 }
 
 void BrowserAPI::replaceRessource(QString old_ressource, QString new_ressource)
 {
-	BrowserClient::GetInstance()->replaceRessource(old_ressource, new_ressource);
+	BrowserClient::instance()->replaceRessource(old_ressource, new_ressource);
 }
 
 void BrowserAPI::unmodifyRessource(QString ressource)
 {
-	BrowserClient::GetInstance()->unmodifyRessource(ressource);
+	BrowserClient::instance()->unmodifyRessource(ressource);
 }
 
 void BrowserAPI::unmodifyRessources()
 {
-	BrowserClient::GetInstance()->unmodifyRessources();
+	BrowserClient::instance()->unmodifyRessources();
 }
 
 void BrowserAPI::loadUrl(QString url)
 {
-	BrowserClient::GetInstance()->GetBrowser()->GetMainFrame()->LoadURL(url.toStdString());
+	BrowserClient::instance()->getBrowser()->GetMainFrame()->LoadURL(url.toStdString());
 }
 
 QString BrowserAPI::getUrl()
 {
-	return QString::fromStdString(BrowserClient::GetInstance()->GetBrowser()->GetMainFrame()->GetURL().ToString());
+	return QString::fromStdString(BrowserClient::instance()->getBrowser()->GetMainFrame()->GetURL().ToString());
 }
 
 void BrowserAPI::reload()
 {
-	BrowserClient::GetInstance()->GetBrowser()->Reload();
+	BrowserClient::instance()->getBrowser()->Reload();
 }
 
 void BrowserAPI::reloadIgnoreCache()
 {
-	BrowserClient::GetInstance()->GetBrowser()->ReloadIgnoreCache();
+	BrowserClient::instance()->getBrowser()->ReloadIgnoreCache();
 }
 
 void BrowserAPI::stopLoad()
 {
-	BrowserClient::GetInstance()->GetBrowser()->StopLoad();
+	BrowserClient::instance()->getBrowser()->StopLoad();
 }
 
 bool BrowserAPI::canGoBack()
 {
-	return BrowserClient::GetInstance()->GetBrowser()->CanGoBack();
+	return BrowserClient::instance()->getBrowser()->CanGoBack();
 }
 
 bool BrowserAPI::canGoForward()
 {
-	return BrowserClient::GetInstance()->GetBrowser()->CanGoForward();
+	return BrowserClient::instance()->getBrowser()->CanGoForward();
 }
 
 void BrowserAPI::goBack()
 {
-	BrowserClient::GetInstance()->GetBrowser()->GoBack();
+	BrowserClient::instance()->getBrowser()->GoBack();
 }
 
 void BrowserAPI::goForward()
 {
-	BrowserClient::GetInstance()->GetBrowser()->GoForward();
+	BrowserClient::instance()->getBrowser()->GoForward();
 }
 
 int BrowserAPI::getWidth()
@@ -89,9 +89,9 @@ int BrowserAPI::getHeight()
 
 void BrowserAPI::executeJavascript(QString javascript_code)
 {
-	BrowserClient::GetInstance()->GetBrowser()->GetMainFrame()->ExecuteJavaScript(
+	BrowserClient::instance()->getBrowser()->GetMainFrame()->ExecuteJavaScript(
 		javascript_code.toStdString(),
-		BrowserClient::GetInstance()->GetBrowser()->GetMainFrame()->GetURL(),
+		BrowserClient::instance()->getBrowser()->GetMainFrame()->GetURL(),
 		0
 	);
 }
