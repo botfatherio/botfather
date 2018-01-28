@@ -2,12 +2,14 @@
 #include <QDebug>
 #include <QUrl>
 #include <QUrlQuery>
+#include <QSettings>
 #include "include/base/cef_bind.h"
 #include "include/cef_app.h"
 #include "include/views/cef_browser_view.h"
 #include "include/views/cef_window.h"
 #include "include/wrapper/cef_closure_task.h"
 #include "include/wrapper/cef_helpers.h"
+#include "../shared/constants.h"
 
 namespace {
 	BrowserClient * g_instance = nullptr;
@@ -92,12 +94,14 @@ bool BrowserClient::GetViewRect(
 {
 	CEF_REQUIRE_UI_THREAD();
 
+	QSettings settings;
+	
 	// Return true if the rectagle is provided.
 	rect.Set(
 		0,
 		0,
-		1440,
-		720
+		settings.value("BROWSER_WIDTH", constants::BROWSER_WIDTH).toInt(),
+		settings.value("BROWSER_HEIGHT", constants::BROWSER_HEIGHT).toInt()
 	);
 	return true;
 }
