@@ -42,7 +42,7 @@
        </sizepolicy>
       </property>
       <property name="text">
-       <string>Standby, loading website...</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hit the ▷ button to run a bot script.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
