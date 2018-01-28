@@ -177,11 +177,6 @@ void BrowserClient::OnLoadStart(
 	Q_UNUSED(browser);
 	Q_UNUSED(frame);
 	Q_UNUSED(transition_type);
-
-	// Emit "is loading false" if the main browser ended loading.
-	//if (this->GetBrowser()->GetIdentifier() == browser->GetIdentifier() && frame->IsMain()) {
-	//	emit loadingStateSignal(true);
-	//}
 }
 
 CefRequestHandler::ReturnValue BrowserClient::OnBeforeResourceLoad(
@@ -192,11 +187,24 @@ CefRequestHandler::ReturnValue BrowserClient::OnBeforeResourceLoad(
 {
 	Q_UNUSED(browser);
 	Q_UNUSED(frame);
-	Q_UNUSED(request);
 	Q_UNUSED(callback);
 	
-	// Here is the best place to block the loading of certain ressources
-	// or to redirect request to load own (manipulated) ressources instead.
+	QString url = QString::fromStdString(request->GetURL().ToString());
+	
+	if (!this->modified_ressources.contains(url)) {
+		qDebug() << "not blocking" << url;
+		return RV_CONTINUE;
+	}
+	
+	QString new_url = this->modified_ressources.value(url);
+	
+	if (new_url.isEmpty()) {
+		qDebug() << "blocking" << url;
+		return RV_CANCEL; // Block the ressource from loading.
+	}
+	
+	qDebug() << "replacing" << url << "with" << new_url;
+	request->SetURL(new_url.toStdString());
 	return RV_CONTINUE;
 }
 
@@ -238,6 +246,11 @@ void BrowserClient::OnRenderProcessTerminated(
 	emit rendererCrashedSignal();
 }
 
+CefRefPtr<CefBrowser> BrowserClient::GetBrowser() const
+{
+	return this->main_browser_;
+}
+
 void BrowserClient::CloseAllBrowsers(bool force_close)
 {
 	// As this function is only called when we atually inted to close
@@ -254,4 +267,24 @@ void BrowserClient::CloseAllBrowsers(bool force_close)
 	if (this->main_browser_.get()) {
 		this->main_browser_->GetHost()->CloseBrowser(force_close);
 	}
+}
+
+void BrowserClient::blockRessource(QString ressource_url)
+{
+	this->modified_ressources.insert(ressource_url, "");
+}
+
+void BrowserClient::replaceRessource(QString old_ressource_url, QString new_ressource_url)
+{
+	this->modified_ressources.insert(old_ressource_url, new_ressource_url);
+}
+
+void BrowserClient::unmodifyRessource(QString ressource_url)
+{
+	this->modified_ressources.remove(ressource_url);
+}
+
+void BrowserClient::unmodifyRessources()
+{
+	this->modified_ressources.clear();
 }

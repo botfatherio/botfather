@@ -17,10 +17,13 @@ public:
 	Q_INVOKABLE void blockRessource(QString ressource);
 	
 	// Makes the browser load a custom ressource instead of the original.
-	Q_INVOKABLE void replaceRessource(QString original_ressource, QString custom_ressource);
+	Q_INVOKABLE void replaceRessource(QString old_ressource, QString new_ressource);
 	
 	// Resets block and replace settings for a ressource.
 	Q_INVOKABLE void unmodifyRessource(QString ressource);
+	
+	// Resets block and replace settings for all ressources.
+	Q_INVOKABLE void unmodifyRessources();
 	
 	// Load the given url/website.
 	Q_INVOKABLE void loadUrl(QString url);

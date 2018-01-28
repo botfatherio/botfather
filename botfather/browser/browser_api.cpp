@@ -14,17 +14,22 @@ void BrowserAPI::enable(QJSEngine *engine_p)
 
 void BrowserAPI::blockRessource(QString ressource)
 {
-	
+	BrowserClient::GetInstance()->blockRessource(ressource);
 }
 
-void BrowserAPI::replaceRessource(QString original_ressource, QString custom_ressource)
+void BrowserAPI::replaceRessource(QString old_ressource, QString new_ressource)
 {
-	
+	BrowserClient::GetInstance()->replaceRessource(old_ressource, new_ressource);
 }
 
 void BrowserAPI::unmodifyRessource(QString ressource)
 {
-	
+	BrowserClient::GetInstance()->unmodifyRessource(ressource);
+}
+
+void BrowserAPI::unmodifyRessources()
+{
+	BrowserClient::GetInstance()->unmodifyRessources();
 }
 
 void BrowserAPI::loadUrl(QString url)

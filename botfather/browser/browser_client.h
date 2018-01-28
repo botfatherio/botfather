@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QImage>
 #include <QSettings>
+#include <QHash>
 #include "include/cef_client.h"
 
 class BrowserClient :
@@ -133,15 +134,13 @@ public:
 		CefRequestHandler::TerminationStatus status
 	) OVERRIDE;
 
-	// Custom methods
-	
-	CefRefPtr<CefBrowser> GetBrowser()
-	{
-		return main_browser_;
-	}
-
-	// Request that all existing browser windows close.
+	CefRefPtr<CefBrowser> GetBrowser() const;
 	void CloseAllBrowsers(bool force_close);
+	
+	void blockRessource(QString ressource_url);
+	void replaceRessource(QString old_ressource_url, QString new_ressource_url);
+	void unmodifyRessource(QString ressource_url);
+	void unmodifyRessources();
 
 signals:
 	void paintSignal(QImage browser_image);
@@ -159,6 +158,11 @@ private:
 
 	// Holds a reference to the qsettings.
 	QSettings settings;
+	
+	// Contains all redirected urls. The first item of a pair is the original url.
+	// The second item is either empty, meaning the url should not be loaded (is blocked),
+	// or there is a second url provided, meaning the second url should be loaded instead.
+	QHash<QString, QString> modified_ressources;
 
 	// Include the default reference counting implementation.
 	IMPLEMENT_REFCOUNTING(BrowserClient);
