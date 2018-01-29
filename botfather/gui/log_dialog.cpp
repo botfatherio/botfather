@@ -53,7 +53,11 @@ void LogDialog::on_close_button_clicked()
 	this->close();
 }
 
-void LogDialog::appendMessage(QString log_message)
+void LogDialog::appendMessage(QString log_message, bool from_client)
 {
-	this->ui->log_text->append(log_message);
+	if (from_client){
+		this->ui->log_text->append("<strong style='color:#555'>&lt;botfather&gt;</strong> " + log_message);
+	} else{
+		this->ui->log_text->append("<strong style='color:#555'>&lt;script&gt;</strong> " + log_message);
+	}
 }

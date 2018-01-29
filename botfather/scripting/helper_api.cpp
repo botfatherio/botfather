@@ -57,5 +57,5 @@ QString HelperAPI::getClientMode()
 
 void HelperAPI::log(QString log_message)
 {
-	emit this->m_bot_p->message(log_message);
+	emit this->m_bot_p->message(log_message, false);
 }

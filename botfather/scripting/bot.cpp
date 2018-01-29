@@ -23,7 +23,7 @@ void Bot::runScript()
 	QFile script_file(this->m_script_path);
 	if (!script_file.open(QIODevice::ReadOnly)) {
 		QString debug_msg("Can't read the contents from " + this->m_script_path + ". Please check the files permissions.");
-		emit this->message(debug_msg);
+		emit this->message(debug_msg, true);
 		emit this->stopped(false);
 		return;
 	}
@@ -31,7 +31,7 @@ void Bot::runScript()
 	QTextStream stream(&script_file);
 	QString contents = stream.readAll();
 	script_file.close();
-	emit this->message("Executing bot script " + this->m_script_path);
+	emit this->message("Executing bot script " + this->m_script_path, true);
 	
 	QJSValue result = engine.evaluate(contents, this->m_script_path);
 	
@@ -40,11 +40,11 @@ void Bot::runScript()
 	
 	if (result.isError()) {
 		QString debug_msg("<b style='color:red'>Uncaught exception</b> at line " + result.property("lineNumber").toString() + ":" + result.toString());
-		emit this->message(debug_msg);
+		emit this->message(debug_msg, true);
 		emit this->stopped(false);
 		return;
 	}
 	
-	emit this->message("Bot script execution finished.");
+	emit this->message("Bot script execution finished.", true);
 	emit this->stopped(true);
 }

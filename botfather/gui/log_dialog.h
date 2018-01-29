@@ -20,7 +20,7 @@ public slots:
 	void on_save_button_clicked();
 	void on_clear_button_clicked();
 	void on_close_button_clicked();
-	void appendMessage(QString log_message);
+	void appendMessage(QString log_message, bool from_client = false);
 	
 private:
 	Ui::LogDialog *ui;
