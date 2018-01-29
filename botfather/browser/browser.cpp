@@ -210,15 +210,31 @@ void Browser::executeJavascript(QString javascript_code)
 	);
 }
 
-void Browser::clickAt(int type, int x, int y)
+void Browser::pressMouse(int button_type, int x, int y)
 {
-	CefBrowserHost::MouseButtonType mbt = CefBrowserHost::MouseButtonType(type);
+	CefBrowserHost::MouseButtonType mbt = CefBrowserHost::MouseButtonType(button_type);
+	CefMouseEvent cms;
+	cms.x = x;
+	cms.y = y;
+	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseClickEvent(cms, mbt, false, 1);
+}
+
+void Browser::releaseMouse(int button_type, int x, int y)
+{
+	CefBrowserHost::MouseButtonType mbt = CefBrowserHost::MouseButtonType(button_type);
+	CefMouseEvent cms;
+	cms.x = x;
+	cms.y = y;
+	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseClickEvent(cms, mbt, true, 1);
+}
+
+void Browser::moveMouse(int x, int y)
+{
 	CefMouseEvent cme;
 	cme.x = x;
 	cme.y = y;
-	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseClickEvent(cme, mbt, false, 1);
-	QThread::msleep(100);
-	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseClickEvent(cme, mbt, true, 1);
+	bool mouse_leave = x < 0 || x > Browser::getWidth() || y < 0 || y > Browser::getHeight();
+	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseMoveEvent(cme, mouse_leave);
 }
 
 void Browser::warpMouseTo(int x, int y)
@@ -234,9 +250,5 @@ void Browser::scrollWheel(int x, int y, int delta_x, int delta_y)
 	CefMouseEvent cme;
 	cme.x = x;
 	cme.y = y;
-	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseWheelEvent(
-		cme,
-		delta_x,
-		delta_y
-	);
+	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseWheelEvent(cme, delta_x, delta_y);
 }

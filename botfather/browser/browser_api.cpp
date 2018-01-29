@@ -1,4 +1,5 @@
 #include "browser_api.h"
+#include <QThread>
 #include "browser.h"
 
 BrowserAPI::BrowserAPI(QJSEngine* engine_p) : m_engine_p(engine_p)
@@ -51,7 +52,7 @@ void BrowserAPI::reloadIgnoringCache()
 	Browser::reloadIgnoringCache();
 }
 
-void BrowserAPI::stopLoad()
+void BrowserAPI::stopLoading()
 {
 	Browser::stopLoad();
 }
@@ -93,22 +94,58 @@ void BrowserAPI::executeJavascript(QString javascript_code)
 
 void BrowserAPI::leftClickAt(int x, int y)
 {
-	Browser::clickAt(MBT_LEFT, x, y);
+	Browser::pressMouse(MBT_LEFT, x, y);
+	QThread::msleep(100);
+	Browser::releaseMouse(MBT_LEFT, x, y);
 }
 
 void BrowserAPI::middleClickAt(int x, int y)
 {
-	Browser::clickAt(MBT_MIDDLE, x, y);
+	Browser::pressMouse(MBT_MIDDLE, x, y);
+	QThread::msleep(100);
+	Browser::releaseMouse(MBT_MIDDLE, x, y);
 }
 
 void BrowserAPI::rightClickAt(int x, int y)
 {
-	Browser::clickAt(MBT_RIGHT, x, y);
+	Browser::pressMouse(MBT_RIGHT, x, y);
+	QThread::msleep(100);
+	Browser::releaseMouse(MBT_RIGHT, x, y);
 }
 
-void BrowserAPI::warpMouseTo(int x, int y)
+void BrowserAPI::pressLeftAt(int x, int y)
 {
-	Browser::warpMouseTo(x, y);
+	Browser::pressMouse(MBT_LEFT, x, y);
+}
+
+void BrowserAPI::pressMiddleAt(int x, int y)
+{
+	Browser::pressMouse(MBT_MIDDLE, x, y);
+}
+
+void BrowserAPI::pressRightAt(int x, int y)
+{
+	Browser::pressMouse(MBT_RIGHT, x, y);
+}
+
+void BrowserAPI::releaseLeftAt(int x, int y)
+{
+	Browser::releaseMouse(MBT_LEFT, x, y);
+}
+
+void BrowserAPI::releaseMiddleAt(int x, int y)
+{
+	Browser::releaseMouse(MBT_MIDDLE, x, y);
+}
+
+void BrowserAPI::releaseRightAt(int x, int y)
+{
+	Browser::releaseMouse(MBT_RIGHT, x, y);
+}
+
+void BrowserAPI::moveMouseTo(int x, int y)
+{
+	Browser::moveMouse(x, y);
 }
 
 void BrowserAPI::scrollWheel(int x, int y, int delta_x, int delta_y)

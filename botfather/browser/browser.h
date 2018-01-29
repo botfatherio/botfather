@@ -60,12 +60,15 @@ public:
 	// Executes the given javascript on the currently loaded website (non-blocking).
 	static void executeJavascript(QString javascript_code);
 	
-	// Sends an click event to the desired coords of the desired type.
-	static void clickAt(int type, int x, int y);
-		
-	// Warps the mouse directly to the desired coordinates.
-	static void warpMouseTo(int x, int y);
+	// Sends a mouse press event to x,y
+	static void pressMouse(int button_type, int x, int y);
 	
+	// Sends a mouse release event to x,y
+	static void releaseMouse(int button_type, int x, int y);
+	
+	// Sends a mouse move event to x,y
+	static void moveMouse(int x, int y);
+
 	// Sends a mouse wheel event to the desired xy coordinates. There must be a scrolling position,
 	// imagine a website with 2 frames... which one should be scrolled? (sure the one where to mouse
 	// currently is, but meh, cef whats more parameters...)

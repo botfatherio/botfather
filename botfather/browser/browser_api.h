@@ -21,7 +21,7 @@ public:
 	Q_INVOKABLE static QString getUrl();
 	Q_INVOKABLE static void reload();
 	Q_INVOKABLE static void reloadIgnoringCache();
-	Q_INVOKABLE static void stopLoad();
+	Q_INVOKABLE static void stopLoading();
 	Q_INVOKABLE static bool canGoBack();
 	Q_INVOKABLE static bool canGoForward();
 	Q_INVOKABLE static void goForward();
@@ -32,7 +32,13 @@ public:
 	Q_INVOKABLE static void leftClickAt(int x, int y);
 	Q_INVOKABLE static void middleClickAt(int x, int y);
 	Q_INVOKABLE static void rightClickAt(int x, int y);
-	Q_INVOKABLE static void warpMouseTo(int x, int y);
+	Q_INVOKABLE static void pressLeftAt(int x, int y);
+	Q_INVOKABLE static void pressMiddleAt(int x, int y);
+	Q_INVOKABLE static void pressRightAt(int x, int y);
+	Q_INVOKABLE static void releaseLeftAt(int x, int y);
+	Q_INVOKABLE static void releaseMiddleAt(int x, int y);
+	Q_INVOKABLE static void releaseRightAt(int x, int y);
+	Q_INVOKABLE static void moveMouseTo(int x, int y);
 	Q_INVOKABLE static void scrollWheel(int x, int y, int delta_x, int delta_y);
 	
 private:
