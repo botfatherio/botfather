@@ -61,6 +61,21 @@ public:
 	// Executes the given javascript on the currently loaded website (non-blocking).
 	Q_INVOKABLE static void executeJavascript(QString javascript_code);
 	
+	// Sends an click event to the desired coords of the desired type.
+	static void clickAt(int type, int x, int y);
+	
+	// Sends a left click event to the desired coordinates.
+	Q_INVOKABLE static void leftClickAt(int x, int y);
+	
+	// Sends a middle click event to the desired coordinates.
+	Q_INVOKABLE static void middleClickAt(int x, int y);
+	
+	// Sends a right click event to the desired coordinates.
+	Q_INVOKABLE static void rightClickAt(int x, int y);
+	
+	// Warps the mouse directly to the desired coordinates.
+	Q_INVOKABLE static void warpMouseTo(int x, int y);
+	
 private:
 	QJSEngine* m_engine_p;
 	QSettings m_settings;

@@ -1,4 +1,5 @@
 #include "browser_api.h"
+#include <QThread>
 #include "browser_client.h"
 #include "../shared/constants.h"
 
@@ -94,4 +95,38 @@ void BrowserAPI::executeJavascript(QString javascript_code)
 		BrowserClient::GetInstance()->GetBrowser()->GetMainFrame()->GetURL(),
 		0
 	);
+}
+
+void BrowserAPI::clickAt(int type, int x, int y)
+{
+	CefBrowserHost::MouseButtonType mbt = CefBrowserHost::MouseButtonType(type);
+	CefMouseEvent cme;
+	cme.x = x;
+	cme.y = y;
+	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseClickEvent(cme, mbt, false, 1);
+	QThread::msleep(100);
+	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseClickEvent(cme, mbt, true, 1);
+}
+
+void BrowserAPI::leftClickAt(int x, int y)
+{
+	BrowserAPI::clickAt(MBT_LEFT, x, y);
+}
+
+void BrowserAPI::middleClickAt(int x, int y)
+{
+	BrowserAPI::clickAt(MBT_MIDDLE, x, y);
+}
+
+void BrowserAPI::rightClickAt(int x, int y)
+{
+	BrowserAPI::clickAt(MBT_RIGHT, x, y);
+}
+
+void BrowserAPI::warpMouseTo(int x, int y)
+{
+	CefMouseEvent cme;
+	cme.x = x;
+	cme.y = y;
+	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseMoveEvent(cme, true);
 }
