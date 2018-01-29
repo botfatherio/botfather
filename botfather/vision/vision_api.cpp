@@ -4,7 +4,7 @@
 #include "match.h"
 #include "hsv_color_factory.h"
 #include "blob_tpl_factory.h"
-#include "../scripting/bot.h"
+#include "../scripting/helper_api.h"
 
 VisionAPI::VisionAPI(QJSEngine* engine_p)
 	: m_engine_p(engine_p)
@@ -26,7 +26,7 @@ void VisionAPI::saveImage(Image* image, QString path)
 }
 
 QJSValue VisionAPI::loadImage(QString path) {
-	if (Bot::fileExists(path)){
+	if (HelperAPI::fileExists(path)){
 		return m_engine_p->newQObject(new Image(Vision::loadImage(path)));
 	}
 	return QJSValue();

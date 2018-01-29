@@ -77,7 +77,7 @@ void Browser::init(int argc, char **argv)
 void Browser::quit()
 {
 	// Close all windows so that cef can be shutdown without complaining.
-	BrowserClient::instance()->closeAllBrowsers(true);
+	BrowserClient::GetInstance()->CloseAllBrowsers(true);
 	CefShutdown();
 }
 

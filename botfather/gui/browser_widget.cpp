@@ -14,7 +14,7 @@ BrowserWidget::BrowserWidget(QWidget* parent)
 	this->setFocusPolicy(Qt::ClickFocus);
 	
 	// Auto connect own paint slot to the browsers paint signal.
-	QObject::connect(BrowserClient::instance(), SIGNAL(paintSignal(QImage)), this, SLOT(paintSlot(QImage)));
+	QObject::connect(BrowserClient::GetInstance(), SIGNAL(paintSignal(QImage)), this, SLOT(paintSlot(QImage)));
 }
 
 void BrowserWidget::paintSlot(QImage browser_image)
@@ -28,9 +28,9 @@ void BrowserWidget::mousePressEvent(QMouseEvent *event)
 	cms.x = event->x();
 	cms.y = event->y();
 	if (event->button() == Qt::LeftButton)
-		BrowserClient::instance()->getBrowser()->GetHost()->SendMouseClickEvent(cms, MBT_LEFT, false, 1);
+		BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseClickEvent(cms, MBT_LEFT, false, 1);
 	else if (event->button() == Qt::RightButton)
-		BrowserClient::instance()->getBrowser()->GetHost()->SendMouseClickEvent(cms, MBT_RIGHT, false, 1);
+		BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseClickEvent(cms, MBT_RIGHT, false, 1);
 }
 
 void BrowserWidget::mouseReleaseEvent(QMouseEvent *event)
@@ -39,9 +39,9 @@ void BrowserWidget::mouseReleaseEvent(QMouseEvent *event)
 	cms.x = event->x();
 	cms.y = event->y();
 	if (event->button() == Qt::LeftButton)
-		BrowserClient::instance()->getBrowser()->GetHost()->SendMouseClickEvent(cms, MBT_LEFT, true, 1);
+		BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseClickEvent(cms, MBT_LEFT, true, 1);
 	else if (event->button() == Qt::RightButton)
-		BrowserClient::instance()->getBrowser()->GetHost()->SendMouseClickEvent(cms, MBT_RIGHT, true, 1);
+		BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseClickEvent(cms, MBT_RIGHT, true, 1);
 }
 
 void BrowserWidget::mouseMoveEvent(QMouseEvent *event)
@@ -50,7 +50,7 @@ void BrowserWidget::mouseMoveEvent(QMouseEvent *event)
 	cme.x = event->x();
 	cme.y = event->y();
 	bool mouse_leave = event->x() < 0 || event->y() < 0;
-	BrowserClient::instance()->getBrowser()->GetHost()->SendMouseMoveEvent(cme, mouse_leave);
+	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseMoveEvent(cme, mouse_leave);
 }
 
 void BrowserWidget::wheelEvent(QWheelEvent *event)
@@ -58,7 +58,7 @@ void BrowserWidget::wheelEvent(QWheelEvent *event)
 	CefMouseEvent cme;
 	cme.x = event->x();
 	cme.y = event->y();
-	BrowserClient::instance()->getBrowser()->GetHost()->SendMouseWheelEvent(
+	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseWheelEvent(
 		cme,
 		event->angleDelta().x(),
 		event->angleDelta().y()
