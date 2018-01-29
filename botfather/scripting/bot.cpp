@@ -35,6 +35,9 @@ void Bot::runScript()
 	
 	QJSValue result = engine.evaluate(contents, this->m_script_path);
 	
+	// Reset settings made by the just run script.
+	BrowserAPI::unmodifyRessources();
+	
 	if (result.isError()) {
 		QString debug_msg("<b style='color:red'>Uncaught exception</b> at line " + result.property("lineNumber").toString() + ":" + result.toString());
 		emit this->message(debug_msg);
