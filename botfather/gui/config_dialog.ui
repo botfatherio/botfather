@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>524</width>
-    <height>484</height>
+    <height>361</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -66,6 +66,13 @@
              </widget>
             </item>
             <item>
+             <widget class="QLabel" name="label_4">
+              <property name="text">
+               <string>(Default: 1366x768)</string>
+              </property>
+             </widget>
+            </item>
+            <item>
              <spacer name="horizontalSpacer_2">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -86,33 +93,7 @@
              <bool>true</bool>
             </property>
             <property name="text">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use &lt;a href=&quot;http://resizemybrowser.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;your browsers inner size&lt;/span&gt;&lt;/a&gt; for better game account security. (You may use a lower resolution for better performance).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="groupBox_3">
-         <property name="title">
-          <string>User input</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_17">
-          <item>
-           <widget class="QCheckBox" name="browser_ignore_input">
-            <property name="text">
-             <string>Ignore mouse inputs when the bot is running</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_15">
-            <property name="text">
-             <string>Controlling the game while botting may lead to unintended behaviour or even crashes.</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use &lt;a href=&quot;http://resizemybrowser.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;your browsers inner size&lt;/span&gt;&lt;/a&gt; for better game account security. (You may want to use a lower resolution for better performance).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="wordWrap">
              <bool>true</bool>
@@ -125,13 +106,13 @@
        <item>
         <widget class="QGroupBox" name="groupBox_5">
          <property name="title">
-          <string>Performance</string>
+          <string>Browser Rendering</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_18">
           <item>
            <widget class="QCheckBox" name="browser_render">
             <property name="text">
-             <string>Render/show the browser while botting.</string>
+             <string>Render/show the browser while botting. (Default: Enabled)</string>
             </property>
             <property name="checked">
              <bool>true</bool>

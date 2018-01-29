@@ -11,7 +11,6 @@ namespace constants
 
 	static const int BROWSER_WIDTH = 1366;
 	static const int BROWSER_HEIGHT = 768;
-	static const bool BROWSER_IGNORE_INPUT = true;
 	static const bool BROWSER_RENDER = true;
 }
 
