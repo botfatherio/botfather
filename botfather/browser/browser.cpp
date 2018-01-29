@@ -4,6 +4,7 @@
 #include <QThread>
 #include <QTimer>
 #include <QObject>
+#include "../shared/constants.h"
 #include "browser_client.h"
 #include "browser_app.h"
 #if defined(_WIN32) || defined(_WIN64)
@@ -121,4 +122,109 @@ void Browser::initCefSettings(CefSettings& settings)
 	// Don't use sandbox. Because there are special permissions required and
 	// we don't need sandboxed processes at all.
 	settings.no_sandbox = true;
+}
+
+void Browser::blockRessource(QString ressource)
+{
+	BrowserClient::GetInstance()->blockRessource(ressource);
+}
+
+void Browser::replaceRessource(QString old_ressource, QString new_ressource)
+{
+	BrowserClient::GetInstance()->replaceRessource(old_ressource, new_ressource);
+}
+
+void Browser::unmodifyRessource(QString ressource)
+{
+	BrowserClient::GetInstance()->unmodifyRessource(ressource);
+}
+
+void Browser::unmodifyRessources()
+{
+	BrowserClient::GetInstance()->unmodifyRessources();
+}
+
+void Browser::loadUrl(QString url)
+{
+	BrowserClient::GetInstance()->GetBrowser()->GetMainFrame()->LoadURL(url.toStdString());
+}
+
+QString Browser::getUrl()
+{
+	return QString::fromStdString(BrowserClient::GetInstance()->GetBrowser()->GetMainFrame()->GetURL().ToString());
+}
+
+void Browser::reload()
+{
+	BrowserClient::GetInstance()->GetBrowser()->Reload();
+}
+
+void Browser::reloadIgnoringCache()
+{
+	BrowserClient::GetInstance()->GetBrowser()->ReloadIgnoreCache();
+}
+
+void Browser::stopLoad()
+{
+	BrowserClient::GetInstance()->GetBrowser()->StopLoad();
+}
+
+bool Browser::canGoBack()
+{
+	return BrowserClient::GetInstance()->GetBrowser()->CanGoBack();
+}
+
+bool Browser::canGoForward()
+{
+	return BrowserClient::GetInstance()->GetBrowser()->CanGoForward();
+}
+
+void Browser::goBack()
+{
+	BrowserClient::GetInstance()->GetBrowser()->GoBack();
+}
+
+void Browser::goForward()
+{
+	BrowserClient::GetInstance()->GetBrowser()->GoForward();
+}
+
+int Browser::getWidth()
+{
+	QSettings settings;
+	return settings.value("BROWSER_WIDTH", constants::BROWSER_WIDTH).toInt();
+}
+
+int Browser::getHeight()
+{
+	QSettings settings;
+	return settings.value("BROWSER_HEIGHT", constants::BROWSER_HEIGHT).toInt();
+}
+
+void Browser::executeJavascript(QString javascript_code)
+{
+	BrowserClient::GetInstance()->GetBrowser()->GetMainFrame()->ExecuteJavaScript(
+		javascript_code.toStdString(),
+		BrowserClient::GetInstance()->GetBrowser()->GetMainFrame()->GetURL(),
+		0
+	);
+}
+
+void Browser::clickAt(int type, int x, int y)
+{
+	CefBrowserHost::MouseButtonType mbt = CefBrowserHost::MouseButtonType(type);
+	CefMouseEvent cme;
+	cme.x = x;
+	cme.y = y;
+	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseClickEvent(cme, mbt, false, 1);
+	QThread::msleep(100);
+	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseClickEvent(cme, mbt, true, 1);
+}
+
+void Browser::warpMouseTo(int x, int y)
+{
+	CefMouseEvent cme;
+	cme.x = x;
+	cme.y = y;
+	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseMoveEvent(cme, true);
 }
