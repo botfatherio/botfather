@@ -5,13 +5,15 @@
 #include <QJSEngine>
 #include <QString>
 
+class Bot;
+
 class HelperAPI : public QObject
 {
 	Q_OBJECT
 	
 public:
-	HelperAPI(QJSEngine* engine_p);
-	static void enable(QJSEngine* engine_p);
+	HelperAPI(QJSEngine* engine_p, Bot* bot_p);
+	static void enable(QJSEngine* engine_p, Bot* bot_p);
 	
 	// Returns true if the file exists.
 	Q_INVOKABLE static bool fileExists(QString file_path);
@@ -42,6 +44,7 @@ public:
 	
 private:
 	QJSEngine* m_engine_p;
+	Bot* m_bot_p;
 };
 
 #endif // BFP__MISC__HELPER_API_H

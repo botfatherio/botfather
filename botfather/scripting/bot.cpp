@@ -16,7 +16,7 @@ void Bot::runScript()
 	QJSEngine engine;
 	engine.installExtensions(QJSEngine::ConsoleExtension);
 	
-	HelperAPI::enable(&engine);
+	HelperAPI::enable(&engine, this);
 	VisionAPI::enable(&engine);
 	BrowserAPI::enable(&engine);
 	
