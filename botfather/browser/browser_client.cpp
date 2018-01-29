@@ -27,9 +27,52 @@ BrowserClient::~BrowserClient()
 }
 
 // static
-BrowserClient * BrowserClient::GetInstance()
+BrowserClient * BrowserClient::instance()
 {
 	return g_instance;
+}
+
+CefRefPtr<CefBrowser> BrowserClient::getBrowser() const
+{
+	return this->main_browser_;
+}
+
+void BrowserClient::closeAllBrowsers(bool force_close)
+{
+	// As this function is only called when we atually inted to close
+	// the browser, allow the close process.
+	this->allow_browser_to_close_ = true;
+
+	// Anyway execute this function on the UI thread.
+	if (!CefCurrentlyOn(TID_UI)) {
+		CefPostTask(TID_UI, base::Bind(&BrowserClient::closeAllBrowsers, this, force_close));
+		return;
+	}
+
+	// Request that the main browser close.
+	if (this->main_browser_.get()) {
+		this->main_browser_->GetHost()->CloseBrowser(force_close);
+	}
+}
+
+void BrowserClient::blockRessource(QString ressource_url)
+{
+	this->modified_ressources.insert(ressource_url, "");
+}
+
+void BrowserClient::replaceRessource(QString old_ressource_url, QString new_ressource_url)
+{
+	this->modified_ressources.insert(old_ressource_url, new_ressource_url);
+}
+
+void BrowserClient::unmodifyRessource(QString ressource_url)
+{
+	this->modified_ressources.remove(ressource_url);
+}
+
+void BrowserClient::unmodifyRessources()
+{
+	this->modified_ressources.clear();
 }
 
 bool BrowserClient::DoClose(CefRefPtr<CefBrowser> browser)
@@ -82,7 +125,7 @@ bool BrowserClient::OnBeforePopup(
 	// TODO: Eventually block certain popups from being opened at all.
 
 	// Open popup url in osr browser.
-	GetBrowser()->GetMainFrame()->LoadURL(target_url);
+	getBrowser()->GetMainFrame()->LoadURL(target_url);
 
 	// And cancel the popup.
 	return true;
@@ -244,47 +287,4 @@ void BrowserClient::OnRenderProcessTerminated(
 		break;
 	}
 	emit rendererCrashedSignal();
-}
-
-CefRefPtr<CefBrowser> BrowserClient::GetBrowser() const
-{
-	return this->main_browser_;
-}
-
-void BrowserClient::CloseAllBrowsers(bool force_close)
-{
-	// As this function is only called when we atually inted to close
-	// the browser, allow the close process.
-	this->allow_browser_to_close_ = true;
-
-	// Anyway execute this function on the UI thread.
-	if (!CefCurrentlyOn(TID_UI)) {
-		CefPostTask(TID_UI, base::Bind(&BrowserClient::CloseAllBrowsers, this, force_close));
-		return;
-	}
-
-	// Request that the main browser close.
-	if (this->main_browser_.get()) {
-		this->main_browser_->GetHost()->CloseBrowser(force_close);
-	}
-}
-
-void BrowserClient::blockRessource(QString ressource_url)
-{
-	this->modified_ressources.insert(ressource_url, "");
-}
-
-void BrowserClient::replaceRessource(QString old_ressource_url, QString new_ressource_url)
-{
-	this->modified_ressources.insert(old_ressource_url, new_ressource_url);
-}
-
-void BrowserClient::unmodifyRessource(QString ressource_url)
-{
-	this->modified_ressources.remove(ressource_url);
-}
-
-void BrowserClient::unmodifyRessources()
-{
-	this->modified_ressources.clear();
 }

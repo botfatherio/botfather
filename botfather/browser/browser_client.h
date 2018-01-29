@@ -21,8 +21,13 @@ public:
 	explicit BrowserClient();
 	~BrowserClient();
 
-	// Provide access to the single global instance of this object.
-	static BrowserClient* GetInstance();
+	static BrowserClient* instance();
+	CefRefPtr<CefBrowser> getBrowser() const;
+	void closeAllBrowsers(bool force_close);
+	void blockRessource(QString ressource_url);
+	void replaceRessource(QString old_ressource_url, QString new_ressource_url);
+	void unmodifyRessource(QString ressource_url);
+	void unmodifyRessources();
 
 	// CefClient methods:
 	
@@ -133,14 +138,6 @@ public:
 		CefRefPtr<CefBrowser> browser,
 		CefRequestHandler::TerminationStatus status
 	) OVERRIDE;
-
-	CefRefPtr<CefBrowser> GetBrowser() const;
-	void CloseAllBrowsers(bool force_close);
-	
-	void blockRessource(QString ressource_url);
-	void replaceRessource(QString old_ressource_url, QString new_ressource_url);
-	void unmodifyRessource(QString ressource_url);
-	void unmodifyRessources();
 
 signals:
 	void paintSignal(QImage browser_image);

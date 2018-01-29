@@ -78,7 +78,7 @@ void Browser::init(int argc, char **argv)
 void Browser::quit()
 {
 	// Close all windows so that cef can be shutdown without complaining.
-	BrowserClient::GetInstance()->CloseAllBrowsers(true);
+	BrowserClient::instance()->closeAllBrowsers(true);
 	CefShutdown();
 }
 
@@ -126,67 +126,67 @@ void Browser::initCefSettings(CefSettings& settings)
 
 void Browser::blockRessource(QString ressource)
 {
-	BrowserClient::GetInstance()->blockRessource(ressource);
+	BrowserClient::instance()->blockRessource(ressource);
 }
 
 void Browser::replaceRessource(QString old_ressource, QString new_ressource)
 {
-	BrowserClient::GetInstance()->replaceRessource(old_ressource, new_ressource);
+	BrowserClient::instance()->replaceRessource(old_ressource, new_ressource);
 }
 
 void Browser::unmodifyRessource(QString ressource)
 {
-	BrowserClient::GetInstance()->unmodifyRessource(ressource);
+	BrowserClient::instance()->unmodifyRessource(ressource);
 }
 
 void Browser::unmodifyRessources()
 {
-	BrowserClient::GetInstance()->unmodifyRessources();
+	BrowserClient::instance()->unmodifyRessources();
 }
 
 void Browser::loadUrl(QString url)
 {
-	BrowserClient::GetInstance()->GetBrowser()->GetMainFrame()->LoadURL(url.toStdString());
+	BrowserClient::instance()->getBrowser()->GetMainFrame()->LoadURL(url.toStdString());
 }
 
 QString Browser::getUrl()
 {
-	return QString::fromStdString(BrowserClient::GetInstance()->GetBrowser()->GetMainFrame()->GetURL().ToString());
+	return QString::fromStdString(BrowserClient::instance()->getBrowser()->GetMainFrame()->GetURL().ToString());
 }
 
 void Browser::reload()
 {
-	BrowserClient::GetInstance()->GetBrowser()->Reload();
+	BrowserClient::instance()->getBrowser()->Reload();
 }
 
 void Browser::reloadIgnoringCache()
 {
-	BrowserClient::GetInstance()->GetBrowser()->ReloadIgnoreCache();
+	BrowserClient::instance()->getBrowser()->ReloadIgnoreCache();
 }
 
 void Browser::stopLoad()
 {
-	BrowserClient::GetInstance()->GetBrowser()->StopLoad();
+	BrowserClient::instance()->getBrowser()->StopLoad();
 }
 
 bool Browser::canGoBack()
 {
-	return BrowserClient::GetInstance()->GetBrowser()->CanGoBack();
+	return BrowserClient::instance()->getBrowser()->CanGoBack();
 }
 
 bool Browser::canGoForward()
 {
-	return BrowserClient::GetInstance()->GetBrowser()->CanGoForward();
+	return BrowserClient::instance()->getBrowser()->CanGoForward();
 }
 
 void Browser::goBack()
 {
-	BrowserClient::GetInstance()->GetBrowser()->GoBack();
+	BrowserClient::instance()->getBrowser()->GoBack();
 }
 
 void Browser::goForward()
 {
-	BrowserClient::GetInstance()->GetBrowser()->GoForward();
+	BrowserClient::instance()->getBrowser()->GoForward();
 }
 
 int Browser::getWidth()
@@ -203,9 +203,9 @@ int Browser::getHeight()
 
 void Browser::executeJavascript(QString javascript_code)
 {
-	BrowserClient::GetInstance()->GetBrowser()->GetMainFrame()->ExecuteJavaScript(
+	BrowserClient::instance()->getBrowser()->GetMainFrame()->ExecuteJavaScript(
 		javascript_code.toStdString(),
-		BrowserClient::GetInstance()->GetBrowser()->GetMainFrame()->GetURL(),
+		BrowserClient::instance()->getBrowser()->GetMainFrame()->GetURL(),
 		0
 	);
 }
@@ -216,7 +216,7 @@ void Browser::pressMouse(int button_type, int x, int y)
 	CefMouseEvent cms;
 	cms.x = x;
 	cms.y = y;
-	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseClickEvent(cms, mbt, false, 1);
+	BrowserClient::instance()->getBrowser()->GetHost()->SendMouseClickEvent(cms, mbt, false, 1);
 }
 
 void Browser::releaseMouse(int button_type, int x, int y)
@@ -225,7 +225,7 @@ void Browser::releaseMouse(int button_type, int x, int y)
 	CefMouseEvent cms;
 	cms.x = x;
 	cms.y = y;
-	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseClickEvent(cms, mbt, true, 1);
+	BrowserClient::instance()->getBrowser()->GetHost()->SendMouseClickEvent(cms, mbt, true, 1);
 }
 
 void Browser::moveMouse(int x, int y)
@@ -234,7 +234,7 @@ void Browser::moveMouse(int x, int y)
 	cme.x = x;
 	cme.y = y;
 	bool mouse_leave = x < 0 || x > Browser::getWidth() || y < 0 || y > Browser::getHeight();
-	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseMoveEvent(cme, mouse_leave);
+	BrowserClient::instance()->getBrowser()->GetHost()->SendMouseMoveEvent(cme, mouse_leave);
 }
 
 void Browser::scrollWheel(int x, int y, int delta_x, int delta_y)
@@ -242,7 +242,7 @@ void Browser::scrollWheel(int x, int y, int delta_x, int delta_y)
 	CefMouseEvent cme;
 	cme.x = x;
 	cme.y = y;
-	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseWheelEvent(cme, delta_x, delta_y);
+	BrowserClient::instance()->getBrowser()->GetHost()->SendMouseWheelEvent(cme, delta_x, delta_y);
 }
 
 int Browser::qtToCefMouseButtonType(int qt_button_code)

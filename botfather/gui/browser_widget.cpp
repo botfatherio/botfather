@@ -15,7 +15,7 @@ BrowserWidget::BrowserWidget(QWidget* parent)
 	this->setFocusPolicy(Qt::ClickFocus);
 	
 	// Auto connect own paint slot to the browsers paint signal.
-	QObject::connect(BrowserClient::GetInstance(), SIGNAL(paintSignal(QImage)), this, SLOT(paintSlot(QImage)));
+	QObject::connect(BrowserClient::instance(), SIGNAL(paintSignal(QImage)), this, SLOT(paintSlot(QImage)));
 }
 
 void BrowserWidget::paintSlot(QImage browser_image)
