@@ -1,6 +1,7 @@
 #include "browser_widget.h"
 #include <QMouseEvent>
 #include "browser/browser_client.h"
+#include "browser/browser.h"
 
 BrowserWidget::BrowserWidget(QWidget* parent)
 {
@@ -24,53 +25,32 @@ void BrowserWidget::paintSlot(QImage browser_image)
 
 void BrowserWidget::mousePressEvent(QMouseEvent *event)
 {
-	CefMouseEvent cms;
-	cms.x = event->x();
-	cms.y = event->y();
-	if (event->button() == Qt::LeftButton)
-		BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseClickEvent(cms, MBT_LEFT, false, 1);
-	else if (event->button() == Qt::RightButton)
-		BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseClickEvent(cms, MBT_RIGHT, false, 1);
+	int cef_button_code = Browser::qtToCefMouseButtonType(event->button());
+	if (cef_button_code == -1)
+		return;
+	Browser::pressMouse(cef_button_code, event->x(), event->y());
 }
 
 void BrowserWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-	CefMouseEvent cms;
-	cms.x = event->x();
-	cms.y = event->y();
-	if (event->button() == Qt::LeftButton)
-		BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseClickEvent(cms, MBT_LEFT, true, 1);
-	else if (event->button() == Qt::RightButton)
-		BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseClickEvent(cms, MBT_RIGHT, true, 1);
+	int cef_button_code = Browser::qtToCefMouseButtonType(event->button());
+	if (cef_button_code == -1)
+		return;
+	Browser::releaseMouse(cef_button_code, event->x(), event->y());
 }
 
 void BrowserWidget::mouseMoveEvent(QMouseEvent *event)
 {
-	CefMouseEvent cme;
-	cme.x = event->x();
-	cme.y = event->y();
-	bool mouse_leave = event->x() < 0 || event->y() < 0;
-	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseMoveEvent(cme, mouse_leave);
+	Browser::moveMouse(event->x(), event->y());
 }
 
 void BrowserWidget::wheelEvent(QWheelEvent *event)
 {
-	CefMouseEvent cme;
-	cme.x = event->x();
-	cme.y = event->y();
-	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseWheelEvent(
-		cme,
-		event->angleDelta().x(),
-		event->angleDelta().y()
-	);
+	Browser::scrollWheel(event->x(), event->y(), event->angleDelta().x(), event->angleDelta().y());
 }
 
 void BrowserWidget::keyPressEvent(QKeyEvent * event)
-{
-	
-}
+{}
 
 void BrowserWidget::keyReleaseEvent(QKeyEvent * event)
-{
-	
-}
+{}

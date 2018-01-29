@@ -237,18 +237,24 @@ void Browser::moveMouse(int x, int y)
 	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseMoveEvent(cme, mouse_leave);
 }
 
-void Browser::warpMouseTo(int x, int y)
-{
-	CefMouseEvent cme;
-	cme.x = x;
-	cme.y = y;
-	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseMoveEvent(cme, true);
-}
-
 void Browser::scrollWheel(int x, int y, int delta_x, int delta_y)
 {
 	CefMouseEvent cme;
 	cme.x = x;
 	cme.y = y;
 	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseWheelEvent(cme, delta_x, delta_y);
+}
+
+int Browser::qtToCefMouseButtonType(int qt_button_code)
+{
+	switch (qt_button_code) {
+	case Qt::LeftButton:
+		return MBT_LEFT;
+	case Qt::MiddleButton:
+		return MBT_MIDDLE;
+	case Qt::RightButton:
+		return MBT_RIGHT;
+	default:
+		return -1; // Unhandle mouse button type
+	}
 }

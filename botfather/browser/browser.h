@@ -74,6 +74,9 @@ public:
 	// currently is, but meh, cef whats more parameters...)
 	static void scrollWheel(int x, int y, int delta_x, int delta_y);
 	
+	// Translates qt mouse button keycodes to cef keycodes. Returns -1 on unhandled keycode.
+	static int qtToCefMouseButtonType(int qt_button_code);
+	
 private:
 	static void initCefSettings(CefSettings& settings);
 };
