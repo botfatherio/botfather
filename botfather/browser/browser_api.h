@@ -33,6 +33,7 @@ public:
 	Q_INVOKABLE static void middleClickAt(int x, int y);
 	Q_INVOKABLE static void rightClickAt(int x, int y);
 	Q_INVOKABLE static void warpMouseTo(int x, int y);
+	Q_INVOKABLE static void scrollWheel(int x, int y, int delta_x, int delta_y);
 	
 private:
 	QJSEngine* m_engine_p;

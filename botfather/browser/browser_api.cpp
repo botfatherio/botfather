@@ -110,3 +110,8 @@ void BrowserAPI::warpMouseTo(int x, int y)
 {
 	Browser::warpMouseTo(x, y);
 }
+
+void BrowserAPI::scrollWheel(int x, int y, int delta_x, int delta_y)
+{
+	Browser::scrollWheel(x, y, delta_x, delta_y);
+}

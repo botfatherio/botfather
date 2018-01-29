@@ -228,3 +228,15 @@ void Browser::warpMouseTo(int x, int y)
 	cme.y = y;
 	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseMoveEvent(cme, true);
 }
+
+void Browser::scrollWheel(int x, int y, int delta_x, int delta_y)
+{
+	CefMouseEvent cme;
+	cme.x = x;
+	cme.y = y;
+	BrowserClient::GetInstance()->GetBrowser()->GetHost()->SendMouseWheelEvent(
+		cme,
+		delta_x,
+		delta_y
+	);
+}

@@ -66,6 +66,11 @@ public:
 	// Warps the mouse directly to the desired coordinates.
 	static void warpMouseTo(int x, int y);
 	
+	// Sends a mouse wheel event to the desired xy coordinates. There must be a scrolling position,
+	// imagine a website with 2 frames... which one should be scrolled? (sure the one where to mouse
+	// currently is, but meh, cef whats more parameters...)
+	static void scrollWheel(int x, int y, int delta_x, int delta_y);
+	
 private:
 	static void initCefSettings(CefSettings& settings);
 };
