@@ -42,12 +42,12 @@ void ControlWindow::on_actionStart_triggered()
 	this->ui->actionStop->setEnabled(false);
 	
 	// Create thread seperate from the main thread that can be terminated if necessary.
-	this->bot_thread = new QThread;
+	this->bot_thread = new BotThread;
 	
 	// Create an new bot instance with the given script path and move it into the thread.
-	Bot* bot = new Bot(script_path);
+	Bot* bot = new Bot(this->bot_thread, script_path);
 	bot->moveToThread(this->bot_thread);
-	
+
 	// Make the bot start when the thread starts and delete the thread object when
 	// the thread finished.
 	connect(this->bot_thread, &QThread::started, bot, &Bot::runScript);
@@ -74,24 +74,27 @@ void ControlWindow::on_actionStop_triggered()
 {
 	this->ui->actionStart->setEnabled(false);
 	this->ui->actionStop->setEnabled(false);
-	this->ui->mainToolBar->insertAction(this->ui->actionStop, this->ui->actionKill);
-	this->ui->mainToolBar->removeAction(this->ui->actionStop);
+	this->ui->actionStop->setVisible(false);
+	this->ui->actionKill->setVisible(true);	
 	
-	// TODO: Request interruption of the bot script.
+	// This causes HelperAPI::shouldRun() to return false.
+	this->bot_thread->requestInterruption();
 }
 
 void ControlWindow::on_actionKill_triggered()
 {
-	qDebug() << "Action kill triggered";
 	this->bot_thread->terminate();
+	this->log_dialog.appendMessage("The script has been killed. RIP.", true);
+	this->bot_stopped(true);
 }
 
 void ControlWindow::bot_stopped(bool without_errors)
 {
+	this->ui->actionStop->setVisible(true);
+	this->ui->actionKill->setVisible(false);
 	this->ui->actionStart->setEnabled(true);
-	this->ui->mainToolBar->insertAction(this->ui->actionKill, this->ui->actionStop);
-	this->ui->mainToolBar->removeAction(this->ui->actionKill);
-	
+	this->ui->actionStop->setEnabled(false);
+		
 	if (!without_errors) {
 		// Encourage the user to check the logs because errors occurred executing the script.
 		QMessageBox::warning(

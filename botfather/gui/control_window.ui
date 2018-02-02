@@ -91,6 +91,7 @@
    </attribute>
    <addaction name="actionStart"/>
    <addaction name="actionStop"/>
+   <addaction name="actionKill"/>
    <addaction name="separator"/>
    <addaction name="actionLog"/>
    <addaction name="actionSettings"/>
@@ -172,6 +173,9 @@
    </property>
    <property name="toolTip">
     <string>Kill the script</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
  </widget>

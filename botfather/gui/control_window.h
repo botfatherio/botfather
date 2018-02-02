@@ -3,10 +3,10 @@
 
 #include <QMainWindow>
 #include <QFileDialog>
-#include <QThread>
 #include "log_dialog.h"
 #include "config_dialog.h"
 #include "scripting/bot.h"
+#include "scripting/bot_thread.h"
 
 namespace Ui {
 	class ControlWindow;
@@ -36,7 +36,7 @@ private:
 	Ui::ControlWindow *ui;
 	LogDialog log_dialog;
 	ConfigDialog config_dialog;
-	QThread *bot_thread;
+	BotThread *bot_thread;
 };
 
 #endif // BFP__GUI__CONTROL_WINDOW_H
