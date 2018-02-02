@@ -41,7 +41,7 @@ public:
 	
 	// Blocks until the browser stopped loading or the timeour expired. Returns false
 	// when the timeout expired.
-	static bool deferLoading(int timeout_seconds);
+	static bool bideLoading(int timeout_seconds);
 	
 	// Stop loading the current page.
 	static void stopLoad();

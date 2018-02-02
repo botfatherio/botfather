@@ -57,9 +57,9 @@ bool BrowserAPI::loading()
 	return Browser::loading();
 }
 
-bool BrowserAPI::deferLoading(int timeout_seconds)
+bool BrowserAPI::bideLoading(int timeout_seconds)
 {
-	return Browser::deferLoading(timeout_seconds);
+	return Browser::bideLoading(timeout_seconds);
 }
 
 void BrowserAPI::stopLoading()

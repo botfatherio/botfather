@@ -173,7 +173,7 @@ bool Browser::loading()
 	return BrowserClient::instance()->loading();
 }
 
-bool Browser::deferLoading(int timeout_seconds)
+bool Browser::bideLoading(int timeout_seconds)
 {
 	QElapsedTimer timer;
 	timer.start();
