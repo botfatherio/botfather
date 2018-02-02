@@ -75,6 +75,16 @@ void BrowserClient::unmodifyRessources()
 	this->modified_ressources.clear();
 }
 
+bool BrowserClient::loading() const
+{
+	return this->is_loading;
+}
+
+void BrowserClient::setLoading(bool state)
+{
+	this->is_loading = state;
+}
+
 bool BrowserClient::DoClose(CefRefPtr<CefBrowser> browser)
 {
 	CEF_REQUIRE_UI_THREAD();
@@ -207,6 +217,9 @@ void BrowserClient::OnLoadingStateChange(
 	Q_UNUSED(canGoBack);
 	Q_UNUSED(canGoForward);
 
+	this->is_loading = isLoading;
+	qDebug() << "loading state changed to" << isLoading << is_loading;
+	
 	// Emit overall bowser load status.
 	emit loadingStateSignal(isLoading);
 }
@@ -235,18 +248,18 @@ CefRequestHandler::ReturnValue BrowserClient::OnBeforeResourceLoad(
 	QString url = QString::fromStdString(request->GetURL().ToString());
 	
 	if (!this->modified_ressources.contains(url)) {
-		qDebug() << "not blocking" << url;
+		//qDebug() << "not blocking" << url;
 		return RV_CONTINUE;
 	}
 	
 	QString new_url = this->modified_ressources.value(url);
 	
 	if (new_url.isEmpty()) {
-		qDebug() << "blocking" << url;
+		//qDebug() << "blocking" << url;
 		return RV_CANCEL; // Block the ressource from loading.
 	}
 	
-	qDebug() << "replacing" << url << "with" << new_url;
+	//qDebug() << "replacing" << url << "with" << new_url;
 	request->SetURL(new_url.toStdString());
 	return RV_CONTINUE;
 }

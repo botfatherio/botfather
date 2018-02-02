@@ -52,6 +52,16 @@ void BrowserAPI::reloadIgnoringCache()
 	Browser::reloadIgnoringCache();
 }
 
+bool BrowserAPI::loading()
+{
+	return Browser::loading();
+}
+
+bool BrowserAPI::deferLoading(int timeout_seconds)
+{
+	return Browser::deferLoading(timeout_seconds);
+}
+
 void BrowserAPI::stopLoading()
 {
 	Browser::stopLoad();

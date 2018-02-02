@@ -36,6 +36,13 @@ public:
 	// Reloads the current page ignoring any cached data. 
 	static void reloadIgnoringCache();
 	
+	// Returns true when the browser is loading.
+	static bool loading();
+	
+	// Blocks until the browser stopped loading or the timeour expired. Returns false
+	// when the timeout expired.
+	static bool deferLoading(int timeout_seconds);
+	
 	// Stop loading the current page.
 	static void stopLoad();
 	

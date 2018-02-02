@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QThread>
 #include <QTimer>
+#include <QElapsedTimer>
 #include <QObject>
 #include "../shared/constants.h"
 #include "browser_client.h"
@@ -146,6 +147,7 @@ void Browser::unmodifyRessources()
 
 void Browser::loadUrl(QString url)
 {
+	BrowserClient::instance()->setLoading(true);
 	BrowserClient::instance()->getBrowser()->GetMainFrame()->LoadURL(url.toStdString());
 }
 
@@ -156,12 +158,34 @@ QString Browser::getUrl()
 
 void Browser::reload()
 {
+	BrowserClient::instance()->setLoading(true);
 	BrowserClient::instance()->getBrowser()->Reload();
 }
 
 void Browser::reloadIgnoringCache()
 {
+	BrowserClient::instance()->setLoading(true);
 	BrowserClient::instance()->getBrowser()->ReloadIgnoreCache();
+}
+
+bool Browser::loading()
+{
+	return BrowserClient::instance()->loading();
+}
+
+bool Browser::deferLoading(int timeout_seconds)
+{
+	QElapsedTimer timer;
+	timer.start();
+	
+	while (Browser::loading()) {
+		if (timer.hasExpired(timeout_seconds * 1000)) {
+			return false;
+		}
+		QThread::sleep(1);
+	}
+	
+	return true;
 }
 
 void Browser::stopLoad()

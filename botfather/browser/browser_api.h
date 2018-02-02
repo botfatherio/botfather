@@ -21,6 +21,8 @@ public:
 	Q_INVOKABLE static QString getUrl();
 	Q_INVOKABLE static void reload();
 	Q_INVOKABLE static void reloadIgnoringCache();
+	Q_INVOKABLE static bool loading();
+	Q_INVOKABLE static bool deferLoading(int timeout_seconds);
 	Q_INVOKABLE static void stopLoading();
 	Q_INVOKABLE static bool canGoBack();
 	Q_INVOKABLE static bool canGoForward();

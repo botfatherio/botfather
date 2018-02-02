@@ -28,6 +28,8 @@ public:
 	void replaceRessource(QString old_ressource_url, QString new_ressource_url);
 	void unmodifyRessource(QString ressource_url);
 	void unmodifyRessources();
+	bool loading() const;
+	void setLoading(bool state);
 
 	// CefClient methods:
 	
@@ -155,6 +157,9 @@ private:
 
 	// Holds a reference to the qsettings.
 	QSettings settings;
+	
+	// Whether the browser is loading or not.
+	bool is_loading = true;
 	
 	// Contains all redirected urls. The first item of a pair is the original url.
 	// The second item is either empty, meaning the url should not be loaded (is blocked),
