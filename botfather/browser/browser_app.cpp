@@ -45,9 +45,7 @@ void BrowserApp::OnContextInitialized()
 	*/
 }
 
-void BrowserApp::OnBeforeCommandLineProcessing(
-	const CefString& process_type,
-	CefRefPtr<CefCommandLine> command_line)
+void BrowserApp::OnBeforeCommandLineProcessing(const CefString& process_type, CefRefPtr<CefCommandLine> command_line)
 {
 	Q_UNUSED(process_type);
 	

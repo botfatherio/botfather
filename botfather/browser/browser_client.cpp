@@ -13,7 +13,7 @@
 
 namespace {
 	BrowserClient * g_instance = nullptr;
-} // !namespace
+}
 
 BrowserClient::BrowserClient()
 {
@@ -26,7 +26,6 @@ BrowserClient::~BrowserClient()
 	g_instance = nullptr;
 }
 
-// static
 BrowserClient * BrowserClient::instance()
 {
 	return g_instance;
@@ -141,9 +140,7 @@ bool BrowserClient::OnBeforePopup(
 	return true;
 }
 
-bool BrowserClient::GetViewRect(
-	CefRefPtr<CefBrowser> browser,
-	CefRect& rect)
+bool BrowserClient::GetViewRect(CefRefPtr<CefBrowser> browser, CefRect& rect)
 {
 	CEF_REQUIRE_UI_THREAD();
 
@@ -159,13 +156,7 @@ bool BrowserClient::GetViewRect(
 	return true;
 }
 
-void BrowserClient::OnPaint(
-	CefRefPtr<CefBrowser> browser,
-	PaintElementType type,
-	const RectList& dirtyRects,
-	const void* buffer,
-	int width,
-	int height)
+void BrowserClient::OnPaint(CefRefPtr<CefBrowser> browser, PaintElementType type, const RectList& dirtyRects, const void* buffer, int width, int height)
 {
 	CEF_REQUIRE_UI_THREAD();
 
@@ -179,20 +170,15 @@ void BrowserClient::OnPaint(
 	emit paintSignal(browser_image);
 }
 
-void BrowserClient::OnLoadEnd(
-	CefRefPtr<CefBrowser> browser,
-	CefRefPtr<CefFrame> frame,
-	int httpStatusCode)
+void BrowserClient::OnLoadEnd(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, int httpStatusCode)
 {
+	Q_UNUSED(browser);
+	Q_UNUSED(frame);
+	Q_UNUSED(httpStatusCode);
 	CEF_REQUIRE_UI_THREAD();
 }
 
-void BrowserClient::OnLoadError(
-	CefRefPtr<CefBrowser> browser,
-	CefRefPtr<CefFrame> frame,
-	ErrorCode errorCode,
-	const CefString& errorText,
-	const CefString& failedUrl)
+void BrowserClient::OnLoadError(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, ErrorCode errorCode, const CefString& errorText, const CefString& failedUrl)
 {
 	CEF_REQUIRE_UI_THREAD();
 
@@ -206,11 +192,7 @@ void BrowserClient::OnLoadError(
 	//qDebug("Failed to load URL " << std::string(failedUrl) << " with error " << std::string(errorText) << " (" << errorCode << ").");
 }
 
-void BrowserClient::OnLoadingStateChange(
-	CefRefPtr<CefBrowser> browser,
-	bool isLoading,
-	bool canGoBack,
-	bool canGoForward)
+void BrowserClient::OnLoadingStateChange(CefRefPtr<CefBrowser> browser, bool isLoading, bool canGoBack, bool canGoForward)
 {
 	CEF_REQUIRE_UI_THREAD();
 	Q_UNUSED(browser);
@@ -224,10 +206,7 @@ void BrowserClient::OnLoadingStateChange(
 	emit loadingStateSignal(isLoading);
 }
 
-void BrowserClient::OnLoadStart(
-	CefRefPtr<CefBrowser> browser,
-	CefRefPtr<CefFrame> frame,
-	CefLoadHandler::TransitionType transition_type)
+void BrowserClient::OnLoadStart(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefLoadHandler::TransitionType transition_type)
 {
 	CEF_REQUIRE_UI_THREAD();
 	Q_UNUSED(browser);
@@ -235,11 +214,7 @@ void BrowserClient::OnLoadStart(
 	Q_UNUSED(transition_type);
 }
 
-CefRequestHandler::ReturnValue BrowserClient::OnBeforeResourceLoad(
-	CefRefPtr<CefBrowser> browser,
-	CefRefPtr<CefFrame> frame,
-	CefRefPtr<CefRequest> request,
-	CefRefPtr<CefRequestCallback> callback)
+CefRequestHandler::ReturnValue BrowserClient::OnBeforeResourceLoad(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request, CefRefPtr<CefRequestCallback> callback)
 {
 	Q_UNUSED(browser);
 	Q_UNUSED(frame);
@@ -264,9 +239,7 @@ CefRequestHandler::ReturnValue BrowserClient::OnBeforeResourceLoad(
 	return RV_CONTINUE;
 }
 
-void BrowserClient::OnPluginCrashed(
-	CefRefPtr<CefBrowser> browser,
-	const CefString& plugin_path)
+void BrowserClient::OnPluginCrashed(CefRefPtr<CefBrowser> browser, const CefString& plugin_path)
 {
 	Q_UNUSED(browser);
 
@@ -276,9 +249,7 @@ void BrowserClient::OnPluginCrashed(
 	emit pluginCrashedSignal();
 }
 
-void BrowserClient::OnRenderProcessTerminated(
-	CefRefPtr<CefBrowser> browser,
-	CefRequestHandler::TerminationStatus status)
+void BrowserClient::OnRenderProcessTerminated(CefRefPtr<CefBrowser> browser, CefRequestHandler::TerminationStatus status)
 {
 	Q_UNUSED(browser);
 
