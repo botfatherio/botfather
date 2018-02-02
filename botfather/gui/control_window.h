@@ -2,14 +2,14 @@
 #define BFP__GUI__CONTROL_WINDOW_H
 
 #include <QMainWindow>
-#include <QThread>
 #include <QFileDialog>
+#include <QThread>
 #include "log_dialog.h"
 #include "config_dialog.h"
 #include "scripting/bot.h"
 
 namespace Ui {
-class ControlWindow;
+	class ControlWindow;
 }
 
 class ControlWindow : public QMainWindow
@@ -24,6 +24,7 @@ public slots:
 	void on_actionStart_triggered();
 	void bot_started();
 	void on_actionStop_triggered();
+	void on_actionKill_triggered();
 	void bot_stopped(bool without_errors);
 	void on_actionLog_triggered();
 	void on_actionSettings_triggered();

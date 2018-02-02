@@ -21,9 +21,6 @@ ControlWindow::~ControlWindow()
 
 void ControlWindow::on_actionStart_triggered()
 {
-	this->ui->actionStart->setEnabled(false);
-	this->ui->actionStop->setEnabled(false);
-	
 	QString script_path = QFileDialog::getOpenFileName(
 		this,
 		tr("Run Bot Script"),
@@ -37,13 +34,17 @@ void ControlWindow::on_actionStart_triggered()
 	if (script_path.isEmpty()) {
 		// No script selected. Reset ui modifications and tell the user using the status bar.
 		this->ui->statusBar->showMessage("No script selected.", 5000);
-		this->ui->actionStart->setEnabled(true);
-		this->ui->actionStop->setEnabled(false);
 		return;
 	}
 	
-	// Prepare a bot instance to be run in a thread seperated from the main thread.
+	// Disable start and stop button while we setup the bot.
+	this->ui->actionStart->setEnabled(false);
+	this->ui->actionStop->setEnabled(false);
+	
+	// Create thread seperate from the main thread that can be terminated if necessary.
 	this->bot_thread = new QThread;
+	
+	// Create an new bot instance with the given script path and move it into the thread.
 	Bot* bot = new Bot(script_path);
 	bot->moveToThread(this->bot_thread);
 	
@@ -65,6 +66,7 @@ void ControlWindow::on_actionStart_triggered()
 
 void ControlWindow::bot_started()
 {
+	// The bot started, enable the stop button.
 	this->ui->actionStop->setEnabled(true);
 }
 
@@ -72,14 +74,23 @@ void ControlWindow::on_actionStop_triggered()
 {
 	this->ui->actionStart->setEnabled(false);
 	this->ui->actionStop->setEnabled(false);
+	this->ui->mainToolBar->insertAction(this->ui->actionStop, this->ui->actionKill);
+	this->ui->mainToolBar->removeAction(this->ui->actionStop);
 	
-	// Request interruption of the bots main loop. As a result the bot will stop.
-	this->bot_thread->requestInterruption();
+	// TODO: Request interruption of the bot script.
+}
+
+void ControlWindow::on_actionKill_triggered()
+{
+	qDebug() << "Action kill triggered";
+	this->bot_thread->terminate();
 }
 
 void ControlWindow::bot_stopped(bool without_errors)
 {
 	this->ui->actionStart->setEnabled(true);
+	this->ui->mainToolBar->insertAction(this->ui->actionKill, this->ui->actionStop);
+	this->ui->mainToolBar->removeAction(this->ui->actionKill);
 	
 	if (!without_errors) {
 		// Encourage the user to check the logs because errors occurred executing the script.
