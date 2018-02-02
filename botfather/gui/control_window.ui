@@ -74,6 +74,9 @@
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="contextMenuPolicy">
     <enum>Qt::PreventContextMenu</enum>
    </property>
@@ -157,6 +160,18 @@
    </property>
    <property name="toolTip">
     <string>Open the log window</string>
+   </property>
+  </action>
+  <action name="actionKill">
+   <property name="icon">
+    <iconset resource="../res/gui.qrc">
+     <normaloff>:/gui/win10-delete-96.png</normaloff>:/gui/win10-delete-96.png</iconset>
+   </property>
+   <property name="text">
+    <string>Kill</string>
+   </property>
+   <property name="toolTip">
+    <string>Kill the script</string>
    </property>
   </action>
  </widget>
