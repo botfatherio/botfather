@@ -3,13 +3,14 @@
 
 #include <QObject>
 #include <QString>
+#include "bot_thread.h"
 
 class Bot : public QObject
 {
 	Q_OBJECT
 
 public:
-	Bot(QString script_path);
+	Bot(BotThread* thread_p, QString script_path);
 	
 public slots:
 	void runScript();
@@ -20,6 +21,7 @@ signals:
 	void message(QString log_message, bool from_client);
 	
 private:
+	BotThread* m_thread_p;
 	QString m_script_path;
 };
 
