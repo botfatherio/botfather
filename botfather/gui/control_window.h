@@ -33,7 +33,6 @@ public slots:
 	
 private:
 	Ui::ControlWindow *ui;
-	QFileDialog file_dialog;
 	LogDialog log_dialog;
 	ConfigDialog config_dialog;
 	QThread *bot_thread;
