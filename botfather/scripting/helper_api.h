@@ -6,14 +6,15 @@
 #include <QString>
 
 class Bot;
+class BotThread;
 
 class HelperAPI : public QObject
 {
 	Q_OBJECT
 	
 public:
-	HelperAPI(QJSEngine* engine_p, Bot* bot_p);
-	static void enable(QJSEngine* engine_p, Bot* bot_p);
+	HelperAPI(BotThread* bot_thread_p, Bot* bot_p, QJSEngine* engine_p);
+	static void enable(BotThread* bot_thread_p, Bot* bot_p, QJSEngine* engine_p);
 	
 	// Returns true if the file exists.
 	Q_INVOKABLE static bool fileExists(QString file_path);
@@ -42,9 +43,13 @@ public:
 	// Logs the message in the users chat.
 	Q_INVOKABLE void log(QString log_message);
 	
+	// Returns false if the user requested the script to end.
+	Q_INVOKABLE bool stopRequested();
+	
 private:
-	QJSEngine* m_engine_p;
+	BotThread* m_bot_thread_p;
 	Bot* m_bot_p;
+	QJSEngine* m_engine_p;
 };
 
 #endif // BFP__MISC__HELPER_API_H

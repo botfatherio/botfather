@@ -2,15 +2,16 @@
 #include <QFileInfo>
 #include <QThread>
 #include "bot.h"
+#include "bot_thread.h"
 #include "../shared/constants.h"
 
-HelperAPI::HelperAPI(QJSEngine* engine_p, Bot* bot_p) : m_engine_p(engine_p), m_bot_p(bot_p)
+HelperAPI::HelperAPI(BotThread* bot_thread_p, Bot* bot_p, QJSEngine* engine_p) : m_bot_thread_p(bot_thread_p), m_bot_p(bot_p), m_engine_p(engine_p)
 {}
 
 // static
-void HelperAPI::enable(QJSEngine* engine_p, Bot* bot_p)
+void HelperAPI::enable(BotThread* bot_thread_p, Bot* bot_p, QJSEngine* engine_p)
 {
-	QJSValue vision_obj = engine_p->newQObject(new HelperAPI(engine_p, bot_p));
+	QJSValue vision_obj = engine_p->newQObject(new HelperAPI(bot_thread_p, bot_p, engine_p));
 	engine_p->globalObject().setProperty("Helper", vision_obj);
 }
 
@@ -57,5 +58,10 @@ QString HelperAPI::getClientMode()
 
 void HelperAPI::log(QString log_message)
 {
-	emit this->m_bot_p->message(log_message, false);
+	emit m_bot_p->message(log_message, false);
+}
+
+bool HelperAPI::stopRequested()
+{
+	return m_bot_thread_p->isInterruptionRequested();
 }
