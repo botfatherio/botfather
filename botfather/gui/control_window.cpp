@@ -5,13 +5,17 @@
 #include <QDesktopServices>
 #include <QCloseEvent>
 #include "ui_control_window.h"
+#include "log_dialog.h"
+#include "config_dialog.h"
 #include "shared/constants.h"
 
-ControlWindow::ControlWindow(QWidget *parent) :
-	QMainWindow(parent),
-	ui(new Ui::ControlWindow)
+ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::ControlWindow)
 {
 	ui->setupUi(this);
+	
+	// Make the main window parent of the dialogs to make them close when the main win is.
+	this->log_dialog = new LogDialog(this);
+	this->config_dialog = new ConfigDialog(this);
 }
 
 ControlWindow::~ControlWindow()
@@ -58,7 +62,7 @@ void ControlWindow::on_actionStart_triggered()
 	connect(bot, &Bot::stopped, this, &ControlWindow::bot_stopped);
 	
 	// Enable logging visible for the user
-	connect(bot, &Bot::message, &this->log_dialog, &LogDialog::appendMessage);
+	connect(bot, &Bot::message, this->log_dialog, &LogDialog::appendMessage);
 	
 	// Start the bot thread and thus the bot.
 	this->bot_thread->start();
@@ -84,7 +88,7 @@ void ControlWindow::on_actionStop_triggered()
 void ControlWindow::on_actionKill_triggered()
 {
 	this->bot_thread->terminate();
-	this->log_dialog.appendMessage("The script has been killed. RIP.", true);
+	this->log_dialog->appendMessage("The script has been killed. RIP.", true);
 	this->bot_stopped(true);
 }
 
@@ -107,13 +111,13 @@ void ControlWindow::bot_stopped(bool without_errors)
 
 void ControlWindow::on_actionLog_triggered()
 {
-	this->log_dialog.show();
+	this->log_dialog->show();
 }
 
 void ControlWindow::on_actionSettings_triggered()
 {
 	// When executing (opening) the config dialog the control window can't be clicked.
-	this->config_dialog.exec();
+	this->config_dialog->exec();
 }
 
 void ControlWindow::on_actionScripts_triggered()

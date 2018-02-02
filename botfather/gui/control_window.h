@@ -3,10 +3,11 @@
 
 #include <QMainWindow>
 #include <QFileDialog>
-#include "log_dialog.h"
-#include "config_dialog.h"
 #include "scripting/bot.h"
 #include "scripting/bot_thread.h"
+
+class LogDialog;
+class ConfigDialog;
 
 namespace Ui {
 	class ControlWindow;
@@ -34,8 +35,8 @@ public slots:
 	
 private:
 	Ui::ControlWindow *ui;
-	LogDialog log_dialog;
-	ConfigDialog config_dialog;
+	LogDialog* log_dialog;
+	ConfigDialog* config_dialog;
 	BotThread *bot_thread;
 };
 
