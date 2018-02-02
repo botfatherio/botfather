@@ -67,7 +67,8 @@ SOURCES += \
     vision/vision.cpp \
     vision/vision_api.cpp \
     scripting/helper_api.cpp \
-    browser/browser_api.cpp
+    browser/browser_api.cpp \
+    scripting/bot_thread.cpp
 
 HEADERS += \
     shared/constants.h \
@@ -88,7 +89,8 @@ HEADERS += \
     vision/vision.h \
     vision/vision_api.h \
     scripting/helper_api.h \
-    browser/browser_api.h
+    browser/browser_api.h \
+    scripting/bot_thread.h
 
 FORMS += \
     gui/control_window.ui \
