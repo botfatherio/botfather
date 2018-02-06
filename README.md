@@ -66,6 +66,15 @@ CEF powers bot fathers browser thus it's required to build botfather.
 - Compile
 - Check whether the manifest has been added: (see) VS -> File... -> (choose exe) -> Open with (use the open buttons dropdown) -> Resource Editor
 
+### Build OpenCV (on Windows)
+- Download the latest OpenCV Win Pack from https://opencv.org/releases.html
+- Run/Unpack it (it's probably a self extracting zip archive).
+- Place OpenCV in ```C:\OPENCV\your_opencv_version```
+- Run CMAKE and select ```C:\OPENCV\your_opencv_version\source``` as source folder and ```C:\OPENCV\your_opencv_version\build``` as build folder.
+- Configure. Make sure opencv world is selected. Configure. Generate.
+- Open the generated OpenCV Project with Visual Studio 2015.
+- Build ALL_BUILD both debug and release. Done.
+
 ## Gettings started (Apple MacOS)
 ...to be added...
 
