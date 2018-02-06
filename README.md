@@ -61,6 +61,10 @@ CEF powers bot fathers browser thus it's required to build botfather.
 - Linker -> General -> Additional Library Directories -> ```C:\CEF\your_cef_version_here\Debug``` and ```C:\CEF\your_cef_version_here\libcef_dll_wrapper\Debug``` (debug)
 - Linker -> Input -> Additional Dependencies -> ```libcef_dll_wrapper.lib``` and ```libcef.lib``` (release & debug)
 - Linker -> System -> SubSystem -> Windows (/SUBSYSTEM:WINDOWS) (release & debug)
+- Copy ```compatibility.manifest``` from ```C:\CEF\your_cef_version_here\tests\cefsimple\``` into the botfather_helper project directory.
+- Goto VS -> Manifest Tool -> Input Output -> Additional manifest file and Add the compatibility manifest.
+- Compile
+- Check whether the manifest has been added: (see) VS -> File... -> (choose exe) -> Open with (use the open buttons dropdown) -> Resource Editor
 
 ## Gettings started (Apple MacOS)
 ...to be added...
