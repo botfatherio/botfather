@@ -36,7 +36,31 @@ Before you can run BotFather you need to copy the botfather_helper binary from t
 They have to be in the same folder and they need to be deployed together.
 
 ## Getting started (Microsoft Windows)
-...to be added...
+- Install CMAKE.
+- Install Microsoft Visual Studio 2015 with C++ support and the latest toolset updates.
+- Install Qtcreator and a Qt version.
+- Install Qtaddin for MS VS 2015. VS -> Tools -> Extensions and Updates -> Online -> (search) qt -> (install) QtPackage. Restart System.
+- Select Qt Version. VS -> QT5 -> Qt Options -> (Qt Versions) Add -> (eg. C:\Qt\5.10.0\msvc2015_64) matching the compiler and platform.
+
+### Chromium Embedded Framework (CEF)
+CEF powers bot fathers browser thus it's required to build botfather.
+- Download the latest Chromium Embedded Framework (CEF) Linux 64bit from http://opensource.spotify.com/cefbuilds/index.html
+- Unpack CEF to C:/CEF/your_cef_version_here
+- Open CMAKE. Choose 64bit ms2015 compiler.
+- Make the cef version dir the source and build dir.
+- Configure (twice) and generate.
+- Open the project with VS 2015.
+- Change VS -> Project -> libcef_dll_wrapper Properties -> C/C++ -> Code Generation -> Runtime Library to MDd (debug) and MD (release).
+- Build libcef_dll_wrapper both debug and release.
+
+### Build the BotFather Helper (on Windows)
+- Create new Project. VS -> File -> New -> Project -> Templates -> Visual C++ -> General -> Empty Project
+- Adjust project props:
+- C/C++ -> General -> Additional Include Directories -> ```C:\CEF\your_cef_version_here``` (release & debug)
+- Linker -> General -> Additional Library Directories -> ```C:\CEF\your_cef_version_here\Release``` and ```C:\CEF\your_cef_version_here\libcef_dll_wrapper\Release``` (release)
+- Linker -> General -> Additional Library Directories -> ```C:\CEF\your_cef_version_here\Debug``` and ```C:\CEF\your_cef_version_here\libcef_dll_wrapper\Debug``` (debug)
+- Linker -> Input -> Additional Dependencies -> ```libcef_dll_wrapper.lib``` and ```libcef.lib``` (release & debug)
+- Linker -> System -> SubSystem -> Windows (/SUBSYSTEM:WINDOWS) (release & debug)
 
 ## Gettings started (Apple MacOS)
 ...to be added...
