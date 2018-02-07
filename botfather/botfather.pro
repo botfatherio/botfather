@@ -27,10 +27,9 @@ unix:LIBS += -L/usr/lib -lopencv_stitching -lopencv_superres -lopencv_videostab 
 	     -lopencv_xphoto -lopencv_highgui -lopencv_videoio -lopencv_imgcodecs \
 	     -lopencv_photo -lopencv_imgproc -lopencv_core
 unix:QMAKE_RPATHDIR += .
-
-QMAKE_CXXFLAGS_WARN_OFF -= -Wunused-parameter
-QMAKE_CFLAGS = -Wno-unused-parameter
-QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
+unix:QMAKE_CXXFLAGS_WARN_OFF -= -Wunused-parameter
+unix:QMAKE_CFLAGS = -Wno-unused-parameter
+unix:QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 
 # Newer distros set GCC default link flag -pie, which marks e_type as ET_DYN on the binary file.
 # Consequently, the Operating System recognizes them as Shared Library.
