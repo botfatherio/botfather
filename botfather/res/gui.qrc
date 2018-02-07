@@ -5,5 +5,6 @@
         <file>gui/win10-Stop-96.png</file>
         <file>gui/win10-Ingredients List-96.png</file>
         <file>gui/win10-delete-96.png</file>
+        <file>gui/black_on_trans.png</file>
     </qresource>
 </RCC>

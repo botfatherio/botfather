@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>BotFather - Control Window</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../res/gui.qrc">
+    <normaloff>:/gui/black_on_trans.png</normaloff>:/gui/black_on_trans.png</iconset>
+  </property>
   <property name="dockOptions">
    <set>QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks</set>
   </property>
