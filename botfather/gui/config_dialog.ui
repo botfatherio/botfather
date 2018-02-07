@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>BotFather - Config Window</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../res/gui.qrc">
+    <normaloff>:/gui/black_on_trans.png</normaloff>:/gui/black_on_trans.png</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QTabWidget" name="tabWidget">
@@ -182,6 +186,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../res/gui.qrc"/>
+ </resources>
  <connections/>
 </ui>

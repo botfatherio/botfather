@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>BotFather - Log Window</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../res/gui.qrc">
+    <normaloff>:/gui/black_on_trans.png</normaloff>:/gui/black_on_trans.png</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QTextEdit" name="log_text">
@@ -64,6 +68,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../res/gui.qrc"/>
+ </resources>
  <connections/>
 </ui>
