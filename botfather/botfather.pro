@@ -67,7 +67,8 @@ SOURCES += \
     vision/vision_api.cpp \
     scripting/helper_api.cpp \
     browser/browser_api.cpp \
-    scripting/bot_thread.cpp
+    scripting/bot_thread.cpp \
+    gui/auth_window.cpp
 
 HEADERS += \
     shared/constants.h \
@@ -89,12 +90,14 @@ HEADERS += \
     vision/vision_api.h \
     scripting/helper_api.h \
     browser/browser_api.h \
-    scripting/bot_thread.h
+    scripting/bot_thread.h \
+    gui/auth_window.h
 
 FORMS += \
     gui/control_window.ui \
     gui/config_dialog.ui \
-    gui/log_dialog.ui
+    gui/log_dialog.ui \
+    gui/auth_window.ui
 
 RESOURCES += \
     res/gui.qrc
