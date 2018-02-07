@@ -136,11 +136,6 @@ void ControlWindow::on_actionScripts_triggered()
 	QDesktopServices::openUrl(QUrl("https://botfather.io/scripts/"));
 }
 
-void ControlWindow::on_actionSupport_triggered()
-{
-	QDesktopServices::openUrl(QUrl("https://botfather.io/support/"));
-}
-
 void ControlWindow::on_actionAbout_triggered()
 {
 	QMessageBox::about(this, "About Botfather", "Visit https://botfather.io/ for more information.");

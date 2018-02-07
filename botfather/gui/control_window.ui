@@ -23,7 +23,7 @@
      <x>0</x>
      <y>0</y>
      <width>990</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <property name="contextMenuPolicy">
@@ -34,7 +34,6 @@
      <string>Help</string>
     </property>
     <addaction name="actionScripts"/>
-    <addaction name="actionSupport"/>
     <addaction name="actionAbout"/>
    </widget>
    <addaction name="menuHelp"/>
@@ -100,11 +99,6 @@
    </property>
    <property name="toolTip">
     <string>Open the settings dialog</string>
-   </property>
-  </action>
-  <action name="actionSupport">
-   <property name="text">
-    <string>Get Support</string>
    </property>
   </action>
   <action name="actionAbout">

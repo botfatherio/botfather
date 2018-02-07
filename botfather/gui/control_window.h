@@ -30,7 +30,6 @@ public slots:
 	void on_actionLog_triggered();
 	void on_actionSettings_triggered();
 	void on_actionScripts_triggered();
-	void on_actionSupport_triggered();
 	void on_actionAbout_triggered();
 	
 private:
