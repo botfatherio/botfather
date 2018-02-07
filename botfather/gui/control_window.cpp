@@ -34,6 +34,18 @@ ControlWindow::~ControlWindow()
 	delete ui;
 }
 
+void ControlWindow::open(bool stable, bool trial)
+{
+	this->trial = trial;
+	if (stable){
+		this->setWindowTitle(this->windowTitle() + " - Stable");
+	}
+	if (trial) {
+		this->setWindowTitle(this->windowTitle() + " - Trial");
+	}
+	this->show();
+}
+
 void ControlWindow::on_actionStart_triggered()
 {
 	QString script_path = QFileDialog::getOpenFileName(

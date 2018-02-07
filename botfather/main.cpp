@@ -1,6 +1,7 @@
 #include <QApplication>
 #include <QSettings>
 #include <QTime>
+#include "gui/auth_window.h"
 #include "gui/control_window.h"
 #include "browser/browser.h"
 
@@ -26,7 +27,7 @@ int main(int argc, char *argv[])
 	// QSettings from all over the app. Change this to match the bots credentials.
 	QCoreApplication::setOrganizationName("BotFatherProject");
 	QCoreApplication::setOrganizationDomain("botfather.io");
-	QCoreApplication::setApplicationName("BotFather");
+	QCoreApplication::setApplicationName("Botfather Browser Edition");
 	QCoreApplication::setApplicationVersion("0.0.1");
 	QSettings::setDefaultFormat(QSettings::IniFormat);
 
@@ -41,9 +42,11 @@ int main(int argc, char *argv[])
 	Browser::init(argc, argv);
 #endif
 	
-	// Create and show the programs main window.
-	ControlWindow cw;
-	cw.show();
+	// Configure the control window to open when the auth window permits it.
+	AuthWindow auth_window("botfather-be", QCoreApplication::applicationVersion(), "jQpgs5nb4NfFkU7Sx6no29J6Pge8irEh");
+	ControlWindow control_window;
+	QObject::connect(&auth_window, &AuthWindow::permitted, &control_window, &ControlWindow::open);
+	auth_window.show();
 	
 	// Runs the QApplication event loop blocking. When the event loop stops the timer
 	// powering the CEF event loop will stop aswell. After that the CEF can be shut

@@ -22,6 +22,7 @@ public:
 	~ControlWindow();
 	
 public slots:
+	void open(bool stable, bool trial);
 	void on_actionStart_triggered();
 	void bot_started();
 	void on_actionStop_triggered();
@@ -37,6 +38,7 @@ private:
 	LogDialog* log_dialog;
 	ConfigDialog* config_dialog;
 	BotThread *bot_thread;
+	bool trial = true;
 };
 
 #endif // BFP__GUI__CONTROL_WINDOW_H
