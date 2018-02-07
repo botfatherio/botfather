@@ -15,7 +15,7 @@ class AuthWindow : public QWidget
 	Q_OBJECT
 	
 public:
-	explicit AuthWindow(QString bot_slug, QString version_string, QString secret, QWidget *parent = 0);
+	explicit AuthWindow(QString software_slug, QString version_string, QString version_secret, QWidget *parent = 0);
 	~AuthWindow();
 
 public slots:
@@ -24,7 +24,7 @@ public slots:
 	void on_remember_me_toggled(bool checked);
 	
 signals:
-	void permitted(bool is_stable_version);
+	void permitted(bool stable, bool trial);
 	
 private:
 	void loadSettings();
@@ -32,11 +32,11 @@ private:
 	bool verifyHash(QString hashhex, int premend, int curtime) const;
 	void handleErrors(QJsonArray errors) const;
 	Ui::AuthWindow *ui;
-	QString bot_slug;
+	QString software_slug;
 	QString version_string;
-	QString secret;
+	QString version_secret;
 	QString magic;
-	QString lc_username;
+	QString username;
 	QString password;
 };
 

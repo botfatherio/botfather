@@ -11,14 +11,14 @@
 #include <QCryptographicHash>
 #include <QMap>
 
-AuthWindow::AuthWindow(QString bot_slug, QString version_string, QString secret, QWidget *parent) :
+AuthWindow::AuthWindow(QString software_slug, QString version_string, QString version_secret, QWidget* parent) :
 	QWidget(parent),
 	ui(new Ui::AuthWindow)
 {
 	this->ui->setupUi(this);
-	this->bot_slug = bot_slug;
+	this->software_slug = software_slug;
 	this->version_string = version_string;
-	this->secret = secret;
+	this->version_secret = version_secret;
 	this->loadSettings();
 }
 
@@ -29,10 +29,10 @@ AuthWindow::~AuthWindow()
 
 void AuthWindow::on_authenticate_pressed()
 {
-	this->lc_username = this->ui->username->text().toLower();
+	this->username = this->ui->username->text();
 	this->password = this->ui->password->text();
 	
-	if (this->lc_username.isEmpty()){
+	if (this->username.isEmpty()){
 		QMessageBox message_box;
 		message_box.setIcon(QMessageBox::Warning);
 		message_box.setText("Username missing. Please fill out all fields.");
@@ -56,9 +56,9 @@ void AuthWindow::on_authenticate_pressed()
 
 	// Prepare post date to be send to the webservice
 	QUrlQuery post_data;
-	post_data.addQueryItem("username", this->lc_username);
+	post_data.addQueryItem("username", this->username);
 	post_data.addQueryItem("password", this->password);
-	post_data.addQueryItem("bot", this->bot_slug);
+	post_data.addQueryItem("software", this->software_slug);
 	post_data.addQueryItem("version", this->version_string);
 	post_data.addQueryItem("magic", this->magic);
 	
@@ -67,7 +67,7 @@ void AuthWindow::on_authenticate_pressed()
 	connect(network_manager, SIGNAL(finished(QNetworkReply*)), SLOT(networkReplyReceived(QNetworkReply*)));
 	
 	// Send the request
-	QNetworkRequest network_request(QUrl("https://botfather.io/api/v3/auth"));
+	QNetworkRequest network_request(QUrl("https://botfather.io/api/v3/auth/"));
 	network_request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 	network_manager->post(network_request, post_data.toString(QUrl::FullyEncoded).toUtf8());
 }
@@ -116,7 +116,7 @@ void AuthWindow::networkReplyReceived(QNetworkReply *reply)
 	}
 	
 	if (stable && !latest_stable_version.isEmpty() && this->version_string != latest_stable_version){
-		// => This is not the latest stable version even though it's stable.
+		// => This is not the latest stable version even though it's stable. But thats ok.
 		QMessageBox message_box;
 		message_box.setText("A new stable version is available. Please update!");
 		message_box.setIcon(QMessageBox::Information);
@@ -130,18 +130,19 @@ void AuthWindow::networkReplyReceived(QNetworkReply *reply)
 		
 		if (premend > 0){
 			// => The user once had a license for this bot.
-			message_box.setText("Unfortunately your license for this bot expired. Please get a new one <3");
+			message_box.setText("Unfortunately your license for this bot expired. Enjoy the free version <3");
 		} else {
-			message_box.setText("Unfortunately you have no license for this bot. Please get one <3");
+			message_box.setText("Unfortunately you do not have a license for this bot. Enjoy the free version <3");
 		}
 		
 		message_box.setIcon(QMessageBox::Information);
 		message_box.exec();
-		return;
+		// return;
 	}
 	
 	qDebug() << "The user is permitted to use the bot.";
-	emit this->permitted(stable);
+	emit this->permitted(stable, premend < curtime);
+	this->close();
 }
 
 void AuthWindow::on_remember_me_toggled(bool checked)
@@ -187,9 +188,9 @@ bool AuthWindow::verifyHash(QString hashhex, int premend, int curtime) const
 	hash.addData(QString::number(premend).toUtf8());
 	hash.addData(QString::number(curtime).toUtf8());
 	hash.addData(this->magic.toUtf8());
-	hash.addData(this->lc_username.toUtf8());
+	hash.addData(this->username.toUtf8());
 	hash.addData(this->password.toUtf8());
-	hash.addData(this->secret.toUtf8());
+	hash.addData(this->version_secret.toUtf8());
 	return hash.result().toHex() == hashhex;
 }
 
@@ -198,7 +199,7 @@ void AuthWindow::handleErrors(QJsonArray error_codes) const
 	static const QMap<QString, QString> error_messages = {
 		{"username_missing", "Username missing (this is an bug, please report it)."},
 		{"password_missing", "Password missing (this is an bug, please report it)."},
-		{"bot_missing", "Bot name missing (this is an bug, please report it)."},
+		{"bot_missing", "Software slug missing (this is an bug, please report it)."},
 		{"version_missing", "Version string missing (this is an bug, please report it)."},
 		{"magic_missing", "Magic missing (this is an bug, please report it)."},
 		{"auth_failed", "Authentication failed. Please check your botfather.io username and password."},
