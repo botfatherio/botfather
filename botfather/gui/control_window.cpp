@@ -4,14 +4,25 @@
 #include <QDebug>
 #include <QDesktopServices>
 #include <QCloseEvent>
+#include <QHBoxLayout>
 #include "ui_control_window.h"
 #include "log_dialog.h"
 #include "config_dialog.h"
-#include "shared/constants.h"
+#include "../shared/constants.h"
+#include "browser_widget.h"
 
 ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::ControlWindow)
 {
 	ui->setupUi(this);
+
+	BrowserWidget* browser_widget = new BrowserWidget(this);
+	browser_widget->setTextFormat(Qt::RichText);
+	browser_widget->setText("<html><head/><body><p style='font-size:16px;'>Hit the Play button to run a bot script.</p></body></html>");
+
+	QHBoxLayout* layout = new QHBoxLayout();
+	layout->setMargin(0);
+	layout->addWidget(browser_widget);
+	ui->centralWidget->setLayout(layout);
 	
 	// Make the main window parent of the dialogs to make them close when the main win is.
 	this->log_dialog = new LogDialog(this);

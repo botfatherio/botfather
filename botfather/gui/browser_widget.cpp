@@ -1,7 +1,7 @@
 #include "browser_widget.h"
 #include <QMouseEvent>
-#include "browser/browser_client.h"
-#include "browser/browser.h"
+#include "../browser/browser_client.h"
+#include "../browser/browser.h"
 
 BrowserWidget::BrowserWidget(QWidget* parent)
 {

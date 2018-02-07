@@ -3,8 +3,8 @@
 
 #include <QMainWindow>
 #include <QFileDialog>
-#include "scripting/bot.h"
-#include "scripting/bot_thread.h"
+#include "../scripting/bot.h"
+#include "../scripting/bot_thread.h"
 
 class LogDialog;
 class ConfigDialog;
