@@ -138,5 +138,13 @@ void ControlWindow::on_actionScripts_triggered()
 
 void ControlWindow::on_actionAbout_triggered()
 {
-	QMessageBox::about(this, "About Botfather", "Visit https://botfather.io/ for more information.");
+	QMessageBox::about(
+		this,
+		"About Botfather",
+		"<html><body>"
+		"<p>Botfather.io is framework and engine for creating and running bots playing online games, apps and more.</p>"
+		"<p>You can bot any game, website or software you want. Just pick the right engine and get or create a script for it.</p>"
+		"<p>Visit <a href='https://botfather.io/'>botfather.io</a> for more information.</p>"
+		"</body></html>"
+	);
 }
