@@ -5,6 +5,7 @@
 #include <QString>
 #include <QRect>
 #include <QVector>
+#include <QImage>
 
 class BlobTpl;
 class Match;
@@ -20,6 +21,9 @@ public:
 	static bool sameImages(cv::UMat image_1, cv::UMat image_2);
 	static QVector<Match*> findMatches(cv::UMat image, cv::UMat tpl, double threshold, int max_matches);
 	static QVector<cv::KeyPoint> findBlobs(BlobTpl *blob_tpl, cv::UMat image);
+	
+	// Turns a QImage into a 3 Channel BGR cv::UMat
+	static cv::UMat qimageToUmat(const QImage &q_image, bool clone_image_data = true);
 };
 
 #endif // BFP__VISION__VISION_H

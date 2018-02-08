@@ -88,7 +88,7 @@ bool Vision::sameImages(cv::UMat image_1, cv::UMat image_2)
 // static
 QVector<Match*> Vision::findMatches(cv::UMat image, cv::UMat tpl, double threshold, int max_matches)
 {
-	static const int match_method = 5;
+	static const int match_method = CV_TM_CCORR_NORMED;
 	QVector<Match*> matches;
 	
 	if (image.empty()) {
@@ -126,6 +126,9 @@ QVector<Match*> Vision::findMatches(cv::UMat image, cv::UMat tpl, double thresho
 		// Stop looking for more matching when the matches threshold becomes to low.
 		if (max_val < threshold)
 			break;
+
+		QString filename = "result" + QString::number(matches.size()) + ".png";
+		cv::imwrite(filename.toStdString(), result);
 		
 		// Make the currently lightest (best matching) location black, so it won't
 		// be found again while looking for the next best match.
@@ -143,6 +146,10 @@ QVector<Match*> Vision::findMatches(cv::UMat image, cv::UMat tpl, double thresho
 		match_rect.setTop(match_loc.y);
 		match_rect.setRight(match_loc.x + tpl.cols);
 		match_rect.setBottom(match_loc.y + tpl.rows);
+		match_rect.setWidth(tpl.cols);
+		match_rect.setHeight(tpl.rows);
+		
+		qDebug() << "treffer" << match_rect;
 		
 		matches.push_back(new Match(max_val, match_rect));
 	}
@@ -170,4 +177,47 @@ QVector<cv::KeyPoint> Vision::findBlobs(BlobTpl *blob_tpl, cv::UMat image)
 	detector->detect(threshold_mat, keypoints);
 	
 	return QVector<cv::KeyPoint>::fromStdVector(keypoints);
+}
+
+// static
+cv::UMat Vision::qimageToUmat(const QImage &q_image, bool clone_image_data)
+{
+	switch (q_image.format()) {
+	case QImage::Format_RGB32: {
+		// 8-bit, 4 channel
+		
+		cv::Mat mat(q_image.height(), q_image.width(), CV_8UC4, const_cast<uchar*>(q_image.bits()), q_image.bytesPerLine());
+		cv::UMat result_umat;
+		(clone_image_data ? mat.clone() : mat).copyTo(result_umat);
+
+		// Cut off the alpha channel
+		cv::cvtColor(result_umat, result_umat, cv::COLOR_BGRA2BGR);
+		
+		return result_umat;
+	}
+	case QImage::Format_RGB888: {
+		// 8-bit, 3 channel (this is a common case). Requires cloning since we use a temporary QImage.
+		
+		QImage swapped = q_image.rgbSwapped();
+		cv::UMat result_umat;
+		cv::Mat(swapped.height(), swapped.width(), CV_8UC3, const_cast<uchar*>(swapped.bits()), swapped.bytesPerLine()).clone().copyTo(result_umat);
+		
+		return result_umat;
+	}
+	case QImage::Format_Indexed8: {
+		// 8-bit, 1 channel
+		
+		cv::UMat result_umat;
+		cv::Mat mat(q_image.height(), q_image.width(), CV_8UC1, const_cast<uchar*>(q_image.bits()), q_image.bytesPerLine());
+		(clone_image_data ? mat.clone() : mat).copyTo(result_umat);
+
+		cv::cvtColor(result_umat, result_umat, cv::COLOR_GRAY2BGR);
+		return result_umat;
+	}
+	default: {
+		qDebug() << "QImage format not handled in switch:" << q_image.format();
+		break;
+	}
+	}
+	return cv::UMat();
 }
