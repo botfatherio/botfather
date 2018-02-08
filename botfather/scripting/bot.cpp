@@ -44,7 +44,19 @@ void Bot::runScript()
 	m_thread_p->setTerminationEnabled(true);
 	
 	// Run the script.
-	QJSValue result = engine.evaluate(contents, this->m_script_path);
+	QJSValue result;
+	try{
+		result = engine.evaluate(contents, this->m_script_path);
+	}
+	catch (...) {
+		QString debug_msg(
+			"<b style='color:red'>Internal exception cought!</b> You script nearly crashed botfather."
+			"<b style='color:green'>Please send us your script, so that the problem can be solved."
+		);
+		emit this->message(debug_msg, true);
+		emit this->stopped(false);
+		return;
+	}
 	
 	// Check whether the script ended due to errors. If so print them to the users log.
 	if (result.isError()) {
