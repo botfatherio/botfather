@@ -105,10 +105,9 @@ void Browser::initCefSettings(CefSettings& settings)
 	settings.multi_threaded_message_loop = false;
 
 	// Enable logging while debbuging and disable it for production builds.
-#ifndef NDEBUG
-	settings.log_severity = LOGSEVERITY_INFO;
-#else
 	settings.log_severity = LOGSEVERITY_DISABLE;
+#if defined(QT_DEBUG)
+	settings.log_severity = LOGSEVERITY_INFO;
 #endif
 
 	// Enable remote debugging on the specified port for debug builds.
