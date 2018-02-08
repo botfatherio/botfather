@@ -2,6 +2,8 @@
 #include <QJSEngine>
 #include <QFile>
 #include <QDebug>
+#include <QFileInfo>
+#include <QDir>
 #include "../scripting/helper_api.h"
 #include "../vision/vision_api.h"
 #include "../browser/browser_api.h"
@@ -20,7 +22,7 @@ void Bot::runScript()
 	// Create js engine and enable our api in it's global context.
 	QJSEngine engine;
 	HelperAPI::enable(m_thread_p, this, &engine);
-	VisionAPI::enable(&engine);
+	VisionAPI::enable(this, &engine);
 	BrowserAPI::enable(&engine);
 	
 	// Try to open the submitted script file.
@@ -69,4 +71,26 @@ void Bot::runScript()
 	// Script execution/evaluation ended successfully.
 	emit this->message("Bot script execution finished.", true);
 	emit this->stopped(true);
+}
+
+QString Bot::normalisePath(QString path)
+{
+	QFileInfo file_info(path);
+	if (file_info.isRelative()) {
+		return this->getAbsoluteScriptDirPath() + path;
+	}
+	return path;
+}
+
+QString Bot::getAbsoluteScriptDirPath()
+{
+	QFileInfo file_info(this->m_script_path);
+	return file_info.dir().absolutePath();
+}
+
+bool Bot::fileExists(QString file_path)
+{
+	file_path = this->normalisePath(file_path);
+	QFileInfo file_info(file_path);
+	return file_info.exists() && file_info.isFile();
 }

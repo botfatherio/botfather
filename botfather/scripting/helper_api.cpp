@@ -17,8 +17,8 @@ void HelperAPI::enable(BotThread* bot_thread_p, Bot* bot_p, QJSEngine* engine_p)
 
 bool HelperAPI::fileExists(QString file_path)
 {
-	QFileInfo file(file_path);
-	return file.exists() && file.isFile();
+	file_path = this->m_bot_p->normalisePath(file_path);
+	return this->m_bot_p->fileExists(file_path);
 }
 
 void HelperAPI::sleep(int seconds)

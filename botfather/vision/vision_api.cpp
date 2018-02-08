@@ -1,32 +1,36 @@
 #include "vision_api.h"
 #include <QDebug>
+#include <QFileInfo>
 #include "vision.h"
 #include "match.h"
 #include "hsv_color_factory.h"
 #include "blob_tpl_factory.h"
 #include "../scripting/helper_api.h"
+#include "../scripting/bot.h"
 
-VisionAPI::VisionAPI(QJSEngine* engine_p)
-	: m_engine_p(engine_p)
+VisionAPI::VisionAPI(Bot* bot_p, QJSEngine* engine_p)
+	: m_bot_p(bot_p), m_engine_p(engine_p)
 {}
 
 // static
-void VisionAPI::enable(QJSEngine* engine_p)
+void VisionAPI::enable(Bot* bot_p, QJSEngine* engine_p)
 {
 	HSVColorFactory::enable(engine_p);
 	BlobTplFactory::enable(engine_p);
 	
-	QJSValue vision_obj = engine_p->newQObject(new VisionAPI(engine_p));
+	QJSValue vision_obj = engine_p->newQObject(new VisionAPI(bot_p, engine_p));
 	engine_p->globalObject().setProperty("Vision", vision_obj);
 }
 
 void VisionAPI::saveImage(Image* image, QString path)
 {
+	path = this->m_bot_p->normalisePath(path);
 	Vision::saveImage(image->getUMat(), path);
 }
 
 QJSValue VisionAPI::loadImage(QString path) {
-	if (HelperAPI::fileExists(path)){
+	path = this->m_bot_p->normalisePath(path);
+	if (this->m_bot_p->fileExists(path)){
 		return m_engine_p->newQObject(new Image(Vision::loadImage(path)));
 	}
 	// Trow exception instead?

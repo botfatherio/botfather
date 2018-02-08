@@ -8,13 +8,15 @@
 #include "blob_tpl.h"
 #include "hsv_color.h"
 
+class Bot;
+
 class VisionAPI : public QObject
 {
 	Q_OBJECT
 	
 public:
-	VisionAPI(QJSEngine* engine_p);
-	static void enable(QJSEngine* engine_p);
+	VisionAPI(Bot* bot_p, QJSEngine* engine_p);
+	static void enable(Bot* bot_p, QJSEngine* engine_p);
 	
 	Q_INVOKABLE void saveImage(Image* image, QString path);
 	Q_INVOKABLE QJSValue loadImage(QString path);
@@ -26,6 +28,7 @@ public:
 	Q_INVOKABLE QJSValue findBlobs(BlobTpl* blob_tpl, Image* image );
 	
 private:
+	Bot* m_bot_p;
 	QJSEngine* m_engine_p;
 };
 

@@ -14,7 +14,14 @@ public:
 	
 public slots:
 	void runScript();
-
+	
+	// Makes a relative path to an absolute path relative to the script dir. Returns already
+	// absolute paths as they are.
+	QString normalisePath(QString path);
+	
+	QString getAbsoluteScriptDirPath();
+	bool fileExists(QString file_path);
+	
 signals:
 	void started();
 	void stopped(bool without_errors);
