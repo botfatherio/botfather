@@ -5,7 +5,6 @@
 BrowserAPI::BrowserAPI(QJSEngine* engine_p) : m_engine_p(engine_p)
 {}
 
-// static
 void BrowserAPI::enable(QJSEngine *engine_p)
 {
 	QJSValue vision_obj = engine_p->newQObject(new BrowserAPI(engine_p));
