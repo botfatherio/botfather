@@ -9,8 +9,14 @@ class Image : public QObject
 Q_OBJECT
 	
 public:
-	explicit Image(cv::UMat umat);
+	// Constructs an empty invalid image.
+	Image();
+	
+	// Used to contruct a valid image (as long as umat is not empty).
+	Image(cv::UMat umat);
+	
 	cv::UMat getUMat() const;
+	Q_INVOKABLE bool valid();
 	
 private:
 	cv::UMat m_umat;
