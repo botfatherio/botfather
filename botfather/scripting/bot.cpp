@@ -77,7 +77,7 @@ QString Bot::normalisePath(QString path)
 {
 	QFileInfo file_info(path);
 	if (file_info.isRelative()) {
-		return this->getAbsoluteScriptDirPath() + path;
+		return QDir(this->getAbsoluteScriptDirPath()).filePath(path);
 	}
 	return path;
 }
