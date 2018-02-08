@@ -34,6 +34,9 @@ public:
 	// Returns the pointer to the singleton instance of this object.
 	static BrowserClient* instance();
 	
+	//
+	static QImage getImage();
+	
 	// Returns the cef browser object. There is only one browser because we're always
 	// running in offscreen rendering mode.
 	CefRefPtr<CefBrowser> getBrowser() const;

@@ -13,6 +13,7 @@
 
 namespace {
 	BrowserClient * g_instance = nullptr;
+	QImage g_browser_image;
 }
 
 BrowserClient::BrowserClient()
@@ -29,6 +30,11 @@ BrowserClient::~BrowserClient()
 BrowserClient * BrowserClient::instance()
 {
 	return g_instance;
+}
+
+QImage BrowserClient::getImage()
+{
+	return g_browser_image;
 }
 
 CefRefPtr<CefBrowser> BrowserClient::getBrowser() const
@@ -166,8 +172,8 @@ void BrowserClient::OnPaint(CefRefPtr<CefBrowser> browser, PaintElementType type
 	// QPixmap objects can be passed around by value since the QPixmap class uses implicit data sharing.
 	// For more information, see the Implicit Data Sharing documentation.QPixmap objects can also be streamed.
 
-	QImage browser_image((unsigned char*)buffer, width, height, QImage::Format_RGB32);
-	emit paintSignal(browser_image);
+	g_browser_image = QImage((unsigned char*)buffer, width, height, QImage::Format_RGB32);
+	emit paintSignal(g_browser_image);
 }
 
 void BrowserClient::OnLoadEnd(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, int httpStatusCode)

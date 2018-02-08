@@ -2,6 +2,7 @@
 #define BFP__BROWSER__BROWSER_H
 
 #include <QString>
+#include <QImage>
 #include <include/cef_base.h>
 
 class Browser
@@ -11,6 +12,9 @@ public:
 	// first and quit before ending the program.
 	static void init(int argc, char **argv);
 	static void quit();
+	
+	// Returns screenshot of browser as QImage
+	static QImage getImage();
 	
 	// Adds a ressource to the block list. Blocked ressources are not loaded.
 	static void blockRessource(QString ressource);

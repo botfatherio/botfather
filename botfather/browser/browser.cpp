@@ -124,6 +124,11 @@ void Browser::initCefSettings(CefSettings& settings)
 	settings.no_sandbox = true;
 }
 
+QImage Browser::getImage()
+{
+	return BrowserClient::getImage();
+}
+
 void Browser::blockRessource(QString ressource)
 {
 	BrowserClient::instance()->blockRessource(ressource);

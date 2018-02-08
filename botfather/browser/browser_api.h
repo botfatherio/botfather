@@ -13,6 +13,7 @@ public:
 	explicit BrowserAPI(QJSEngine* engine_p);
 	static void enable(QJSEngine* engine_p);
 	
+	Q_INVOKABLE QJSValue getImage();
 	Q_INVOKABLE void blockRessource(QString ressource);
 	Q_INVOKABLE void replaceRessource(QString old_ressource, QString new_ressource);
 	Q_INVOKABLE void unmodifyRessource(QString ressource);
