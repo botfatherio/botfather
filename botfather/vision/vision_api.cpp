@@ -29,7 +29,8 @@ QJSValue VisionAPI::loadImage(QString path) {
 	if (HelperAPI::fileExists(path)){
 		return m_engine_p->newQObject(new Image(Vision::loadImage(path)));
 	}
-	return QJSValue();
+	// Trow exception instead?
+	return m_engine_p->newQObject(new Image());
 }
 
 QJSValue VisionAPI::cropImage(Image* image, int x_offset, int y_offset, int width, int height)
