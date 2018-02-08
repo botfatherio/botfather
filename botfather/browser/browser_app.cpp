@@ -48,17 +48,19 @@ void BrowserApp::OnContextInitialized()
 void BrowserApp::OnBeforeCommandLineProcessing(const CefString& process_type, CefRefPtr<CefCommandLine> command_line)
 {
 	Q_UNUSED(process_type);
+
+#ifdef Q_OS_LINUX
+	command_line->AppendSwitchWithValue("ppapi-flash-path", "libpepflashplayer.so");
+	command_line->AppendSwitchWithValue("ppapi-flash-version", "28.0.0.161");
+#endif
 	
-	// Add inbuild flashplayer, because our users apperently can't read.
+#ifdef Q_OS_WIN
+	// Add system flash internally to the command line.
 	//command_line->AppendSwitchWithValue("ppapi-flash-path", "pepflashplayer32_23_0_0_207.dll");
 	//command_line->AppendSwitchWithValue("ppapi-flash-version", "23.0.0.207");
-	
-	command_line->AppendSwitchWithValue("ppapi-flash-path", "libpepflashplayer.so");
-	command_line->AppendSwitchWithValue("ppapi-flash-version", "28.0.0.137");
-
-	// Add system flash internally to the command line.
 	command_line->AppendSwitch("enable-system-flash");
-
+#endif
+	
 	// Loads system plugins like flash in newer CEF versions.
 	command_line->AppendSwitch("load-extension");
 	
