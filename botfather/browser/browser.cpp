@@ -87,7 +87,7 @@ void Browser::initCefSettings(CefSettings& settings)
 {
 	// Specify the path for the sub-process executable.
 #if defined(_WIN32) || defined(_WIN64)
-	CefString(&settings.browser_subprocess_path).FromASCII("botfather_helper.exe");
+	CefString(&settings.browser_subprocess_path).FromASCII("./botfather_helper.exe");
 #else
 	CefString(&settings.browser_subprocess_path).FromASCII("./botfather_helper");
 #endif
@@ -97,6 +97,9 @@ void Browser::initCefSettings(CefSettings& settings)
 
 	// Set path to the locales directory.
 	CefString(&settings.locales_dir_path) = CefString();
+	
+	// Defines a cache dir WHICH IS ABSOLUTELY REQUIRED because some site might not work otherwise.
+	CefString(&settings.cache_path) = CefString("./cache");
 
 	// Disable extern commandline arguments.
 	settings.command_line_args_disabled = true;
