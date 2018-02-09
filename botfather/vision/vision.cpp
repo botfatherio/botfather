@@ -127,9 +127,6 @@ QVector<Match*> Vision::findMatches(cv::UMat image, cv::UMat tpl, double thresho
 		if (max_val < threshold)
 			break;
 
-		QString filename = "result" + QString::number(matches.size()) + ".png";
-		cv::imwrite(filename.toStdString(), result);
-		
 		// Make the currently lightest (best matching) location black, so it won't
 		// be found again while looking for the next best match.
 		cv::floodFill(result, max_loc, cv::Scalar(0), 0, cv::Scalar(.1), cv::Scalar(1.));
@@ -148,8 +145,6 @@ QVector<Match*> Vision::findMatches(cv::UMat image, cv::UMat tpl, double thresho
 		match_rect.setBottom(match_loc.y + tpl.rows);
 		match_rect.setWidth(tpl.cols);
 		match_rect.setHeight(tpl.rows);
-		
-		qDebug() << "treffer" << match_rect;
 		
 		matches.push_back(new Match(max_val, match_rect));
 	}
