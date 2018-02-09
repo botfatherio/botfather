@@ -123,7 +123,7 @@ void AuthWindow::networkReplyReceived(QNetworkReply *reply)
 		message_box.exec();
 	}
 	
-	if (curtime < premend || premend == 0){
+	if (curtime > premend || premend == 0){
 		// => The user has no active premium license for this bot.
 		// premend is 0 by default and > 0 if the user once bought a license.
 		QMessageBox message_box;
