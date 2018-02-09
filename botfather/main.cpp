@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 	QCoreApplication::setOrganizationName("BotFatherProject");
 	QCoreApplication::setOrganizationDomain("botfather.io");
 	QCoreApplication::setApplicationName("Botfather Browser Edition");
-	QCoreApplication::setApplicationVersion("0.1.0");
+	QCoreApplication::setApplicationVersion("0.1.1");
 	QSettings::setDefaultFormat(QSettings::IniFormat);
 
 	// Seed the random function once using the current time in msec as seed.
