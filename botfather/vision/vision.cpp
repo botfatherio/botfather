@@ -101,7 +101,7 @@ QVector<Match*> Vision::findMatches(cv::UMat image, cv::UMat tpl, double thresho
 		return matches;
 	}
 	
-	double min_val, max_val;
+	double min_val, max_val, match_val;
 	cv::Point min_loc, max_loc, match_loc;
 	
 	// Create a result matrix of the images size.
@@ -123,19 +123,25 @@ QVector<Match*> Vision::findMatches(cv::UMat image, cv::UMat tpl, double thresho
 		// Find the lightest spot aka the best matching location
 		cv::minMaxLoc(result, &min_val, &max_val, &min_loc, &max_loc, cv::Mat());
 		
+		// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
+		if (match_method == CV_TM_SQDIFF || match_method == CV_TM_SQDIFF_NORMED) {
+			
+			// Normalize the match value so that it can be interpreted as 0-100% accordance
+			match_val = 1.0 - min_val;
+			match_loc = min_loc;
+		} else{
+			match_val = max_val;
+			match_loc = max_loc;
+		}
+		
 		// Stop looking for more matching when the matches threshold becomes to low.
-		if (max_val < threshold)
+		if (match_val < threshold) {
 			break;
+		}
 
 		// Make the currently lightest (best matching) location black, so it won't
 		// be found again while looking for the next best match.
-		cv::floodFill(result, max_loc, cv::Scalar(0), 0, cv::Scalar(.1), cv::Scalar(1.));
-		
-		// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
-		if (match_method == CV_TM_SQDIFF || match_method == CV_TM_SQDIFF_NORMED)
-			match_loc = min_loc;
-		else
-			match_loc = max_loc;
+		cv::floodFill(result, match_loc, cv::Scalar(0), 0, cv::Scalar(.1), cv::Scalar(1.));
 		
 		// Turn the results into a TplMatch and push it to the results vector.
 		QRect match_rect;
