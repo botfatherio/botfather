@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QThread>
 #include <QTimer>
+#include <QDebug>
 #include <QElapsedTimer>
 #include <QObject>
 #include "../shared/constants.h"
@@ -99,7 +100,10 @@ void Browser::initCefSettings(CefSettings& settings)
 	CefString(&settings.locales_dir_path) = CefString();
 	
 	// Defines a cache dir WHICH IS ABSOLUTELY REQUIRED because some site might not work otherwise.
-	CefString(&settings.cache_path) = CefString("./cache");
+	// IMPORTANT: Requires an absolute path (there is an debug check) in certain situations. Otherwise
+	// the program will crash, even thouh relative paths work somethimes.
+	QString absolute_cache_path = QCoreApplication::applicationDirPath() + "/cache";
+	CefString(&settings.cache_path) = CefString(absolute_cache_path.toStdString());
 
 	// Disable extern commandline arguments.
 	settings.command_line_args_disabled = true;
