@@ -5,6 +5,7 @@
 #include <QDesktopServices>
 #include <QCloseEvent>
 #include <QHBoxLayout>
+#include <QSettings>
 #include "ui_control_window.h"
 #include "log_dialog.h"
 #include "config_dialog.h"
@@ -95,6 +96,12 @@ void ControlWindow::bot_started()
 {
 	// The bot started, enable the stop button.
 	this->ui->actionStop->setEnabled(true);
+	
+	// Open the log window if configured.
+	QSettings s;
+	if (s.value("OPEN_LOG_ON_PLAY", constants::OPEN_LOG_ON_PLAY).toBool()) {
+		this->log_dialog->show();
+	}
 }
 
 void ControlWindow::on_actionStop_triggered()
