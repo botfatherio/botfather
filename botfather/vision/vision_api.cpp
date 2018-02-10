@@ -75,6 +75,12 @@ QJSValue VisionAPI::findMatches(Image *image, Image *tpl, double threshold, int 
 	return js_matches;
 }
 
+QJSValue VisionAPI::findMatch(Image *image, Image *tpl, double threshold)
+{
+	Match* match = Vision::findMatch(image->getUMat(), tpl->getUMat(), threshold);
+	return m_engine_p->newQObject(match);
+}
+
 QJSValue VisionAPI::findBlobs(BlobTpl *blob_tpl, Image *image)
 {
 	QVector<cv::KeyPoint> keypoints = Vision::findBlobs(blob_tpl, image->getUMat());

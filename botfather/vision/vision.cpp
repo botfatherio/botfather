@@ -153,6 +153,16 @@ QVector<Match*> Vision::findMatches(cv::UMat image, cv::UMat tpl, double thresho
 }
 
 // static
+Match* Vision::findMatch(cv::UMat image, cv::UMat tpl, double threshold)
+{
+	QVector<Match*> matches = Vision::findMatches(image, tpl, threshold, 1);
+	if (!matches.isEmpty()) {
+		return matches[0];
+	}
+	return new Match();
+}
+
+// static
 QVector<cv::KeyPoint> Vision::findBlobs(BlobTpl *blob_tpl, cv::UMat image)
 {
 	// Make pixels in the color of our intereset white and everything else black.
