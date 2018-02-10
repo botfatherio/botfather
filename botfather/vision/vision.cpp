@@ -143,16 +143,10 @@ QVector<Match*> Vision::findMatches(cv::UMat image, cv::UMat tpl, double thresho
 		// be found again while looking for the next best match.
 		cv::floodFill(result, match_loc, cv::Scalar(0), 0, cv::Scalar(.1), cv::Scalar(1.));
 		
-		// Turn the results into a TplMatch and push it to the results vector.
-		QRect match_rect;
-		match_rect.setLeft(match_loc.x);
-		match_rect.setTop(match_loc.y);
-		match_rect.setRight(match_loc.x + tpl.cols);
-		match_rect.setBottom(match_loc.y + tpl.rows);
-		match_rect.setWidth(tpl.cols);
-		match_rect.setHeight(tpl.rows);
-		
-		matches.push_back(new Match(max_val, match_rect));
+		// Format the match and push it to the other matches. x and y of match_loc are
+		// the left and top coordinates of the match. Note: in our Match class x and y
+		// mark the center of the match.
+		matches.push_back(new Match(match_val, match_loc.x, match_loc.y, tpl.cols, tpl.rows));
 	}
 	
 	return matches;

@@ -85,12 +85,10 @@ QJSValue VisionAPI::findBlobs(BlobTpl *blob_tpl, Image *image)
 	// Turn detected cv::KeyPoints into js compatible matches.
 	for (cv::KeyPoint kp : keypoints) {
 		
-		QRect match_rect;
-		match_rect.setX(kp.pt.x);
-		match_rect.setY(kp.pt.y);
-		match_rect.setSize({ (int)kp.size, (int)kp.size });
+		int left = kp.pt.x + (kp.size / 2);
+		int top = kp.pt.y + (kp.size / 2);
 		
-		QJSValue js_match = m_engine_p->newQObject(new Match(1, match_rect));
+		QJSValue js_match = m_engine_p->newQObject(new Match(1, left, top, kp.size, kp.size));
 		matches.setProperty(number_of_matches, js_match);
 		number_of_matches++;
 	}
