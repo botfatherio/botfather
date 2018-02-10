@@ -12,6 +12,7 @@ namespace constants
 	static const int BROWSER_WIDTH = 1366;
 	static const int BROWSER_HEIGHT = 768;
 	static const bool BROWSER_RENDER = true;
+	static const bool OPEN_LOG_ON_PLAY = true;
 }
 
 #endif // BFP__MISC__CONSTANTS_H
