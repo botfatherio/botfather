@@ -138,6 +138,7 @@ void Browser::resize(QSize new_size)
 	QSettings settings;
 	settings.setValue("BROWSER_WIDTH", new_size.width());
 	settings.setValue("BROWSER_HEIGHT", new_size.height());
+	BrowserClient::instance()->getBrowser()->GetHost()->NotifyMoveOrResizeStarted();
 	BrowserClient::instance()->getBrowser()->GetHost()->WasResized();
 }
 
