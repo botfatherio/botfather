@@ -38,9 +38,6 @@
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
              <widget class="QSpinBox" name="browser_width">
-              <property name="minimum">
-               <number>1366</number>
-              </property>
               <property name="maximum">
                <number>4096</number>
               </property>
@@ -59,7 +56,7 @@
             <item>
              <widget class="QSpinBox" name="browser_height">
               <property name="minimum">
-               <number>768</number>
+               <number>0</number>
               </property>
               <property name="maximum">
                <number>2560</number>
