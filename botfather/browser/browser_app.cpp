@@ -1,11 +1,13 @@
 #include "browser_app.h"
 #include <QDebug>
+#include <QFileInfo>
 #include "include/cef_browser.h"
 #include "include/cef_command_line.h"
 #include "include/views/cef_browser_view.h"
 #include "include/views/cef_window.h"
 #include "include/wrapper/cef_helpers.h"
 #include "browser_client.h"
+#include "../shared/constants.h"
 
 void BrowserApp::OnContextInitialized()
 {
@@ -29,6 +31,7 @@ void BrowserApp::OnContextInitialized()
 		window_info,
 		handler.get(),
 		// "about:blank",
+		//"about:version",
 		"",
 		browser_settings,
 		NULL
@@ -49,17 +52,19 @@ void BrowserApp::OnBeforeCommandLineProcessing(const CefString& process_type, Ce
 {
 	Q_UNUSED(process_type);
 
-#ifdef Q_OS_LINUX
-	command_line->AppendSwitchWithValue("ppapi-flash-path", "libpepflashplayer.so");
-	command_line->AppendSwitchWithValue("ppapi-flash-version", "28.0.0.161");
-#endif
-	
-#ifdef Q_OS_WIN
-	// Add system flash internally to the command line.
-	//command_line->AppendSwitchWithValue("ppapi-flash-path", "pepflashplayer32_23_0_0_207.dll");
-	//command_line->AppendSwitchWithValue("ppapi-flash-version", "23.0.0.207");
-	command_line->AppendSwitch("enable-system-flash");
-#endif
+	QSettings settings;
+	if (settings.value("USE_SYSTEM_FLASH").toBool()) {
+		command_line->AppendSwitch("enable-system-flash");
+	} else {
+		QString local_flash_filename(settings.value("LOCAL_FLASH_FILENAME", constants::LOCAL_FLASH_FILENAME).toString());
+		QString local_flash_version(settings.value("LOCAL_FLASH_VERSION", constants::LOCAL_FLASH_VERSION).toString());
+		QFileInfo local_flash_fileinfo(local_flash_filename);
+		
+		if (local_flash_fileinfo.exists() && local_flash_fileinfo.isFile()) {
+			command_line->AppendSwitchWithValue("ppapi-flash-path", local_flash_filename.toStdString());
+			command_line->AppendSwitchWithValue("ppapi-flash-version", local_flash_version.toStdString());
+		}
+	}
 	
 	// Loads system plugins like flash in newer CEF versions.
 	command_line->AppendSwitch("load-extension");
