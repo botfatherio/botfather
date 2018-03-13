@@ -12,6 +12,9 @@ public:
 	// first and quit before ending the program.
 	static void init(int argc, char **argv);
 	static void quit();
+
+	// Resizes the browser
+	static void resize(QSize new_size);
 	
 	// Returns screenshot of browser as QImage
 	static QImage getImage();

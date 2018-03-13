@@ -131,6 +131,16 @@ void Browser::initCefSettings(CefSettings& settings)
 	settings.no_sandbox = true;
 }
 
+void Browser::resize(QSize new_size)
+{
+	// Resize the browser by first setting it's new size and than calling CerBrowserHost::WasReesized to make the browser
+	// lookup it's new size by calling CefRenderHandler::GetViewRect.
+	QSettings settings;
+	settings.setValue("BROWSER_WIDTH", new_size.width());
+	settings.setValue("BROWSER_HEIGHT", new_size.height());
+	BrowserClient::instance()->getBrowser()->GetHost()->WasResized();
+}
+
 QImage Browser::getImage()
 {
 	return BrowserClient::getImage();
