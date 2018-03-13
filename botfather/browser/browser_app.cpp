@@ -31,8 +31,7 @@ void BrowserApp::OnContextInitialized()
 		window_info,
 		handler.get(),
 		// "about:blank",
-		//"about:version",
-		"",
+		"about:version",
 		browser_settings,
 		NULL
 	);
