@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>524</width>
-    <height>361</height>
+    <width>542</width>
+    <height>380</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,42 +23,6 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tab_2">
-      <attribute name="title">
-       <string>General</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
-        <widget class="QGroupBox" name="groupBox">
-         <property name="title">
-          <string>Auto open log</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_5">
-          <item>
-           <widget class="QCheckBox" name="open_log_on_play">
-            <property name="text">
-             <string>Automatically open the log window when executing a bot script.</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
      <widget class="QWidget" name="tab">
       <attribute name="title">
        <string>Browser</string>
@@ -67,7 +31,7 @@
        <item>
         <widget class="QGroupBox" name="groupBox_2">
          <property name="title">
-          <string>Browser Resolution</string>
+          <string>Size</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
@@ -127,45 +91,56 @@
             </item>
            </layout>
           </item>
-          <item>
-           <widget class="QLabel" name="label_3">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <property name="text">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use &lt;a href=&quot;http://resizemybrowser.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;your browsers inner size&lt;/span&gt;&lt;/a&gt; for better game account security. (You may want to use a lower resolution for better performance).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
          </layout>
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox_5">
+        <widget class="QGroupBox" name="groupBox">
          <property name="title">
-          <string>Browser Rendering</string>
+          <string>Flash (Changes require restarts)</string>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_18">
+         <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
-           <widget class="QCheckBox" name="browser_render">
-            <property name="text">
-             <string>Render/show the browser while botting. (Default: Enabled)</string>
+           <widget class="QLineEdit" name="local_flash_filename">
+            <property name="placeholderText">
+             <string>Local Flash filename (eg: pepflashplayer.dll or libpepflashplayer.so)</string>
             </property>
-            <property name="checked">
-             <bool>true</bool>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="local_flash_version">
+            <property name="placeholderText">
+             <string>Local Flash version (eg: 28.0.0.161)</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QLabel" name="label">
             <property name="text">
-             <string>Rendering the browser while not watchung it is unecessary, turn rendering off to get better performance.</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Read &lt;a href=&quot;https://botfather.io/docs/player/how-to-install-adobe-flash/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;how to install Adobe Flash&lt;/span&gt;&lt;/a&gt; manually for bofather.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
-            <property name="wordWrap">
+            <property name="openExternalLinks">
              <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="manual_flash_installation_info">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="use_system_flash">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Use system wide flash installation instead (Windows only)</string>
             </property>
            </widget>
           </item>
