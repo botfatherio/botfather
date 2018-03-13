@@ -8,7 +8,7 @@
 #include <QHBoxLayout>
 #include <QSettings>
 #include "config_dialog.h"
-#include "browser_dialog.h"
+#include "browser_window.h"
 #include "../shared/constants.h"
 
 ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::ControlWindow)
@@ -16,7 +16,7 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	ui->setupUi(this);
 
 	// Make the main window parent of the dialogs to make them close when the main win is.
-	this->browser_dialog = new BrowserDialog(this);
+	this->browser_window = new BrowserWindow(this);
 }
 
 ControlWindow::~ControlWindow()
@@ -132,7 +132,7 @@ void ControlWindow::on_actionSettings_triggered()
 
 void ControlWindow::on_actionBrowser_triggered()
 {
-	this->browser_dialog->show();
+	this->browser_window->show();
 }
 
 void ControlWindow::on_actionScripts_triggered()

@@ -1,15 +1,14 @@
-#include "browser_dialog.h"
-#include "ui_browser_dialog.h"
-#include <QMouseEvent>
+#include "browser_window.h"
+#include "ui_browser_window.h"
+#include "browser_widget.h"
+#include <QDebug>
 #include <QSettings>
-#include <QMessageBox>
+#include <QAction>
 #include "../shared/constants.h"
 #include "../browser/browser_client.h"
 #include "../browser/browser.h"
 
-BrowserDialog::BrowserDialog(QWidget *parent) :
-	QDialog(parent),
-	ui(new Ui::BrowserDialog)
+BrowserWindow::BrowserWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::BrowserWindow)
 {
 	ui->setupUi(this);
 	
@@ -22,23 +21,34 @@ BrowserDialog::BrowserDialog(QWidget *parent) :
 	this->setMinimumSize(512, 256);
 	this->setMaximumSize(4096, 2160);
 	
+	// Add a modified label widget to this window which will take care of
+	// mouse and keyboard events.
+	pixmap_placeholder = new BrowserWidget(this);
+	this->ui->centralwidget->layout()->addWidget(pixmap_placeholder);
+
 	// Remember and set the browser dialogs geometry.
 	QSettings settings;
 	int width = settings.value("BROWSER_WIDTH", constants::BROWSER_WIDTH).toInt();
 	int height = settings.value("BROWSER_HEIGHT", constants::BROWSER_HEIGHT).toInt();
-	this->setGeometry(0, 0, width, height);
+	int toolbar_height = this->ui->toolBar->height();
+	this->setGeometry(0, 0, width, height + toolbar_height);
+	
+	// Connect browser window action singals with their respectiv offscreen browser slots.
+	connect(ui->actionReload, &QAction::triggered, Browser::reload);
+	connect(ui->actionBack, &QAction::triggered, Browser::goBack);
+	connect(ui->actionForward, &QAction::triggered, Browser::goForward);
 }
 
-BrowserDialog::~BrowserDialog()
+BrowserWindow::~BrowserWindow()
 {
 	delete ui;
 }
 
-void BrowserDialog::applyResizing()
+void BrowserWindow::applyResizing()
 {
 	// The user stopped resizing the window. Resize the browser accordingly.
-	int width = this->ui->pixmap_placeholder->width();
-	int height = this->ui->pixmap_placeholder->height();
+	int width = this->pixmap_placeholder->width();
+	int height = this->pixmap_placeholder->height();
 	Browser::resize(QSize(width, height));
 	
 	// Redirect the first few paint event signals to a slot filtering all browser
@@ -49,9 +59,14 @@ void BrowserDialog::applyResizing()
 	connect(BrowserClient::instance(), SIGNAL(paintSignal(QImage)), this, SLOT(filterOldSize(QImage)));
 }
 
-void BrowserDialog::filterOldSize(QImage browser_image)
+void BrowserWindow::filterOldSize(QImage browser_image)
 {
-	if (browser_image.size() == ui->pixmap_placeholder->size()) {
+	if (browser_image.size() == this->pixmap_placeholder->size()) {
+		
+		// Render this first correct image to the window to make the "Resizing
+		// Offscreen Browser" message disappear to not confuse the user.
+		paintSlot(browser_image);
+		
 		// The browser now sends images of the placeholders size. Disconnect the filter
 		// redirect the paint signals to the normal paint slot.
 		disconnect(BrowserClient::instance(), SIGNAL(paintSignal(QImage)), this, SLOT(filterOldSize(QImage)));
@@ -59,12 +74,17 @@ void BrowserDialog::filterOldSize(QImage browser_image)
 	}
 }
 
-void BrowserDialog::paintSlot(QImage browser_image)
+void BrowserWindow::paintSlot(QImage browser_image)
 {
-	this->ui->pixmap_placeholder->setPixmap(QPixmap::fromImage(browser_image));
+	this->pixmap_placeholder->setPixmap(QPixmap::fromImage(browser_image));
 }
 
-void BrowserDialog::showEvent(QShowEvent *event)
+void BrowserWindow::on_actionHome_triggered()
+{
+	Browser::loadUrl("about:version");
+}
+
+void BrowserWindow::showEvent(QShowEvent *event)
 {
 	// Attract mouse and keyboard events.
 	this->setMouseTracking(true);
@@ -74,13 +94,13 @@ void BrowserDialog::showEvent(QShowEvent *event)
 	QObject::connect(BrowserClient::instance(), SIGNAL(paintSignal(QImage)), this, SLOT(paintSlot(QImage)));
 }
 
-void BrowserDialog::hideEvent(QHideEvent *event)
+void BrowserWindow::hideEvent(QHideEvent *event)
 {
 	// Stop rendering the websites content when the browser dialog gets closed.
 	QObject::disconnect(BrowserClient::instance(), SIGNAL(paintSignal(QImage)), this, SLOT(paintSlot(QImage)));
 }
 
-void BrowserDialog::resizeEvent(QResizeEvent *event)
+void BrowserWindow::resizeEvent(QResizeEvent *event)
 {
 	// No longer paint stuff before the user decided what size he wants.
 	// We do no longer paint because qt tends to do segmentation faults.
@@ -92,12 +112,12 @@ void BrowserDialog::resizeEvent(QResizeEvent *event)
 		// Remove the last painted pixmap to enable the user to freely resize the
 		// browser dialog. Not clearing the pixmap makes it impossible to shrink
 		// the dialog, because the pixmap being as large as the window is.
-		this->ui->pixmap_placeholder->clear();
+		this->pixmap_placeholder->clear();
 		
 		// Show a 'Resizing...' message while resizing. We do so because the user
 		// might otherwise wonder why the pixmap is no longer displayed.
-		this->ui->pixmap_placeholder->setText(
-			"<p style='font-size:32px;font-weight:700;color:#333;'>Resizing...</p>"
+		this->pixmap_placeholder->setText(
+			"<p style='font-size:32px;font-weight:700;color:#333;'>Resizing Offscreen Browser...</p>"
 		);
 	}
 	
@@ -105,37 +125,3 @@ void BrowserDialog::resizeEvent(QResizeEvent *event)
 	// We do this to not have to process every single resize event on every pixel change.
 	resize_timer.start(500);
 }
-
-void BrowserDialog::mousePressEvent(QMouseEvent *event)
-{
-	int cef_button_code = Browser::qtToCefMouseButtonType(event->button());
-	if (cef_button_code == -1) {
-		return;
-	}
-	Browser::pressMouse(cef_button_code, event->x(), event->y());
-}
-
-void BrowserDialog::mouseReleaseEvent(QMouseEvent *event)
-{
-	int cef_button_code = Browser::qtToCefMouseButtonType(event->button());
-	if (cef_button_code == -1) {
-		return;
-	}
-	Browser::releaseMouse(cef_button_code, event->x(), event->y());
-}
-
-void BrowserDialog::mouseMoveEvent(QMouseEvent *event)
-{
-	Browser::moveMouse(event->x(), event->y());
-}
-
-void BrowserDialog::wheelEvent(QWheelEvent *event)
-{
-	Browser::scrollWheel(event->x(), event->y(), event->angleDelta().x(), event->angleDelta().y());
-}
-
-void BrowserDialog::keyPressEvent(QKeyEvent * event)
-{}
-
-void BrowserDialog::keyReleaseEvent(QKeyEvent * event)
-{}

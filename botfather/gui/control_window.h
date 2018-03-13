@@ -6,7 +6,7 @@
 #include "../scripting/bot.h"
 #include "../scripting/bot_thread.h"
 
-class BrowserDialog;
+class BrowserWindow;
 
 namespace Ui {
 	class ControlWindow;
@@ -39,7 +39,7 @@ public slots:
 private:
 	Ui::ControlWindow *ui;
 	QFileDialog file_dialog;
-	BrowserDialog *browser_dialog;
+	BrowserWindow *browser_window;
 	BotThread *bot_thread;
 	bool trial = true;
 };

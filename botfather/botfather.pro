@@ -67,7 +67,8 @@ SOURCES += \
     browser/browser_api.cpp \
     scripting/bot_thread.cpp \
     gui/auth_window.cpp \
-    gui/browser_dialog.cpp
+    gui/browser_window.cpp \
+    gui/browser_widget.cpp
 
 HEADERS += \
     shared/constants.h \
@@ -89,13 +90,14 @@ HEADERS += \
     browser/browser_api.h \
     scripting/bot_thread.h \
     gui/auth_window.h \
-    gui/browser_dialog.h
+    gui/browser_window.h \
+    gui/browser_widget.h
 
 FORMS += \
     gui/control_window.ui \
     gui/config_dialog.ui \
     gui/auth_window.ui \
-    gui/browser_dialog.ui
+    gui/browser_window.ui
 
 RESOURCES += \
     res/gui.qrc
