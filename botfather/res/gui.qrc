@@ -6,5 +6,21 @@
         <file>gui/win10-Ingredients List-96.png</file>
         <file>gui/win10-delete-96.png</file>
         <file>gui/black_on_trans.png</file>
+        <file>gui/icons8-cancel-64.png</file>
+        <file>gui/icons8-page-64.png</file>
+        <file>gui/icons8-play-64.png</file>
+        <file>gui/icons8-shutdown-64.png</file>
+        <file>gui/icons8-web-design-64.png</file>
+        <file>gui/icons8-web-design-96.png</file>
+        <file>gui/win10-Fantasy-96.png</file>
+        <file>gui/win10-Help-96.png</file>
+        <file>gui/win10-Home-96.png</file>
+        <file>gui/win10-in-browser-96.png</file>
+        <file>gui/win10-LineChart-96.png</file>
+        <file>gui/win10-Restart-96.png</file>
+        <file>gui/win10-Settings-96.png</file>
+        <file>gui/win10-Statistics-96.png</file>
+        <file>gui/icons8-settings-64.png</file>
+        <file>gui/icons8-settings-filled-64.png</file>
     </qresource>
 </RCC>
