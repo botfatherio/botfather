@@ -1,4 +1,5 @@
 #include "control_window.h"
+#include "ui_control_window.h"
 #include <QMessageBox>
 #include <QUrl>
 #include <QDebug>
@@ -6,28 +7,16 @@
 #include <QCloseEvent>
 #include <QHBoxLayout>
 #include <QSettings>
-#include "ui_control_window.h"
-#include "log_dialog.h"
 #include "config_dialog.h"
+#include "browser_dialog.h"
 #include "../shared/constants.h"
-#include "browser_widget.h"
 
 ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::ControlWindow)
 {
 	ui->setupUi(this);
 
-	BrowserWidget* browser_widget = new BrowserWidget(this);
-	browser_widget->setTextFormat(Qt::RichText);
-	browser_widget->setText("<html><head/><body><p style='font-size:16px;'>Hit the Play button to run a bot script.</p></body></html>");
-
-	QHBoxLayout* layout = new QHBoxLayout();
-	layout->setMargin(0);
-	layout->addWidget(browser_widget);
-	ui->centralWidget->setLayout(layout);
-	
 	// Make the main window parent of the dialogs to make them close when the main win is.
-	this->log_dialog = new LogDialog(this);
-	this->config_dialog = new ConfigDialog(this);
+	this->browser_dialog = new BrowserDialog(this);
 }
 
 ControlWindow::~ControlWindow()
@@ -60,8 +49,8 @@ void ControlWindow::on_actionStart_triggered()
 	);
 	
 	if (script_path.isEmpty()) {
-		// No script selected. Reset ui modifications and tell the user using the status bar.
-		this->ui->statusBar->showMessage("No script selected.", 5000);
+		// No script selected. Reset ui modifications and tell the user.
+		this->appendMessage("No script selected.", true);
 		return;
 	}
 	
@@ -86,7 +75,7 @@ void ControlWindow::on_actionStart_triggered()
 	connect(bot, &Bot::stopped, this, &ControlWindow::bot_stopped);
 	
 	// Enable logging visible for the user
-	connect(bot, &Bot::message, this->log_dialog, &LogDialog::appendMessage);
+	connect(bot, &Bot::message, this, &ControlWindow::appendMessage);
 	
 	// Start the bot thread and thus the bot.
 	this->bot_thread->start();
@@ -96,12 +85,6 @@ void ControlWindow::bot_started()
 {
 	// The bot started, enable the stop button.
 	this->ui->actionStop->setEnabled(true);
-	
-	// Open the log window if configured.
-	QSettings s;
-	if (s.value("OPEN_LOG_ON_PLAY", constants::OPEN_LOG_ON_PLAY).toBool()) {
-		this->log_dialog->show();
-	}
 }
 
 void ControlWindow::on_actionStop_triggered()
@@ -118,7 +101,7 @@ void ControlWindow::on_actionStop_triggered()
 void ControlWindow::on_actionKill_triggered()
 {
 	this->bot_thread->terminate();
-	this->log_dialog->appendMessage("The script has been killed. RIP.", true);
+	this->appendMessage("The script has been killed. RIP.", true);
 	this->bot_stopped(true);
 }
 
@@ -139,15 +122,17 @@ void ControlWindow::bot_stopped(bool without_errors)
 	}
 }
 
-void ControlWindow::on_actionLog_triggered()
-{
-	this->log_dialog->show();
-}
-
 void ControlWindow::on_actionSettings_triggered()
 {
-	// When executing (opening) the config dialog the control window can't be clicked.
-	this->config_dialog->exec();
+	// Initiate a new config dialog making it load all current settings and
+	// execute it, so that the control window can't be clicked while it's open.
+	ConfigDialog *config_dialog = new ConfigDialog(this);
+	config_dialog->exec();
+}
+
+void ControlWindow::on_actionBrowser_triggered()
+{
+	this->browser_dialog->show();
 }
 
 void ControlWindow::on_actionScripts_triggered()
@@ -164,6 +149,54 @@ void ControlWindow::on_actionAbout_triggered()
 		"<p>Botfather.io is framework and engine for creating and running bots playing online games, apps and more.</p>"
 		"<p>You can bot any game, website or software you want. Just pick the right engine and get or create a script for it.</p>"
 		"<p>Visit <a href='https://botfather.io/'>botfather.io</a> for more information.</p>"
+		"<p>By the way: Those beautiful icons are from <a href='https://icons8.com/'>Icons8</a></p>"
 		"</body></html>"
 	);
+}
+
+void ControlWindow::on_actionAboutQt_triggered()
+{
+	QMessageBox::aboutQt(this);
+}
+
+void ControlWindow::on_save_button_clicked()
+{
+	QString log = this->ui->log_text->toPlainText();
+	
+	QString filename = QFileDialog::getSaveFileName(
+		this,
+		tr("Save Logfile"),
+		"",
+		tr("Text files (*.txt *.log)"),
+		Q_NULLPTR,
+		// Triggering the file dialog more than once using the native dialog made the program get stuck.
+		QFileDialog::DontUseNativeDialog
+	);
+	
+	if (filename.isEmpty()){
+		qDebug() << "No file selected.";
+		return;
+	}
+	
+	QFile file(filename);
+	if (!file.open(QIODevice::WriteOnly)) {
+		qDebug() << "Can't open logfile" << filename;
+		return;
+	}
+	file.write(log.toUtf8());
+	file.close();
+}
+
+void ControlWindow::on_clear_button_clicked()
+{
+	this->ui->log_text->clear();
+}
+
+void ControlWindow::appendMessage(QString log_message, bool from_client)
+{
+	if (from_client){
+		this->ui->log_text->append("<strong style='color:#555'>&lt;botfather&gt;</strong> " + log_message);
+	} else{
+		this->ui->log_text->append("<strong style='color:#555'>&lt;botscript&gt;</strong> " + log_message);
+	}
 }

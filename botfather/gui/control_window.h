@@ -6,8 +6,7 @@
 #include "../scripting/bot.h"
 #include "../scripting/bot_thread.h"
 
-class LogDialog;
-class ConfigDialog;
+class BrowserDialog;
 
 namespace Ui {
 	class ControlWindow;
@@ -28,15 +27,19 @@ public slots:
 	void on_actionStop_triggered();
 	void on_actionKill_triggered();
 	void bot_stopped(bool without_errors);
-	void on_actionLog_triggered();
-	void on_actionSettings_triggered();
 	void on_actionScripts_triggered();
+	void on_actionSettings_triggered();
+	void on_actionBrowser_triggered();
+	void on_save_button_clicked();
+	void on_clear_button_clicked();
+	void appendMessage(QString log_message, bool from_client = false);
 	void on_actionAbout_triggered();
+	void on_actionAboutQt_triggered();
 	
 private:
 	Ui::ControlWindow *ui;
-	LogDialog* log_dialog;
-	ConfigDialog* config_dialog;
+	QFileDialog file_dialog;
+	BrowserDialog *browser_dialog;
 	BotThread *bot_thread;
 	bool trial = true;
 };

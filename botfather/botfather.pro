@@ -54,9 +54,7 @@ SOURCES += \
     browser/browser_client.cpp \
     gui/control_window.cpp \
     gui/config_dialog.cpp \
-    gui/browser_widget.cpp \
     scripting/bot.cpp \
-    gui/log_dialog.cpp \
     vision/blob_tpl.cpp \
     vision/blob_tpl_factory.cpp \
     vision/hsv_color.cpp \
@@ -68,7 +66,8 @@ SOURCES += \
     scripting/helper_api.cpp \
     browser/browser_api.cpp \
     scripting/bot_thread.cpp \
-    gui/auth_window.cpp
+    gui/auth_window.cpp \
+    gui/browser_dialog.cpp
 
 HEADERS += \
     shared/constants.h \
@@ -77,9 +76,7 @@ HEADERS += \
     browser/browser_client.h \
     gui/control_window.h \
     gui/config_dialog.h \
-    gui/browser_widget.h \
     scripting/bot.h \
-    gui/log_dialog.h \
     vision/blob_tpl.h \
     vision/blob_tpl_factory.h \
     vision/hsv_color.h \
@@ -91,13 +88,14 @@ HEADERS += \
     scripting/helper_api.h \
     browser/browser_api.h \
     scripting/bot_thread.h \
-    gui/auth_window.h
+    gui/auth_window.h \
+    gui/browser_dialog.h
 
 FORMS += \
     gui/control_window.ui \
     gui/config_dialog.ui \
-    gui/log_dialog.ui \
-    gui/auth_window.ui
+    gui/auth_window.ui \
+    gui/browser_dialog.ui
 
 RESOURCES += \
     res/gui.qrc

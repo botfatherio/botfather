@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>BotFather - Control Window</string>
+   <string>BotFather</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../res/gui.qrc">
@@ -20,14 +20,58 @@
   <property name="dockOptions">
    <set>QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks</set>
   </property>
-  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QTextEdit" name="log_text">
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+      <property name="placeholderText">
+       <string>Nothing here so far...</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="save_button">
+        <property name="text">
+         <string>Save</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="clear_button">
+        <property name="text">
+         <string>Clear</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>990</width>
-     <height>25</height>
+     <height>24</height>
     </rect>
    </property>
    <property name="contextMenuPolicy">
@@ -37,8 +81,8 @@
     <property name="title">
      <string>Help</string>
     </property>
-    <addaction name="actionScripts"/>
     <addaction name="actionAbout"/>
+    <addaction name="actionAboutQt"/>
    </widget>
    <addaction name="menuHelp"/>
   </widget>
@@ -52,6 +96,21 @@
    <property name="movable">
     <bool>false</bool>
    </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>32</width>
+     <height>32</height>
+    </size>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextUnderIcon</enum>
+   </property>
+   <property name="floatable">
+    <bool>true</bool>
+   </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
@@ -62,14 +121,15 @@
    <addaction name="actionStop"/>
    <addaction name="actionKill"/>
    <addaction name="separator"/>
-   <addaction name="actionLog"/>
+   <addaction name="actionScripts"/>
    <addaction name="actionSettings"/>
+   <addaction name="separator"/>
+   <addaction name="actionBrowser"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionStart">
    <property name="icon">
     <iconset resource="../res/gui.qrc">
-     <normaloff>:/gui/win10-Play-96.png</normaloff>:/gui/win10-Play-96.png</iconset>
+     <normaloff>:/gui/icons8-play-64.png</normaloff>:/gui/icons8-play-64.png</iconset>
    </property>
    <property name="text">
     <string>Start</string>
@@ -84,7 +144,7 @@
    </property>
    <property name="icon">
     <iconset resource="../res/gui.qrc">
-     <normaloff>:/gui/win10-Stop-96.png</normaloff>:/gui/win10-Stop-96.png</iconset>
+     <normaloff>:/gui/icons8-shutdown-64.png</normaloff>:/gui/icons8-shutdown-64.png</iconset>
    </property>
    <property name="text">
     <string>Stop</string>
@@ -96,7 +156,7 @@
   <action name="actionSettings">
    <property name="icon">
     <iconset resource="../res/gui.qrc">
-     <normaloff>:/gui/win10-SettingsMixer-96.png</normaloff>:/gui/win10-SettingsMixer-96.png</iconset>
+     <normaloff>:/gui/icons8-settings-filled-64.png</normaloff>:/gui/icons8-settings-filled-64.png</iconset>
    </property>
    <property name="text">
     <string>Settings</string>
@@ -111,26 +171,18 @@
    </property>
   </action>
   <action name="actionScripts">
-   <property name="text">
-    <string>Get Scripts</string>
-   </property>
-  </action>
-  <action name="actionLog">
    <property name="icon">
     <iconset resource="../res/gui.qrc">
-     <normaloff>:/gui/win10-Ingredients List-96.png</normaloff>:/gui/win10-Ingredients List-96.png</iconset>
+     <normaloff>:/gui/icons8-page-64.png</normaloff>:/gui/icons8-page-64.png</iconset>
    </property>
    <property name="text">
-    <string>Log</string>
-   </property>
-   <property name="toolTip">
-    <string>Open the log window</string>
+    <string>Scripts</string>
    </property>
   </action>
   <action name="actionKill">
    <property name="icon">
     <iconset resource="../res/gui.qrc">
-     <normaloff>:/gui/win10-delete-96.png</normaloff>:/gui/win10-delete-96.png</iconset>
+     <normaloff>:/gui/icons8-cancel-64.png</normaloff>:/gui/icons8-cancel-64.png</iconset>
    </property>
    <property name="text">
     <string>Kill</string>
@@ -140,6 +192,23 @@
    </property>
    <property name="visible">
     <bool>false</bool>
+   </property>
+  </action>
+  <action name="actionAboutQt">
+   <property name="text">
+    <string>About Qt</string>
+   </property>
+  </action>
+  <action name="actionBrowser">
+   <property name="icon">
+    <iconset resource="../res/gui.qrc">
+     <normaloff>:/gui/icons8-web-design-64.png</normaloff>:/gui/icons8-web-design-64.png</iconset>
+   </property>
+   <property name="text">
+    <string>Browser</string>
+   </property>
+   <property name="toolTip">
+    <string>Opens botfathers integrated browser</string>
    </property>
   </action>
  </widget>
