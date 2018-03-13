@@ -36,10 +36,7 @@ public:
 	
 	// Returns the currently loaded url.
 	static QString getUrl();
-	
-	// Reloads the current website.
-	static void reload();
-	
+
 	// Reloads the current page ignoring any cached data. 
 	static void reloadIgnoringCache();
 	
@@ -50,20 +47,11 @@ public:
 	// when the timeout expired.
 	static bool bideLoading(int timeout_seconds);
 	
-	// Stop loading the current page.
-	static void stopLoad();
-	
 	// Returns true if the browser can navigate backwards.
 	static bool canGoBack();
 	
 	// Returns true if the browser can navigate forwards.
 	static bool canGoForward();
-	
-	// Navigate forwards.
-	static void goForward();
-	
-	// Navigate backwards.
-	static void goBack();
 	
 	// Returns the browsers current width.
 	static int getWidth();
@@ -90,6 +78,20 @@ public:
 	
 	// Translates qt mouse button keycodes to cef keycodes. Returns -1 on unhandled keycode.
 	static int qtToCefMouseButtonType(int qt_button_code);
+	
+public slots:
+	
+	// Reloads the current website.
+	static void reload();
+	
+	// Navigate forwards.
+	static void goForward();
+	
+	// Navigate backwards.
+	static void goBack();
+	
+	// Stop loading the current page.
+	static void stopLoad();
 	
 private:
 	static void initCefSettings(CefSettings& settings);

@@ -178,12 +178,6 @@ QString Browser::getUrl()
 	return QString::fromStdString(BrowserClient::instance()->getBrowser()->GetMainFrame()->GetURL().ToString());
 }
 
-void Browser::reload()
-{
-	BrowserClient::instance()->setLoading(true);
-	BrowserClient::instance()->getBrowser()->Reload();
-}
-
 void Browser::reloadIgnoringCache()
 {
 	BrowserClient::instance()->setLoading(true);
@@ -210,11 +204,6 @@ bool Browser::bideLoading(int timeout_seconds)
 	return true;
 }
 
-void Browser::stopLoad()
-{
-	BrowserClient::instance()->getBrowser()->StopLoad();
-}
-
 bool Browser::canGoBack()
 {
 	return BrowserClient::instance()->getBrowser()->CanGoBack();
@@ -223,16 +212,6 @@ bool Browser::canGoBack()
 bool Browser::canGoForward()
 {
 	return BrowserClient::instance()->getBrowser()->CanGoForward();
-}
-
-void Browser::goBack()
-{
-	BrowserClient::instance()->getBrowser()->GoBack();
-}
-
-void Browser::goForward()
-{
-	BrowserClient::instance()->getBrowser()->GoForward();
 }
 
 int Browser::getWidth()
@@ -303,4 +282,25 @@ int Browser::qtToCefMouseButtonType(int qt_button_code)
 	default:
 		return -1; // Unhandle mouse button type
 	}
+}
+
+void Browser::reload()
+{
+	BrowserClient::instance()->setLoading(true);
+	BrowserClient::instance()->getBrowser()->Reload();
+}
+
+void Browser::goBack()
+{
+	BrowserClient::instance()->getBrowser()->GoBack();
+}
+
+void Browser::goForward()
+{
+	BrowserClient::instance()->getBrowser()->GoForward();
+}
+
+void Browser::stopLoad()
+{
+	BrowserClient::instance()->getBrowser()->StopLoad();
 }
