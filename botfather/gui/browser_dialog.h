@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QImage>
+#include <QTimer>
 
 namespace Ui {
 class BrowserDialog;
@@ -17,10 +18,13 @@ public:
 	~BrowserDialog();
 
 public slots:
+	void applyResizing();
+	void filterOldSize(QImage browser_image);
 	void paintSlot(QImage browser_image);
 	
 private:
 	Ui::BrowserDialog *ui;
+	QTimer resize_timer;
 	void showEvent(QShowEvent * event);
 	void hideEvent(QHideEvent *event);
 	void resizeEvent(QResizeEvent *event);
