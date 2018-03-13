@@ -1,9 +1,9 @@
 #include "helper_api.h"
 #include <QFileInfo>
 #include <QThread>
+#include <QApplication>
 #include "bot.h"
 #include "bot_thread.h"
-#include "../shared/constants.h"
 
 HelperAPI::HelperAPI(BotThread* bot_thread_p, Bot* bot_p, QJSEngine* engine_p) : m_bot_thread_p(bot_thread_p), m_bot_p(bot_p), m_engine_p(engine_p)
 {}
@@ -31,24 +31,9 @@ void HelperAPI::msleep(int milliseconds)
 	QThread::msleep(milliseconds);
 }
 
-int HelperAPI::getVersionMajor()
+QString HelperAPI::getVersion()
 {
-	return constants::VERSION_MAJOR;
-}
-
-int HelperAPI::getVersionMinor()
-{
-	return constants::VERSION_MINOR;
-}
-
-int HelperAPI::getVersionPatch()
-{
-	return constants::VERSION_PATCH;
-}
-
-QString HelperAPI::getClientType()
-{
-	return constants::CLIENT_TYPE;
+	return QApplication::applicationVersion();
 }
 
 QString HelperAPI::getClientMode()
