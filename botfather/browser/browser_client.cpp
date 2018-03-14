@@ -178,10 +178,8 @@ void BrowserClient::OnPaint(CefRefPtr<CefBrowser> browser, PaintElementType type
 
 void BrowserClient::OnLoadEnd(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, int httpStatusCode)
 {
-	Q_UNUSED(browser);
-	Q_UNUSED(frame);
-	Q_UNUSED(httpStatusCode);
 	CEF_REQUIRE_UI_THREAD();
+	emit this->loadingFinishedSignal();
 }
 
 void BrowserClient::OnLoadError(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, ErrorCode errorCode, const CefString& errorText, const CefString& failedUrl)
@@ -201,31 +199,18 @@ void BrowserClient::OnLoadError(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFram
 void BrowserClient::OnLoadingStateChange(CefRefPtr<CefBrowser> browser, bool isLoading, bool canGoBack, bool canGoForward)
 {
 	CEF_REQUIRE_UI_THREAD();
-	Q_UNUSED(browser);
-	Q_UNUSED(canGoBack);
-	Q_UNUSED(canGoForward);
-
 	this->is_loading = isLoading;
-	qDebug() << "loading state changed to" << isLoading << is_loading;
-	
-	// Emit overall bowser load status.
-	emit loadingStateSignal(isLoading);
+	emit loadingStateChangedSignal(isLoading);
 }
 
 void BrowserClient::OnLoadStart(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefLoadHandler::TransitionType transition_type)
 {
 	CEF_REQUIRE_UI_THREAD();
-	Q_UNUSED(browser);
-	Q_UNUSED(frame);
-	Q_UNUSED(transition_type);
+	emit this->loadingStartedSignal();
 }
 
 CefRequestHandler::ReturnValue BrowserClient::OnBeforeResourceLoad(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request, CefRefPtr<CefRequestCallback> callback)
 {
-	Q_UNUSED(browser);
-	Q_UNUSED(frame);
-	Q_UNUSED(callback);
-	
 	QString url = QString::fromStdString(request->GetURL().ToString());
 	
 	if (!this->modified_ressources.contains(url)) {

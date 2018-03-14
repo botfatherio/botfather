@@ -111,7 +111,9 @@ signals:
 	void pluginCrashedSignal();
 	void rendererCrashedSignal();
 	void browserClosedSignal();
-	void loadingStateSignal(bool state);
+	void loadingStateChangedSignal(bool state);
+	void loadingStartedSignal();
+	void loadingFinishedSignal();
 
 private:
 	// Keeps reference to the single, offscreen rendered browser.
