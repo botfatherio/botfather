@@ -27,10 +27,6 @@ signals:
 	void permitted(bool stable, bool trial);
 	
 private:
-	void loadSettings();
-	QString getRandomString(int random_string_length) const;
-	bool verifyHash(QString hashhex, int premend, int curtime) const;
-	void handleErrors(QJsonArray errors) const;
 	Ui::AuthWindow *ui;
 	QString software_slug;
 	QString version_string;
@@ -38,6 +34,11 @@ private:
 	QString magic;
 	QString username;
 	QString password;
+	
+	void loadSettings();
+	QString getRandomString(int random_string_length) const;
+	bool verifyHash(QString hashhex, int premend, int curtime) const;
+	void handleErrors(QJsonArray errors) const;
 };
 
 #endif // BFP__AUTH_WINDOW_H

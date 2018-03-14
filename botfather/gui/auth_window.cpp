@@ -20,6 +20,10 @@ AuthWindow::AuthWindow(QString software_slug, QString version_string, QString ve
 	this->version_string = version_string;
 	this->version_secret = version_secret;
 	this->loadSettings();
+	
+	// Make hitting the enter button trigger the authenticate process.
+	connect(this->ui->username, SIGNAL(returnPressed()), SLOT(on_authenticate_pressed()));
+	connect(this->ui->password, SIGNAL(returnPressed()), SLOT(on_authenticate_pressed()));
 }
 
 AuthWindow::~AuthWindow()
@@ -33,18 +37,12 @@ void AuthWindow::on_authenticate_pressed()
 	this->password = this->ui->password->text();
 	
 	if (this->username.isEmpty()){
-		QMessageBox message_box;
-		message_box.setIcon(QMessageBox::Warning);
-		message_box.setText("Username missing. Please fill out all fields.");
-		message_box.exec();
+		QMessageBox::warning(this, "Username missing", "Username missing. Please fill out all fields.");
 		return;
 	}
 	
 	if (this->password.isEmpty()){
-		QMessageBox message_box;
-		message_box.setIcon(QMessageBox::Warning);
-		message_box.setText("Password missing. Please fill out all fields.");
-		message_box.exec();
+		QMessageBox::warning(this, "Password missing", "Password missing. Please fill out all fields.");
 		return;
 	}
 	
@@ -80,10 +78,7 @@ void AuthWindow::networkReplyReceived(QNetworkReply *reply)
 	// Check for network errors
 	if (reply->error() != QNetworkReply::NoError){
 		QString error_message = QString("Network errors occured. Please check your Internet Connection. (Internal error code: %1)").arg(reply->error());
-		QMessageBox message_box;
-		message_box.setText(error_message);
-		message_box.setIcon(QMessageBox::Critical);
-		message_box.exec();
+		QMessageBox::critical(this, "Network error", error_message);
 		reply->deleteLater();
 		return;
 	}	
@@ -108,19 +103,20 @@ void AuthWindow::networkReplyReceived(QNetworkReply *reply)
 	
 	if (!this->verifyHash(hashhex, premend, curtime)){
 		// => This reply has been manipulated and was not send by our webservice.
-		QMessageBox message_box;
-		message_box.setText("Ooops. Looks like something manipulated the response from our license server.");
-		message_box.setIcon(QMessageBox::Critical);
-		message_box.exec();
+		QMessageBox::critical(this, "Ooops", "Ooops. Looks like something manipulated the response from our license server.");
 		return;
+	}
+	
+	// Login successfully, save the login info if remember me is checked.
+	QSettings settings;
+	if (settings.value("auth/remember_me", false).toBool()) {
+		settings.setValue("auth/username", this->ui->username->text());
+		settings.setValue("auth/password", this->ui->password->text());
 	}
 	
 	if (stable && !latest_stable_version.isEmpty() && this->version_string != latest_stable_version){
 		// => This is not the latest stable version even though it's stable. But thats ok.
-		QMessageBox message_box;
-		message_box.setText("A new stable version is available. Please update!");
-		message_box.setIcon(QMessageBox::Information);
-		message_box.exec();
+		QMessageBox::information(this, "Update available", "A new stable version is available. Please update!");
 	}
 	
 	if (curtime > premend || premend == 0){
@@ -140,7 +136,7 @@ void AuthWindow::networkReplyReceived(QNetworkReply *reply)
 		// return;
 	}
 	
-	qDebug() << "The user is permitted to use the bot.";
+	// The user is permitted to use the bot.
 	emit this->permitted(stable, premend < curtime);
 	this->close();
 }
@@ -150,15 +146,8 @@ void AuthWindow::on_remember_me_toggled(bool checked)
 	QSettings settings;
 	settings.setValue("auth/remember_me", checked);
 	if (!checked) {
-		settings.remove("auth/remember_me");
 		settings.remove("auth/username");
 		settings.remove("auth/password");
-	}
-	
-	// This slot is for some reason called when the program starts. So don't save empty credentials because they may overwrite already saved ones.
-	else if (checked && !this->ui->username->text().isEmpty()){
-		settings.setValue("auth/username", this->ui->username->text());
-		settings.setValue("auth/password", this->ui->password->text());
 	}
 }
 
