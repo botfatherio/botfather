@@ -149,6 +149,9 @@ void ControlWindow::on_actionAbout_triggered()
 		"<p>Botfather.io is framework and engine for creating and running bots playing online games, apps and more.</p>"
 		"<p>You can bot any game, website or software you want. Just pick the right engine and get or create a script for it.</p>"
 		"<p>Visit <a href='https://botfather.io/'>botfather.io</a> for more information.</p>"
+		"<p>This software uses <b>OpenSLL</b>"
+		"<br>Copyright © 1998-2017 The OpenSSL Project."
+		"<br><a href='https://www.openssl.org/source/license.html'>View full license</a>.</p>"
 		"<p>By the way: Those beautiful icons are from <a href='https://icons8.com/'>Icons8</a></p>"
 		"</body></html>"
 	);
