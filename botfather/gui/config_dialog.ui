@@ -102,12 +102,18 @@
             <property name="placeholderText">
              <string>Local Flash filename (eg: pepflashplayer.dll or libpepflashplayer.so)</string>
             </property>
+            <property name="clearButtonEnabled">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item>
            <widget class="QLineEdit" name="local_flash_version">
             <property name="placeholderText">
              <string>Local Flash version (eg: 28.0.0.161)</string>
+            </property>
+            <property name="clearButtonEnabled">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
