@@ -1,36 +1,15 @@
 <RCC>
     <qresource prefix="/">
-        <file>gui/win10-Play-96.png</file>
-        <file>gui/win10-SettingsMixer-96.png</file>
-        <file>gui/win10-Stop-96.png</file>
-        <file>gui/win10-Ingredients List-96.png</file>
-        <file>gui/win10-delete-96.png</file>
         <file>gui/black_on_trans.png</file>
         <file>gui/icons8-cancel-64.png</file>
         <file>gui/icons8-page-64.png</file>
         <file>gui/icons8-play-64.png</file>
         <file>gui/icons8-shutdown-64.png</file>
         <file>gui/icons8-web-design-64.png</file>
-        <file>gui/icons8-web-design-96.png</file>
-        <file>gui/win10-Fantasy-96.png</file>
-        <file>gui/win10-Help-96.png</file>
-        <file>gui/win10-Home-96.png</file>
-        <file>gui/win10-in-browser-96.png</file>
-        <file>gui/win10-LineChart-96.png</file>
-        <file>gui/win10-Restart-96.png</file>
-        <file>gui/win10-Settings-96.png</file>
-        <file>gui/win10-Statistics-96.png</file>
-        <file>gui/icons8-settings-64.png</file>
         <file>gui/icons8-settings-filled-64.png</file>
         <file>gui/logo.png</file>
         <file>gui/icons8-back-arrow-64.png</file>
-        <file>gui/icons8-circled-right-64.png</file>
         <file>gui/icons8-forward-button-64.png</file>
-        <file>gui/icons8-go-back-64.png</file>
-        <file>gui/icons8-home-64.png</file>
-        <file>gui/icons8-multiply-64.png</file>
-        <file>gui/icons8-refresh-64.png</file>
         <file>gui/icons8-sync-64.png</file>
-        <file>gui/icons8-synchronize-64.png</file>
     </qresource>
 </RCC>
