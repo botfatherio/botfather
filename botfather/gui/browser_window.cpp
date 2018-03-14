@@ -1,6 +1,7 @@
 #include "browser_window.h"
 #include "ui_browser_window.h"
 #include "browser_widget.h"
+#include "browser_address_bar.h"
 #include <QDebug>
 #include <QSettings>
 #include <QAction>
@@ -26,6 +27,10 @@ BrowserWindow::BrowserWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	pixmap_placeholder = new BrowserWidget(this);
 	this->ui->centralwidget->layout()->addWidget(pixmap_placeholder);
 
+	// Add a browser address bar to the browser window.
+	addressbar = new BrowserAddressBar(this);
+	ui->toolBar->addWidget(addressbar);
+
 	// Remember and set the browser dialogs geometry.
 	QSettings settings;
 	int width = settings.value("BROWSER_WIDTH", constants::BROWSER_WIDTH).toInt();
@@ -35,8 +40,12 @@ BrowserWindow::BrowserWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	
 	// Connect browser window action singals with their respectiv offscreen browser slots.
 	connect(ui->actionReload, &QAction::triggered, Browser::reload);
+	connect(ui->actionStop, &QAction::triggered, Browser::stopLoad);
 	connect(ui->actionBack, &QAction::triggered, Browser::goBack);
 	connect(ui->actionForward, &QAction::triggered, Browser::goForward);
+	
+	// Update our navigation buttons every time the browser clients loading state changes.
+	connect(BrowserClient::instance(), SIGNAL(loadingStateChangedSignal(bool)), this, SLOT(updateNavigationButtons(bool)));
 }
 
 BrowserWindow::~BrowserWindow()
@@ -82,6 +91,19 @@ void BrowserWindow::paintSlot(QImage browser_image)
 void BrowserWindow::on_actionHome_triggered()
 {
 	Browser::loadUrl("about:version");
+}
+
+void BrowserWindow::updateNavigationButtons(bool browser_loading_state)
+{
+	this->ui->actionBack->setEnabled(Browser::canGoBack());
+	this->ui->actionForward->setEnabled(Browser::canGoForward());
+	if (browser_loading_state) {
+		ui->actionReload->setVisible(false);
+		ui->actionStop->setVisible(true);
+	} else {
+		ui->actionReload->setVisible(true);
+		ui->actionStop->setVisible(false);
+	}
 }
 
 void BrowserWindow::showEvent(QShowEvent *event)

@@ -6,8 +6,6 @@
 
 BrowserWidget::BrowserWidget(QWidget* parent)
 {
-	Q_UNUSED(parent);
-	
 	// Make this widget expand to it's parents size.
 	this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 	

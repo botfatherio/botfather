@@ -36,6 +36,9 @@
    </layout>
   </widget>
   <widget class="QToolBar" name="toolBar">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="windowTitle">
     <string>toolBar</string>
    </property>
@@ -53,6 +56,7 @@
    </attribute>
    <addaction name="actionHome"/>
    <addaction name="actionReload"/>
+   <addaction name="actionStop"/>
    <addaction name="actionBack"/>
    <addaction name="actionForward"/>
   </widget>
@@ -78,6 +82,9 @@
    </property>
   </action>
   <action name="actionBack">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="../res/gui.qrc">
      <normaloff>:/gui/icons8-back-arrow-64.png</normaloff>:/gui/icons8-back-arrow-64.png</iconset>
@@ -87,12 +94,24 @@
    </property>
   </action>
   <action name="actionForward">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="../res/gui.qrc">
      <normaloff>:/gui/icons8-forward-button-64.png</normaloff>:/gui/icons8-forward-button-64.png</iconset>
    </property>
    <property name="text">
     <string>Forward</string>
+   </property>
+  </action>
+  <action name="actionStop">
+   <property name="icon">
+    <iconset resource="../res/gui.qrc">
+     <normaloff>:/gui/icons8-cancel-64.png</normaloff>:/gui/icons8-cancel-64.png</iconset>
+   </property>
+   <property name="text">
+    <string>Stop</string>
    </property>
   </action>
  </widget>

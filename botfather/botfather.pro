@@ -68,7 +68,8 @@ SOURCES += \
     scripting/bot_thread.cpp \
     gui/auth_window.cpp \
     gui/browser_window.cpp \
-    gui/browser_widget.cpp
+    gui/browser_widget.cpp \
+    gui/browser_address_bar.cpp
 
 HEADERS += \
     shared/constants.h \
@@ -91,7 +92,8 @@ HEADERS += \
     scripting/bot_thread.h \
     gui/auth_window.h \
     gui/browser_window.h \
-    gui/browser_widget.h
+    gui/browser_widget.h \
+    gui/browser_address_bar.h
 
 FORMS += \
     gui/control_window.ui \
