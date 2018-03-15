@@ -98,7 +98,6 @@ void AuthWindow::networkReplyReceived(QNetworkReply *reply)
 	int curtime = json.object().value("curtime").toInt();
 	int premend = json.object().value("premend").toInt();
 	bool stable = json.object().value("stable").toBool();
-	QString latest_stable_version = json.object().value("latest_stable_version").toString();
 	QString hashhex = json.object().value("hash").toString();
 	
 	if (!this->verifyHash(hashhex, premend, curtime)){
@@ -112,11 +111,6 @@ void AuthWindow::networkReplyReceived(QNetworkReply *reply)
 	if (settings.value("auth/remember_me", false).toBool()) {
 		settings.setValue("auth/username", this->ui->username->text());
 		settings.setValue("auth/password", this->ui->password->text());
-	}
-	
-	if (stable && !latest_stable_version.isEmpty() && this->version_string != latest_stable_version){
-		// => This is not the latest stable version even though it's stable. But thats ok.
-		QMessageBox::information(this, "Update available", "A new stable version is available. Please update!");
 	}
 	
 	if (curtime > premend || premend == 0){
