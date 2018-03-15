@@ -17,7 +17,11 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Browser</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../res/gui.qrc">
+    <normaloff>:/gui/black_on_trans.png</normaloff>:/gui/black_on_trans.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
