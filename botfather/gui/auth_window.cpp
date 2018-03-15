@@ -16,6 +16,8 @@ AuthWindow::AuthWindow(QString software_slug, QString version_string, QString ve
 	ui(new Ui::AuthWindow)
 {
 	this->ui->setupUi(this);
+	setFixedSize(300, 400);
+	
 	this->software_slug = software_slug;
 	this->version_string = version_string;
 	this->version_secret = version_secret;
