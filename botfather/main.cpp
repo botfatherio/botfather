@@ -1,6 +1,7 @@
 #include <QApplication>
 #include <QSettings>
 #include <QTime>
+#include "gui/update_widget.h"
 #include "gui/auth_window.h"
 #include "gui/control_window.h"
 #include "browser/browser.h"
@@ -27,8 +28,8 @@ int main(int argc, char *argv[])
 	// QSettings from all over the app. Change this to match the bots credentials.
 	QCoreApplication::setOrganizationName("BotFatherProject");
 	QCoreApplication::setOrganizationDomain("botfather.io");
-	QCoreApplication::setApplicationName("Botfather Browser Edition");
-	QCoreApplication::setApplicationVersion("0.2.0");
+	QCoreApplication::setApplicationName("Botfather");
+	QCoreApplication::setApplicationVersion("1.0.0");
 	QSettings::setDefaultFormat(QSettings::IniFormat);
 
 	// Seed the random function once using the current time in msec as seed.
@@ -41,12 +42,19 @@ int main(int argc, char *argv[])
 #else
 	Browser::init(argc, argv);
 #endif
-	
-	// Configure the control window to open when the auth window permits it.
-	AuthWindow auth_window("botfather-be", QCoreApplication::applicationVersion(), "jQpgs5nb4NfFkU7Sx6no29J6Pge8irEh");
+
+	UpdateWidget update_widget;
+	AuthWindow auth_window("botfather-be", QCoreApplication::applicationVersion(), "WmXrhd3ifA8MwTRsjFgkbVsVbGsSiYr4");
 	ControlWindow control_window;
+	
+	// Make the auth window show when the update dialog is done.
+	QObject::connect(&update_widget, SIGNAL(finished()), &auth_window, SLOT(show()));
+	
+	// Make the control window show when the auth window permits it.
 	QObject::connect(&auth_window, &AuthWindow::permitted, &control_window, &ControlWindow::open);
-	auth_window.show();
+	
+	// Show the update dialog.
+	update_widget.checkForUpdates();
 	
 	// Runs the QApplication event loop blocking. When the event loop stops the timer
 	// powering the CEF event loop will stop aswell. After that the CEF can be shut
