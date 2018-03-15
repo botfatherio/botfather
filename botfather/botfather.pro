@@ -69,7 +69,9 @@ SOURCES += \
     gui/auth_window.cpp \
     gui/browser_window.cpp \
     gui/browser_widget.cpp \
-    gui/browser_address_bar.cpp
+    gui/browser_address_bar.cpp \
+    updater/update_checker.cpp \
+    gui/update_widget.cpp
 
 HEADERS += \
     shared/constants.h \
@@ -93,13 +95,16 @@ HEADERS += \
     gui/auth_window.h \
     gui/browser_window.h \
     gui/browser_widget.h \
-    gui/browser_address_bar.h
+    gui/browser_address_bar.h \
+    updater/update_checker.h \
+    gui/update_widget.h
 
 FORMS += \
     gui/control_window.ui \
     gui/config_dialog.ui \
     gui/auth_window.ui \
-    gui/browser_window.ui
+    gui/browser_window.ui \
+    gui/update_widget.ui
 
 RESOURCES += \
     res/gui.qrc
