@@ -27,6 +27,7 @@ public slots:
 	
 private:
 	Ui::UpdateWidget *ui;
+	QThread *update_checker_thread;
 	UpdateChecker *update_checker;
 };
 

@@ -5,17 +5,24 @@
 #include <QProcess>
 #include <QDebug>
 
+#include <QThread>
+
 UpdateWidget::UpdateWidget(QWidget *parent) : QWidget(parent), ui(new Ui::UpdateWidget)
 {
 	ui->setupUi(this);
-	update_checker = new UpdateChecker(this);
-	
 	adjustSize();
 	setFixedSize(400, height());
-	
+
+	update_checker_thread = new QThread(this);
+	update_checker = new UpdateChecker();
+	update_checker->moveToThread(update_checker_thread);
+	connect(update_checker_thread, SIGNAL(started()), update_checker, SLOT(checkForUpdates()));
+
 	connect(ui->cancel_button, SIGNAL(clicked()), this, SLOT(close()));
 	connect(ui->cancel_button, SIGNAL(clicked()), update_checker, SLOT(cancelUpdateCheck()));
+	connect(ui->cancel_button, SIGNAL(clicked()), this, SIGNAL(finished()));
 	connect(update_checker, SIGNAL(noUpdatesAvailable()), this, SLOT(close()));
+	connect(update_checker, SIGNAL(noUpdatesAvailable()), this, SIGNAL(finished()));
 	connect(update_checker, SIGNAL(updatesAvailable()), this, SLOT(close()));
 	connect(update_checker, SIGNAL(updatesAvailable()), this, SLOT(informAboutUpdate()));
 	connect(update_checker, SIGNAL(updateCheckFailed(UpdateChecker::ErrorType)), this, SLOT(close()));
@@ -29,8 +36,7 @@ UpdateWidget::~UpdateWidget()
 
 void UpdateWidget::checkForUpdates()
 {
-	show();
-	update_checker->checkForUpdates();
+	update_checker_thread->start();
 }
 
 void UpdateWidget::informAboutUpdate()
@@ -51,16 +57,28 @@ void UpdateWidget::informAboutError(UpdateChecker::ErrorType error_type)
 	message_box.setText("Checking for updates failed.");
 	
 	switch (error_type) {
-	case UpdateChecker::ErrorType::CANT_CONNECT_TO_REPO:
-		message_box.setInformativeText("Couldn't retrive information from the update server.");
+	case UpdateChecker::ErrorType::MTOOL_FAILED_TO_START:
+		message_box.setInformativeText("Couldn't start the maintenance tool.");
 		break;
 		
 	case UpdateChecker::ErrorType::MTOOL_CRASHED:
 		message_box.setInformativeText("The maintenance tool crashed.");
 		break;
 		
-	case UpdateChecker::ErrorType::MTOOL_START_FAILED:
-		message_box.setInformativeText("Couldn't start the maintenance tool.");
+	case UpdateChecker::ErrorType::MTOOL_TIMEDOUT:
+		message_box.setInformativeText("The maintenance tool timedout.");
+		break;
+		
+	case UpdateChecker::ErrorType::MTOOL_WRITEERROR:
+		message_box.setInformativeText("The maintenance tool had trouble writing stuff.");
+		break;
+		
+	case UpdateChecker::ErrorType::MTOOL_READERROR:
+		message_box.setInformativeText("The maintenance tool had trouble reading stuff.");
+		break;
+		
+	case UpdateChecker::ErrorType::REPO_NETWORK_ERROR:
+		message_box.setInformativeText("Couldn't retrive information from the update server.");
 		break;
 		
 	default:

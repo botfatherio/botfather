@@ -4,9 +4,8 @@
 
 UpdateChecker::UpdateChecker(QObject *parent) : QObject(parent)
 {
+	qRegisterMetaType<UpdateChecker::ErrorType>("UpdateChecker::ErrorType");
 	maintenancetool_process = new QProcess(this);
-	connect(maintenancetool_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(resultsAvailable(int,QProcess::ExitStatus)));
-	//connect(maintenancetool_process, SIGNAL(errorOccurred(QProcess::ProcessError)), this, SIGNAL(updateCheckFailed(QProcess::ProcessError)));
 }
 
 QString UpdateChecker::maintainancetoolPath()
@@ -20,24 +19,66 @@ QString UpdateChecker::maintainancetoolPath()
 #endif
 }
 
+#include <QThread>
+
 void UpdateChecker::checkForUpdates()
 {
-	QStringList arguments;
-	arguments.append("--checkupdates");
-	int code = maintenancetool_process->execute(maintainancetoolPath(), arguments);
 	
-	if (code == -2) {
-		qDebug() << "Mtool start failed";
-		emit updateCheckFailed(ErrorType::MTOOL_START_FAILED);
+	QThread::sleep(5);
+	
+	QStringList arguments("--checkupdates");
+	maintenancetool_process->start(maintainancetoolPath(), arguments);	
+	maintenancetool_process->waitForFinished();
+	
+	// Why not async? Because process never emits finished if the binary can't be found.
+	
+	QByteArray output = maintenancetool_process->readAllStandardOutput();
+	QByteArray errors = maintenancetool_process->readAllStandardError();
+	QProcess::ProcessError process_error = maintenancetool_process->error();
+
+	switch (process_error) {
+	case QProcess::ProcessError::FailedToStart:
+		emit updateCheckFailed(UpdateChecker::ErrorType::MTOOL_FAILED_TO_START);
+		return;
+	case QProcess::ProcessError::Crashed:
+		emit updateCheckFailed(UpdateChecker::ErrorType::MTOOL_CRASHED);
+		return;
+	case QProcess::ProcessError::Timedout:
+		emit updateCheckFailed(UpdateChecker::ErrorType::MTOOL_TIMEDOUT);
+		return;
+	case QProcess::ProcessError::WriteError:
+		emit updateCheckFailed(UpdateChecker::ErrorType::MTOOL_WRITEERROR);
+		return;
+	case QProcess::ProcessError::ReadError:
+		emit updateCheckFailed(UpdateChecker::ErrorType::MTOOL_READERROR);
+		return;
+	default:
+		// QProcess::ProcessError::UnknownError is the default return value of
+		// QProcess::error(). Thus we can't really thread it as an error.
+		break;
 	}
-	else if (code == -1) {
-		qDebug() << "Mtool crashed.";
-		emit updateCheckFailed(ErrorType::MTOOL_CRASHED);
+	
+	//qDebug() << "output" << output;
+	//qDebug() << "errors" << errors;
+	//qDebug() << "process_error" << process_error;
+	
+	if (output.isEmpty() && errors.isEmpty()) {
+		emit updateCheckFailed(UpdateChecker::ErrorType::UNKNOWN_ERROR);
+		return;
 	}
-	else if (code != 0) {
-		qDebug() << "Unknown mtool error. Exit code is" << code;
-		emit updateCheckFailed(ErrorType::UNKNOWN_MTOOL_ERROR);
+	
+	else if (errors.contains("no updates available")) {
+		emit noUpdatesAvailable();
+		return;
 	}
+	
+	else if (!errors.isEmpty()) {
+		emit updateCheckFailed(UpdateChecker::ErrorType::REPO_NETWORK_ERROR);
+		return;
+	}
+
+	// errors empty, output not
+	emit updatesAvailable();
 }
 
 void UpdateChecker::cancelUpdateCheck()
@@ -47,18 +88,4 @@ void UpdateChecker::cancelUpdateCheck()
 	}
 	maintenancetool_process->kill();
 	maintenancetool_process->waitForFinished(1000);
-}
-
-void UpdateChecker::resultsAvailable(int, QProcess::ExitStatus)
-{
-	QByteArray result = maintenancetool_process->readAllStandardOutput();
-	if (result.contains("no updates available.")) {
-		emit noUpdatesAvailable();
-	}
-	else if (result.contains("<updates>")) {
-		emit updatesAvailable();
-	}
-	else {
-		emit updateCheckFailed(ErrorType::CANT_CONNECT_TO_REPO);
-	}
 }

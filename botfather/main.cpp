@@ -54,6 +54,7 @@ int main(int argc, char *argv[])
 	QObject::connect(&auth_window, &AuthWindow::permitted, &control_window, &ControlWindow::open);
 	
 	// Show the update dialog.
+	update_widget.show();
 	update_widget.checkForUpdates();
 	
 	// Runs the QApplication event loop blocking. When the event loop stops the timer
