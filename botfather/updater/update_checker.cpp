@@ -19,13 +19,8 @@ QString UpdateChecker::maintainancetoolPath()
 #endif
 }
 
-#include <QThread>
-
 void UpdateChecker::checkForUpdates()
 {
-	
-	QThread::sleep(5);
-	
 	QStringList arguments("--checkupdates");
 	maintenancetool_process->start(maintainancetoolPath(), arguments);	
 	maintenancetool_process->waitForFinished();
