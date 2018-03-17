@@ -3,6 +3,7 @@
 #include <QUrl>
 #include <QUrlQuery>
 #include <QSettings>
+#include <QRegularExpression>
 #include "include/base/cef_bind.h"
 #include "include/cef_app.h"
 #include "include/views/cef_browser_view.h"
@@ -60,19 +61,25 @@ void BrowserClient::closeAllBrowsers(bool force_close)
 	}
 }
 
-void BrowserClient::blockRessource(QString ressource_url)
+void BrowserClient::blockRessource(QString ressource_pattern)
 {
-	this->modified_ressources.insert(ressource_url, "");
+	modified_ressources.append({ressource_pattern, ""});
 }
 
-void BrowserClient::replaceRessource(QString old_ressource_url, QString new_ressource_url)
+void BrowserClient::replaceRessource(QString old_ressource_pattern, QString new_ressource_url)
 {
-	this->modified_ressources.insert(old_ressource_url, new_ressource_url);
+	modified_ressources.append({old_ressource_pattern, new_ressource_url});
 }
 
-void BrowserClient::unmodifyRessource(QString ressource_url)
+void BrowserClient::unmodifyRessource(QString ressource_pattern)
 {
-	this->modified_ressources.remove(ressource_url);
+	for (int i = 0; i < modified_ressources.length(); i++) {
+		QString pattern = modified_ressources[i].first;
+		if (pattern == ressource_pattern) {
+			modified_ressources.remove(i);
+			return;
+		}
+	}
 }
 
 void BrowserClient::unmodifyRessources()
@@ -212,21 +219,26 @@ void BrowserClient::OnLoadStart(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFram
 CefRequestHandler::ReturnValue BrowserClient::OnBeforeResourceLoad(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request, CefRefPtr<CefRequestCallback> callback)
 {
 	QString url = QString::fromStdString(request->GetURL().ToString());
-	
-	if (!this->modified_ressources.contains(url)) {
-		//qDebug() << "not blocking" << url;
-		return RV_CONTINUE;
+
+	for (int i = 0; i < modified_ressources.length(); i++) {
+		
+		QString pattern = modified_ressources[i].first;
+		QRegularExpression regex(pattern);
+		
+		if (!regex.match(url).hasMatch()) {
+			continue;
+		}
+		
+		QString new_url = modified_ressources[i].second;
+		if (new_url.isEmpty()) {
+			qDebug() << "blocking" << url;
+			return RV_CANCEL; // Block the ressource from loading.
+		}
+		
+		qDebug() << "replacing" << url << "with" << new_url;
+		request->SetURL(new_url.toStdString());
 	}
-	
-	QString new_url = this->modified_ressources.value(url);
-	
-	if (new_url.isEmpty()) {
-		//qDebug() << "blocking" << url;
-		return RV_CANCEL; // Block the ressource from loading.
-	}
-	
-	//qDebug() << "replacing" << url << "with" << new_url;
-	request->SetURL(new_url.toStdString());
+
 	return RV_CONTINUE;
 }
 

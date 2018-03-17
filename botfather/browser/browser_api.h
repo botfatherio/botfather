@@ -14,9 +14,9 @@ public:
 	static void enable(QJSEngine* engine_p);
 	
 	Q_INVOKABLE QJSValue getImage();
-	Q_INVOKABLE void blockRessource(QString ressource);
-	Q_INVOKABLE void replaceRessource(QString old_ressource, QString new_ressource);
-	Q_INVOKABLE void unmodifyRessource(QString ressource);
+	Q_INVOKABLE void blockRessource(QString ressource_pattern);
+	Q_INVOKABLE void replaceRessource(QString old_ressource_pattern, QString new_ressource);
+	Q_INVOKABLE void unmodifyRessource(QString ressource_pattern);
 	Q_INVOKABLE void unmodifyRessources();
 	Q_INVOKABLE void loadUrl(QString url);
 	Q_INVOKABLE QString getUrl();

@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QImage>
 #include <QSettings>
-#include <QHash>
+#include <QMap>
 #include "include/cef_client.h"
 
 class BrowserClient :
@@ -47,13 +47,13 @@ public:
 	void closeAllBrowsers(bool force_close);
 	
 	// Makes the ressource no longe been loaded by the browser.
-	void blockRessource(QString ressource_url);
+	void blockRessource(QString ressource_pattern);
 	
 	// Causes the browser to load the new ressource instead of the original one.
-	void replaceRessource(QString old_ressource_url, QString new_ressource_url);
+	void replaceRessource(QString old_ressource_pattern, QString new_url);
 	
 	// Removes any replace or block rule from a given ressource.
-	void unmodifyRessource(QString ressource_url);
+	void unmodifyRessource(QString ressource_pattern);
 	
 	// Removes all replace and block rules for all ressources.
 	void unmodifyRessources();
@@ -128,11 +128,12 @@ private:
 	// Whether the browser is loading or not.
 	bool is_loading = true;
 	
-	// Contains all redirected urls. The first item of a pair is the original url.
+	// Contains all redirected urls. The first item of a pair is a regex pattern matching
+	// the original url.
 	// The second item is either empty, meaning the url should not be loaded (is blocked),
 	// or there is a second url provided, meaning the second url should be loaded instead.
-	QHash<QString, QString> modified_ressources;
-
+	QVector<QPair<QString, QString>> modified_ressources;
+	
 	// Include the default reference counting implementation.
 	IMPLEMENT_REFCOUNTING(BrowserClient);
 };
