@@ -71,7 +71,11 @@ SOURCES += \
     gui/browser_widget.cpp \
     gui/browser_address_bar.cpp \
     updater/update_checker.cpp \
-    gui/update_widget.cpp
+    gui/update_widget.cpp \
+    android/android_api.cpp \
+    android/adb_device_info.cpp \
+    android/adb_wrapper.cpp \
+    gui/android_window.cpp
 
 HEADERS += \
     shared/constants.h \
@@ -97,14 +101,19 @@ HEADERS += \
     gui/browser_widget.h \
     gui/browser_address_bar.h \
     updater/update_checker.h \
-    gui/update_widget.h
+    gui/update_widget.h \
+    android/android_api.h \
+    android/adb_device_info.h \
+    android/adb_wrapper.h \
+    gui/android_window.h
 
 FORMS += \
     gui/control_window.ui \
     gui/config_dialog.ui \
     gui/auth_window.ui \
     gui/browser_window.ui \
-    gui/update_widget.ui
+    gui/update_widget.ui \
+    gui/android_window.ui
 
 RESOURCES += \
     res/gui.qrc
