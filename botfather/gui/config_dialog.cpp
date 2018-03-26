@@ -22,22 +22,15 @@ ConfigDialog::ConfigDialog(QWidget *parent) :
 	} else {
 		ui->manual_flash_installation_info->setText("<p style='color:red'>No manual flash installation found.</p>");
 	}
+	
+	connect(ui->button_box, SIGNAL(accepted()), this, SLOT(saveConfig()));
+	connect(ui->button_box, SIGNAL(accepted()), this, SLOT(close()));
+	connect(ui->button_box, SIGNAL(rejected()), this, SLOT(close()));
 }
 
 ConfigDialog::~ConfigDialog()
 {
 	delete ui;
-}
-
-void ConfigDialog::on_cancel_clicked()
-{
-	this->close();
-}
-
-void ConfigDialog::on_okay_clicked()
-{
-	this->saveConfig();
-	this->close();
 }
 
 void ConfigDialog::saveConfig()

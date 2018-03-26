@@ -16,14 +16,12 @@ public:
 	~ConfigDialog();
 	
 public slots:
-	void on_cancel_clicked();
-	void on_okay_clicked();
 	void on_adb_binary_browse_button_clicked();
+	void saveConfig();
+	void loadConfig();
 	
 private:
 	Ui::ConfigDialog *ui;
-	void saveConfig();
-	void loadConfig();
 };
 
 #endif // BFP__GUI__CONFIG_DIALOG_H
