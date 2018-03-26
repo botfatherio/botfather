@@ -14,9 +14,8 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 {
 	ui->setupUi(this);
 
-	// Make the main window parent of the dialogs to make them close when the main win is.
 	browser_window = new BrowserWindow(this);
-	
+	android_dialog = new AndroidDialog(this);
 	file_dialog = new QFileDialog(this);
 }
 
@@ -139,7 +138,6 @@ void ControlWindow::on_actionBrowser_triggered()
 
 void ControlWindow::on_actionAndroid_triggered()
 {
-	AndroidDialog *android_dialog = new AndroidDialog(this);
 	android_dialog->exec();
 }
 

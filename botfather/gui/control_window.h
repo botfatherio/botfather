@@ -7,6 +7,7 @@
 #include "../scripting/bot_thread.h"
 
 class BrowserWindow;
+class AndroidDialog;
 
 namespace Ui {
 	class ControlWindow;
@@ -41,6 +42,7 @@ private:
 	Ui::ControlWindow *ui;
 	QFileDialog *file_dialog;
 	BrowserWindow *browser_window;
+	AndroidDialog *android_dialog;
 	BotThread *bot_thread;
 	bool trial = true;
 };
