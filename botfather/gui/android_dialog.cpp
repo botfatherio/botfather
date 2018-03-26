@@ -39,8 +39,8 @@ void AndroidDialog::refreshListOfDevicesAttached()
 	QList<AdbDeviceInfo> devices;
 	if (!adb.queryForDevices(devices)) {
 		QString message(
-			"Can't use ADB. Botfather was unable to use the Android Debug Bridge."
-			"Please check the Botfather Android settings and make sure you've set the correct path to your ADB executable."
+			"Can't use ADB.\n Botfather was unable to use the Android Debug Bridge.\n"
+			"Please check the Botfather Android settings and make sure you've set the correct path to your ADB executable.\n"
 			"The path we tried to use: " + adb_binary
 		);
 		QMessageBox::warning(this, "Can't use ADB", message);
