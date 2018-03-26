@@ -18,6 +18,7 @@ public:
 public slots:
 	void on_cancel_clicked();
 	void on_okay_clicked();
+	void on_adb_binary_browse_button_clicked();
 	
 private:
 	Ui::ConfigDialog *ui;
