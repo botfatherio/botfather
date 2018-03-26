@@ -75,7 +75,7 @@ SOURCES += \
     android/android_api.cpp \
     android/adb_device_info.cpp \
     android/adb_wrapper.cpp \
-    gui/android_window.cpp
+    gui/android_dialog.cpp
 
 HEADERS += \
     shared/constants.h \
@@ -105,7 +105,7 @@ HEADERS += \
     android/android_api.h \
     android/adb_device_info.h \
     android/adb_wrapper.h \
-    gui/android_window.h
+    gui/android_dialog.h
 
 FORMS += \
     gui/control_window.ui \
@@ -113,7 +113,7 @@ FORMS += \
     gui/auth_window.ui \
     gui/browser_window.ui \
     gui/update_widget.ui \
-    gui/android_window.ui
+    gui/android_dialog.ui
 
 RESOURCES += \
     res/gui.qrc
