@@ -59,7 +59,7 @@ void ControlWindow::on_actionStart_triggered()
 	this->ui->actionStop->setEnabled(false);
 	
 	// Create thread seperate from the main thread that can be terminated if necessary.
-	this->bot_thread = new BotThread;
+	this->bot_thread = new BotThread(this);
 	
 	// Create an new bot instance with the given script path and move it into the thread.
 	Bot* bot = new Bot(this->bot_thread, script_path);
