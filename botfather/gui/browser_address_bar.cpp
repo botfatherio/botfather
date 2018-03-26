@@ -12,7 +12,7 @@ BrowserAddressBar::BrowserAddressBar(QWidget* parent) : QLineEdit(parent)
 
 void BrowserAddressBar::navigate()
 {
-	// NOTE: CEF does a good job in interpreting text as urls. No need to help out.
+	// CEF does a good job in interpreting text as urls. No need to help out.
 	Browser::loadUrl(this->text());
 }
 
