@@ -4,13 +4,14 @@
 #include "browser.h"
 #include "../vision/vision.h"
 #include "../vision/image.h"
+#include "../scripting/bot.h"
 
-BrowserAPI::BrowserAPI(QJSEngine* engine_p) : m_engine_p(engine_p)
+BrowserAPI::BrowserAPI(Bot *bot_p, QJSEngine *engine_p) : QObject(bot_p), m_engine_p(engine_p)
 {}
 
-void BrowserAPI::enable(QJSEngine *engine_p)
+void BrowserAPI::enable(Bot *bot_p, QJSEngine *engine_p)
 {
-	QJSValue vision_obj = engine_p->newQObject(new BrowserAPI(engine_p));
+	QJSValue vision_obj = engine_p->newQObject(new BrowserAPI(bot_p, engine_p));
 	engine_p->globalObject().setProperty("Browser", vision_obj);
 }
 

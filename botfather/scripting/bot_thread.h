@@ -6,6 +6,7 @@
 class BotThread : public QThread
 {
 public:
+	BotThread(QObject *parent = nullptr);
 	void setTerminationEnabled(bool enabled=true);
 };
 

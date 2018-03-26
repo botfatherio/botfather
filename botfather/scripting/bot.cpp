@@ -8,8 +8,9 @@
 #include "../vision/vision_api.h"
 #include "../browser/browser_api.h"
 #include "../browser/browser.h"
+#include "../android/android_api.h"
 
-Bot::Bot(BotThread* thread_p, QString script_path) : m_thread_p(thread_p), m_script_path(script_path)
+Bot::Bot(BotThread *thread_p, QString script_path) : m_thread_p(thread_p), m_script_path(script_path)
 {}
 
 void Bot::runScript()
@@ -21,9 +22,9 @@ void Bot::runScript()
 	
 	// Create js engine and enable our api in it's global context.
 	QJSEngine engine;
-	HelperAPI::enable(m_thread_p, this, &engine);
+	HelperAPI::enable(this, m_thread_p, &engine);
 	VisionAPI::enable(this, &engine);
-	BrowserAPI::enable(&engine);
+	BrowserAPI::enable(this, &engine);
 	
 	// Try to open the submitted script file.
 	QFile script_file(this->m_script_path);

@@ -9,7 +9,7 @@
 #include "../scripting/bot.h"
 
 VisionAPI::VisionAPI(Bot* bot_p, QJSEngine* engine_p)
-	: m_bot_p(bot_p), m_engine_p(engine_p)
+	: QObject(bot_p), m_bot_p(bot_p), m_engine_p(engine_p)
 {}
 
 // static

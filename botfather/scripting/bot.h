@@ -10,7 +10,8 @@ class Bot : public QObject
 	Q_OBJECT
 
 public:
-	Bot(BotThread* thread_p, QString script_path);
+	// Giving Bot a parent results in: QObject::moveToThread: Cannot move objects with a parent
+	Bot(BotThread *thread_p, QString script_path);
 	
 public slots:
 	void runScript();

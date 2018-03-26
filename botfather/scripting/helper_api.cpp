@@ -2,16 +2,20 @@
 #include <QFileInfo>
 #include <QThread>
 #include <QApplication>
+#include <QMessageBox>
+#include <QInputDialog>
+#include <QDebug>
 #include "bot.h"
 #include "bot_thread.h"
 
-HelperAPI::HelperAPI(BotThread* bot_thread_p, Bot* bot_p, QJSEngine* engine_p) : m_bot_thread_p(bot_thread_p), m_bot_p(bot_p), m_engine_p(engine_p)
+HelperAPI::HelperAPI(Bot* bot_p, BotThread* bot_thread_p, QJSEngine* engine_p)
+	: QObject(bot_p), m_bot_thread_p(bot_thread_p), m_bot_p(bot_p), m_engine_p(engine_p)
 {}
 
 // static
-void HelperAPI::enable(BotThread* bot_thread_p, Bot* bot_p, QJSEngine* engine_p)
+void HelperAPI::enable(Bot* bot_p, BotThread* bot_thread_p, QJSEngine* engine_p)
 {
-	QJSValue vision_obj = engine_p->newQObject(new HelperAPI(bot_thread_p, bot_p, engine_p));
+	QJSValue vision_obj = engine_p->newQObject(new HelperAPI(bot_p, bot_thread_p, engine_p));
 	engine_p->globalObject().setProperty("Helper", vision_obj);
 }
 

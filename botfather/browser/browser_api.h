@@ -6,12 +6,14 @@
 #include <QString>
 #include <QSettings>
 
+class Bot;
+
 class BrowserAPI : public QObject
 {
 	Q_OBJECT
 public:
-	explicit BrowserAPI(QJSEngine* engine_p);
-	static void enable(QJSEngine* engine_p);
+	explicit BrowserAPI(Bot *bot_p, QJSEngine* engine_p);
+	static void enable(Bot *bot_p, QJSEngine* engine_p);
 	
 	Q_INVOKABLE QJSValue getImage();
 	Q_INVOKABLE void blockRessource(QString ressource_pattern);

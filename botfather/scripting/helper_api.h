@@ -13,8 +13,8 @@ class HelperAPI : public QObject
 	Q_OBJECT
 	
 public:
-	HelperAPI(BotThread* bot_thread_p, Bot* bot_p, QJSEngine* engine_p);
-	static void enable(BotThread* bot_thread_p, Bot* bot_p, QJSEngine* engine_p);
+	HelperAPI(Bot* bot_p, BotThread* bot_thread_p, QJSEngine* engine_p);
+	static void enable(Bot* bot_p, BotThread* bot_thread_p, QJSEngine* engine_p);
 	
 	// Returns true if the file exists.
 	Q_INVOKABLE bool fileExists(QString file_path);
@@ -36,7 +36,7 @@ public:
 	
 	// Returns false if the user requested the script to end.
 	Q_INVOKABLE bool stopRequested();
-	
+
 private:
 	BotThread* m_bot_thread_p;
 	Bot* m_bot_p;
