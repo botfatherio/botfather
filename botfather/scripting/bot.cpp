@@ -25,6 +25,7 @@ void Bot::runScript()
 	HelperAPI::enable(this, m_thread_p, &engine);
 	VisionAPI::enable(this, &engine);
 	BrowserAPI::enable(this, &engine);
+	AndroidAPI::enable(this, &engine);
 	
 	// Try to open the submitted script file.
 	QFile script_file(this->m_script_path);
