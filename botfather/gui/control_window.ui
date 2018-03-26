@@ -125,6 +125,7 @@
    <addaction name="actionSettings"/>
    <addaction name="separator"/>
    <addaction name="actionBrowser"/>
+   <addaction name="actionAndroid"/>
   </widget>
   <action name="actionStart">
    <property name="icon">
@@ -209,6 +210,18 @@
    </property>
    <property name="toolTip">
     <string>Opens botfathers integrated browser</string>
+   </property>
+  </action>
+  <action name="actionAndroid">
+   <property name="icon">
+    <iconset resource="../res/gui.qrc">
+     <normaloff>:/gui/icons8-android-64.png</normaloff>:/gui/icons8-android-64.png</iconset>
+   </property>
+   <property name="text">
+    <string>Android</string>
+   </property>
+   <property name="toolTip">
+    <string>Open Android Info</string>
    </property>
   </action>
  </widget>

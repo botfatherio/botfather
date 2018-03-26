@@ -30,6 +30,7 @@ public slots:
 	void on_actionScripts_triggered();
 	void on_actionSettings_triggered();
 	void on_actionBrowser_triggered();
+	void on_actionAndroid_triggered();
 	void on_save_button_clicked();
 	void on_clear_button_clicked();
 	void appendMessage(QString log_message, bool from_client = false);

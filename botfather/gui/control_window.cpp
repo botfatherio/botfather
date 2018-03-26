@@ -9,6 +9,7 @@
 #include <QSettings>
 #include "config_dialog.h"
 #include "browser_window.h"
+#include "android_dialog.h"
 #include "../shared/constants.h"
 
 ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::ControlWindow)
@@ -133,6 +134,12 @@ void ControlWindow::on_actionSettings_triggered()
 void ControlWindow::on_actionBrowser_triggered()
 {
 	this->browser_window->show();
+}
+
+void ControlWindow::on_actionAndroid_triggered()
+{
+	AndroidDialog *android_dialog = new AndroidDialog(this);
+	android_dialog->exec();
 }
 
 void ControlWindow::on_actionScripts_triggered()
