@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QTableWidgetItem>
 #include <QMessageBox>
+#include <QPushButton>
 #include "../android/adb_wrapper.h"
 
 AndroidDialog::AndroidDialog(QWidget *parent) :
@@ -13,9 +14,12 @@ AndroidDialog::AndroidDialog(QWidget *parent) :
 {
 	ui->setupUi(this);
 	ui->attached_devices->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-	connect(ui->refresh, SIGNAL(clicked()), this, SLOT(refreshListOfDevicesAttached()));
-	connect(ui->ok, SIGNAL(clicked()), this, SLOT(save()));
-	connect(ui->cancel, SIGNAL(clicked()), this, SLOT(close()));
+	QPushButton *refresh_button = ui->button_box->addButton("Refresh", QDialogButtonBox::ActionRole);
+	
+	connect(refresh_button, SIGNAL(clicked()), this, SLOT(refreshListOfDevicesAttached()));
+	connect(ui->button_box, SIGNAL(accepted()), this, SLOT(save()));
+	connect(ui->button_box, SIGNAL(accepted()), this, SLOT(close()));
+	connect(ui->button_box, SIGNAL(rejected()), this, SLOT(close()));
 }
 
 AndroidDialog::~AndroidDialog()
@@ -76,6 +80,4 @@ void AndroidDialog::save()
 	
 	QSettings settings;
 	settings.setValue("Android/serial_number", serial_number);
-	
-	close();
 }
