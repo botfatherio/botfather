@@ -75,7 +75,8 @@ void AuthDialog::on_remember_me_toggled(bool checked)
 void AuthDialog::closeEvent(QCloseEvent *event)
 {
 	QMessageBox::StandardButton reply;
-	reply = QMessageBox::question(this, "Test", "Quit?", QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
+	QString message("Are you sure you want to exit BotFather?");
+	reply = QMessageBox::question(this, "Exit BotFather?", message, QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
 	if (reply == QMessageBox::Yes) {
 		QApplication::quit();
 	}
