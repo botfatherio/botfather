@@ -2,7 +2,7 @@
 #include <QSettings>
 #include <QTime>
 #include "gui/update_widget.h"
-#include "gui/auth_window.h"
+#include "gui/auth_dialog.h"
 #include "gui/control_window.h"
 #include "browser/browser.h"
 
@@ -43,20 +43,27 @@ int main(int argc, char *argv[])
 	Browser::init(argc, argv);
 #endif
 
-	UpdateWidget update_widget;
-	AuthWindow auth_window("botfather-be", QCoreApplication::applicationVersion(), "WmXrhd3ifA8MwTRsjFgkbVsVbGsSiYr4");
-	ControlWindow control_window;
+//	UpdateWidget update_widget;
+//	AuthWindow auth_window("botfather-be", QCoreApplication::applicationVersion(), "WmXrhd3ifA8MwTRsjFgkbVsVbGsSiYr4");
+//	ControlWindow control_window;
 	
-	// Make the auth window show when the update dialog is done.
-	QObject::connect(&update_widget, SIGNAL(finished()), &auth_window, SLOT(show()));
+//	// Make the auth window show when the update dialog is done.
+//	QObject::connect(&update_widget, SIGNAL(finished()), &auth_window, SLOT(show()));
 	
-	// Make the control window show when the auth window permits it.
-	QObject::connect(&auth_window, &AuthWindow::permitted, &control_window, &ControlWindow::open);
+//	// Make the control window show when the auth window permits it.
+//	QObject::connect(&auth_window, &AuthWindow::permitted, &control_window, &ControlWindow::open);
 	
-	// Show the update dialog.
-	update_widget.show();
-	update_widget.checkForUpdates();
+//	// Show the update dialog.
+//	//update_widget.show(); // FIXME: updater window ist noch da nach update failed
+//	//update_widget.checkForUpdates();
+//	//auth_window.show();
 	
+	ControlWindow *control_window = new ControlWindow;
+	AuthDialog *auth_dialog = new AuthDialog("botfather-be", QCoreApplication::applicationVersion(), "WmXrhd3ifA8MwTRsjFgkbVsVbGsSiYr4", control_window);
+	
+	control_window->show();
+	auth_dialog->show();
+
 	// Runs the QApplication event loop blocking. When the event loop stops the timer
 	// powering the CEF event loop will stop aswell. After that the CEF can be shut
 	// down calling Browser::quit(). Subsequently both cef and qt event and message loops

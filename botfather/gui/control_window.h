@@ -39,7 +39,7 @@ public slots:
 	
 private:
 	Ui::ControlWindow *ui;
-	QFileDialog file_dialog;
+	QFileDialog *file_dialog;
 	BrowserWindow *browser_window;
 	BotThread *bot_thread;
 	bool trial = true;

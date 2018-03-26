@@ -66,7 +66,6 @@ SOURCES += \
     scripting/helper_api.cpp \
     browser/browser_api.cpp \
     scripting/bot_thread.cpp \
-    gui/auth_window.cpp \
     gui/browser_window.cpp \
     gui/browser_widget.cpp \
     gui/browser_address_bar.cpp \
@@ -75,7 +74,9 @@ SOURCES += \
     android/android_api.cpp \
     android/adb_device_info.cpp \
     android/adb_wrapper.cpp \
-    gui/android_dialog.cpp
+    gui/android_dialog.cpp \
+    gui/auth_dialog.cpp \
+    auth/authenticator.cpp
 
 HEADERS += \
     shared/constants.h \
@@ -96,7 +97,6 @@ HEADERS += \
     scripting/helper_api.h \
     browser/browser_api.h \
     scripting/bot_thread.h \
-    gui/auth_window.h \
     gui/browser_window.h \
     gui/browser_widget.h \
     gui/browser_address_bar.h \
@@ -105,15 +105,17 @@ HEADERS += \
     android/android_api.h \
     android/adb_device_info.h \
     android/adb_wrapper.h \
-    gui/android_dialog.h
+    gui/android_dialog.h \
+    gui/auth_dialog.h \
+    auth/authenticator.h
 
 FORMS += \
     gui/control_window.ui \
     gui/config_dialog.ui \
-    gui/auth_window.ui \
     gui/browser_window.ui \
     gui/update_widget.ui \
-    gui/android_dialog.ui
+    gui/android_dialog.ui \
+    gui/auth_dialog.ui
 
 RESOURCES += \
     res/gui.qrc

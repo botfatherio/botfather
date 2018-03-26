@@ -17,7 +17,9 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	ui->setupUi(this);
 
 	// Make the main window parent of the dialogs to make them close when the main win is.
-	this->browser_window = new BrowserWindow(this);
+	browser_window = new BrowserWindow(this);
+	
+	file_dialog = new QFileDialog(this);
 }
 
 ControlWindow::~ControlWindow()
