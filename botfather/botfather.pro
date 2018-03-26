@@ -79,7 +79,6 @@ SOURCES += \
     auth/authenticator.cpp
 
 HEADERS += \
-    shared/constants.h \
     browser/browser.h \
     browser/browser_app.h \
     browser/browser_client.h \
@@ -107,7 +106,8 @@ HEADERS += \
     android/adb_wrapper.h \
     gui/android_dialog.h \
     gui/auth_dialog.h \
-    auth/authenticator.h
+    auth/authenticator.h \
+    shared/settings.h
 
 FORMS += \
     gui/control_window.ui \

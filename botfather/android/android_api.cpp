@@ -1,16 +1,16 @@
 #include "android_api.h"
-#include <QSettings>
 #include "adb_wrapper.h"
 #include "../vision/vision.h"
 #include "../vision/image.h"
 #include "../scripting/bot.h"
+#include "../shared/settings.h"
 
 AndroidAPI::AndroidAPI(Bot* bot_p, QJSEngine* engine_p) : QObject(bot_p), m_engine_p(engine_p)
 {
-	QString adb_binary = m_settings.value("Android/adb_binary", "").toString();
+	QString adb_binary = m_settings.value(options::android::ADB_BINARY).toString();
 	adb = new AdbWrapper(this, adb_binary);
 	adb->startAdbServer();
-	serial_number = m_settings.value("Android/serial_number", "").toString();
+	serial_number = m_settings.value(options::android::SERIAL_NUMBER).toString();
 }
 
 void AndroidAPI::enable(Bot* bot_p, QJSEngine *engine_p)

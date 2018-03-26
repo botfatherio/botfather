@@ -6,11 +6,9 @@
 #include <QDesktopServices>
 #include <QCloseEvent>
 #include <QHBoxLayout>
-#include <QSettings>
 #include "config_dialog.h"
 #include "browser_window.h"
 #include "android_dialog.h"
-#include "../shared/constants.h"
 
 ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::ControlWindow)
 {
@@ -29,6 +27,7 @@ ControlWindow::~ControlWindow()
 
 void ControlWindow::open(bool stable, bool trial)
 {
+	// FIXME: wird nicht genutzt, muss bisschen angepasset werden
 	this->trial = trial;
 	if (stable){
 		this->setWindowTitle(this->windowTitle() + " - Stable");

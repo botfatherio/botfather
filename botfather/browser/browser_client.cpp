@@ -2,7 +2,6 @@
 #include <QDebug>
 #include <QUrl>
 #include <QUrlQuery>
-#include <QSettings>
 #include <QRegularExpression>
 #include "include/base/cef_bind.h"
 #include "include/cef_app.h"
@@ -10,7 +9,7 @@
 #include "include/views/cef_window.h"
 #include "include/wrapper/cef_closure_task.h"
 #include "include/wrapper/cef_helpers.h"
-#include "../shared/constants.h"
+#include "../shared/settings.h"
 
 namespace {
 	BrowserClient * g_instance = nullptr;
@@ -163,8 +162,8 @@ bool BrowserClient::GetViewRect(CefRefPtr<CefBrowser> browser, CefRect& rect)
 	rect.Set(
 		0,
 		0,
-		settings.value("BROWSER_WIDTH", constants::BROWSER_WIDTH).toInt(),
-		settings.value("BROWSER_HEIGHT", constants::BROWSER_HEIGHT).toInt()
+		settings.value(options::browser::WIDTH, fallback::browser::WIDTH).toInt(),
+		settings.value(options::browser::HEIGHT, fallback::browser::HEIGHT).toInt()
 	);
 	return true;
 }

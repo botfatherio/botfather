@@ -1,11 +1,11 @@
 #include "android_dialog.h"
 #include "ui_android_dialog.h"
-#include <QSettings>
 #include <QRadioButton>
 #include <QDebug>
 #include <QTableWidgetItem>
 #include <QMessageBox>
 #include <QPushButton>
+#include "../shared/settings.h"
 #include "../android/adb_wrapper.h"
 
 AndroidDialog::AndroidDialog(QWidget *parent) :
@@ -33,7 +33,7 @@ void AndroidDialog::refreshListOfDevicesAttached()
 	ui->attached_devices->setRowCount(0);
 	
 	QSettings settings;
-	QString adb_binary = settings.value("Android/adb_binary", "").toString();
+	QString adb_binary = settings.value(options::android::ADB_BINARY).toString();
 	AdbWrapper adb(this, adb_binary);
 	
 	QList<AdbDeviceInfo> devices;
@@ -79,5 +79,5 @@ void AndroidDialog::save()
 	QString serial_number = item ? item->text() : "";
 	
 	QSettings settings;
-	settings.setValue("Android/serial_number", serial_number);
+	settings.setValue(options::android::SERIAL_NUMBER, serial_number);
 }

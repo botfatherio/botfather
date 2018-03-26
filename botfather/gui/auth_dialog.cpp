@@ -3,8 +3,8 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <QCloseEvent>
-#include <QSettings>
 #include <QDebug>
+#include "../shared/settings.h"
 #include "../auth/authenticator.h"
 
 AuthDialog::AuthDialog(QString software_slug, QString version_string, QString version_secret, QWidget *parent) :
@@ -28,9 +28,9 @@ AuthDialog::AuthDialog(QString software_slug, QString version_string, QString ve
 	connect(ui->password, SIGNAL(returnPressed()), SLOT(on_login_pressed()));
 	
 	QSettings settings;
-	QString username = settings.value("auth/username", QString()).toString();
-	QString password = settings.value("auth/password", QString()).toString();
-	bool remember_me = settings.value("auth/remember_me", false).toBool();
+	QString username = settings.value(options::auth::USERNAME).toString();
+	QString password = settings.value(options::auth::PASSWORD).toString();
+	bool remember_me = settings.value(options::auth::REMEMBER_ME, false).toBool();
 	
 	this->ui->username->setText(username);
 	this->ui->password->setText(password);
@@ -65,10 +65,10 @@ void AuthDialog::on_login_pressed()
 void AuthDialog::on_remember_me_toggled(bool checked)
 {
 	QSettings settings;
-	settings.setValue("auth/remember_me", checked);
+	settings.setValue(options::auth::REMEMBER_ME, checked);
 	if (!checked) {
-		settings.remove("auth/username");
-		settings.remove("auth/password");
+		settings.remove(options::auth::USERNAME);
+		settings.remove(options::auth::PASSWORD);
 	}
 }
 
@@ -128,9 +128,9 @@ void AuthDialog::onAuthenticated(int curtime, int premend, bool stable)
 {
 	// Login successfully, save the login info if remember me is checked.
 	QSettings settings;
-	if (settings.value("auth/remember_me", false).toBool()) {
-		settings.setValue("auth/username", this->ui->username->text());
-		settings.setValue("auth/password", this->ui->password->text());
+	if (settings.value(options::auth::REMEMBER_ME, false).toBool()) {
+		settings.setValue(options::auth::USERNAME, this->ui->username->text());
+		settings.setValue(options::auth::PASSWORD, this->ui->password->text());
 	}
 	
 	if (curtime > premend || premend == 0){

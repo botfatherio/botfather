@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QJSEngine>
 #include <QString>
-#include <QSettings>
 
 class Bot;
 
@@ -48,7 +47,6 @@ public:
 	
 private:
 	QJSEngine* m_engine_p;
-	QSettings m_settings;
 };
 
 #endif // BROWSER_API_H

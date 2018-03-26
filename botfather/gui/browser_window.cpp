@@ -1,11 +1,10 @@
 #include "browser_window.h"
 #include "ui_browser_window.h"
+#include <QDebug>
+#include <QAction>
 #include "browser_widget.h"
 #include "browser_address_bar.h"
-#include <QDebug>
-#include <QSettings>
-#include <QAction>
-#include "../shared/constants.h"
+#include "../shared/settings.h"
 #include "../browser/browser_client.h"
 #include "../browser/browser.h"
 
@@ -33,8 +32,8 @@ BrowserWindow::BrowserWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 
 	// Remember and set the browser dialogs geometry.
 	QSettings settings;
-	int width = settings.value("BROWSER_WIDTH", constants::BROWSER_WIDTH).toInt();
-	int height = settings.value("BROWSER_HEIGHT", constants::BROWSER_HEIGHT).toInt();
+	int width = settings.value(options::browser::WIDTH, fallback::browser::WIDTH).toInt();
+	int height = settings.value(options::browser::HEIGHT, fallback::browser::HEIGHT).toInt();
 	int toolbar_height = this->ui->toolBar->height();
 	this->setGeometry(0, 0, width, height + toolbar_height);
 	

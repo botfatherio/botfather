@@ -1,10 +1,9 @@
 #include "config_dialog.h"
 #include "ui_config_dialog.h"
-#include <QSettings>
 #include <QFileInfo>
 #include <QFileDialog>
 #include <QDebug>
-#include "../shared/constants.h"
+#include "../shared/settings.h"
 
 ConfigDialog::ConfigDialog(QWidget *parent) :
 	QDialog(parent),
@@ -14,7 +13,7 @@ ConfigDialog::ConfigDialog(QWidget *parent) :
 	this->loadConfig();
 
 	QSettings settings;
-	QString flash_filename = settings.value("LOCAL_FLASH_FILENAME", constants::LOCAL_FLASH_FILENAME).toString();
+	QString flash_filename = settings.value(options::browser::FLASH_FILENAME).toString();
 
 	QFileInfo flash_fileinfo(flash_filename);
 	if (flash_fileinfo.exists() && flash_fileinfo.isFile()) {
@@ -36,24 +35,23 @@ ConfigDialog::~ConfigDialog()
 void ConfigDialog::saveConfig()
 {
 	QSettings s;
-	// TODO: make them all group/value. achtung, das muss auch an anderer stelle gemacht werden.
-	s.setValue("BROWSER_WIDTH", this->ui->browser_width->value());
-	s.setValue("BROWSER_HEIGHT", this->ui->browser_height->value());
-	s.setValue("LOCAL_FLASH_FILENAME", this->ui->local_flash_filename->text());
-	s.setValue("LOCAL_FLASH_VERSION", this->ui->local_flash_version->text());
-	s.setValue("USE_SYSTEM_FLASH", this->ui->use_system_flash->isChecked());
-	s.setValue("Android/adb_binary", this->ui->adb_binary->text());
+	s.setValue(options::browser::WIDTH, this->ui->browser_width->value());
+	s.setValue(options::browser::HEIGHT, this->ui->browser_height->value());
+	s.setValue(options::browser::FLASH_FILENAME, this->ui->local_flash_filename->text());
+	s.setValue(options::browser::FLASH_VERSION, this->ui->local_flash_version->text());
+	s.setValue(options::browser::USE_SYSTEM_FLASH, this->ui->use_system_flash->isChecked());
+	s.setValue(options::android::ADB_BINARY, this->ui->adb_binary->text());
 }
 
 void ConfigDialog::loadConfig()
 {
 	QSettings s;
-	this->ui->browser_width->setValue(s.value("BROWSER_WIDTH", constants::BROWSER_WIDTH).toInt());
-	this->ui->browser_height->setValue(s.value("BROWSER_HEIGHT", constants::BROWSER_HEIGHT).toInt());
-	this->ui->local_flash_filename->setText(s.value("LOCAL_FLASH_FILENAME", constants::LOCAL_FLASH_FILENAME).toString());
-	this->ui->local_flash_version->setText(s.value("LOCAL_FLASH_VERSION", constants::LOCAL_FLASH_VERSION).toString());
-	this->ui->use_system_flash->setChecked(s.value("USE_SYSTEM_FLASH", constants::USE_SYSTEM_FLASH).toBool());
-	this->ui->adb_binary->setText(s.value("Android/adb_binary", "").toString());
+	this->ui->browser_width->setValue(s.value(options::browser::WIDTH, fallback::browser::WIDTH).toInt());
+	this->ui->browser_height->setValue(s.value(options::browser::HEIGHT, fallback::browser::HEIGHT).toInt());
+	this->ui->local_flash_filename->setText(s.value(options::browser::FLASH_FILENAME).toString());
+	this->ui->local_flash_version->setText(s.value(options::browser::FLASH_VERSION).toString());
+	this->ui->use_system_flash->setChecked(s.value(options::browser::USE_SYSTEM_FLASH, fallback::browser::USE_SYSTEM_FLASH).toBool());
+	this->ui->adb_binary->setText(s.value(options::android::ADB_BINARY).toString());
 }
 
 void ConfigDialog::on_adb_binary_browse_button_clicked()
@@ -66,5 +64,8 @@ void ConfigDialog::on_adb_binary_browse_button_clicked()
 		Q_NULLPTR,
 		QFileDialog::DontUseNativeDialog
 	);
-	ui->adb_binary->setText(adb_binary_file_name);
+	
+	if (!adb_binary_file_name.isEmpty()) {
+		ui->adb_binary->setText(adb_binary_file_name);
+	}
 }
