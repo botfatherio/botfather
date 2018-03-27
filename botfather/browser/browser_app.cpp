@@ -1,6 +1,9 @@
 #include "browser_app.h"
 #include <QDebug>
+#include <QFile>
 #include <QFileInfo>
+#include <QJsonObject>
+#include <QJsonDocument>
 #include "include/cef_browser.h"
 #include "include/cef_command_line.h"
 #include "include/views/cef_browser_view.h"
@@ -47,24 +50,47 @@ void BrowserApp::OnContextInitialized()
 	*/
 }
 
+static QString parseFlashVersionFromManifest(QString flash_manifest_path)
+{
+	QFile manifest_file(flash_manifest_path);
+	if (!manifest_file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		return "";
+	}
+	
+	QJsonDocument json = QJsonDocument::fromJson(manifest_file.readAll());
+	QString version = json.object().value("version").toString();
+	return version;
+}
+
 void BrowserApp::OnBeforeCommandLineProcessing(const CefString& process_type, CefRefPtr<CefCommandLine> command_line)
 {
 	Q_UNUSED(process_type);
-
 	QSettings settings;
-	if (settings.value(options::browser::USE_SYSTEM_FLASH, fallback::browser::USE_SYSTEM_FLASH).toBool()) {
-		command_line->AppendSwitch("enable-system-flash");
-	} else {
-		QString local_flash_filename(settings.value(options::browser::FLASH_FILENAME).toString());
-		QString local_flash_version(settings.value(options::browser::FLASH_VERSION).toString());
-		QFileInfo local_flash_fileinfo(local_flash_filename);
+
+#ifdef Q_OS_LINUX
+	QString flash_so(settings.value(options::browser::FLASH_SO).toString());
+	QString flash_manifest(settings.value(options::browser::FLASH_MANIFEST).toString());
+	
+	QFileInfo flash_so_info(flash_so);
+	QFileInfo flash_manifest_info(flash_manifest);
+	
+	bool flash_so_exists = flash_so_info.exists() && flash_so_info.isFile();
+	bool flash_manifest_exists = flash_manifest_info.exists() && flash_manifest_info.isFile();
+
+	if (flash_so_exists && flash_manifest_exists) {
 		
-		if (local_flash_fileinfo.exists() && local_flash_fileinfo.isFile()) {
-			command_line->AppendSwitchWithValue("ppapi-flash-path", local_flash_filename.toStdString());
-			command_line->AppendSwitchWithValue("ppapi-flash-version", local_flash_version.toStdString());
+		QString flash_version = parseFlashVersionFromManifest(flash_manifest);
+		if (!flash_version.isEmpty()) {
+			command_line->AppendSwitchWithValue("ppapi-flash-path", flash_so.toStdString());
+			command_line->AppendSwitchWithValue("ppapi-flash-version", flash_version.toStdString());
 		}
 	}
-	
+#else
+	if (settings.value(options::browser::USE_SYSTEM_FLASH, fallback::browser::USE_SYSTEM_FLASH).toBool()) {
+		command_line->AppendSwitch("enable-system-flash");
+	}
+#endif
+
 	// Loads system plugins like flash in newer CEF versions.
 	command_line->AppendSwitch("load-extension");
 	

@@ -16,7 +16,9 @@ public:
 	~ConfigDialog();
 	
 public slots:
-	void on_adb_binary_browse_button_clicked();
+	void on_adb_binary_browse_button_pressed();
+	void on_browse_flash_so_pressed();
+	void on_browse_flash_manifest_pressed();
 	void saveConfig();
 	void loadConfig();
 	

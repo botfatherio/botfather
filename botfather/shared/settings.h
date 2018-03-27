@@ -10,8 +10,8 @@ namespace options
 	{
 		static const QString WIDTH = "browser/width";
 		static const QString HEIGHT = "browser/height";
-		static const QString FLASH_FILENAME = "browser/flash_filename";
-		static const QString FLASH_VERSION = "browser/flash_version";
+		static const QString FLASH_SO = "browser/flash_so";
+		static const QString FLASH_MANIFEST = "browser/flash_manifest";
 		static const QString USE_SYSTEM_FLASH = "browser/use_system_flash";
 	}
 	namespace android

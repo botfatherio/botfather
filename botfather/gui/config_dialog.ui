@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>542</width>
-    <height>380</height>
+    <width>500</width>
+    <height>530</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -92,58 +92,101 @@
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox">
+        <widget class="QGroupBox" name="flash_on_linux">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="title">
-          <string>Flash (Changes require restarts)</string>
+          <string>Flash on Linux</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
-           <widget class="QLineEdit" name="local_flash_filename">
-            <property name="placeholderText">
-             <string>Local Flash filename (eg: pepflashplayer.dll or libpepflashplayer.so)</string>
-            </property>
-            <property name="clearButtonEnabled">
-             <bool>true</bool>
-            </property>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <widget class="QLineEdit" name="flash_so">
+              <property name="placeholderText">
+               <string>Flash Player PPAPI libpepflashplayer.so</string>
+              </property>
+              <property name="clearButtonEnabled">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="browse_flash_so">
+              <property name="text">
+               <string>Browse...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
-           <widget class="QLineEdit" name="local_flash_version">
-            <property name="placeholderText">
-             <string>Local Flash version (eg: 28.0.0.161)</string>
-            </property>
-            <property name="clearButtonEnabled">
-             <bool>true</bool>
-            </property>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QLineEdit" name="flash_manifest">
+              <property name="placeholderText">
+               <string>Flash Player PPAPI manifest.json</string>
+              </property>
+              <property name="clearButtonEnabled">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="browse_flash_manifest">
+              <property name="text">
+               <string>Browse...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
            <widget class="QLabel" name="label">
             <property name="text">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Read &lt;a href=&quot;https://botfather.io/docs/player/how-to-install-adobe-flash/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;how to install Adobe Flash&lt;/span&gt;&lt;/a&gt; manually for bofather.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://get.adobe.com/de/flashplayer/otherversions/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Download FP for Linux 64-bit PPAPI&lt;/span&gt;&lt;/a&gt; and extract it. Then select the extracted libpepflashplayer.so and manifest.json above. Press OK and restart Botfather.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
             </property>
             <property name="openExternalLinks">
              <bool>true</bool>
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="QLabel" name="manual_flash_installation_info">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="flash_on_window">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="title">
+          <string>Flash on Window</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_7">
           <item>
            <widget class="QCheckBox" name="use_system_flash">
             <property name="enabled">
              <bool>false</bool>
             </property>
             <property name="text">
-             <string>Use system wide flash installation instead (Windows only)</string>
+             <string>Use system wide flash installation</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://get.adobe.com/de/flashplayer/otherversions/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Download FP for Opera and Chromium PPAPI&lt;/span&gt;&lt;/a&gt; for Windows and install it. Then tick the checkbox above, press OK and restart Botfather.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+            <property name="openExternalLinks">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
