@@ -16,3 +16,13 @@ bool Image::valid()
 {
 	return !this->m_umat.empty();
 }
+
+int Image::getWidth()
+{
+	return m_umat.cols;
+}
+
+int Image::getHeight()
+{
+	return m_umat.rows;
+}

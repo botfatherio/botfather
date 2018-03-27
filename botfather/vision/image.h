@@ -16,7 +16,10 @@ public:
 	Image(cv::UMat umat);
 	
 	cv::UMat getUMat() const;
+	
 	Q_INVOKABLE bool valid();
+	Q_INVOKABLE int getWidth();
+	Q_INVOKABLE int getHeight();
 	
 private:
 	cv::UMat m_umat;
