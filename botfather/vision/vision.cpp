@@ -32,6 +32,14 @@ cv::UMat Vision::grayImage(cv::UMat image)
 }
 
 // static
+cv::UMat Vision::resizeImage(cv::UMat image, int new_width, int new_height)
+{
+	cv::UMat resized_image;
+	cv::resize(image, resized_image, cv::Size(new_width, new_height));
+	return resized_image;
+}
+
+// static
 cv::UMat Vision::isolateColor(cv::UMat image, cv::Scalar min_hsv, cv::Scalar max_hsv, bool keep_color)
 {
 	cv::UMat hsv_image, bgr_result_image;

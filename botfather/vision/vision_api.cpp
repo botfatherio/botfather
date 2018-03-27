@@ -50,6 +50,12 @@ QJSValue VisionAPI::grayImage(Image *image)
 	return m_engine_p->newQObject(new Image(gray_image));
 }
 
+QJSValue VisionAPI::resizeImage(Image *image, int new_width, int new_height)
+{
+	cv::UMat resized_image = Vision::resizeImage(image->getUMat(), new_width, new_height);
+	return m_engine_p->newQObject(new Image(resized_image));
+}
+
 QJSValue VisionAPI::isolateColor(Image *image, HSVColor* min_hsv, HSVColor* max_hsv, bool keep_color)
 {
 	cv::UMat result_image = Vision::isolateColor(image->getUMat(), min_hsv->getScalar(), max_hsv->getScalar(), keep_color);
