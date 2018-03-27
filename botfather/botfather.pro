@@ -76,7 +76,8 @@ SOURCES += \
     android/adb_wrapper.cpp \
     gui/android_dialog.cpp \
     gui/auth_dialog.cpp \
-    auth/authenticator.cpp
+    auth/authenticator.cpp \
+    updater/updater_dialog.cpp
 
 HEADERS += \
     browser/browser.h \
@@ -107,7 +108,8 @@ HEADERS += \
     gui/android_dialog.h \
     gui/auth_dialog.h \
     auth/authenticator.h \
-    shared/settings.h
+    shared/settings.h \
+    updater/updater_dialog.h
 
 FORMS += \
     gui/control_window.ui \
@@ -115,7 +117,8 @@ FORMS += \
     gui/browser_window.ui \
     gui/update_widget.ui \
     gui/android_dialog.ui \
-    gui/auth_dialog.ui
+    gui/auth_dialog.ui \
+    updater/updater_dialog.ui
 
 RESOURCES += \
     res/gui.qrc
