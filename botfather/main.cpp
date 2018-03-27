@@ -1,7 +1,6 @@
 #include <QApplication>
 #include <QSettings>
 #include <QTime>
-#include "gui/update_widget.h"
 #include "gui/auth_dialog.h"
 #include "gui/control_window.h"
 #include "browser/browser.h"
@@ -53,6 +52,9 @@ int main(int argc, char *argv[])
 	QObject::connect(updater_dialog, &UpdaterDialog::finished, []() {
 		ControlWindow *control_window = new ControlWindow;
 		AuthDialog *auth_dialog = new AuthDialog("botfather-be", QCoreApplication::applicationVersion(), "WmXrhd3ifA8MwTRsjFgkbVsVbGsSiYr4", control_window);
+		
+		// Tell the control window about the user license and the programs stability.
+		QObject::connect(auth_dialog, SIGNAL(remoteApiInfo(int,int,bool)), control_window, SLOT(applyRemoteApiInfo(int,int,bool)));
 		
 		control_window->show();
 		auth_dialog->show();

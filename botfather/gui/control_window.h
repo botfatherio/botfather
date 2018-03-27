@@ -22,7 +22,7 @@ public:
 	~ControlWindow();
 	
 public slots:
-	void open(bool stable, bool trial);
+	void applyRemoteApiInfo(int curtime, int premend, bool stable);
 	void on_actionStart_triggered();
 	void bot_started();
 	void on_actionStop_triggered();

@@ -19,6 +19,9 @@ public:
 	explicit AuthDialog(QString software_slug, QString version_string, QString version_secret, QWidget *parent = 0);
 	~AuthDialog();
 	
+signals:
+	void remoteApiInfo(int curtime, int premend, bool stable);
+	
 public slots:
 	void on_login_pressed();
 	void on_remember_me_toggled(bool checked);

@@ -148,5 +148,6 @@ void AuthDialog::onAuthenticated(int curtime, int premend, bool stable)
 		message_box.exec();
 	}
 	
+	emit remoteApiInfo(curtime, premend, stable);
 	accept();
 }

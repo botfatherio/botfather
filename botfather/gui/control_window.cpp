@@ -24,17 +24,10 @@ ControlWindow::~ControlWindow()
 	delete ui;
 }
 
-void ControlWindow::open(bool stable, bool trial)
-{
-	// FIXME: wird nicht genutzt, muss bisschen angepasset werden
-	this->trial = trial;
-	if (stable){
-		this->setWindowTitle(this->windowTitle() + " - Stable");
-	}
-	if (trial) {
-		this->setWindowTitle(this->windowTitle() + " - Trial");
-	}
-	this->show();
+void ControlWindow::applyRemoteApiInfo(int curtime, int premend, bool stable)
+{	
+	trial = curtime > premend;
+	this->setWindowTitle(windowTitle() + (stable ? " - Stable" : "") + (trial ? " - Trial" : " - Premium"));
 }
 
 void ControlWindow::on_actionStart_triggered()
