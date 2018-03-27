@@ -70,7 +70,6 @@ SOURCES += \
     gui/browser_widget.cpp \
     gui/browser_address_bar.cpp \
     updater/update_checker.cpp \
-    gui/update_widget.cpp \
     android/android_api.cpp \
     android/adb_device_info.cpp \
     android/adb_wrapper.cpp \
@@ -101,7 +100,6 @@ HEADERS += \
     gui/browser_widget.h \
     gui/browser_address_bar.h \
     updater/update_checker.h \
-    gui/update_widget.h \
     android/android_api.h \
     android/adb_device_info.h \
     android/adb_wrapper.h \
@@ -115,7 +113,6 @@ FORMS += \
     gui/control_window.ui \
     gui/config_dialog.ui \
     gui/browser_window.ui \
-    gui/update_widget.ui \
     gui/android_dialog.ui \
     gui/auth_dialog.ui \
     updater/updater_dialog.ui
