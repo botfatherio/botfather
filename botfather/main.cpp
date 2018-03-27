@@ -5,6 +5,7 @@
 #include "gui/auth_dialog.h"
 #include "gui/control_window.h"
 #include "browser/browser.h"
+#include "updater/updater_dialog.h"
 
 #if defined(_WIN32) || defined(_WIN64)
 #include <Windows.h>
@@ -43,27 +44,20 @@ int main(int argc, char *argv[])
 	Browser::init(argc, argv);
 #endif
 
-//	UpdateWidget update_widget;
-//	AuthWindow auth_window("botfather-be", QCoreApplication::applicationVersion(), "WmXrhd3ifA8MwTRsjFgkbVsVbGsSiYr4");
-//	ControlWindow control_window;
+	UpdaterDialog *updater_dialog = new UpdaterDialog;
+	updater_dialog->show();
 	
-//	// Make the auth window show when the update dialog is done.
-//	QObject::connect(&update_widget, SIGNAL(finished()), &auth_window, SLOT(show()));
+	// We can't execute the UpdaterDialog, otherwise using QApplication::quit() would work, but the UpdaterDialog
+	// needs to make use of it. Thus we have to use show(), but we dont won't to see the auth and control window
+	// while the updater is visible. Thats why we show the laters ones not until the UpdaterDialog finished.
+	QObject::connect(updater_dialog, &UpdaterDialog::finished, []() {
+		ControlWindow *control_window = new ControlWindow;
+		AuthDialog *auth_dialog = new AuthDialog("botfather-be", QCoreApplication::applicationVersion(), "WmXrhd3ifA8MwTRsjFgkbVsVbGsSiYr4", control_window);
+		
+		control_window->show();
+		auth_dialog->show();
+	});
 	
-//	// Make the control window show when the auth window permits it.
-//	QObject::connect(&auth_window, &AuthWindow::permitted, &control_window, &ControlWindow::open);
-	
-//	// Show the update dialog.
-//	//update_widget.show(); // FIXME: updater window ist noch da nach update failed
-//	//update_widget.checkForUpdates();
-//	//auth_window.show();
-	
-	ControlWindow *control_window = new ControlWindow;
-	AuthDialog *auth_dialog = new AuthDialog("botfather-be", QCoreApplication::applicationVersion(), "WmXrhd3ifA8MwTRsjFgkbVsVbGsSiYr4", control_window);
-	
-	control_window->show();
-	auth_dialog->show();
-
 	// Runs the QApplication event loop blocking. When the event loop stops the timer
 	// powering the CEF event loop will stop aswell. After that the CEF can be shut
 	// down calling Browser::quit(). Subsequently both cef and qt event and message loops
