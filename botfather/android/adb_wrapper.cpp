@@ -2,6 +2,8 @@
 #include <QProcess>
 #include <QRegularExpression>
 #include <QDebug>
+#include <QDir>
+#include <QPixmap>
 
 AdbWrapper::AdbWrapper(QObject *parent, QString adb_binary) : QObject(parent)
 {
@@ -99,9 +101,28 @@ bool AdbWrapper::sendTextInput(QString serial_number, QString text)
 
 bool AdbWrapper::takeScreenshot(QString serial_number, QImage &screenshot)
 {
+#ifdef Q_OS_WIN
+    QStringList cap_args;
+    cap_args << "-s" << serial_number << "shell" << "screencap" << "-p" << "/mnt/sdcard/BFTMP.png";
+
+    QStringList pull_args;
+    pull_args << "-s" << serial_number << "pull" << "/mnt/sdcard/BFTMP.png" << QDir::tempPath() + "/BFTMP.png";
+
+    if (!evaluateAdbCommand(cap_args)) {
+        return false;
+    }
+
+    if (!evaluateAdbCommand(pull_args)) {
+        return false;
+    }
+
+    QPixmap pixmap(QDir::tempPath() + "/BFTMP.png");
+    screenshot = pixmap.toImage();
+    return true;
+#else
 	QStringList args;
 	args << "-s" << serial_number << "exec-out" << "screencap" << "-p";
-	
+
 	QByteArray std_out;
 	QByteArray std_err;
 	QProcess::ProcessError result = executeAdbCommand(args, std_out, std_err);
@@ -109,9 +130,10 @@ bool AdbWrapper::takeScreenshot(QString serial_number, QImage &screenshot)
 	if (std_out.isEmpty() || !std_err.isEmpty() || result != QProcess::ProcessError::UnknownError) {
 		return false;
 	}
-	
+
 	screenshot = QImage::fromData(std_out, "PNG");
 	return true;
+#endif
 }
 
 bool AdbWrapper::evaluateAdbCommand(QStringList arguments, int timeout_in_ms)
