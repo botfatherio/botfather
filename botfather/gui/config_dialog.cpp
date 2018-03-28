@@ -27,9 +27,9 @@ ConfigDialog::ConfigDialog(QWidget *parent) :
 	}
 	
 #ifdef Q_OS_LINUX
-	ui->flash_on_linux->setEnabled(true);
+    ui->flash_on_window->setEnabled(false);
 #else
-	ui->flash_on_window->setEnabled(true);
+    ui->flash_on_linux->setEnabled(false);
 #endif
 	
 	connect(ui->button_box, SIGNAL(accepted()), this, SLOT(saveConfig()));

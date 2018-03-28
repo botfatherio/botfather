@@ -94,7 +94,7 @@
        <item>
         <widget class="QGroupBox" name="flash_on_linux">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="title">
           <string>Flash on Linux</string>
@@ -161,7 +161,7 @@
        <item>
         <widget class="QGroupBox" name="flash_on_window">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="title">
           <string>Flash on Window</string>
@@ -170,7 +170,7 @@
           <item>
            <widget class="QCheckBox" name="use_system_flash">
             <property name="enabled">
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
             <property name="text">
              <string>Use system wide flash installation</string>
