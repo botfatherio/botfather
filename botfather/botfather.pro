@@ -29,7 +29,7 @@ unix {
 
     # This tells the ELF to look for required libraries right next to the binary first.
     # That way libcef.so and other shared objects can be loaded which otherwise couldn't be found.
-    QMAKE_RPATHDIR += ./libs
+    QMAKE_RPATHDIR += ./
 
     INCLUDEPATH += $${LINUX_CEF_DIR}
     LIBS += -L$${LINUX_CEF_DIR}/libcef_dll_wrapper/ -lcef_dll_wrapper

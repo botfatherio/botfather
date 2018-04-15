@@ -42,7 +42,7 @@ unix {
     QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 
     # Define where to look for extra libraries
-    QMAKE_RPATHDIR += ./libs
+    QMAKE_RPATHDIR += ./
 
     # Newer distros set GCC default link flag -pie, which marks e_type as ET_DYN on the binary file.
     # Consequently, the Operating System recognizes them as Shared Library.
