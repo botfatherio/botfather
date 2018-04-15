@@ -25,7 +25,7 @@ unix {
     # Newer distros set GCC default link flag -pie, which marks e_type as ET_DYN on the binary file.
     # Consequently, the Operating System recognizes them as Shared Library.
     # Using -no-pie our project will be a executable, not a shared libary.
-    #QMAKE_LFLAGS += -no-pie
+    QMAKE_LFLAGS += -no-pie
 
     # This tells the ELF to look for required libraries right next to the binary first.
     # That way libcef.so and other shared objects can be loaded which otherwise couldn't be found.
