@@ -41,7 +41,7 @@ unix {
     LIBS += -L/usr/lib -lopencv_features2d -lopencv_flann -lopencv_imgcodecs -lopencv_imgproc -lopencv_core
 
     # Dramatically reduces shared libary file size after linking
-    CONFIG(release, debug|release):QMAKE_POST_LINK += ../botfather/tools/strip_all_so_files.sh $${DESTDIR}
+    CONFIG(release, debug|release):QMAKE_POST_LINK += ../tools/strip_all_so_files.sh $${DESTDIR}
 
     # Example of copying files after linking
     #CONFIG(release, debug|release):QMAKE_POST_LINK += ../botfather/tools/collect_deps.sh $${DESTDIR} Release $${LINUX_CEF_DIR}
