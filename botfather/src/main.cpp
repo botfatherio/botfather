@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 	QCoreApplication::setOrganizationName("BotFatherProject");
 	QCoreApplication::setOrganizationDomain("botfather.io");
 	QCoreApplication::setApplicationName("Botfather");
-	QCoreApplication::setApplicationVersion("2.0.1");
+	QCoreApplication::setApplicationVersion("2.0.2");
 	QSettings::setDefaultFormat(QSettings::IniFormat);
 
 	// Seed the random function once using the current time in msec as seed.
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 	// while the updater is visible. Thats why we show the laters ones not until the UpdaterDialog finished.
 	QObject::connect(updater_dialog, &UpdaterDialog::finished, []() {
 		ControlWindow *control_window = new ControlWindow;
-		AuthDialog *auth_dialog = new AuthDialog("botfather-be", QCoreApplication::applicationVersion(), "WmXrhd3ifA8MwTRsjFgkbVsVbGsSiYr4", control_window);
+		AuthDialog *auth_dialog = new AuthDialog("botfather", QCoreApplication::applicationVersion(), "ABd7qdoggCN6nZvj6eL3Ndwoc6azL8SD", control_window);
 		
 		// Tell the control window about the user license and the programs stability.
 		QObject::connect(auth_dialog, SIGNAL(remoteApiInfo(int,int,bool)), control_window, SLOT(applyRemoteApiInfo(int,int,bool)));
