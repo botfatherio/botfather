@@ -17,7 +17,7 @@ public:
 	
 	cv::UMat getUMat() const;
 	
-	Q_INVOKABLE bool valid();
+	Q_INVOKABLE bool isValid();
 	Q_INVOKABLE int getWidth();
 	Q_INVOKABLE int getHeight();
 	

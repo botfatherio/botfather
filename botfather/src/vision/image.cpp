@@ -12,7 +12,7 @@ cv::UMat Image::getUMat() const
 	return this->m_umat;
 }
 
-bool Image::valid()
+bool Image::isValid()
 {
 	return !this->m_umat.empty();
 }
