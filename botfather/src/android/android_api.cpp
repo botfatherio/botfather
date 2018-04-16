@@ -80,3 +80,23 @@ QJSValue AndroidAPI::takeScreenshot()
 	cv::UMat umat = Vision::qimageToUmat(qimage).clone();
 	return m_engine_p->newQObject(new Image(umat));
 }
+
+int AndroidAPI::getDeviceWidth()
+{
+	QImage qimage;
+	adb->takeScreenshot(serial_number, qimage);
+	if (qimage.isNull()) {
+		return -1;
+	}
+	return qimage.width();
+}
+
+int AndroidAPI::getDeviceHeight()
+{
+	QImage qimage;
+	adb->takeScreenshot(serial_number, qimage);
+	if (qimage.isNull()) {
+		return -1;
+	}
+	return qimage.height();
+}

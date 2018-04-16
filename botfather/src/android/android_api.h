@@ -25,6 +25,12 @@ public:
 	Q_INVOKABLE bool sendTextInput(QString text);
 	Q_INVOKABLE QJSValue takeScreenshot();
 	
+	// Returns the android devices screenshot width or -1 if it couldn't be obtained.
+	Q_INVOKABLE int getDeviceWidth();
+	
+	// Returns the android devices screenshot height or -1 if it couldn't be obtained.
+	Q_INVOKABLE int getDeviceHeight();
+	
 private:
 	QJSEngine *m_engine_p;
 	QSettings m_settings;
