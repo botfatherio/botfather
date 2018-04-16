@@ -72,7 +72,7 @@ void Browser::init(int argc, char **argv)
 	// Initialize CEF.
 	CefInitialize(main_args, settings, app.get(), sandbox_info);
 	
-	// 
+	// Start the Cef Messageloop without having this function blocking
 	QTimer *timer = new QTimer();
 	QObject::connect(timer, &QTimer::timeout, CefDoMessageLoopWork);
 	timer->start(1);
@@ -134,6 +134,7 @@ void Browser::initCefSettings(CefSettings& settings)
 
 void Browser::resize(QSize new_size)
 {
+	Q_ASSERT(!BrowserClient::instance());
 	// Resize the browser by first setting it's new size and than calling CerBrowserHost::WasReesized to make the browser
 	// lookup it's new size by calling CefRenderHandler::GetViewRect.
 	QSettings settings;
@@ -145,53 +146,64 @@ void Browser::resize(QSize new_size)
 
 QImage Browser::getImage()
 {
+	Q_ASSERT(!BrowserClient::instance());
 	return BrowserClient::getImage();
 }
 
 void Browser::blockRessource(QString ressource)
 {
+	Q_ASSERT(!BrowserClient::instance());
 	BrowserClient::instance()->blockRessource(ressource);
 }
 
 void Browser::replaceRessource(QString old_ressource, QString new_ressource)
 {
+	Q_ASSERT(!BrowserClient::instance());
 	BrowserClient::instance()->replaceRessource(old_ressource, new_ressource);
 }
 
 void Browser::unmodifyRessource(QString ressource)
 {
+	Q_ASSERT(!BrowserClient::instance());
 	BrowserClient::instance()->unmodifyRessource(ressource);
 }
 
 void Browser::unmodifyRessources()
 {
+	Q_ASSERT(!BrowserClient::instance());
 	BrowserClient::instance()->unmodifyRessources();
 }
 
 void Browser::loadUrl(QString url)
 {
+	Q_ASSERT(!BrowserClient::instance());
 	BrowserClient::instance()->setLoading(true);
 	BrowserClient::instance()->getBrowser()->GetMainFrame()->LoadURL(url.toStdString());
 }
 
 QString Browser::getUrl()
 {
+	Q_ASSERT(!BrowserClient::instance());
 	return QString::fromStdString(BrowserClient::instance()->getBrowser()->GetMainFrame()->GetURL().ToString());
 }
 
 void Browser::reloadIgnoringCache()
 {
+	Q_ASSERT(!BrowserClient::instance());
 	BrowserClient::instance()->setLoading(true);
 	BrowserClient::instance()->getBrowser()->ReloadIgnoreCache();
 }
 
 bool Browser::loading()
 {
+	Q_ASSERT(!BrowserClient::instance());
 	return BrowserClient::instance()->loading();
 }
 
 bool Browser::bideLoading(int timeout_seconds)
 {
+	Q_ASSERT(!BrowserClient::instance());
+	
 	QElapsedTimer timer;
 	timer.start();
 	
@@ -207,28 +219,33 @@ bool Browser::bideLoading(int timeout_seconds)
 
 bool Browser::canGoBack()
 {
+	Q_ASSERT(!BrowserClient::instance());
 	return BrowserClient::instance()->getBrowser()->CanGoBack();
 }
 
 bool Browser::canGoForward()
 {
+	Q_ASSERT(!BrowserClient::instance());
 	return BrowserClient::instance()->getBrowser()->CanGoForward();
 }
 
 int Browser::getWidth()
 {
+	Q_ASSERT(!BrowserClient::instance());
 	QSettings settings;
 	return settings.value(options::browser::WIDTH, fallback::browser::WIDTH).toInt();
 }
 
 int Browser::getHeight()
 {
+	Q_ASSERT(!BrowserClient::instance());
 	QSettings settings;
 	return settings.value(options::browser::HEIGHT, fallback::browser::HEIGHT).toInt();
 }
 
 void Browser::executeJavascript(QString javascript_code)
 {
+	Q_ASSERT(!BrowserClient::instance());
 	BrowserClient::instance()->getBrowser()->GetMainFrame()->ExecuteJavaScript(
 		javascript_code.toStdString(),
 		BrowserClient::instance()->getBrowser()->GetMainFrame()->GetURL(),
@@ -238,6 +255,7 @@ void Browser::executeJavascript(QString javascript_code)
 
 void Browser::pressMouse(int button_type, int x, int y)
 {
+	Q_ASSERT(!BrowserClient::instance());
 	CefBrowserHost::MouseButtonType mbt = CefBrowserHost::MouseButtonType(button_type);
 	CefMouseEvent cms;
 	cms.x = x;
@@ -247,6 +265,7 @@ void Browser::pressMouse(int button_type, int x, int y)
 
 void Browser::releaseMouse(int button_type, int x, int y)
 {
+	Q_ASSERT(!BrowserClient::instance());
 	CefBrowserHost::MouseButtonType mbt = CefBrowserHost::MouseButtonType(button_type);
 	CefMouseEvent cms;
 	cms.x = x;
@@ -256,6 +275,7 @@ void Browser::releaseMouse(int button_type, int x, int y)
 
 void Browser::moveMouse(int x, int y)
 {
+	Q_ASSERT(!BrowserClient::instance());
 	CefMouseEvent cme;
 	cme.x = x;
 	cme.y = y;
@@ -265,6 +285,7 @@ void Browser::moveMouse(int x, int y)
 
 void Browser::scrollWheel(int x, int y, int delta_x, int delta_y)
 {
+	Q_ASSERT(!BrowserClient::instance());
 	CefMouseEvent cme;
 	cme.x = x;
 	cme.y = y;
@@ -287,21 +308,25 @@ int Browser::qtToCefMouseButtonType(int qt_button_code)
 
 void Browser::reload()
 {
+	Q_ASSERT(!BrowserClient::instance());
 	BrowserClient::instance()->setLoading(true);
 	BrowserClient::instance()->getBrowser()->Reload();
 }
 
 void Browser::goBack()
 {
+	Q_ASSERT(!BrowserClient::instance());
 	BrowserClient::instance()->getBrowser()->GoBack();
 }
 
 void Browser::goForward()
 {
+	Q_ASSERT(!BrowserClient::instance());
 	BrowserClient::instance()->getBrowser()->GoForward();
 }
 
 void Browser::stopLoad()
 {
+	Q_ASSERT(!BrowserClient::instance());
 	BrowserClient::instance()->getBrowser()->StopLoad();
 }
