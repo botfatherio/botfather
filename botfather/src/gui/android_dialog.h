@@ -1,5 +1,5 @@
-#ifndef ANDROID_DIALOG_H
-#define ANDROID_DIALOG_H
+#ifndef BFP__GUI__ANDROID_DIALOG_H
+#define BFP__GUI__ANDROID_DIALOG_H
 
 #include <QDialog>
 
@@ -23,4 +23,4 @@ private:
 	Ui::AndroidDialog *ui;
 };
 
-#endif // ANDROID_DIALOG_H
+#endif // BFP__GUI__ANDROID_DIALOG_H

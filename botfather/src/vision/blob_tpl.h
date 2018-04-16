@@ -1,5 +1,5 @@
-#ifndef VISION__BLOB_TPL_H
-#define VISION__BLOB_TPL_H
+#ifndef BFP__VISION__BLOB_TPL_H
+#define BFP__VISION__BLOB_TPL_H
 
 #include <QObject>
 #include <QJSValue>
@@ -78,4 +78,4 @@ private:
 	cv::SimpleBlobDetector::Params m_blob_params;
 };
 
-#endif // VISION__BLOB_TPL_H
+#endif // BFP__VISION__BLOB_TPL_H

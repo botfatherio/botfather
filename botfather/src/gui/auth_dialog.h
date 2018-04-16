@@ -1,5 +1,5 @@
-#ifndef AUTH_DIALOG_H
-#define AUTH_DIALOG_H
+#ifndef BFP__GUI__AUTH_DIALOG_H
+#define BFP__GUI__AUTH_DIALOG_H
 
 #include <QDialog>
 #include <QNetworkReply>
@@ -37,4 +37,4 @@ private:
 	Authenticator *authenticator;
 };
 
-#endif // AUTH_DIALOG_H
+#endif // BFP__GUI__AUTH_DIALOG_H

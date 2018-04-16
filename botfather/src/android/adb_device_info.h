@@ -1,5 +1,5 @@
-#ifndef ADB_DEVICE_INFO_H
-#define ADB_DEVICE_INFO_H
+#ifndef BFP__ANDROID__ADB_DEVICE_INFO_H
+#define BFP__ANDROID__ADB_DEVICE_INFO_H
 
 #include <QString>
 
@@ -42,4 +42,4 @@ private:
 	QString model;
 };
 
-#endif // ADB_DEVICE_INFO_H
+#endif // BFP__ANDROID__ADB_DEVICE_INFO_H

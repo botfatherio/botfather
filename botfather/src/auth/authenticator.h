@@ -1,5 +1,5 @@
-#ifndef AUTHENTICATOR_H
-#define AUTHENTICATOR_H
+#ifndef BFP__AUTH__AUTHENTICATOR_H
+#define BFP__AUTH__AUTHENTICATOR_H
 
 #include <QObject>
 #include <QNetworkReply>
@@ -35,4 +35,4 @@ private:
 	bool verifyHash(QString hashhex, int premend, int curtime) const;
 };
 
-#endif // AUTHENTICATOR_H
+#endif // BFP__AUTH__AUTHENTICATOR_H

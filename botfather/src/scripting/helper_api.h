@@ -1,5 +1,5 @@
-#ifndef BFP__MISC__HELPER_API_H
-#define BFP__MISC__HELPER_API_H
+#ifndef BFP__SCRIPTING__HELPER_API_H
+#define BFP__SCRIPTING__HELPER_API_H
 
 #include <QObject>
 #include <QJSEngine>
@@ -46,4 +46,4 @@ private:
 	QJSEngine* m_engine_p;
 };
 
-#endif // BFP__MISC__HELPER_API_H
+#endif // BFP__SCRIPTING__HELPER_API_H

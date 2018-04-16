@@ -1,5 +1,5 @@
-#ifndef BFP__MISC__CONSTANTS_H
-#define BFP__MISC__CONSTANTS_H
+#ifndef BFP__SHARED__CONSTANTS_H
+#define BFP__SHARED__CONSTANTS_H
 
 #include <QSettings>
 #include <QString>
@@ -36,4 +36,4 @@ namespace fallback
 	}
 }
 
-#endif // BFP__MISC__CONSTANTS_H
+#endif // BFP__SHARED__CONSTANTS_H

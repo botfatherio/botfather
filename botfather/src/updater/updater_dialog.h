@@ -1,5 +1,5 @@
-#ifndef UPDATER_DIALOG_H
-#define UPDATER_DIALOG_H
+#ifndef BFP__UPDATER__UPDATER_DIALOG_H
+#define BFP__UPDATER__UPDATER_DIALOG_H
 
 #include <QDialog>
 #include "update_checker.h"
@@ -26,4 +26,4 @@ private:
 	UpdateChecker *update_checker;
 };
 
-#endif // UPDATER_DIALOG_H
+#endif // BFP__UPDATER__UPDATER_DIALOG_H

@@ -1,5 +1,5 @@
-#ifndef ADB_WRAPPER_H
-#define ADB_WRAPPER_H
+#ifndef BFP__ANDROID__ADB_WRAPPER_H
+#define BFP__ANDROID__ADB_WRAPPER_H
 
 #include <QObject>
 #include <QList>
@@ -34,4 +34,4 @@ private:
 	QProcess::ProcessError executeAdbCommand(QStringList arguments, QByteArray &standard_output, QByteArray &standard_error, int timeout_in_ms = 30000);
 };
 
-#endif // ADB_WRAPPER_H
+#endif // BFP__ANDROID__ADB_WRAPPER_H
