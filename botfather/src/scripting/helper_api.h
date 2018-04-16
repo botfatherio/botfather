@@ -36,6 +36,9 @@ public:
 	
 	// Returns false if the user requested the script to end.
 	Q_INVOKABLE bool stopRequested();
+	
+	// Returns a absolute path to the dir of the currently run script.
+	Q_INVOKABLE QString getAbsoluteScriptDirPath();
 
 private:
 	BotThread* m_bot_thread_p;

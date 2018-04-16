@@ -54,3 +54,8 @@ bool HelperAPI::stopRequested()
 {
 	return m_bot_thread_p->isInterruptionRequested();
 }
+
+QString HelperAPI::getAbsoluteScriptDirPath()
+{
+	return m_bot_p->getAbsoluteScriptDirPath();
+}
