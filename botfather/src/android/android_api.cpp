@@ -61,6 +61,11 @@ bool AndroidAPI::sendSwipe(int x1, int y1, int x2, int y2, int duration_in_ms)
 	return adb->sendSwipe(serial_number, x1, y1, x2, y2, duration_in_ms);
 }
 
+bool AndroidAPI::sendEvent(QString device, int type, int code, int value)
+{
+	return adb->sendEvent(serial_number, device, type, code, value);
+}
+
 bool AndroidAPI::sendKeyEvent(QString key_event_code)
 {
 	return adb->sendKeyEvent(serial_number, key_event_code);
