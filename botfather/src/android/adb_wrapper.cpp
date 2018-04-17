@@ -85,7 +85,7 @@ bool AdbWrapper::sendSwipe(QString serial_number, int x1, int y1, int x2, int y2
 	return evaluateAdbCommand(args);
 }
 
-bool AdbWrapper::sendKeyevent(QString serial_number, QString key_event_code)
+bool AdbWrapper::sendKeyEvent(QString serial_number, QString key_event_code)
 {
 	QStringList args;
 	args << "-s" << serial_number << "shell" << "input" << "keyevent" << key_event_code;

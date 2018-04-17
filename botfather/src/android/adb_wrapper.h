@@ -21,7 +21,7 @@ public:
 	bool startApp(QString serial_number, QString package);
 	bool sendTap(QString serial_number, int x, int y);
 	bool sendSwipe(QString serial_number, int x1, int y1, int x2, int y2, int duration_in_ms);
-	bool sendKeyevent(QString serial_number, QString key_event_code); // https://developer.android.com/reference/android/view/KeyEvent.html
+	bool sendKeyEvent(QString serial_number, QString key_event_code); // https://developer.android.com/reference/android/view/KeyEvent.html
 	bool sendTextInput(QString serial_number, QString text);
 	bool takeScreenshot(QString serial_number, QImage &screenshot);
 	
