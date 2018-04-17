@@ -65,3 +65,23 @@ int Match::getY() const
 {
 	return this->m_y;
 }
+
+void Match::setLeft(int left)
+{
+	this->m_left = left;
+}
+
+void Match::setRight(int right)
+{
+	this->m_right = right;
+}
+
+void Match::setTop(int top)
+{
+	this->m_top = top;
+}
+
+void Match::setBottom(int bottom)
+{
+	this->m_bottom = bottom;
+}

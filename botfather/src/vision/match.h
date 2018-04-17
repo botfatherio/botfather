@@ -23,6 +23,11 @@ public:
 	Q_INVOKABLE int getX() const;
 	Q_INVOKABLE int getY() const;
 	
+	Q_INVOKABLE void setLeft(int left);
+	Q_INVOKABLE void setRight(int right);
+	Q_INVOKABLE void setTop(int top);
+	Q_INVOKABLE void setBottom(int bottom);
+	
 private:
 	// The tpls matching score on the reference (0.0 to 1.0).
 	double m_score = -1;
