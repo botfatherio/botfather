@@ -100,12 +100,20 @@ QVector<Match*> Vision::findMatches(cv::UMat image, cv::UMat tpl, double thresho
 	QVector<Match*> matches;
 	
 	if (image.empty()) {
-		// trow exception instead.
+		// TODO: Make the user aware of the image being empty
+		qDebug() << Q_FUNC_INFO << "Image empty";
 		return matches;
 	}
 	
 	if (tpl.empty()) {
-		// trow exception instead.
+		// TODO: Make the user aware of the tpl being empty
+		qDebug() << Q_FUNC_INFO << "Template empty";
+		return matches;
+	}
+	
+	if (image.rows <= tpl.rows || image.cols <= tpl.cols) {
+		// TODO: Make the user aware of the image being smaller than the tpl.
+		qDebug() << Q_FUNC_INFO << "Image smaller than the tpl";
 		return matches;
 	}
 	
