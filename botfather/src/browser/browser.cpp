@@ -120,7 +120,7 @@ void Browser::initCefSettings(CefSettings& settings)
 
 	// Enable remote debugging on the specified port for debug builds.
 #ifndef NDEBUG
-	settings.remote_debugging_port = 8088;
+	//settings.remote_debugging_port = 8482;
 #endif
 
 	// Ignore errors related to invalid SSL certificates. Because we don't
