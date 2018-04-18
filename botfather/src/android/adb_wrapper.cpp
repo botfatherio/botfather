@@ -95,7 +95,7 @@ bool AdbWrapper::sendKeyEvent(QString serial_number, QString key_event_code)
 bool AdbWrapper::sendEvent(QString serial_number, QString device, int type, int code, int value)
 {
 	QStringList args;
-	args << "-s" << serial_number << "shell" << "sendevent" << device << type << code << value;
+	args << "-s" << serial_number << "shell" << "sendevent" << device << QString::number(type) << QString::number(code) << QString::number(value);
 	return evaluateAdbCommand(args);
 }
 
