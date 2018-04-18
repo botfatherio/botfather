@@ -25,7 +25,7 @@ public:
 	static QVector<cv::KeyPoint> findBlobs(BlobTpl *blob_tpl, cv::UMat image);
 	
 	// Turns a QImage into a 3 Channel BGR cv::UMat
-	static cv::UMat qimageToUmat(const QImage &q_image, bool clone_image_data = true);
+	static cv::UMat qimageToUmat(const QImage &q_image);
 };
 
 #endif // BFP__VISION__VISION_H

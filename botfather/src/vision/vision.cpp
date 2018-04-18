@@ -192,43 +192,76 @@ QVector<cv::KeyPoint> Vision::findBlobs(BlobTpl *blob_tpl, cv::UMat image)
 	return QVector<cv::KeyPoint>::fromStdVector(keypoints);
 }
 
-// static
-cv::UMat Vision::qimageToUmat(const QImage &q_image, bool clone_image_data)
+cv::UMat Vision::qimageToUmat(const QImage &q_image)
 {
+	// We always clone the q_image data as we probably always use temporary qimages.
 	switch (q_image.format()) {
+
+	// 8-bit, 4 channel
+	case QImage::Format_ARGB32:
+	case QImage::Format_ARGB32_Premultiplied: {
+		cv::Mat mat(
+			q_image.height(),
+			q_image.width(),
+			CV_8UC4,
+			const_cast<uchar*>(q_image.bits()),
+			static_cast<size_t>(q_image.bytesPerLine())
+		);
+		
+		cv::UMat umat;
+		mat.clone().copyTo(umat);
+		
+		return umat;
+	}
+	
+	// 8-bit, 3 channel
 	case QImage::Format_RGB32: {
-		// 8-bit, 4 channel
+		cv::Mat mat(
+			q_image.height(), q_image.width(),
+			CV_8UC4,
+			const_cast<uchar*>(q_image.bits()),
+			static_cast<size_t>(q_image.bytesPerLine())
+		);
+	
+		cv::UMat umat_without_alpha;
+		cv::cvtColor(mat, umat_without_alpha, cv::COLOR_BGRA2BGR); // Does it copyTo?
 		
-		cv::Mat mat(q_image.height(), q_image.width(), CV_8UC4, const_cast<uchar*>(q_image.bits()), q_image.bytesPerLine());
-		cv::UMat result_umat;
-		(clone_image_data ? mat.clone() : mat).copyTo(result_umat);
-
-		// Cut off the alpha channel
-		cv::cvtColor(result_umat, result_umat, cv::COLOR_BGRA2BGR);
-		
-		return result_umat;
+		return umat_without_alpha;
 	}
+	
+	// 8-bit, 3 channel
 	case QImage::Format_RGB888: {
-		// 8-bit, 3 channel (this is a common case). Requires cloning since we use a temporary QImage.
-		
 		QImage swapped = q_image.rgbSwapped();
-		cv::UMat result_umat;
-		cv::Mat(swapped.height(), swapped.width(), CV_8UC3, const_cast<uchar*>(swapped.bits()), swapped.bytesPerLine()).clone().copyTo(result_umat);
+		cv::Mat mat(
+			swapped.height(),
+			swapped.width(),
+			CV_8UC3,
+			const_cast<uchar*>(swapped.bits()),
+			static_cast<size_t>(swapped.bytesPerLine())
+		);
 		
-		return result_umat;
+		cv::UMat umat;
+		mat.clone().copyTo(umat);
+		
+		return umat;
 	}
+	
+	// 8-bit, 1 channel
 	case QImage::Format_Indexed8: {
-		// 8-bit, 1 channel
+		cv::Mat mat( q_image.height(), q_image.width(),
+			CV_8UC1,
+			const_cast<uchar*>(q_image.bits()),
+			static_cast<size_t>(q_image.bytesPerLine())
+		);
 		
-		cv::UMat result_umat;
-		cv::Mat mat(q_image.height(), q_image.width(), CV_8UC1, const_cast<uchar*>(q_image.bits()), q_image.bytesPerLine());
-		(clone_image_data ? mat.clone() : mat).copyTo(result_umat);
-
-		cv::cvtColor(result_umat, result_umat, cv::COLOR_GRAY2BGR);
-		return result_umat;
+		cv::UMat umat;
+		mat.clone().copyTo(umat);
+		
+		return umat;
 	}
+	
 	default: {
-		qDebug() << "QImage format not handled in switch:" << q_image.format();
+		qWarning() << Q_FUNC_INFO << "QImage format not handled in switch:" << q_image.format();
 		break;
 	}
 	}
