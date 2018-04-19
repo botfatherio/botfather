@@ -134,6 +134,8 @@ void AuthDialog::onAuthenticated(int curtime, int premend, bool stable)
 		settings.setValue(options::auth::PASSWORD, this->ui->password->text());
 	}
 	
+	// TODO: Reenalbe this one we actually sell premium licenses.
+	/*
 	if (curtime > premend || premend == 0){
 		// => The user has no active premium license for this bot.
 		// premend is 0 by default and > 0 if the user once bought a license.
@@ -147,6 +149,7 @@ void AuthDialog::onAuthenticated(int curtime, int premend, bool stable)
 		message_box.setIcon(QMessageBox::Information);
 		message_box.exec();
 	}
+	*/
 	
 	emit remoteApiInfo(curtime, premend, stable);
 	accept();
