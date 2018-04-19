@@ -1,7 +1,8 @@
 #include "vision.h"
+#include <opencv2/highgui.hpp>
+#include <QDebug>
 #include "blob_tpl.h"
 #include "match.h"
-#include <QDebug>
 
 // static
 void Vision::saveImage(cv::UMat image, QString path)
@@ -96,7 +97,7 @@ bool Vision::sameImages(cv::UMat image_1, cv::UMat image_2)
 // static
 QVector<Match*> Vision::findMatches(cv::UMat image, cv::UMat tpl, double threshold, int max_matches)
 {
-	static const int match_method = CV_TM_CCORR_NORMED;
+	static const int match_method = CV_TM_CCOEFF_NORMED;
 	QVector<Match*> matches;
 	
 	if (image.empty()) {
@@ -116,24 +117,36 @@ QVector<Match*> Vision::findMatches(cv::UMat image, cv::UMat tpl, double thresho
 		qDebug() << Q_FUNC_INFO << "Image smaller than the tpl";
 		return matches;
 	}
-	
+
 	double min_val, max_val, match_val;
 	cv::Point min_loc, max_loc, match_loc;
 	
-	// Create a result matrix of the images size.
+	// Create a result matrix of the images size. NOTE: Saving the result image doesn't work
+	// for some reason. But 
+	// We tested saving it using: cv::imwrite("result.png", result.getMat(cv::ACCESS_READ).clone());
+	// But result.png is always black, no matter where in this method we tried to save it.
 	cv::UMat result(image.rows - tpl.rows + 1, image.cols - tpl.cols + 1, CV_32FC1);
 
-	// Mark on the result mat spots where the template matches the image the most lighter and other darker.
+	// Marks spots on the result mat than lighten than the template matches on the image.
 	cv::matchTemplate(image, tpl, result, match_method);
-	
-	// DO NOT NORMALIZE THE RESULT. IT WILL BE A WHITE FUCKING MATRIX!
-	//cv::normalize(never, ever, use, this, shitty, fuck, shit);
-	
+		
+	// Normalizing the result mats values results in better threshold values.
+	// Better meaning: scores of good matching matches are not too spreaded.
+	// eg. a template matches 4 spots really good. Scores where ~ 1., .99, .96, .94
+	// without normalizing they were: ~ 1., .95, .82, 0.79
+	// (Matching works without normalizing).
+	cv::normalize( result, result, 0, 1, cv::NORM_MINMAX, -1, cv::Mat() );
+		
 	// Make areas completely black which are not as intensive as the threshold
-	// requires. Doing so floodfill can later easily remove recognised matches
-	// without making the whole result matrix black.
-	cv::threshold(result, result, threshold, 1., CV_THRESH_TOZERO);
-
+	// requires. Looking for minmax values and using floodfill are faster after
+	// thresholding.
+	cv::threshold(result, result, threshold, 1.0, CV_THRESH_TOZERO);
+	
+	// Uncomment the following 2 lines of code to see where matches were found.
+	// One may disabled thresholding to understand the result better.
+	//cv::namedWindow("Result", cv::WINDOW_AUTOSIZE);
+	//cv::imshow("Result", result);
+		
 	while (matches.size() < max_matches){
 		
 		// Find the lightest spot aka the best matching location
@@ -141,8 +154,6 @@ QVector<Match*> Vision::findMatches(cv::UMat image, cv::UMat tpl, double thresho
 		
 		// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
 		if (match_method == CV_TM_SQDIFF || match_method == CV_TM_SQDIFF_NORMED) {
-			
-			// Normalize the match value so that it can be interpreted as 0-100% accordance
 			match_val = 1.0 - min_val;
 			match_loc = min_loc;
 		} else{
@@ -156,8 +167,23 @@ QVector<Match*> Vision::findMatches(cv::UMat image, cv::UMat tpl, double thresho
 		}
 
 		// Make the currently lightest (best matching) location black, so it won't
-		// be found again while looking for the next best match.
-		cv::floodFill(result, match_loc, cv::Scalar(0), 0, cv::Scalar(.1), cv::Scalar(1.));
+		// be found again while looking for the next best match. One can use floodfill
+		// to do so, which should work as expected, especially after thresholding.
+		// BUT we had some issues doing so! (Matches where found twice or more. With a
+		// different configuration the whole result image turned black after the first
+		// match). Drawing a circle where the lightes match is turned out to be more
+		// reliable.
+		// NOTE: Whatever method is used, one has to respect the user match method as
+		// different methods mark the best matching location either black OR white.
+		
+		if (match_method == CV_TM_SQDIFF || match_method == CV_TM_SQDIFF_NORMED) {
+			// Here we use the color white to hide processed matches.
+			// A thickness of -1 means the circle shall be filled.
+			cv::circle(result, match_loc, tpl.cols / 2, cv::Scalar(255), -1);
+		} else {
+			// ... black to hide processed matches.
+			cv::circle(result, match_loc, tpl.cols / 2, cv::Scalar(0), -1);
+		}
 		
 		// Format the match and push it to the other matches. x and y of match_loc are
 		// the left and top coordinates of the match. Note: in our Match class x and y
