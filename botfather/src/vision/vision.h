@@ -23,6 +23,8 @@ public:
 	static QVector<Match*> findMatches(cv::UMat image, cv::UMat tpl, double threshold, int max_matches = 7);
 	static Match* findMatch(cv::UMat image, cv::UMat tpl, double threshold);
 	static QVector<cv::KeyPoint> findBlobs(BlobTpl *blob_tpl, cv::UMat image);
+	static cv::UMat markMatches(cv::UMat image, QVector<Match*> matches, cv::Scalar color = cv::Scalar(0, 0, 255), int thickness = 2);
+	static cv::UMat markMatch(cv::UMat image, Match* match, cv::Scalar color = cv::Scalar(0, 0, 255), int thickness = 2);
 	
 	// Turns a QImage into a 3 Channel BGR cv::UMat
 	static cv::UMat qimageToUmat(const QImage &q_image);

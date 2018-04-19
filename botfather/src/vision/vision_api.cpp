@@ -107,3 +107,35 @@ QJSValue VisionAPI::findBlobs(BlobTpl *blob_tpl, Image *image)
 	
 	return matches;
 }
+
+QJSValue VisionAPI::markMatches(Image *image, QJSValue matches, int r, int g, int b, int thickness)
+{
+	if (!matches.isArray()) {
+		return QJSValue();
+	}
+	
+	int length = matches.property("length").toInt();
+	
+	QVector<Match*> native_matches;
+	
+	for (int i = 0; i < length; i++) {
+		// TODO: Eventually move this convertion code somewhere else from where it can be reused.
+		
+		double score = matches.property(i).property("getScore").call().toNumber();
+		int left = matches.property(i).property("getLeft").call().toInt();
+		int top = matches.property(i).property("getTop").call().toInt();
+		int width = matches.property(i).property("getWidth").call().toInt();
+		int height = matches.property(i).property("getHeight").call().toInt();
+
+		native_matches.append(new Match(score, left, top, width, height));
+	}
+	
+	cv::UMat umat = Vision::markMatches(image->getUMat(), native_matches, cv::Scalar(b, g, r), thickness);
+	return m_engine_p->newQObject(new Image(umat));
+}
+
+QJSValue VisionAPI::markMatch(Image *image, Match *match, int r, int g, int b, int thickness)
+{
+	cv::UMat result_image = Vision::markMatch(image->getUMat(), match, cv::Scalar(b, g, r), thickness);
+	return m_engine_p->newQObject(new Image(result_image));
+}

@@ -226,6 +226,28 @@ QVector<cv::KeyPoint> Vision::findBlobs(BlobTpl *blob_tpl, cv::UMat image)
 	return QVector<cv::KeyPoint>::fromStdVector(keypoints);
 }
 
+cv::UMat Vision::markMatches(cv::UMat image, QVector<Match *> matches, cv::Scalar color, int thickness)
+{
+	for (Match* match : matches) {
+		image = Vision::markMatch(image, match, color, thickness);
+	}
+	return image;
+}
+
+cv::UMat Vision::markMatch(cv::UMat image, Match *match, cv::Scalar color, int thickness)
+{
+	cv::rectangle(
+		image,
+		cv::Point(match->getLeft(), match->getTop()),
+		cv::Point(match->getRight(), match->getBottom()),
+		color,
+		thickness,
+		8,
+		0
+	);
+	return image;
+}
+
 cv::UMat Vision::qimageToUmat(const QImage &q_image)
 {
 	// We always clone the q_image data as we probably always use temporary qimages.

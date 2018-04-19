@@ -7,6 +7,7 @@
 #include "image.h"
 #include "blob_tpl.h"
 #include "hsv_color.h"
+#include "match.h"
 
 class Bot;
 
@@ -28,6 +29,8 @@ public:
 	Q_INVOKABLE QJSValue findMatches(Image* image, Image* tpl, double threshold = 0.8, int max_matches = 7);
 	Q_INVOKABLE QJSValue findMatch(Image* image, Image* tpl, double threshold = 0.8);
 	Q_INVOKABLE QJSValue findBlobs(BlobTpl* blob_tpl, Image* image );
+	Q_INVOKABLE QJSValue markMatches(Image* image, QJSValue matches, int r, int g, int b, int thickness);
+	Q_INVOKABLE QJSValue markMatch(Image* image, Match* match, int r, int g, int b, int thickness);
 	
 private:
 	Bot* m_bot_p;
