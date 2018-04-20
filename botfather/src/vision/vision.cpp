@@ -94,10 +94,17 @@ bool Vision::sameImages(cv::UMat image_1, cv::UMat image_2)
 	return non_zero == 0;
 }
 
-// static
-QVector<Match*> Vision::findMatches(cv::UMat image, cv::UMat tpl, double threshold, int max_matches)
+
+
+
+
+QVector<Match*> Vision::findMaskedMatches(cv::UMat image, cv::UMat tpl, cv::UMat mask, double threshold, int max_matches)
 {
-	static const int match_method = CV_TM_CCOEFF_NORMED;
+	// Note: Only CV_TM_SQDIFF and CV_TM_CCORR_NORMED accept maskes.
+	static const int match_method = CV_TM_CCORR_NORMED;
+	bool match_method_accepts_mask = (CV_TM_SQDIFF == match_method || match_method == CV_TM_CCORR_NORMED);
+	bool use_mask = !mask.empty();
+	
 	QVector<Match*> matches;
 	
 	if (image.empty()) {
@@ -128,8 +135,13 @@ QVector<Match*> Vision::findMatches(cv::UMat image, cv::UMat tpl, double thresho
 	cv::UMat result(image.rows - tpl.rows + 1, image.cols - tpl.cols + 1, CV_32FC1);
 
 	// Marks spots on the result mat than lighten than the template matches on the image.
-	cv::matchTemplate(image, tpl, result, match_method);
-		
+	// When a mask is used ignore those regions which are black on the mask.
+	if (use_mask && match_method_accepts_mask) {
+		cv::matchTemplate(image, tpl, result, match_method, mask);
+	} else {
+		cv::matchTemplate(image, tpl, result, match_method);
+	}
+	
 	// Normalizing the result mats values results in better threshold values.
 	// Better meaning: scores of good matching matches are not too spreaded.
 	// eg. a template matches 4 spots really good. Scores where ~ 1., .99, .96, .94
@@ -194,17 +206,26 @@ QVector<Match*> Vision::findMatches(cv::UMat image, cv::UMat tpl, double thresho
 	return matches;
 }
 
-// static
-Match* Vision::findMatch(cv::UMat image, cv::UMat tpl, double threshold)
+
+Match* Vision::findMaskedMatch(cv::UMat image, cv::UMat tpl, cv::UMat mask, double threshold)
 {
-	QVector<Match*> matches = Vision::findMatches(image, tpl, threshold, 1);
+	QVector<Match*> matches = Vision::findMaskedMatches(image, tpl, mask, threshold, 1);
 	if (!matches.isEmpty()) {
 		return matches[0];
 	}
 	return new Match();
 }
 
-// static
+QVector<Match*> Vision::findMatches(cv::UMat image, cv::UMat tpl, double threshold, int max_matches)
+{
+	return Vision::findMaskedMatches(image, tpl, cv::UMat(), threshold, max_matches);
+}
+
+Match* Vision::findMatch(cv::UMat image, cv::UMat tpl, double threshold)
+{
+	return Vision::findMaskedMatch(image, tpl, cv::UMat(), threshold);
+}
+
 QVector<cv::KeyPoint> Vision::findBlobs(BlobTpl *blob_tpl, cv::UMat image)
 {
 	// Make pixels in the color of our intereset white and everything else black.
