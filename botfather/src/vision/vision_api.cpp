@@ -67,13 +67,12 @@ bool VisionAPI::sameImages(Image* image_1, Image* image_2)
 	return Vision::sameImages(image_1->getUMat(), image_2->getUMat());
 }
 
-QJSValue VisionAPI::findMatches(Image *image, Image *tpl, double threshold, int max_matches)
+QJSValue VisionAPI::findMaskedMatches(Image *image, Image *tpl, Image *mask, double threshold, int max_matches)
 {
-	QVector<Match*> matches = Vision::findMatches(image->getUMat(), tpl->getUMat(), threshold, max_matches);
+	QVector<Match*> matches = Vision::findMaskedMatches(image->getUMat(), tpl->getUMat(), mask->getUMat(), threshold, max_matches);
 	QJSValue js_matches = m_engine_p->newArray();
 	
-	for (int i = 0; i < matches.size(); i++){
-		// TODO: Thing about what happens here. Does JSEngine take over the ownage of the Match object?
+	for (int i = 0; i < matches.size(); i++) {
 		QJSValue js_match = m_engine_p->newQObject(matches[i]);
 		js_matches.setProperty(i, js_match);
 	}
@@ -81,10 +80,21 @@ QJSValue VisionAPI::findMatches(Image *image, Image *tpl, double threshold, int 
 	return js_matches;
 }
 
+QJSValue VisionAPI::findMaskedMatch(Image *image, Image *tpl, Image *mask, double threshold)
+{
+	Match* match = Vision::findMaskedMatch(image->getUMat(), tpl->getUMat(), mask->getUMat(), threshold);
+	return m_engine_p->newQObject(match);
+}
+
+
+QJSValue VisionAPI::findMatches(Image *image, Image *tpl, double threshold, int max_matches)
+{
+	return VisionAPI::findMaskedMatches(image, tpl, new Image(), threshold, max_matches);
+}
+
 QJSValue VisionAPI::findMatch(Image *image, Image *tpl, double threshold)
 {
-	Match* match = Vision::findMatch(image->getUMat(), tpl->getUMat(), threshold);
-	return m_engine_p->newQObject(match);
+	return VisionAPI::findMaskedMatch(image, tpl, new Image(), threshold);
 }
 
 QJSValue VisionAPI::findBlobs(BlobTpl *blob_tpl, Image *image)
