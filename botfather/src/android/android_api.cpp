@@ -82,7 +82,7 @@ QJSValue AndroidAPI::takeScreenshot()
 	if (!adb->takeScreenshot(serial_number, qimage)) {
 		// Taking screenshot failed. TODO: print system debug info in some later version...
 	}
-	cv::UMat umat = Vision::qimageToUmat(qimage).clone();
+	cv::UMat umat = Vision::qimageToBGRUmat(qimage).clone();
 	return m_engine_p->newQObject(new Image(umat));
 }
 

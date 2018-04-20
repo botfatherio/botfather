@@ -18,7 +18,7 @@ void BrowserAPI::enable(Bot *bot_p, QJSEngine *engine_p)
 QJSValue BrowserAPI::getImage()
 {
 	QImage qimage = Browser::getImage();
-	cv::UMat umat = Vision::qimageToUmat(qimage).clone();
+	cv::UMat umat = Vision::qimageToBGRUmat(qimage).clone();
 	return m_engine_p->newQObject(new Image(umat));
 }
 

@@ -27,7 +27,7 @@ public:
 	static cv::UMat markMatch(cv::UMat image, Match* match, cv::Scalar color = cv::Scalar(0, 0, 255), int thickness = 2);
 	
 	// Turns a QImage into a 3 Channel BGR cv::UMat
-	static cv::UMat qimageToUmat(const QImage &q_image);
+	static cv::UMat qimageToBGRUmat(const QImage &q_image);
 };
 
 #endif // BFP__VISION__VISION_H

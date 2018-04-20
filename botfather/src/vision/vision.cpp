@@ -248,7 +248,7 @@ cv::UMat Vision::markMatch(cv::UMat image, Match *match, cv::Scalar color, int t
 	return image;
 }
 
-cv::UMat Vision::qimageToUmat(const QImage &q_image)
+cv::UMat Vision::qimageToBGRUmat(const QImage &q_image)
 {
 	// We always clone the q_image data as we probably always use temporary qimages.
 	switch (q_image.format()) {
@@ -267,6 +267,7 @@ cv::UMat Vision::qimageToUmat(const QImage &q_image)
 		cv::UMat umat;
 		mat.clone().copyTo(umat);
 		
+		cv::cvtColor(umat, umat, cv::COLOR_BGRA2BGR);
 		return umat;
 	}
 	
@@ -279,10 +280,11 @@ cv::UMat Vision::qimageToUmat(const QImage &q_image)
 			static_cast<size_t>(q_image.bytesPerLine())
 		);
 	
-		cv::UMat umat_without_alpha;
-		cv::cvtColor(mat, umat_without_alpha, cv::COLOR_BGRA2BGR); // Does it copyTo?
+		cv::UMat umat;
+		mat.clone().copyTo(umat);
 		
-		return umat_without_alpha;
+		cv::cvtColor(umat, umat, cv::COLOR_BGRA2BGR);
+		return umat;
 	}
 	
 	// 8-bit, 3 channel
@@ -313,6 +315,7 @@ cv::UMat Vision::qimageToUmat(const QImage &q_image)
 		cv::UMat umat;
 		mat.clone().copyTo(umat);
 		
+		cv::cvtColor(umat, umat, cv::COLOR_GRAY2BGR);
 		return umat;
 	}
 	
