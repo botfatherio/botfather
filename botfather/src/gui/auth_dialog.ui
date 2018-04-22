@@ -61,7 +61,7 @@
    <item>
     <widget class="QLineEdit" name="username">
      <property name="placeholderText">
-      <string>Username (case sensitive)</string>
+      <string>Username</string>
      </property>
      <property name="clearButtonEnabled">
       <bool>true</bool>
