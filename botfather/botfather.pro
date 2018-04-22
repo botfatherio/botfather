@@ -14,6 +14,9 @@ RCC_DIR += ./GeneratedFiles
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
 
+# Disable output from qDebug() like mecros in release builds.
+CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
+
 unix {
     LINUX_CEF_DIR = /opt/cef
 
