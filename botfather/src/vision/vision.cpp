@@ -94,10 +94,6 @@ bool Vision::sameImages(cv::UMat image_1, cv::UMat image_2)
 	return non_zero == 0;
 }
 
-
-
-
-
 QVector<Match*> Vision::findMaskedMatches(cv::UMat image, cv::UMat tpl, cv::UMat mask, double threshold, int max_matches)
 {
 	// Note: Only CV_TM_SQDIFF and CV_TM_CCORR_NORMED accept maskes.
@@ -142,13 +138,11 @@ QVector<Match*> Vision::findMaskedMatches(cv::UMat image, cv::UMat tpl, cv::UMat
 		cv::matchTemplate(image, tpl, result, match_method);
 	}
 	
-	// Normalizing the result mats values results in better threshold values.
-	// Better meaning: scores of good matching matches are not too spreaded.
-	// eg. a template matches 4 spots really good. Scores where ~ 1., .99, .96, .94
-	// without normalizing they were: ~ 1., .95, .82, 0.79
-	// (Matching works without normalizing).
-	cv::normalize( result, result, 0, 1, cv::NORM_MINMAX, -1, cv::Mat() );
-		
+	// Makes not so good results better which results in "better" matches in some
+	// cases but in wrong matches if there is actually nothing to match.
+	// Note: Using this method fucked up everything already 3 times!
+	//cv::normalize( result, result, 0, 1, cv::NORM_MINMAX, -1, cv::Mat() );
+	
 	// Make areas completely black which are not as intensive as the threshold
 	// requires. Looking for minmax values and using floodfill are faster after
 	// thresholding.
@@ -158,7 +152,7 @@ QVector<Match*> Vision::findMaskedMatches(cv::UMat image, cv::UMat tpl, cv::UMat
 	// One may disabled thresholding to understand the result better.
 	//cv::namedWindow("Result", cv::WINDOW_AUTOSIZE);
 	//cv::imshow("Result", result);
-		
+	
 	while (matches.size() < max_matches){
 		
 		// Find the lightest spot aka the best matching location
