@@ -151,6 +151,6 @@ void AuthDialog::onAuthenticated(int curtime, int premend, bool stable)
 	}
 	*/
 	
-	emit remoteApiInfo(curtime, premend, stable);
+	emit authenticated(curtime, premend, stable);
 	accept();
 }

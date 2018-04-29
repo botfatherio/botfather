@@ -20,7 +20,7 @@ public:
 	~AuthDialog();
 	
 signals:
-	void remoteApiInfo(int curtime, int premend, bool stable);
+	void authenticated(int curtime, int premend, bool stable);
 	
 public slots:
 	void on_login_pressed();
