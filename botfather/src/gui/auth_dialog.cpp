@@ -49,6 +49,14 @@ AuthDialog::~AuthDialog()
 	delete ui;
 }
 
+void AuthDialog::allowInput(bool input_allowed)
+{
+	this->ui->login->setEnabled(input_allowed);
+	this->ui->username->setEnabled(input_allowed);
+	this->ui->password->setEnabled(input_allowed);
+	this->ui->remember_me->setEnabled(input_allowed);
+}
+
 void AuthDialog::tryAutoLogin()
 {
 	QSettings settings;
@@ -86,7 +94,7 @@ void AuthDialog::on_login_pressed()
 	}
 	
 	// Disable the button until we received a message to prevent spamming.
-	this->ui->login->setEnabled(false);
+	allowInput(false);
 	authenticator->authenticate(username, password);
 }
 
@@ -117,14 +125,14 @@ void AuthDialog::onNetworkError(QNetworkReply::NetworkError network_error)
 {
 	QString error_message = QString("Network errors occured. Please check your Internet Connection. (Internal error code: %1)").arg(network_error);
 	QMessageBox::critical(this, "Network error", error_message);
-	this->ui->login->setEnabled(true);
+	allowInput(true);
 }
 
 void AuthDialog::onIntegrityError()
 {
 	QString message = QString("Ooops. Looks like something manipulated the response from our license server.");
 	QMessageBox::critical(this, "Ooops", message);
-	this->ui->login->setEnabled(true);
+	allowInput(true);
 }
 
 void AuthDialog::onRemoteApiError(QJsonArray error_codes)
@@ -150,7 +158,7 @@ void AuthDialog::onRemoteApiError(QJsonArray error_codes)
 		message_box.exec();
 	}
 	
-	this->ui->login->setEnabled(true);
+	allowInput(true);
 }
 
 void AuthDialog::onAuthenticated(int curtime, int premend, bool stable)

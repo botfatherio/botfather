@@ -23,6 +23,8 @@ signals:
 	void authenticated(int curtime, int premend, bool stable);
 	
 public slots:
+	void allowInput(bool input_allowed);
+	
 	void tryAutoLogin();
 	void on_login_pressed();
 	void on_remember_me_toggled(bool checked);
