@@ -199,3 +199,13 @@ void ControlWindow::appendMessage(QString log_message, bool from_client)
 		this->ui->log_text->append("<strong style='color:#555'>&lt;botscript&gt;</strong> " + log_message);
 	}
 }
+
+void ControlWindow::on_actionPremiumPlans_triggered()
+{
+	
+}
+
+void ControlWindow::on_actionLogout_triggered()
+{
+	
+}

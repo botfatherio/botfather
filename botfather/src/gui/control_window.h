@@ -37,6 +37,8 @@ public slots:
 	void appendMessage(QString log_message, bool from_client = false);
 	void on_actionAbout_triggered();
 	void on_actionAboutQt_triggered();
+	void on_actionPremiumPlans_triggered();
+	void on_actionLogout_triggered();
 	
 private:
 	Ui::ControlWindow *ui;
