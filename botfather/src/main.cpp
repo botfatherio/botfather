@@ -56,6 +56,9 @@ int main(int argc, char *argv[])
 		// Tell the control window about the user license and the programs stability.
 		QObject::connect(auth_dialog, SIGNAL(authenticated(int,int,bool)), control_window, SLOT(applyRemoteApiInfo(int,int,bool)));
 		
+		// Reopen the auth dialog if the user logs out.
+		QObject::connect(control_window, SIGNAL(loggedOut()), auth_dialog, SLOT(show()));
+		
 		control_window->show();
 		auth_dialog->tryAutoLogin(); // If AutoLogin doesn't work, the auth dialog will be presented to the user.
 	});

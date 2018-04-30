@@ -21,6 +21,9 @@ public:
 	explicit ControlWindow(QWidget *parent = 0);
 	~ControlWindow();
 	
+signals:
+	void loggedOut();
+	
 public slots:
 	void applyRemoteApiInfo(int curtime, int premend, bool stable);
 	void on_actionStart_triggered();

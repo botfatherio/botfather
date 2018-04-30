@@ -207,5 +207,7 @@ void ControlWindow::on_actionPremiumPlans_triggered()
 
 void ControlWindow::on_actionLogout_triggered()
 {
-	
+	// FIXME: Implement logout button
+	// TODO: alter window title, clear stored info set using applyRemoteApiInfo, open auth window
+	emit loggedOut();
 }
