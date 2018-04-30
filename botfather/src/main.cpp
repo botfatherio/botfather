@@ -54,10 +54,10 @@ int main(int argc, char *argv[])
 		AuthDialog *auth_dialog = new AuthDialog("botfather", QCoreApplication::applicationVersion(), "ABd7qdoggCN6nZvj6eL3Ndwoc6azL8SD", control_window);
 		
 		// Tell the control window about the user license and the programs stability.
-		QObject::connect(auth_dialog, SIGNAL(remoteApiInfo(int,int,bool)), control_window, SLOT(applyRemoteApiInfo(int,int,bool)));
+		QObject::connect(auth_dialog, SIGNAL(authenticated(int,int,bool)), control_window, SLOT(applyRemoteApiInfo(int,int,bool)));
 		
 		control_window->show();
-		auth_dialog->show();
+		auth_dialog->tryAutoLogin(); // If AutoLogin doesn't work, the auth dialog will be presented to the user.
 	});
 	
 	// Runs the QApplication event loop blocking. When the event loop stops the timer

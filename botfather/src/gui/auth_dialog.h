@@ -23,6 +23,7 @@ signals:
 	void authenticated(int curtime, int premend, bool stable);
 	
 public slots:
+	void tryAutoLogin();
 	void on_login_pressed();
 	void on_remember_me_toggled(bool checked);
 	void closeEvent(QCloseEvent *event);
@@ -31,7 +32,7 @@ public slots:
 	void onRemoteApiError(QJsonArray error_codes);
 	void onIntegrityError();
 	void onAuthenticated(int curtime, int premend, bool stable);
-	
+		
 private:
 	Ui::AuthDialog *ui;
 	Authenticator *authenticator;

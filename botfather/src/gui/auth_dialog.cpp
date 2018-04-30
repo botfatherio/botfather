@@ -23,6 +23,13 @@ AuthDialog::AuthDialog(QString software_slug, QString version_string, QString ve
 	connect(authenticator, SIGNAL(remoteApiError(QJsonArray)), this, SLOT(onRemoteApiError(QJsonArray)));
 	connect(authenticator, SIGNAL(authenticated(int,int,bool)), this, SLOT(onAuthenticated(int,int,bool)));
 	
+	// On error after trying to autologin the auth dialog must be shown to the user.
+	// This will also be triggered if the an error occours while the auth window is
+	// already shown to the user. But thats not an problem.
+	connect(authenticator, SIGNAL(networkError(QNetworkReply::NetworkError)), this, SLOT(show()));
+	connect(authenticator, SIGNAL(integrityError()), this, SLOT(show()));
+	connect(authenticator, SIGNAL(remoteApiError(QJsonArray)), this, SLOT(show()));
+	
 	// Make hitting the enter button trigger the authenticate process.
 	connect(ui->username, SIGNAL(returnPressed()), SLOT(on_login_pressed()));
 	connect(ui->password, SIGNAL(returnPressed()), SLOT(on_login_pressed()));
@@ -40,6 +47,27 @@ AuthDialog::AuthDialog(QString software_slug, QString version_string, QString ve
 AuthDialog::~AuthDialog()
 {
 	delete ui;
+}
+
+void AuthDialog::tryAutoLogin()
+{
+	QSettings settings;
+	
+	// Check whether autologin requirements are met. We don't want to trigger the
+	// auth process if the username or password field is empty. Because this would
+	// end up in an error message being presented to the user who didn't even hit
+	// any button yet.
+	if (!settings.value(options::auth::REMEMBER_ME, false).toBool()
+		|| ui->username->text().isEmpty() || ui->password->text().isEmpty()) {
+		
+		// Present the auth dialog to the user if auto login requirements are not met.
+		show();
+		return;
+	}
+	
+	// All auto login requirements are met. We do not expect any error messages not
+	// related to authentication errors.
+	on_login_pressed();
 }
 
 void AuthDialog::on_login_pressed()
