@@ -202,7 +202,7 @@ void ControlWindow::appendMessage(QString log_message, bool from_client)
 
 void ControlWindow::on_actionPremiumPlans_triggered()
 {
-	
+	QDesktopServices::openUrl(QUrl("https://botfather.io/plans/"));
 }
 
 void ControlWindow::on_actionLogout_triggered()
