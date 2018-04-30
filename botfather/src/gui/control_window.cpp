@@ -17,6 +17,9 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	browser_window = new BrowserWindow(this);
 	android_dialog = new AndroidDialog(this);
 	file_dialog = new QFileDialog(this);
+	
+	// Store the original window title so it can be restored eg after the user logged out.
+	original_window_title = windowTitle();
 }
 
 ControlWindow::~ControlWindow()
@@ -27,7 +30,7 @@ ControlWindow::~ControlWindow()
 void ControlWindow::applyRemoteApiInfo(int curtime, int premend, bool stable)
 {	
 	trial = curtime > premend;
-	this->setWindowTitle(windowTitle() + (stable ? " - Stable" : "") + (trial ? " - Trial" : " - Premium"));
+	this->setWindowTitle(original_window_title + (stable ? " - Stable" : "") + (trial ? " - Trial" : " - Premium"));
 }
 
 void ControlWindow::on_actionStart_triggered()
@@ -207,7 +210,6 @@ void ControlWindow::on_actionPremiumPlans_triggered()
 
 void ControlWindow::on_actionLogout_triggered()
 {
-	// FIXME: Implement logout button
-	// TODO: alter window title, clear stored info set using applyRemoteApiInfo, open auth window
+	setWindowTitle(original_window_title);
 	emit loggedOut();
 }

@@ -50,6 +50,7 @@ private:
 	AndroidDialog *android_dialog;
 	BotThread *bot_thread;
 	bool trial = true;
+	QString original_window_title;
 };
 
 #endif // BFP__GUI__CONTROL_WINDOW_H
