@@ -15,6 +15,7 @@ Bot::Bot(BotThread *thread_p, QString script_path) : m_thread_p(thread_p), m_scr
 
 void Bot::runScript()
 {
+	running = true;
 	emit this->started();
 	
 	// Reset settings eventually made by a previously run script.
@@ -71,8 +72,13 @@ void Bot::runScript()
 	}
 
 	// Script execution/evaluation ended successfully.
+	running = false;
 	emit this->message("Bot script execution finished.", true);
 	emit this->stopped(true);
+}
+
+bool Bot::isRunning() const {
+	return running;
 }
 
 QString Bot::normalisePath(QString path)

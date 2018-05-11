@@ -48,6 +48,7 @@ private:
 	QFileDialog *file_dialog;
 	BrowserWindow *browser_window;
 	AndroidDialog *android_dialog;
+	Bot* bot;
 	BotThread *bot_thread;
 	bool trial = true;
 	QString original_window_title;

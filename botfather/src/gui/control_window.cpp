@@ -59,7 +59,7 @@ void ControlWindow::on_actionStart_triggered()
 	this->bot_thread = new BotThread(this);
 	
 	// Create an new bot instance with the given script path and move it into the thread.
-	Bot* bot = new Bot(this->bot_thread, script_path);
+	bot = new Bot(this->bot_thread, script_path);
 	bot->moveToThread(this->bot_thread);
 
 	// Make the bot start when the thread starts and delete the thread object when
@@ -209,7 +209,16 @@ void ControlWindow::on_actionPremiumPlans_triggered()
 }
 
 void ControlWindow::on_actionLogout_triggered()
-{
+{	
+	if (bot && bot->isRunning()) {
+		QMessageBox::warning(
+			this,
+			"Can't logout while a script is running",
+			"Please stop the running script before logging out. \n"
+			"One can't logout while a script is running. Thanks."
+		);
+		return;
+	}
 	setWindowTitle(original_window_title);
 	emit loggedOut();
 }

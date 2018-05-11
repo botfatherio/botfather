@@ -15,6 +15,7 @@ public:
 	
 public slots:
 	void runScript();
+	bool isRunning() const;
 	
 	// Makes a relative path to an absolute path relative to the script dir. Returns already
 	// absolute paths as they are.
@@ -31,6 +32,7 @@ signals:
 private:
 	BotThread* m_thread_p;
 	QString m_script_path;
+	bool running = false;
 };
 
 #endif // BFB__SCRIPTING__BOT_H
