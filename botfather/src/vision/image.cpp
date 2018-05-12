@@ -7,6 +7,16 @@ Image::Image(cv::UMat umat)
 	: m_umat(umat)
 {}
 
+QScriptValue Image::toScriptValue(QScriptEngine *engine, Image* const &in)
+{
+	return engine->newQObject(in);
+}
+
+void Image::fromScriptValue(const QScriptValue &object, Image* &out)
+{
+	out = qobject_cast<Image*>(object.toQObject());
+}
+
 cv::UMat Image::getUMat() const
 {
 	return this->m_umat;

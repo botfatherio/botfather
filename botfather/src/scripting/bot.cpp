@@ -28,6 +28,9 @@ void Bot::runScript()
 	BrowserAPI::enable(this, script_engine);
 	AndroidAPI::enable(this, script_engine);
 	
+	// Register custom QObject based types.
+	qScriptRegisterMetaType(script_engine, Image::toScriptValue, Image::fromScriptValue);
+	
 	// Try to open the submitted script file.
 	QFile script_file(this->m_script_path);
 	if (!script_file.open(QIODevice::ReadOnly)) {
