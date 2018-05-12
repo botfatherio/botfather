@@ -2,7 +2,7 @@
 #define BFP__SCRIPTING__HELPER_API_H
 
 #include <QObject>
-#include <QtScript/QScriptEngine>
+#include <QScriptEngine>
 #include <QString>
 
 class Bot;

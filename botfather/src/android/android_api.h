@@ -2,7 +2,7 @@
 #define BFP__ANDROID__ANDROID_API_H
 
 #include <QObject>
-#include <QtScript/QScriptEngine>
+#include <QScriptEngine>
 #include <QString>
 #include <QSettings>
 

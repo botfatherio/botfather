@@ -3,7 +3,7 @@
 
 #include <opencv2/opencv.hpp>
 #include <QObject>
-#include <QtScript/QScriptEngine>
+#include <QScriptEngine>
 #include "image.h"
 #include "blob_tpl.h"
 #include "hsv_color.h"
