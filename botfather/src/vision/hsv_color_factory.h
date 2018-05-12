@@ -3,19 +3,19 @@
 
 #include <QObject>
 #include <QString>
-#include <QJSEngine>
+#include <QScriptEngine>
 
 class HSVColorFactory : public QObject
 {
 	Q_OBJECT
 
 public:
-	HSVColorFactory(QJSEngine* engine_p);
-	Q_INVOKABLE QJSValue createInstance(int h, int s, int v);
-	static void enable(QJSEngine* engine_p);
+	HSVColorFactory(QScriptEngine* engine_p);
+	Q_INVOKABLE QScriptValue createInstance(int h, int s, int v);
+	static void enable(QScriptEngine* engine_p);
 
 private:
-	QJSEngine* m_engine_p;
+	QScriptEngine* m_engine_p;
 };
 
 #endif // BFP__VISION__HSV_COLOR_FACTORY_H

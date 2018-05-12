@@ -5,7 +5,7 @@
 #include "../scripting/bot.h"
 #include "../shared/settings.h"
 
-AndroidAPI::AndroidAPI(Bot* bot_p, QJSEngine* engine_p) : QObject(bot_p), m_engine_p(engine_p)
+AndroidAPI::AndroidAPI(Bot* bot_p, QScriptEngine* engine_p) : QObject(bot_p), m_engine_p(engine_p)
 {
 	QString adb_binary = m_settings.value(options::android::ADB_BINARY).toString();
 	adb = new AdbWrapper(this, adb_binary);
@@ -13,9 +13,9 @@ AndroidAPI::AndroidAPI(Bot* bot_p, QJSEngine* engine_p) : QObject(bot_p), m_engi
 	serial_number = m_settings.value(options::android::SERIAL_NUMBER).toString();
 }
 
-void AndroidAPI::enable(Bot* bot_p, QJSEngine *engine_p)
+void AndroidAPI::enable(Bot* bot_p, QScriptEngine *engine_p)
 {
-	QJSValue vision_obj = engine_p->newQObject(new AndroidAPI(bot_p, engine_p));
+	QScriptValue vision_obj = engine_p->newQObject(new AndroidAPI(bot_p, engine_p));
 	engine_p->globalObject().setProperty("Android", vision_obj);
 }
 
@@ -31,7 +31,7 @@ bool AndroidAPI::connected()
 	return false;
 }
 
-QJSValue AndroidAPI::listPackages()
+QScriptValue AndroidAPI::listPackages()
 {
 	QList<QString> packages;
 	if (!adb->listPackages(serial_number, packages)) {
@@ -39,7 +39,7 @@ QJSValue AndroidAPI::listPackages()
 	}
 	
 	// Transform the packages list into and JS array of packages.
-	QJSValue js_packages = m_engine_p->newArray();
+	QScriptValue js_packages = m_engine_p->newArray();
 	for (int i = 0; i < packages.size(); i++){
 		js_packages.setProperty(i, packages[i]);
 	}
@@ -76,7 +76,7 @@ bool AndroidAPI::sendTextInput(QString text)
 	return adb->sendTextInput(serial_number, text);
 }
 
-QJSValue AndroidAPI::takeScreenshot()
+QScriptValue AndroidAPI::takeScreenshot()
 {
 	QImage qimage;
 	if (!adb->takeScreenshot(serial_number, qimage)) {

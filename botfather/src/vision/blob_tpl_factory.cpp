@@ -1,11 +1,11 @@
 #include "blob_tpl_factory.h"
 #include "blob_tpl.h"
 
-BlobTplFactory::BlobTplFactory(QJSEngine *engine_p)
+BlobTplFactory::BlobTplFactory(QScriptEngine *engine_p)
 	: m_engine_p(engine_p)
 {}
 
-QJSValue BlobTplFactory::createInstance(
+QScriptValue BlobTplFactory::createInstance(
 	HSVColor* min_hsv,
 	HSVColor* max_hsv,
 	bool filter_by_area,
@@ -41,9 +41,9 @@ QJSValue BlobTplFactory::createInstance(
 }
 
 // static
-void BlobTplFactory::enable(QJSEngine *engine_p)
+void BlobTplFactory::enable(QScriptEngine *engine_p)
 {
-	QJSValue hsv_color_factory = engine_p->newQObject(new BlobTplFactory(engine_p));
+	QScriptValue hsv_color_factory = engine_p->newQObject(new BlobTplFactory(engine_p));
 	engine_p->globalObject().setProperty("_blob_tpl_factory", hsv_color_factory);
 	engine_p->evaluate(
 		"function BlobTpl("

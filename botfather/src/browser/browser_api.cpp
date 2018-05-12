@@ -6,16 +6,16 @@
 #include "../vision/image.h"
 #include "../scripting/bot.h"
 
-BrowserAPI::BrowserAPI(Bot *bot_p, QJSEngine *engine_p) : QObject(bot_p), m_engine_p(engine_p)
+BrowserAPI::BrowserAPI(Bot *bot_p, QScriptEngine *engine_p) : QObject(bot_p), m_engine_p(engine_p)
 {}
 
-void BrowserAPI::enable(Bot *bot_p, QJSEngine *engine_p)
+void BrowserAPI::enable(Bot *bot_p, QScriptEngine *engine_p)
 {
-	QJSValue vision_obj = engine_p->newQObject(new BrowserAPI(bot_p, engine_p));
+	QScriptValue vision_obj = engine_p->newQObject(new BrowserAPI(bot_p, engine_p));
 	engine_p->globalObject().setProperty("Browser", vision_obj);
 }
 
-QJSValue BrowserAPI::getImage()
+QScriptValue BrowserAPI::getImage()
 {
 	QImage qimage = Browser::getImage();
 	cv::UMat umat = Vision::qimageToBGRUmat(qimage).clone();

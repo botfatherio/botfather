@@ -2,7 +2,6 @@
 #define BFP__VISION__BLOB_TPL_H
 
 #include <QObject>
-#include <QJSValue>
 #include <opencv2/opencv.hpp>
 #include "hsv_color.h"
 

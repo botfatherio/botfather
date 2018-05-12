@@ -2,7 +2,7 @@
 #define BFP__SCRIPTING__HELPER_API_H
 
 #include <QObject>
-#include <QJSEngine>
+#include <QtScript/QScriptEngine>
 #include <QString>
 
 class Bot;
@@ -13,8 +13,8 @@ class HelperAPI : public QObject
 	Q_OBJECT
 	
 public:
-	HelperAPI(Bot* bot_p, BotThread* bot_thread_p, QJSEngine* engine_p);
-	static void enable(Bot* bot_p, BotThread* bot_thread_p, QJSEngine* engine_p);
+	HelperAPI(Bot* bot_p, BotThread* bot_thread_p, QScriptEngine* engine_p);
+	static void enable(Bot* bot_p, BotThread* bot_thread_p, QScriptEngine* engine_p);
 	
 	// Returns true if the file exists.
 	Q_INVOKABLE bool fileExists(QString file_path);
@@ -45,7 +45,7 @@ public:
 private:
 	BotThread* m_bot_thread_p;
 	Bot* m_bot_p;
-	QJSEngine* m_engine_p;
+	QScriptEngine* m_engine_p;
 };
 
 #endif // BFP__SCRIPTING__HELPER_API_H

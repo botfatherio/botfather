@@ -3,7 +3,7 @@
 
 #include <opencv2/opencv.hpp>
 #include <QObject>
-#include <QJSEngine>
+#include <QtScript/QScriptEngine>
 #include "image.h"
 #include "blob_tpl.h"
 #include "hsv_color.h"
@@ -16,30 +16,30 @@ class VisionAPI : public QObject
 	Q_OBJECT
 	
 public:
-	VisionAPI(Bot* bot_p, QJSEngine* engine_p);
-	static void enable(Bot* bot_p, QJSEngine* engine_p);
+	VisionAPI(Bot* bot_p, QScriptEngine* engine_p);
+	static void enable(Bot* bot_p, QScriptEngine* engine_p);
 	
 	Q_INVOKABLE void saveImage(Image* image, QString path);
-	Q_INVOKABLE QJSValue loadImage(QString path);
-	Q_INVOKABLE QJSValue cropImage(Image* image, int x_offset, int y_offset, int width, int height);
-	Q_INVOKABLE QJSValue grayImage(Image* image);
-	Q_INVOKABLE QJSValue resizeImage(Image* image, int new_width, int new_height);
-	Q_INVOKABLE QJSValue isolateColor(Image* image, HSVColor* min_hsv, HSVColor* max_hsv, bool keep_color = false);
+	Q_INVOKABLE QScriptValue loadImage(QString path);
+	Q_INVOKABLE QScriptValue cropImage(Image* image, int x_offset, int y_offset, int width, int height);
+	Q_INVOKABLE QScriptValue grayImage(Image* image);
+	Q_INVOKABLE QScriptValue resizeImage(Image* image, int new_width, int new_height);
+	Q_INVOKABLE QScriptValue isolateColor(Image* image, HSVColor* min_hsv, HSVColor* max_hsv, bool keep_color = false);
 	Q_INVOKABLE bool sameImages(Image* image_1, Image* image_2);
 	
-	Q_INVOKABLE QJSValue findMaskedMatches(Image* image, Image* tpl, Image* mask, double threshold, int max_matches);
-	Q_INVOKABLE QJSValue findMaskedMatch(Image* image, Image* tpl, Image* mask, double threshold);
+	Q_INVOKABLE QScriptValue findMaskedMatches(Image* image, Image* tpl, Image* mask, double threshold, int max_matches);
+	Q_INVOKABLE QScriptValue findMaskedMatch(Image* image, Image* tpl, Image* mask, double threshold);
 	
-	Q_INVOKABLE QJSValue findMatches(Image* image, Image* tpl, double threshold = 0.8, int max_matches = 7);
-	Q_INVOKABLE QJSValue findMatch(Image* image, Image* tpl, double threshold = 0.8);
+	Q_INVOKABLE QScriptValue findMatches(Image* image, Image* tpl, double threshold = 0.8, int max_matches = 7);
+	Q_INVOKABLE QScriptValue findMatch(Image* image, Image* tpl, double threshold = 0.8);
 	
-	Q_INVOKABLE QJSValue findBlobs(BlobTpl* blob_tpl, Image* image );
-	Q_INVOKABLE QJSValue markMatches(Image* image, QJSValue matches, int r, int g, int b, int thickness);
-	Q_INVOKABLE QJSValue markMatch(Image* image, Match* match, int r, int g, int b, int thickness);
+	Q_INVOKABLE QScriptValue findBlobs(BlobTpl* blob_tpl, Image* image );
+	Q_INVOKABLE QScriptValue markMatches(Image* image, QScriptValue matches, int r, int g, int b, int thickness);
+	Q_INVOKABLE QScriptValue markMatch(Image* image, Match* match, int r, int g, int b, int thickness);
 	
 private:
 	Bot* m_bot_p;
-	QJSEngine* m_engine_p;
+	QScriptEngine* m_engine_p;
 };
 
 #endif // BFP__VISION__VISION_API_H

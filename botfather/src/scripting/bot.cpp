@@ -1,5 +1,5 @@
 #include "bot.h"
-#include <QJSEngine>
+#include <QtScript/QScriptEngine>
 #include <QFile>
 #include <QDebug>
 #include <QFileInfo>
@@ -21,12 +21,12 @@ void Bot::runScript()
 	// Reset settings eventually made by a previously run script.
 	Browser::unmodifyRessources();
 	
-	// Create js engine and enable our api in it's global context.
-	QJSEngine engine;
-	HelperAPI::enable(this, m_thread_p, &engine);
-	VisionAPI::enable(this, &engine);
-	BrowserAPI::enable(this, &engine);
-	AndroidAPI::enable(this, &engine);
+	// Create script engine and enable our api in it's global context.
+	QScriptEngine *script_engine = new QScriptEngine(this);
+	HelperAPI::enable(this, m_thread_p, script_engine);
+	VisionAPI::enable(this, script_engine);
+	BrowserAPI::enable(this, script_engine);
+	AndroidAPI::enable(this, script_engine);
 	
 	// Try to open the submitted script file.
 	QFile script_file(this->m_script_path);
@@ -49,9 +49,9 @@ void Bot::runScript()
 	m_thread_p->setTerminationEnabled(true);
 	
 	// Run the script.
-	QJSValue result;
+	QScriptValue result;
 	try{
-		result = engine.evaluate(contents, this->m_script_path);
+		result = script_engine->evaluate(contents, this->m_script_path);
 	}
 	catch (...) {
 		QString debug_msg(

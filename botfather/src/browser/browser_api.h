@@ -2,7 +2,7 @@
 #define BFP__BROWSER__BROWSER_API_H
 
 #include <QObject>
-#include <QJSEngine>
+#include <QtScript/QScriptEngine>
 #include <QString>
 
 class Bot;
@@ -11,10 +11,10 @@ class BrowserAPI : public QObject
 {
 	Q_OBJECT
 public:
-	explicit BrowserAPI(Bot *bot_p, QJSEngine* engine_p);
-	static void enable(Bot *bot_p, QJSEngine* engine_p);
+	explicit BrowserAPI(Bot *bot_p, QScriptEngine* engine_p);
+	static void enable(Bot *bot_p, QScriptEngine* engine_p);
 	
-	Q_INVOKABLE QJSValue getImage();
+	Q_INVOKABLE QScriptValue getImage();
 	Q_INVOKABLE void blockRessource(QString ressource_pattern);
 	Q_INVOKABLE void replaceRessource(QString old_ressource_pattern, QString new_ressource);
 	Q_INVOKABLE void unmodifyRessource(QString ressource_pattern);
@@ -46,7 +46,7 @@ public:
 	Q_INVOKABLE void scrollWheel(int x, int y, int delta_x, int delta_y);
 	
 private:
-	QJSEngine* m_engine_p;
+	QScriptEngine* m_engine_p;
 };
 
 #endif // BFP__BROWSER__BROWSER_API_H

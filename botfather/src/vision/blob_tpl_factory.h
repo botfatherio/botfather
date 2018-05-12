@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QString>
-#include <QJSEngine>
+#include <QtScript/QScriptEngine>
 #include "hsv_color.h"
 
 class BlobTplFactory : public QObject
@@ -11,9 +11,9 @@ class BlobTplFactory : public QObject
 	Q_OBJECT
 	
 public:
-	BlobTplFactory(QJSEngine* engine_p);
+	BlobTplFactory(QScriptEngine* engine_p);
 	
-	Q_INVOKABLE QJSValue createInstance(
+	Q_INVOKABLE QScriptValue createInstance(
 		HSVColor* min_hsv,
 		HSVColor* max_hsv,
 		bool filter_by_area,
@@ -30,10 +30,10 @@ public:
 		double max_inertia_ration = 1.0
 	);
 	
-	static void enable(QJSEngine* engine_p);
+	static void enable(QScriptEngine* engine_p);
 
 private:
-	QJSEngine* m_engine_p;
+	QScriptEngine* m_engine_p;
 };
 
 #endif // BFP__VISION__BLOB_TPL_FACTORY_H
