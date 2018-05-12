@@ -34,6 +34,16 @@ BlobTpl::BlobTpl(
 	this->m_blob_params.maxInertiaRatio = max_inertia_ration;
 }
 
+QScriptValue BlobTpl::toScriptValue(QScriptEngine *engine, BlobTpl* const &in)
+{
+	return engine->newQObject(in);
+}
+
+void BlobTpl::fromScriptValue(const QScriptValue &object, BlobTpl* &out)
+{
+	out = qobject_cast<BlobTpl*>(object.toQObject());
+}
+
 void BlobTpl::setMinHSV(HSVColor *min_hsv_p)
 {
 	this->m_min_hsv_p = min_hsv_p;

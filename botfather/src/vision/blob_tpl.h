@@ -2,6 +2,7 @@
 #define BFP__VISION__BLOB_TPL_H
 
 #include <QObject>
+#include <QScriptEngine>
 #include <opencv2/opencv.hpp>
 #include "hsv_color.h"
 
@@ -26,6 +27,9 @@ public:
 		double min_inertia_ration = 0.0f,
 		double max_inertia_ration = 1.0f
 	);
+	
+	static QScriptValue toScriptValue(QScriptEngine *engine, BlobTpl* const &in);
+	static void fromScriptValue(const QScriptValue &object, BlobTpl* &out);
 
 	Q_INVOKABLE void setMinHSV(HSVColor* min_hsv_p);
 	Q_INVOKABLE HSVColor* getMinHSV() const;
@@ -76,5 +80,7 @@ private:
 	HSVColor* m_max_hsv_p;
 	cv::SimpleBlobDetector::Params m_blob_params;
 };
+
+Q_DECLARE_METATYPE(BlobTpl*)
 
 #endif // BFP__VISION__BLOB_TPL_H
