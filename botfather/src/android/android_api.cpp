@@ -35,15 +35,9 @@ QScriptValue AndroidAPI::listPackages()
 {
 	QList<QString> packages;
 	if (!adb->listPackages(serial_number, packages)) {
-		// Listing the packages failed. TODO: Return a QJSValue Exception thingy?
+		// Listing the packages failed. A empty list will be returned.
 	}
-	
-	// Transform the packages list into and JS array of packages.
-	QScriptValue js_packages = m_engine_p->newArray();
-	for (int i = 0; i < packages.size(); i++){
-		js_packages.setProperty(i, packages[i]);
-	}
-	return js_packages;
+	return qScriptValueFromSequence(m_engine_p, packages);
 }
 
 bool AndroidAPI::startApp(QString package)

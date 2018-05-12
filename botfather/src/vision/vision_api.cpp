@@ -115,14 +115,7 @@ QScriptValue VisionAPI::findMaskedMatches(Image *image, Image *tpl, Image *mask,
 	}
 	
 	QVector<Match*> matches = Vision::findMaskedMatches(image->getUMat(), tpl->getUMat(), mask->getUMat(), threshold, max_matches);
-	QScriptValue js_matches = m_engine_p->newArray();
-	
-	for (int i = 0; i < matches.size(); i++) {
-		QScriptValue js_match = m_engine_p->newQObject(matches[i]);
-		js_matches.setProperty(i, js_match);
-	}
-	
-	return js_matches;
+	return qScriptValueFromSequence(m_engine_p, matches);
 }
 
 QScriptValue VisionAPI::findMaskedMatch(Image *image, Image *tpl, Image *mask, double threshold)
@@ -176,7 +169,9 @@ QScriptValue VisionAPI::findBlobs(BlobTpl *blob_tpl, Image *image)
 	QScriptValue matches = m_engine_p->newArray();
 	int number_of_matches = 0;
 	
-	// Turn detected cv::KeyPoints into js compatible matches.
+	// Turn detected cv::KeyPoints into js compatible matches. cv:KeyPoint can't be converted
+	// using qScriptValueFromSequence, unless we make them QObjects which the script engine
+	// can interpret.
 	for (cv::KeyPoint kp : keypoints) {
 		
 		int left = kp.pt.x + (kp.size / 2);
@@ -199,21 +194,8 @@ QScriptValue VisionAPI::markMatches(Image *image, QScriptValue matches, int r, i
 		return m_engine_p->currentContext()->throwError("Matches must be an array.");
 	}
 	
-	int length = matches.property("length").toNumber();
-	
 	QVector<Match*> native_matches;
-	
-	for (int i = 0; i < length; i++) {
-		// TODO: Eventually move this convertion code somewhere else from where it can be reused.
-		
-		double score = matches.property(i).property("getScore").call().toNumber();
-		int left = matches.property(i).property("getLeft").call().toNumber();
-		int top = matches.property(i).property("getTop").call().toNumber();
-		int width = matches.property(i).property("getWidth").call().toNumber();
-		int height = matches.property(i).property("getHeight").call().toNumber();
-
-		native_matches.append(new Match(score, left, top, width, height));
-	}
+	qScriptValueToSequence(matches, native_matches);
 	
 	cv::UMat umat = Vision::markMatches(image->getUMat(), native_matches, cv::Scalar(b, g, r), thickness);
 	return m_engine_p->newQObject(new Image(umat));
