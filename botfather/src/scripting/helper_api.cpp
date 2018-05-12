@@ -28,11 +28,19 @@ bool HelperAPI::fileExists(QString file_path)
 
 void HelperAPI::sleep(int seconds)
 {
+	if (seconds <= 0) {
+		m_engine_p->currentContext()->throwError("Timeout must be at least 1 second.");
+		return;
+	}
 	QThread::sleep(seconds);
 }
 
 void HelperAPI::msleep(int milliseconds)
 {
+	if (milliseconds <= 0) {
+		m_engine_p->currentContext()->throwError("Timeout must be at least 1 millisecond.");
+		return;
+	}
 	QThread::msleep(milliseconds);
 }
 
@@ -64,6 +72,7 @@ QString HelperAPI::getAbsoluteScriptDirPath()
 void HelperAPI::playWavSound(QString path_to_wav_file)
 {
 	if (!fileExists(path_to_wav_file)) {
+		m_engine_p->currentContext()->throwError("Wav file does not exist.");
 		return;
 	}
 	QSound::play(m_bot_p->normalisePath(path_to_wav_file));
