@@ -2,6 +2,7 @@
 #define BFP__VISION__HSV_COLOR_H
 
 #include <QObject>
+#include <QScriptEngine>
 #include <opencv2/opencv.hpp>
 
 class HSVColor : public QObject
@@ -11,6 +12,9 @@ class HSVColor : public QObject
 public:
 	explicit HSVColor();
 	explicit HSVColor(int h, int s, int v);
+	
+	static QScriptValue toScriptValue(QScriptEngine *engine, HSVColor* const &in);
+	static void fromScriptValue(const QScriptValue &object, HSVColor* &out);
 	
 	Q_INVOKABLE void setH(int h);
 	Q_INVOKABLE int getH() const;
@@ -31,5 +35,7 @@ private:
 	int m_s = 0; // 0-100% saturation
 	int m_v = 0; // 0-100% value
 };
+
+Q_DECLARE_METATYPE(HSVColor*)
 
 #endif // BFP__VISION__HSV_COLOR_H

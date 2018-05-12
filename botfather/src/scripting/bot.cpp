@@ -30,6 +30,7 @@ void Bot::runScript()
 	
 	// Register custom QObject based types.
 	qScriptRegisterMetaType(script_engine, Image::toScriptValue, Image::fromScriptValue);
+	qScriptRegisterMetaType(script_engine, HSVColor::toScriptValue, HSVColor::fromScriptValue);
 	
 	// Try to open the submitted script file.
 	QFile script_file(this->m_script_path);

@@ -7,6 +7,16 @@ HSVColor::HSVColor(int h, int s, int v)
 	: m_h(h), m_s(s), m_v(v)
 {}
 
+QScriptValue HSVColor::toScriptValue(QScriptEngine *engine, HSVColor* const &in)
+{
+	return engine->newQObject(in);
+}
+
+void HSVColor::fromScriptValue(const QScriptValue &object, HSVColor* &out)
+{
+	out = qobject_cast<HSVColor*>(object.toQObject());
+}
+
 void HSVColor::setH(int h)
 {
 	this->m_h = h;
