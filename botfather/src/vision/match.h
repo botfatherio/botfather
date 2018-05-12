@@ -2,6 +2,7 @@
 #define BFP__VISION__MATCH_H
 
 #include <QObject>
+#include <QScriptEngine>
 #include <QRect>
 
 class Match : public QObject
@@ -12,6 +13,9 @@ public:
 	Match();
 	Match(double score, int left, int top, int width, int height);
 
+	static QScriptValue toScriptValue(QScriptEngine *engine, Match* const &in);
+	static void fromScriptValue(const QScriptValue &object, Match* &out);
+	
 	Q_INVOKABLE bool found() const;
 	Q_INVOKABLE double getScore() const;
 	Q_INVOKABLE int getLeft() const;
@@ -41,5 +45,7 @@ private:
 	int m_x = 0;
 	int m_y = 0;
 };
+
+Q_DECLARE_METATYPE(Match*)
 
 #endif // BFP__VISION__MATCH_H

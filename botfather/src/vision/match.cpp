@@ -16,6 +16,16 @@ Match::Match(double score, int left, int top, int width, int height)
 	this->m_y = top + (height / 2);
 }
 
+QScriptValue Match::toScriptValue(QScriptEngine *engine, Match* const &in)
+{
+	return engine->newQObject(in);
+}
+
+void Match::fromScriptValue(const QScriptValue &object, Match* &out)
+{
+	out = qobject_cast<Match*>(object.toQObject());
+}
+
 bool Match::found() const
 {
 	return m_score != -1;
