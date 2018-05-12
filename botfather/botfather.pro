@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET = botfather
-QT += core network widgets qml gui
+QT += core network widgets qml gui multimedia
 
 DESTDIR = ./BuildOutput
 OBJECTS_DIR += ./CompiledObjects

@@ -39,6 +39,8 @@ public:
 	
 	// Returns a absolute path to the dir of the currently run script.
 	Q_INVOKABLE QString getAbsoluteScriptDirPath();
+	
+	Q_INVOKABLE void playWavSound(QString path_to_wav_file);
 
 private:
 	BotThread* m_bot_thread_p;

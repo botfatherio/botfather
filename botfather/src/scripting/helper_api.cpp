@@ -4,6 +4,7 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <QInputDialog>
+#include <QSound>
 #include <QDebug>
 #include "bot.h"
 #include "bot_thread.h"
@@ -58,4 +59,12 @@ bool HelperAPI::stopRequested()
 QString HelperAPI::getAbsoluteScriptDirPath()
 {
 	return m_bot_p->getAbsoluteScriptDirPath();
+}
+
+void HelperAPI::playWavSound(QString path_to_wav_file)
+{
+	if (!fileExists(path_to_wav_file)) {
+		return;
+	}
+	QSound::play(m_bot_p->normalisePath(path_to_wav_file));
 }
