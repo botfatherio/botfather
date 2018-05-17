@@ -32,7 +32,7 @@ BrowserClient * BrowserClient::instance()
 	return g_instance;
 }
 
-QImage BrowserClient::getImage()
+QImage BrowserClient::takeScreenshot()
 {
 	return g_browser_image;
 }

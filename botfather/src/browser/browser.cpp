@@ -144,10 +144,10 @@ void Browser::resize(QSize new_size)
 	BrowserClient::instance()->getBrowser()->GetHost()->WasResized();
 }
 
-QImage Browser::getImage()
+QImage Browser::takeScreenshot()
 {
 	Q_ASSERT(BrowserClient::instance());
-	return BrowserClient::getImage();
+	return BrowserClient::takeScreenshot();
 }
 
 void Browser::blockRessource(QString ressource)

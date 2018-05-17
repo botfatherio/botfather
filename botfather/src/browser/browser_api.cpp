@@ -15,9 +15,9 @@ void BrowserAPI::enable(Bot *bot_p, QScriptEngine *engine_p)
 	engine_p->globalObject().setProperty("Browser", vision_obj);
 }
 
-QScriptValue BrowserAPI::getImage()
+QScriptValue BrowserAPI::takeScreenshot()
 {
-	QImage qimage = Browser::getImage();
+	QImage qimage = Browser::takeScreenshot();
 	cv::UMat umat = Vision::qimageToBGRUmat(qimage).clone();
 	return m_engine_p->newQObject(new Image(umat));
 }

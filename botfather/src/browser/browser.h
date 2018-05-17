@@ -17,7 +17,7 @@ public:
 	static void resize(QSize new_size);
 	
 	// Returns screenshot of browser as QImage
-	static QImage getImage();
+	static QImage takeScreenshot();
 	
 	// Adds a ressource to the block list. Blocked ressources are not loaded.
 	static void blockRessource(QString ressource);

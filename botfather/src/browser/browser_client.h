@@ -35,7 +35,7 @@ public:
 	static BrowserClient* instance();
 	
 	//
-	static QImage getImage();
+	static QImage takeScreenshot();
 	
 	// Returns the cef browser object. There is only one browser because we're always
 	// running in offscreen rendering mode.

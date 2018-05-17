@@ -14,7 +14,7 @@ public:
 	explicit BrowserAPI(Bot *bot_p, QScriptEngine* engine_p);
 	static void enable(Bot *bot_p, QScriptEngine* engine_p);
 	
-	Q_INVOKABLE QScriptValue getImage();
+	Q_INVOKABLE QScriptValue takeScreenshot();
 	Q_INVOKABLE void blockRessource(QString ressource_pattern);
 	Q_INVOKABLE void replaceRessource(QString old_ressource_pattern, QString new_ressource);
 	Q_INVOKABLE void unmodifyRessource(QString ressource_pattern);
