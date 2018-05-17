@@ -88,7 +88,6 @@ HEADERS += \
     ./src/browser/browser.h \
     ./src/browser/browser_app.h \
     ./src/scripting/bot_thread.h \
-    ./src/shared/settings.h \
     ./src/vision/vision.h \
     ./src/auth/authenticator.h \
     ./src/android/adb_wrapper.h \
@@ -112,7 +111,10 @@ HEADERS += \
     ./src/gui/config_dialog.h \
     ./src/gui/browser_widget.h \
     ./src/browser/browser_client.h \
-    ./src/browser/browser_api.h
+    ./src/browser/browser_api.h \
+    ./src/browser/browser_settings.h \
+    ./src/auth/auth_settings.h \
+    ./src/android/android_settings.h
 SOURCES += ./src/android/adb_device_info.cpp \
     ./src/android/adb_wrapper.cpp \
     ./src/android/android_api.cpp \

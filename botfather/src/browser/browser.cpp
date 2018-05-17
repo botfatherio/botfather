@@ -8,7 +8,7 @@
 #include <QObject>
 #include "browser_client.h"
 #include "browser_app.h"
-#include "../shared/settings.h"
+#include "browser_settings.h"
 
 #if defined(_WIN32) || defined(_WIN64)
 	#include <windows.h>
@@ -138,8 +138,8 @@ void Browser::resize(QSize new_size)
 	// Resize the browser by first setting it's new size and than calling CerBrowserHost::WasReesized to make the browser
 	// lookup it's new size by calling CefRenderHandler::GetViewRect.
 	QSettings settings;
-	settings.setValue(options::browser::WIDTH, new_size.width());
-	settings.setValue(options::browser::HEIGHT, new_size.height());
+	settings.setValue(browser::options::WIDTH, new_size.width());
+	settings.setValue(browser::options::HEIGHT, new_size.height());
 	BrowserClient::instance()->getBrowser()->GetHost()->NotifyMoveOrResizeStarted();
 	BrowserClient::instance()->getBrowser()->GetHost()->WasResized();
 }
@@ -233,14 +233,14 @@ int Browser::getWidth()
 {
 	Q_ASSERT(BrowserClient::instance());
 	QSettings settings;
-	return settings.value(options::browser::WIDTH, fallback::browser::WIDTH).toInt();
+	return settings.value(browser::options::WIDTH, browser::fallback::WIDTH).toInt();
 }
 
 int Browser::getHeight()
 {
 	Q_ASSERT(BrowserClient::instance());
 	QSettings settings;
-	return settings.value(options::browser::HEIGHT, fallback::browser::HEIGHT).toInt();
+	return settings.value(browser::options::HEIGHT, browser::fallback::HEIGHT).toInt();
 }
 
 void Browser::executeJavascript(QString javascript_code)

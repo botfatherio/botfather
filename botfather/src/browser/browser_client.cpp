@@ -9,7 +9,7 @@
 #include "include/views/cef_window.h"
 #include "include/wrapper/cef_closure_task.h"
 #include "include/wrapper/cef_helpers.h"
-#include "../shared/settings.h"
+#include "browser_settings.h"
 
 namespace {
 	BrowserClient * g_instance = nullptr;
@@ -162,8 +162,8 @@ bool BrowserClient::GetViewRect(CefRefPtr<CefBrowser> browser, CefRect& rect)
 	rect.Set(
 		0,
 		0,
-		settings.value(options::browser::WIDTH, fallback::browser::WIDTH).toInt(),
-		settings.value(options::browser::HEIGHT, fallback::browser::HEIGHT).toInt()
+		settings.value(browser::options::WIDTH, browser::fallback::WIDTH).toInt(),
+		settings.value(browser::options::HEIGHT, browser::fallback::HEIGHT).toInt()
 	);
 	return true;
 }

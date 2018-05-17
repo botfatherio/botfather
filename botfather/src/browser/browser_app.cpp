@@ -10,7 +10,7 @@
 #include "include/views/cef_window.h"
 #include "include/wrapper/cef_helpers.h"
 #include "browser_client.h"
-#include "../shared/settings.h"
+#include "browser_settings.h"
 
 void BrowserApp::OnContextInitialized()
 {
@@ -68,8 +68,8 @@ void BrowserApp::OnBeforeCommandLineProcessing(const CefString& process_type, Ce
 	QSettings settings;
 
 #ifdef Q_OS_LINUX
-	QString flash_so(settings.value(options::browser::FLASH_SO).toString());
-	QString flash_manifest(settings.value(options::browser::FLASH_MANIFEST).toString());
+	QString flash_so(settings.value(browser::options::FLASH_SO).toString());
+	QString flash_manifest(settings.value(browser::options::FLASH_MANIFEST).toString());
 	
 	QFileInfo flash_so_info(flash_so);
 	QFileInfo flash_manifest_info(flash_manifest);
@@ -86,7 +86,7 @@ void BrowserApp::OnBeforeCommandLineProcessing(const CefString& process_type, Ce
 		}
 	}
 #else
-	if (settings.value(options::browser::USE_SYSTEM_FLASH, fallback::browser::USE_SYSTEM_FLASH).toBool()) {
+	if (settings.value(browser::options::USE_SYSTEM_FLASH, browser::fallback::USE_SYSTEM_FLASH).toBool()) {
 		command_line->AppendSwitch("enable-system-flash");
 	}
 #endif

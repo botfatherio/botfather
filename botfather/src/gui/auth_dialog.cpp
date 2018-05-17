@@ -4,7 +4,8 @@
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QDebug>
-#include "../shared/settings.h"
+#include <QSettings>
+#include "../auth/auth_settings.h"
 #include "../auth/authenticator.h"
 
 AuthDialog::AuthDialog(QString software_slug, QString version_string, QString version_secret, QWidget *parent) :
@@ -35,9 +36,9 @@ AuthDialog::AuthDialog(QString software_slug, QString version_string, QString ve
 	connect(ui->password, SIGNAL(returnPressed()), SLOT(on_login_pressed()));
 	
 	QSettings settings;
-	QString username = settings.value(options::auth::USERNAME).toString();
-	QString password = settings.value(options::auth::PASSWORD).toString();
-	bool remember_me = settings.value(options::auth::REMEMBER_ME, false).toBool();
+	QString username = settings.value(auth::options::USERNAME).toString();
+	QString password = settings.value(auth::options::PASSWORD).toString();
+	bool remember_me = settings.value(auth::options::REMEMBER_ME, false).toBool();
 	
 	this->ui->username->setText(username);
 	this->ui->password->setText(password);
@@ -65,7 +66,7 @@ void AuthDialog::tryAutoLogin()
 	// auth process if the username or password field is empty. Because this would
 	// end up in an error message being presented to the user who didn't even hit
 	// any button yet.
-	if (!settings.value(options::auth::REMEMBER_ME, false).toBool()
+	if (!settings.value(auth::options::REMEMBER_ME, false).toBool()
 		|| ui->username->text().isEmpty() || ui->password->text().isEmpty()) {
 		
 		// Present the auth dialog to the user if auto login requirements are not met.
@@ -101,10 +102,10 @@ void AuthDialog::on_login_pressed()
 void AuthDialog::on_remember_me_toggled(bool checked)
 {
 	QSettings settings;
-	settings.setValue(options::auth::REMEMBER_ME, checked);
+	settings.setValue(auth::options::REMEMBER_ME, checked);
 	if (!checked) {
-		settings.remove(options::auth::USERNAME);
-		settings.remove(options::auth::PASSWORD);
+		settings.remove(auth::options::USERNAME);
+		settings.remove(auth::options::PASSWORD);
 	}
 }
 
@@ -166,9 +167,9 @@ void AuthDialog::onAuthenticated(int curtime, int premend, bool stable)
 {
 	// Login successfully, save the login info if remember me is checked.
 	QSettings settings;
-	if (settings.value(options::auth::REMEMBER_ME, false).toBool()) {
-		settings.setValue(options::auth::USERNAME, this->ui->username->text());
-		settings.setValue(options::auth::PASSWORD, this->ui->password->text());
+	if (settings.value(auth::options::REMEMBER_ME, false).toBool()) {
+		settings.setValue(auth::options::USERNAME, this->ui->username->text());
+		settings.setValue(auth::options::PASSWORD, this->ui->password->text());
 	}
 	
 	// TODO: Reenalbe this one we actually sell premium licenses.

@@ -3,7 +3,9 @@
 #include <QFileInfo>
 #include <QFileDialog>
 #include <QDebug>
-#include "../shared/settings.h"
+#include <QSettings>
+#include "../android/android_settings.h"
+#include "../browser/browser_settings.h"
 
 ConfigDialog::ConfigDialog(QWidget *parent) :
 	QDialog(parent),
@@ -13,8 +15,8 @@ ConfigDialog::ConfigDialog(QWidget *parent) :
 	this->loadConfig();
 
 	QSettings settings;
-	QString flash_so = settings.value(options::browser::FLASH_SO).toString();
-	QString flash_manifest = settings.value(options::browser::FLASH_MANIFEST).toString();
+	QString flash_so = settings.value(browser::options::FLASH_SO).toString();
+	QString flash_manifest = settings.value(browser::options::FLASH_MANIFEST).toString();
 
 	QFileInfo flash_so_info(flash_so);
 	if (!flash_so_info.exists() || !flash_so_info.isFile()) {
@@ -45,23 +47,23 @@ ConfigDialog::~ConfigDialog()
 void ConfigDialog::saveConfig()
 {
 	QSettings s;
-	s.setValue(options::browser::WIDTH, this->ui->browser_width->value());
-	s.setValue(options::browser::HEIGHT, this->ui->browser_height->value());
-	s.setValue(options::browser::FLASH_SO, this->ui->flash_so->text());
-	s.setValue(options::browser::FLASH_MANIFEST, this->ui->flash_manifest->text());
-	s.setValue(options::browser::USE_SYSTEM_FLASH, this->ui->use_system_flash->isChecked());
-	s.setValue(options::android::ADB_BINARY, this->ui->adb_binary->text());
+	s.setValue(browser::options::WIDTH, this->ui->browser_width->value());
+	s.setValue(browser::options::HEIGHT, this->ui->browser_height->value());
+	s.setValue(browser::options::FLASH_SO, this->ui->flash_so->text());
+	s.setValue(browser::options::FLASH_MANIFEST, this->ui->flash_manifest->text());
+	s.setValue(browser::options::USE_SYSTEM_FLASH, this->ui->use_system_flash->isChecked());
+	s.setValue(android::options::ADB_BINARY, this->ui->adb_binary->text());
 }
 
 void ConfigDialog::loadConfig()
 {
 	QSettings s;
-	this->ui->browser_width->setValue(s.value(options::browser::WIDTH, fallback::browser::WIDTH).toInt());
-	this->ui->browser_height->setValue(s.value(options::browser::HEIGHT, fallback::browser::HEIGHT).toInt());
-	this->ui->flash_so->setText(s.value(options::browser::FLASH_SO).toString());
-	this->ui->flash_manifest->setText(s.value(options::browser::FLASH_MANIFEST).toString());
-	this->ui->use_system_flash->setChecked(s.value(options::browser::USE_SYSTEM_FLASH, fallback::browser::USE_SYSTEM_FLASH).toBool());
-	this->ui->adb_binary->setText(s.value(options::android::ADB_BINARY).toString());
+	this->ui->browser_width->setValue(s.value(browser::options::WIDTH, browser::fallback::WIDTH).toInt());
+	this->ui->browser_height->setValue(s.value(browser::options::HEIGHT, browser::fallback::HEIGHT).toInt());
+	this->ui->flash_so->setText(s.value(browser::options::FLASH_SO).toString());
+	this->ui->flash_manifest->setText(s.value(browser::options::FLASH_MANIFEST).toString());
+	this->ui->use_system_flash->setChecked(s.value(browser::options::USE_SYSTEM_FLASH, browser::fallback::USE_SYSTEM_FLASH).toBool());
+	this->ui->adb_binary->setText(s.value(android::options::ADB_BINARY).toString());
 }
 
 void ConfigDialog::on_adb_binary_browse_button_pressed()
