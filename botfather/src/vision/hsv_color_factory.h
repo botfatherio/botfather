@@ -11,7 +11,6 @@ class HSVColorFactory : public QObject
 
 public:
 	HSVColorFactory(QScriptEngine* engine_p);
-	Q_INVOKABLE QScriptValue createInstance(int h, int s, int v);
 	static void enable(QScriptEngine* engine_p);
 	static QScriptValue create(QScriptContext *context, QScriptEngine *engine);
 
