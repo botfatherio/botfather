@@ -143,11 +143,12 @@ void AuthDialog::onRemoteApiError(QJsonArray error_codes)
 		{"bot_missing", "Software slug missing (this is an bug, please report it)."},
 		{"version_missing", "Version string missing (this is an bug, please report it)."},
 		{"magic_missing", "Magic missing (this is an bug, please report it)."},
-		{"auth_failed", "Authentication failed. Please check your botfather.io username and password."},
+		{"auth_failed", "Authentication failed. Please check your username and password. Also make sure your account is active and your email address confirmed."},
 		{"bot_unknown", "Unknown software. This client is probably broken. Visit botfather.io to get a new one."},
 		{"version_unknown", "Unknown version. This client is probably broken. Visit botfather.io to get a new one."},
 		{"version_unsupported", "This version is no longer supported. Please get the latest version from botfather.io"},
-		{"version_offline", "This version is CURRENTLY offline. "}
+		{"version_offline", "This version is CURRENTLY offline. "},
+		{"user_inactive", "Your account is inactive. Make sure you confirmed your email address."} // This will never be sent, as the auth fails when the account is inactive.
 	};
 	
 	for (QJsonValue error_code : error_codes) {

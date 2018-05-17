@@ -35,7 +35,7 @@ void Authenticator::authenticate(QString username, QString password)
 	connect(network_manager, SIGNAL(finished(QNetworkReply*)), SLOT(networkReplyReceived(QNetworkReply*)));
 	
 	// Send the request
-	QNetworkRequest network_request(QUrl("https://botfather.io/api/v3/auth/"));
+	QNetworkRequest network_request(QUrl("https://botfather.io/api/v4/auth/"));
 	network_request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 	network_manager->post(network_request, post_data.toString(QUrl::FullyEncoded).toUtf8());
 }
