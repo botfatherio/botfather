@@ -19,8 +19,8 @@ public:
 	// Returns true if the file exists.
 	Q_INVOKABLE bool fileExists(QString file_path);
 	
-	// Makes the bot sleep for x seconds.
-	Q_INVOKABLE void sleep(int seconds);
+	// Makes the bot sleep for x seconds. If deep sleep will not break even if stop is requested.
+	Q_INVOKABLE void sleep(int seconds, bool deep = false);
 	
 	// Makes the bot sleep for x milliseconds.
 	Q_INVOKABLE void msleep(int milliseconds);

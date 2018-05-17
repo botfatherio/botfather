@@ -26,13 +26,25 @@ bool HelperAPI::fileExists(QString file_path)
 	return this->m_bot_p->fileExists(file_path);
 }
 
-void HelperAPI::sleep(int seconds)
+void HelperAPI::sleep(int seconds, bool deep)
 {
 	if (seconds <= 0) {
 		m_engine_p->currentContext()->throwError("Timeout must be at least 1 second.");
 		return;
 	}
-	QThread::sleep(seconds);
+	if (deep) {
+		QThread::sleep(seconds);
+		return;
+	}
+	
+	// Sleep in 250ms intervals while checking whether stop has been requested.
+	// We do so to make stopping a script while it's sleeping look more fluent.
+	for (int i = 0; i < seconds * 4; i++) {
+		if (stopRequested()) {
+			break;
+		}
+		QThread::msleep(250);
+	}
 }
 
 void HelperAPI::msleep(int milliseconds)
