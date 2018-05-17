@@ -29,6 +29,10 @@ signals:
 	void stopped(bool without_errors);
 	void message(QString log_message, bool from_client);
 	
+	// Start/stop a wav sound in the main thread.
+	void playWavSound(QString path_to_wav_file);
+	void stopWavSound();
+	
 private:
 	BotThread* m_thread_p;
 	QString m_script_path;

@@ -17,6 +17,7 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	browser_window = new BrowserWindow(this);
 	android_dialog = new AndroidDialog(this);
 	file_dialog = new QFileDialog(this);
+	script_sound_effect = new QSoundEffect(this);
 	
 	// Store the original window title so it can be restored eg after the user logged out.
 	original_window_title = windowTitle();
@@ -30,7 +31,9 @@ ControlWindow::~ControlWindow()
 void ControlWindow::applyRemoteApiInfo(int curtime, int premend, bool stable)
 {	
 	trial = curtime > premend;
-	this->setWindowTitle(original_window_title + (stable ? " - Stable" : "") + (trial ? " - Trial" : " - Premium"));
+	// No longer alter the title. Just leave it be Botfather.
+	// This method is still usefull though to make scripts stop when premium finished.
+	//this->setWindowTitle(original_window_title + (stable ? " - Stable" : "") + (trial ? " - Trial" : " - Premium"));
 }
 
 void ControlWindow::on_actionStart_triggered()
@@ -74,6 +77,11 @@ void ControlWindow::on_actionStart_triggered()
 	// Enable logging visible for the user
 	connect(bot, &Bot::message, this, &ControlWindow::appendMessage);
 	
+	// QSound only works in the main thread, thats why we have to the control window to play
+	// the desired sound whenever to bot wants us to do so.
+	connect(bot, &Bot::playWavSound, this, &ControlWindow::playWavSound);
+	connect(bot, &Bot::stopWavSound, this, &ControlWindow::stopWavSound);
+	
 	// Start the bot thread and thus the bot.
 	this->bot_thread->start();
 }
@@ -108,7 +116,10 @@ void ControlWindow::bot_stopped(bool without_errors)
 	this->ui->actionKill->setVisible(false);
 	this->ui->actionStart->setEnabled(true);
 	this->ui->actionStop->setEnabled(false);
-		
+	
+	// Stop sounds started by the script.
+	stopWavSound();
+	
 	if (!without_errors) {
 		QMessageBox::warning(
 			this,
@@ -220,4 +231,25 @@ void ControlWindow::on_actionLogout_triggered()
 	}
 	setWindowTitle(original_window_title);
 	emit loggedOut();
+}
+
+void ControlWindow::playWavSound(QString path_to_wav_file)
+{
+	// TODO: Look into alternative ways to run QSound in the main thread.
+	// sure controlwindow will always be in the main thread. but this is not
+	// obvious, nor does a method like this, not used by the gui, but in a
+	// gui class look ugly.
+	// TODO: this sound will not stop playing when the scripts stops. We could
+	// make QAudio a single instance. everytime this slot is called we stop the audio,
+	// set a new source and play it again. when the bot stops (bot_stopped received)
+	// we also stop the audio from playing. Disatvantage: only one audio file can be
+	// played at the time.
+	stopWavSound();
+	script_sound_effect->setSource(QUrl::fromLocalFile(path_to_wav_file));
+	script_sound_effect->play();
+}
+
+void ControlWindow::stopWavSound()
+{
+	script_sound_effect->stop();
 }

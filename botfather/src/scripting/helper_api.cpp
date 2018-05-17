@@ -4,7 +4,7 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <QInputDialog>
-#include <QSound>
+#include <QAudioBuffer>
 #include <QDebug>
 #include "bot.h"
 #include "bot_thread.h"
@@ -81,11 +81,39 @@ QString HelperAPI::getAbsoluteScriptDirPath()
 	return m_bot_p->getAbsoluteScriptDirPath();
 }
 
-void HelperAPI::playWavSound(QString path_to_wav_file)
+void HelperAPI::playWavSound(QString path_to_wav_file, bool blocking)
 {
 	if (!fileExists(path_to_wav_file)) {
 		m_engine_p->currentContext()->throwError("Wav file does not exist.");
 		return;
 	}
-	QSound::play(m_bot_p->normalisePath(path_to_wav_file));
+	
+	emit m_bot_p->playWavSound(m_bot_p->normalisePath(path_to_wav_file));
+	
+	if (blocking) {
+		QFile wav_file(m_bot_p->normalisePath(path_to_wav_file));
+		if(!wav_file.open(QIODevice::ReadOnly)) {
+			// Reading the wav file failed.
+			return;
+		}
+		
+		// Common wav file header (checked this using VLC player).
+		QAudioFormat format;
+		format.setSampleSize(16);
+		format.setSampleRate(44100);
+		format.setChannelCount(2);
+		format.setCodec("audio/pcm");
+		format.setByteOrder(QAudioFormat::LittleEndian);
+		format.setSampleType(QAudioFormat::UnSignedInt);
+		
+		QAudioBuffer buffer(wav_file.readAll(), format);
+		//qDebug() << "DURATION:" << buffer.duration() / 1000 / 1000 << "seconds";
+		//QThread::usleep(buffer.duration());
+		sleep(buffer.duration() / 1000 / 1000, false);
+	}
+}
+
+void HelperAPI::stopWavSound()
+{
+	emit m_bot_p->stopWavSound();
 }

@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QFileDialog>
+#include <QSoundEffect>
 #include "../scripting/bot.h"
 #include "../scripting/bot_thread.h"
 
@@ -42,6 +43,8 @@ public slots:
 	void on_actionAboutQt_triggered();
 	void on_actionPremiumPlans_triggered();
 	void on_actionLogout_triggered();
+	void playWavSound(QString path_to_wav_file);
+	void stopWavSound();
 	
 private:
 	Ui::ControlWindow *ui;
@@ -52,6 +55,7 @@ private:
 	BotThread *bot_thread;
 	bool trial = true;
 	QString original_window_title;
+	QSoundEffect *script_sound_effect;
 };
 
 #endif // BFP__GUI__CONTROL_WINDOW_H
