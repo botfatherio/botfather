@@ -110,11 +110,10 @@ void ControlWindow::bot_stopped(bool without_errors)
 	this->ui->actionStop->setEnabled(false);
 		
 	if (!without_errors) {
-		// Encourage the user to check the logs because errors occurred executing the script.
 		QMessageBox::warning(
 			this,
 			"Errors occurred",
-			"Script executiong wasn't successfully. Errors occurrred. Please check the log."
+			"Script execution wasn't successful. Errors occurrred. Please check the log."
 		);
 	}
 }
