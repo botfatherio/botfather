@@ -24,8 +24,8 @@ void VisionAPI::enable(Bot* bot_p, QScriptEngine* engine_p)
 
 void VisionAPI::saveImage(Image* image, QString path)
 {
-	if (!image) {
-		m_engine_p->currentContext()->throwError("Invalid image.");
+	if (!image || image->getUMat().empty()) {
+		m_engine_p->currentContext()->throwError("Invalid or empty image.");
 		return;
 	}
 	if (path.isEmpty()) {
@@ -46,8 +46,8 @@ QScriptValue VisionAPI::loadImage(QString path) {
 
 QScriptValue VisionAPI::cropImage(Image* image, int x_offset, int y_offset, int width, int height)
 {
-	if (!image) {
-		return m_engine_p->currentContext()->throwError("Invalid image.");
+	if (!image || image->getUMat().empty()) {
+		return m_engine_p->currentContext()->throwError("Invalid or empty image.");
 	}
 	if (x_offset < 0 || y_offset < 0) {
 		return m_engine_p->currentContext()->throwError("Offset must not be negativ.");
@@ -62,8 +62,8 @@ QScriptValue VisionAPI::cropImage(Image* image, int x_offset, int y_offset, int 
 
 QScriptValue VisionAPI::grayImage(Image *image)
 {
-	if (!image) {
-		return m_engine_p->currentContext()->throwError("Invalid image.");
+	if (!image || image->getUMat().empty()) {
+		return m_engine_p->currentContext()->throwError("Invalid or empty image.");
 	}
 	cv::UMat gray_image = Vision::grayImage(image->getUMat());
 	return m_engine_p->newQObject(new Image(gray_image));
@@ -71,8 +71,8 @@ QScriptValue VisionAPI::grayImage(Image *image)
 
 QScriptValue VisionAPI::resizeImage(Image *image, int new_width, int new_height)
 {
-	if (!image) {
-		return m_engine_p->currentContext()->throwError("Invalid image.");
+	if (!image || image->getUMat().empty()) {
+		return m_engine_p->currentContext()->throwError("Invalid or empty image.");
 	}
 	if (new_width <= 0 || new_height <= 0) {
 		return m_engine_p->currentContext()->throwError("Width and height must be at least 1.");
@@ -83,8 +83,8 @@ QScriptValue VisionAPI::resizeImage(Image *image, int new_width, int new_height)
 
 QScriptValue VisionAPI::isolateColor(Image *image, HSVColor* min_hsv, HSVColor* max_hsv, bool keep_color)
 {
-	if (!image) {
-		return m_engine_p->currentContext()->throwError("Invalid image.");
+	if (!image || image->getUMat().empty()) {
+		return m_engine_p->currentContext()->throwError("Invalid or empty image.");
 	}
 	if (!min_hsv || !max_hsv) {
 		m_engine_p->currentContext()->throwError("Invalid HSV color.");
@@ -96,7 +96,7 @@ QScriptValue VisionAPI::isolateColor(Image *image, HSVColor* min_hsv, HSVColor* 
 bool VisionAPI::sameImages(Image* image_1, Image* image_2)
 {
 	if (!image_1 || !image_2) {
-		m_engine_p->currentContext()->throwError("Invalid image.");
+		m_engine_p->currentContext()->throwError("Invalid image(s).");
 		return false;
 	}
 	return Vision::sameImages(image_1->getUMat(), image_2->getUMat());
@@ -104,62 +104,81 @@ bool VisionAPI::sameImages(Image* image_1, Image* image_2)
 
 QScriptValue VisionAPI::findMaskedMatches(Image *image, Image *tpl, Image *mask, double threshold, int max_matches)
 {
-	if (!image) {
-		return m_engine_p->currentContext()->throwError("Invalid image.");
+	if (!image || image->getUMat().empty()) {
+		return m_engine_p->currentContext()->throwError("Invalid or empty image.");
 	}
-	if (!tpl) {
-		return m_engine_p->currentContext()->throwError("Invalid template.");
+	if (!tpl || tpl->getUMat().empty()) {
+		return m_engine_p->currentContext()->throwError("Invalid or empty template.");
 	}
-	if (!mask) {
-		return m_engine_p->currentContext()->throwError("Invalid mask.");
+	if (!mask || mask->getUMat().empty()) {
+		return m_engine_p->currentContext()->throwError("Invalid or empty mask.");
 	}
-	
+	if (image->getUMat().rows <= tpl->getUMat().rows || image->getUMat().cols <= tpl->getUMat().cols) {
+		return m_engine_p->currentContext()->throwError("The template must be smaller than the image.");
+	}
+	if (tpl->getUMat().rows != mask->getUMat().rows || tpl->getUMat().cols != mask->getUMat().cols) {
+		return m_engine_p->currentContext()->throwError("Mask and template must have the same size.");
+	}
 	QVector<Match*> matches = Vision::findMaskedMatches(image->getUMat(), tpl->getUMat(), mask->getUMat(), threshold, max_matches);
 	return qScriptValueFromSequence(m_engine_p, matches);
 }
 
 QScriptValue VisionAPI::findMaskedMatch(Image *image, Image *tpl, Image *mask, double threshold)
 {
-	if (!image) {
-		return m_engine_p->currentContext()->throwError("Invalid image.");
+	if (!image || image->getUMat().empty()) {
+		return m_engine_p->currentContext()->throwError("Invalid or empty image.");
 	}
-	if (!tpl) {
-		return m_engine_p->currentContext()->throwError("Invalid template.");
+	if (!tpl || tpl->getUMat().empty()) {
+		return m_engine_p->currentContext()->throwError("Invalid or empty template.");
 	}
-	if (!mask) {
-		return m_engine_p->currentContext()->throwError("Invalid mask.");
+	if (!mask || mask->getUMat().empty()) {
+		return m_engine_p->currentContext()->throwError("Invalid or empty mask.");
+	}
+	if (image->getUMat().rows <= tpl->getUMat().rows || image->getUMat().cols <= tpl->getUMat().cols) {
+		return m_engine_p->currentContext()->throwError("The template must be smaller than the image.");
+	}
+	if (tpl->getUMat().rows != mask->getUMat().rows || tpl->getUMat().cols != mask->getUMat().cols) {
+		return m_engine_p->currentContext()->throwError("Mask and template must have the same size.");
 	}
 	Match* match = Vision::findMaskedMatch(image->getUMat(), tpl->getUMat(), mask->getUMat(), threshold);
 	return m_engine_p->newQObject(match);
 }
 
-
 QScriptValue VisionAPI::findMatches(Image *image, Image *tpl, double threshold, int max_matches)
 {
-	if (!image) {
-		return m_engine_p->currentContext()->throwError("Invalid image.");
+	if (!image || image->getUMat().empty()) {
+		return m_engine_p->currentContext()->throwError("Invalid or empty image.");
 	}
-	if (!tpl) {
-		return m_engine_p->currentContext()->throwError("Invalid template.");
+	if (!tpl || tpl->getUMat().empty()) {
+		return m_engine_p->currentContext()->throwError("Invalid or empty template.");
 	}
-	return VisionAPI::findMaskedMatches(image, tpl, new Image(), threshold, max_matches);
+	if (image->getUMat().rows <= tpl->getUMat().rows || image->getUMat().cols <= tpl->getUMat().cols) {
+		return m_engine_p->currentContext()->throwError("The template must be smaller than the image.");
+	}
+	// Dont call findMaskedMatches here instead to save some checks, it requires a non empty mask.
+	QVector<Match*> matches = Vision::findMatches(image->getUMat(), tpl->getUMat(), threshold, max_matches);
+	return qScriptValueFromSequence(m_engine_p, matches);
 }
 
 QScriptValue VisionAPI::findMatch(Image *image, Image *tpl, double threshold)
 {
-	if (!image) {
-		return m_engine_p->currentContext()->throwError("Invalid image.");
+	if (!image || image->getUMat().empty()) {
+		return m_engine_p->currentContext()->throwError("Invalid or empty image.");
 	}
-	if (!tpl) {
-		return m_engine_p->currentContext()->throwError("Invalid template.");
+	if (!tpl || tpl->getUMat().empty()) {
+		return m_engine_p->currentContext()->throwError("Invalid or empty template.");
 	}
+	if (image->getUMat().rows <= tpl->getUMat().rows || image->getUMat().cols <= tpl->getUMat().cols) {
+		return m_engine_p->currentContext()->throwError("The template must be smaller than the image.");
+	}
+	// Dont call findMaskedMatch here instead to save some checks, it requires a non empty mask.
 	return VisionAPI::findMaskedMatch(image, tpl, new Image(), threshold);
 }
 
 QScriptValue VisionAPI::findBlobs(BlobTpl *blob_tpl, Image *image)
 {
-	if (!image) {
-		return m_engine_p->currentContext()->throwError("Invalid image.");
+	if (!image || image->getUMat().empty()) {
+		return m_engine_p->currentContext()->throwError("Invalid or empty image.");
 	}
 	if (!blob_tpl) {
 		return m_engine_p->currentContext()->throwError("Invalid template.");
@@ -187,8 +206,8 @@ QScriptValue VisionAPI::findBlobs(BlobTpl *blob_tpl, Image *image)
 
 QScriptValue VisionAPI::markMatches(Image *image, QScriptValue matches, int r, int g, int b, int thickness)
 {
-	if (!image) {
-		return m_engine_p->currentContext()->throwError("Invalid image.");
+	if (!image || image->getUMat().empty()) {
+		return m_engine_p->currentContext()->throwError("Invalid or empty image.");
 	}
 	if (!matches.isArray()) {
 		return m_engine_p->currentContext()->throwError("Matches must be an array.");
@@ -203,8 +222,8 @@ QScriptValue VisionAPI::markMatches(Image *image, QScriptValue matches, int r, i
 
 QScriptValue VisionAPI::markMatch(Image *image, Match *match, int r, int g, int b, int thickness)
 {
-	if (!image) {
-		return m_engine_p->currentContext()->throwError("Invalid image.");
+	if (!image || image->getUMat().empty()) {
+		return m_engine_p->currentContext()->throwError("Invalid or empty image.");
 	}
 	if (!match) {
 		return m_engine_p->currentContext()->throwError("Invalid match.");

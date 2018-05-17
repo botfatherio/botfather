@@ -104,19 +104,19 @@ QVector<Match*> Vision::findMaskedMatches(cv::UMat image, cv::UMat tpl, cv::UMat
 	QVector<Match*> matches;
 	
 	if (image.empty()) {
-		// TODO: Make the user aware of the image being empty
+		// This must be prevented by the API.
 		qDebug() << Q_FUNC_INFO << "Image empty";
 		return matches;
 	}
 	
 	if (tpl.empty()) {
-		// TODO: Make the user aware of the tpl being empty
+		// This must be prevented by the API.
 		qDebug() << Q_FUNC_INFO << "Template empty";
 		return matches;
 	}
 	
 	if (image.rows <= tpl.rows || image.cols <= tpl.cols) {
-		// TODO: Make the user aware of the image being smaller than the tpl.
+		// This must be prevented by the API.
 		qDebug() << Q_FUNC_INFO << "Image smaller than the tpl";
 		return matches;
 	}
