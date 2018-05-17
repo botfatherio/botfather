@@ -22,7 +22,7 @@ namespace {
 int XErrorHandlerImpl(Display* display, XErrorEvent* event)
 {
 	Q_UNUSED(display);
-	LOG(WARNING) \
+	qWarning()
 		<< "X error received: "
 		<< "type " << event->type << ", "
 		<< "serial " << event->serial << ", "
