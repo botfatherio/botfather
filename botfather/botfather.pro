@@ -78,6 +78,8 @@ win32 {
     CONFIG(release, debug|release):LIBS += -LC:\OPENCV\3.4.0\build\lib\Release -lopencv_world340
     else:CONFIG(debug, debug|release):LIBS += -LC:\OPENCV\3.4.0\build\lib\Debug -lopencv_world340d
 
+    LIBS += -lUser32 -lGdi32
+
     # Make the app icon be compiled into the bianary on windows
     HEADERS += ./src/res/resource.h
     RC_FILE = ./src/res/botfather.rc
@@ -91,6 +93,7 @@ win32 {
     CONFIG(release, debug|release):CEF_EXTRA_DIR = $${CEF_DIR}/Release/*
     else:CONFIG(debug, debug|release):CEF_EXTRA_DIR = $${CEF_DIR}/Debug/*
 
+    HEADERS += ./src/desktop/winput_keymap.h
     SOURCES += ./src/desktop/desktop_win.cpp
 }
 
