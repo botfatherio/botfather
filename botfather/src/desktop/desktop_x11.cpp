@@ -2,7 +2,7 @@
 #include <QThread>
 #include "x11_screen.h"
 #include "uinput_faker.h"
-#include "uinput_keymap.h"
+#include "keymap.h"
 
 class DesktopPrivate {
 public:
@@ -58,17 +58,17 @@ void Desktop::rightClick(int x, int y)
 }
 
 void Desktop::pressKey(QString key) {
-	d_ptr->uinput_faker->press(UNINPUT_KEYMAP[key]);
+	d_ptr->uinput_faker->press(KEYMAP[key.toLower()]);
 }
 
 void Desktop::holdKey(QString key)
 {
-	d_ptr->uinput_faker->hold(UNINPUT_KEYMAP[key]);
+	d_ptr->uinput_faker->hold(KEYMAP[key.toLower()]);
 }
 
 void Desktop::releaseKey(QString key)
 {
-	d_ptr->uinput_faker->release(UNINPUT_KEYMAP[key]);
+	d_ptr->uinput_faker->release(KEYMAP[key.toLower()]);
 }
 
 void Desktop::warpCursor(int x, int y)
@@ -78,5 +78,5 @@ void Desktop::warpCursor(int x, int y)
 
 bool Desktop::keyExists(QString key)
 {
-	return UNINPUT_KEYMAP.contains(key);
+	return KEYMAP.contains(key.toLower());
 }

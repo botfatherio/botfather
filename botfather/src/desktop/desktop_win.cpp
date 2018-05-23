@@ -1,7 +1,7 @@
 #include "desktop.h"
 #include <windows.h>
 #include <QSize>
-#include "winput_keymap.h"
+#include "keymap.h"
 
 class DesktopPrivate {
 public:
@@ -129,12 +129,12 @@ void Desktop::pressKey(QString key)
 
 void Desktop::holdKey(QString key)
 {
-    d_ptr->sendKeyboardEvent(WINPUT_KEYMAP[key], false);
+    d_ptr->sendKeyboardEvent(KEYMAP[key.toLower()], false);
 }
 
 void Desktop::releaseKey(QString key)
 {
-    d_ptr->sendKeyboardEvent(WINPUT_KEYMAP[key], true);
+    d_ptr->sendKeyboardEvent(KEYMAP[key.toLower()], true);
 }
 
 void Desktop::warpCursor(int x, int y)
@@ -144,5 +144,5 @@ void Desktop::warpCursor(int x, int y)
 
 bool Desktop::keyExists(QString key)
 {
-    return WINPUT_KEYMAP.contains(key);
+    return KEYMAP[key.toLower()];
 }

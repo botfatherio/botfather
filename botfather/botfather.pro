@@ -52,8 +52,7 @@ unix {
 
     HEADERS += \
         ./src/desktop/x11_screen.h \
-        ./src/desktop/uinput_faker.h \
-        ./src/desktop/uinput_keymap.h
+        ./src/desktop/uinput_faker.h
     SOURCES += \
         ./src/desktop/x11_screen.cpp \
         ./src/desktop/uinput_faker.cpp \
@@ -93,7 +92,6 @@ win32 {
     CONFIG(release, debug|release):CEF_EXTRA_DIR = $${CEF_DIR}/Release/*
     else:CONFIG(debug, debug|release):CEF_EXTRA_DIR = $${CEF_DIR}/Debug/*
 
-    HEADERS += ./src/desktop/winput_keymap.h
     SOURCES += ./src/desktop/desktop_win.cpp
 }
 
@@ -131,7 +129,8 @@ HEADERS += \
     ./src/android/android_settings.h \
     ./src/desktop/desktop_api.h \
     ./src/desktop/desktop.h \
-    ./src/scripting/point.h
+    ./src/scripting/point.h \
+    src/desktop/keymap.h
 SOURCES += ./src/android/adb_device_info.cpp \
     ./src/android/adb_wrapper.cpp \
     ./src/android/android_api.cpp \
