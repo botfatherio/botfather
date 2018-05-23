@@ -4,7 +4,7 @@
 #include <QDebug>
 #include <QFileInfo>
 #include <QDir>
-#include "../scripting/helper_api.h"
+#include "helper_api.h"
 #include "../vision/vision_api.h"
 #include "../browser/browser_api.h"
 #include "../browser/browser.h"
