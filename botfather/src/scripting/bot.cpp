@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QFileInfo>
 #include <QDir>
+#include "point.h"
 #include "helper_api.h"
 #include "../vision/vision_api.h"
 #include "../browser/browser_api.h"
@@ -35,6 +36,7 @@ void Bot::runScript()
 	qScriptRegisterMetaType(script_engine, HSVColor::toScriptValue, HSVColor::fromScriptValue);
 	qScriptRegisterMetaType(script_engine, BlobTpl::toScriptValue, BlobTpl::fromScriptValue);
 	qScriptRegisterMetaType(script_engine, Match::toScriptValue, Match::fromScriptValue);
+	qScriptRegisterMetaType(script_engine, Point::toScriptValue, Point::fromScriptValue);
 	
 	// Try to open the submitted script file.
 	QFile script_file(this->m_script_path);
