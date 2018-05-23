@@ -127,7 +127,8 @@ HEADERS += \
     ./src/auth/auth_settings.h \
     ./src/android/android_settings.h \
     ./src/desktop/desktop_api.h \
-    ./src/desktop/desktop.h
+    ./src/desktop/desktop.h \
+    ./src/scripting/point.h
 SOURCES += ./src/android/adb_device_info.cpp \
     ./src/android/adb_wrapper.cpp \
     ./src/android/android_api.cpp \
@@ -157,7 +158,8 @@ SOURCES += ./src/android/adb_device_info.cpp \
     ./src/vision/match.cpp \
     ./src/vision/vision.cpp \
     ./src/vision/vision_api.cpp \
-    ./src/desktop/desktop_api.cpp
+    ./src/desktop/desktop_api.cpp \
+    ./src/scripting/point.cpp
 FORMS += ./src/gui/config_dialog.ui \
     ./src/gui/control_window.ui \
     ./src/gui/browser_window.ui \
