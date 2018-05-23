@@ -49,6 +49,15 @@ unix {
     # Example of copying files after linking
     #CONFIG(release, debug|release):QMAKE_POST_LINK += ../botfather/tools/collect_deps.sh $${DESTDIR} Release $${LINUX_CEF_DIR}
     #else:CONFIG(debug, debug|release):QMAKE_POST_LINK += ../botfather/tools/collect_deps.sh $${DESTDIR} Debug $${LINUX_CEF_DIR}
+
+    HEADERS += \
+        ./src/desktop/x11_screen.h \
+        ./src/desktop/uinput_faker.h \
+        ./src/desktop/uinput_keymap.h
+    SOURCES += \
+        ./src/desktop/x11_screen.cpp \
+        ./src/desktop/uinput_faker.cpp \
+        ./src/desktop/desktop_x11.cpp
 }
 
 win32 {
@@ -81,6 +90,8 @@ win32 {
 
     CONFIG(release, debug|release):CEF_EXTRA_DIR = $${CEF_DIR}/Release/*
     else:CONFIG(debug, debug|release):CEF_EXTRA_DIR = $${CEF_DIR}/Debug/*
+
+    SOURCES += ./src/desktop/desktop_win.cpp
 }
 
 HEADERS += \
@@ -114,7 +125,9 @@ HEADERS += \
     ./src/browser/browser_api.h \
     ./src/browser/browser_settings.h \
     ./src/auth/auth_settings.h \
-    ./src/android/android_settings.h
+    ./src/android/android_settings.h \
+    ./src/desktop/desktop_api.h \
+    ./src/desktop/desktop.h
 SOURCES += ./src/android/adb_device_info.cpp \
     ./src/android/adb_wrapper.cpp \
     ./src/android/android_api.cpp \
@@ -143,7 +156,8 @@ SOURCES += ./src/android/adb_device_info.cpp \
     ./src/vision/image.cpp \
     ./src/vision/match.cpp \
     ./src/vision/vision.cpp \
-    ./src/vision/vision_api.cpp
+    ./src/vision/vision_api.cpp \
+    ./src/desktop/desktop_api.cpp
 FORMS += ./src/gui/config_dialog.ui \
     ./src/gui/control_window.ui \
     ./src/gui/browser_window.ui \

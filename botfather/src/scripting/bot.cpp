@@ -9,6 +9,7 @@
 #include "../browser/browser_api.h"
 #include "../browser/browser.h"
 #include "../android/android_api.h"
+#include "../desktop/desktop_api.h"
 
 Bot::Bot(BotThread *thread_p, QString script_path) : m_thread_p(thread_p), m_script_path(script_path)
 {}
@@ -27,6 +28,7 @@ void Bot::runScript()
 	VisionAPI::enable(this, script_engine);
 	BrowserAPI::enable(this, script_engine);
 	AndroidAPI::enable(this, script_engine);
+	DesktopAPI::enable(this, script_engine);
 	
 	// Register custom QObject based types.
 	qScriptRegisterMetaType(script_engine, Image::toScriptValue, Image::fromScriptValue);
