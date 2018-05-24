@@ -25,6 +25,7 @@ public:
 	void holdKey(QString key);
 	void releaseKey(QString key);
 	void warpCursor(int x, int y);
+	bool getCursorPosition(int *x, int *y);
 	bool keyExists(QString key);
 	
 private:

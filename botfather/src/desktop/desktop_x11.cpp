@@ -1,5 +1,6 @@
 #include "desktop.h"
 #include <QThread>
+#include <QPoint>
 #include "x11_screen.h"
 #include "uinput_faker.h"
 #include "keymap.h"
@@ -74,6 +75,11 @@ void Desktop::releaseKey(QString key)
 void Desktop::warpCursor(int x, int y)
 {
 	d_ptr->uinput_faker->warpCursor(x, y);
+}
+
+bool Desktop::getCursorPosition(int *x, int *y)
+{
+	return d_ptr->x11_screen->getCursorPosition(x, y);
 }
 
 bool Desktop::keyExists(QString key)

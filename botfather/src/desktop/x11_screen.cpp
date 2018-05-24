@@ -51,3 +51,12 @@ int X11Screen::getHeight()
 {
 	return getSize().height();
 }
+
+bool X11Screen::getCursorPosition(int *x, int *y)
+{
+	Window returned_window;
+	int win_x, win_y;
+	unsigned int returned_mask;
+	
+	return XQueryPointer(display, root, &returned_window, &returned_window, x, y, &win_x, &win_y, &returned_mask);
+}

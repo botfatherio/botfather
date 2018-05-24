@@ -3,6 +3,7 @@
 
 #include <opencv2/opencv.hpp>
 #include <QSize>
+#include <QDebug>
 #include <X11/Xlib.h> // Import X11 stuff always last. Otherwise compilation fails.
 #include <X11/Xutil.h>
 
@@ -16,6 +17,7 @@ public:
 	QSize getSize();
 	int getWidth();
 	int getHeight();
+	bool getCursorPosition(int *x, int *y);
 
 private:
 	Display *display;

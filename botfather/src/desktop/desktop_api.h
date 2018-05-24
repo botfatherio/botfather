@@ -32,6 +32,7 @@ public:
 	Q_INVOKABLE void releaseKey(QString key);
 	
 	Q_INVOKABLE void warpCursor(int x, int y);
+	Q_INVOKABLE QScriptValue getCursorPosition();
 	
 private:
 	Bot *m_bot_p;

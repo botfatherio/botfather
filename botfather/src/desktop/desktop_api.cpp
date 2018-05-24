@@ -4,6 +4,7 @@
 #include "desktop.h"
 #include "../vision/image.h"
 #include "../scripting/bot.h"
+#include "../scripting/point.h"
 
 DesktopAPI::DesktopAPI(Bot *bot_p, QScriptEngine *engine_p) : QObject(bot_p), m_bot_p(bot_p), m_engine_p(engine_p)
 {
@@ -82,4 +83,14 @@ void DesktopAPI::releaseKey(QString key)
 void DesktopAPI::warpCursor(int x, int y)
 {
 	desktop->warpCursor(x, y);
+}
+
+QScriptValue DesktopAPI::getCursorPosition()
+{
+	int x = -1;
+	int y = -1;
+	if (!desktop->getCursorPosition(&x, &y)) {
+		// Getting the cursor position failed.
+	}
+	return m_engine_p->newQObject(new Point(x, y));
 }
