@@ -85,6 +85,7 @@ Desktop::Desktop(QObject *parent) : QObject(parent), d_ptr(new DesktopPrivate)
 	ioctl(d_ptr->fd, UI_SET_EVBIT, EV_REL);
 	
 	// Enable key input events
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_0); // 0
 	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_1); // 1
 	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_2); // 2
 	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_3); // 3
@@ -94,7 +95,7 @@ Desktop::Desktop(QObject *parent) : QObject(parent), d_ptr(new DesktopPrivate)
 	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_7); // 7
 	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_8); // 8
 	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_9); // 9
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_0); // 0
+	
 	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_A); // A
 	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_B); // B
 	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_C); // C
@@ -121,47 +122,52 @@ Desktop::Desktop(QObject *parent) : QObject(parent), d_ptr(new DesktopPrivate)
 	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_X); // X
 	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_Y); // Y
 	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_Z); // Z
+	
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F1); // F1
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F2); // F2
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F3); // F3
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F4); // F4
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F5); // F5
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F6); // F6
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F7); // F7
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F8); // F8
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F9); // F9
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F10); // F10
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F11); // F11
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F12); // F12
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F13); // F13
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F14); // F14
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F15); // F15
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F16); // F16
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F17); // F17
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F18); // F18
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F19); // F19
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F20); // F20
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F21); // F21
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F22); // F22
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F23); // F23
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F24); // F24
+	
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_LEFT); // LEFT
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_RIGHT); // RIGHT
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_UP); // UP
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_DOWN); // DOWN
+	
 	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_LEFTALT); // LEFT ALT
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_LEFTCTRL); // LEFT CTRL
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_LEFTSHIFT); // LEFT SHIFT
 	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_RIGHTALT); // RIGHT ALT
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_RIGHTCTRL); // RIGHT CTRL
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_LEFTSHIFT); // LEFT SHIFT
 	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_RIGHTSHIFT); // RIGHT SHIFT
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_SLASH); // SLASH
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_BACKSLASH); // BACKSLASH
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_COMMA); // COMMA
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_DOT); // DOT
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_LEFTCTRL); // LEFT CTRL
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_RIGHTCTRL); // RIGHT CTRL
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_CAPSLOCK); // CAPSLOCK
 	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_SPACE); // SPACE
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_BACKSPACE); // {BACKSPACE}, {BS}, or {BKSP} 
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_BREAK); // {BREAK} 
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_CAPSLOCK); // {CAPSLOCK}
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_DELETE); // {DELETE} or {DEL} 
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_DOWN); // {DOWN}
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_END); // {END}
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_ENTER); // ENTER {ENTER}or ~
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_ESC); // ESC {ESC}
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_LEFT); // LEFT ARROW {LEFT}
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_PAGEDOWN); // PAGE DOWN {PGDN}
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_PAGEUP); // PAGE UP {PGUP}
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_RIGHT); // RIGHT ARROW {RIGHT}
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_TAB); // TAB {TAB}
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_UP); // UP ARROW {UP}
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F1); // F1 {F1}
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F2); // F2 {F2}
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F3); // F2 F3 {F3}
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F4); // F2 F4 {F4}	
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F5); // F2 F5 {F5}	
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F6); // F2 F6 {F6}	
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F7); // F2 F7 {F7}	
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F8); // F2 F8 {F8}	
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F9); // F2 F9 {F9}	
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F10); // F2 F10 {F10}	
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F11); // F2 F11 {F11}	
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F12); // F2 F12 {F12}	
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F13); // F2 F13 {F13}	
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F14); // F2 F14 {F14}	
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F15); // F2 F15 {F15}	
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F16); // F2 F16 {F16}
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_TAB); // TAB
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_ESC); // ESC
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_BACKSPACE); // BACKSPACE
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_DELETE); // DELETE
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_ENTER); // ENTER
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_VOLUMEUP); // VOLUME UP
+	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_VOLUMEDOWN); // VOLUME DOWN
 	
 	// Enable mouse movement input
 	ioctl(d_ptr->fd, UI_SET_RELBIT, REL_X);
