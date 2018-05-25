@@ -112,53 +112,53 @@ void BrowserAPI::executeJavascript(QString javascript_code)
 	Browser::executeJavascript(javascript_code);
 }
 
-void BrowserAPI::leftClickAt(int x, int y)
+void BrowserAPI::leftClick(int x, int y)
 {
 	Browser::pressMouse(MBT_LEFT, x, y);
 	QThread::msleep(100);
 	Browser::releaseMouse(MBT_LEFT, x, y);
 }
 
-void BrowserAPI::middleClickAt(int x, int y)
+void BrowserAPI::middleClick(int x, int y)
 {
 	Browser::pressMouse(MBT_MIDDLE, x, y);
 	QThread::msleep(100);
 	Browser::releaseMouse(MBT_MIDDLE, x, y);
 }
 
-void BrowserAPI::rightClickAt(int x, int y)
+void BrowserAPI::rightClick(int x, int y)
 {
 	Browser::pressMouse(MBT_RIGHT, x, y);
 	QThread::msleep(100);
 	Browser::releaseMouse(MBT_RIGHT, x, y);
 }
 
-void BrowserAPI::pressLeftAt(int x, int y)
+void BrowserAPI::pressLeft(int x, int y)
 {
 	Browser::pressMouse(MBT_LEFT, x, y);
 }
 
-void BrowserAPI::pressMiddleAt(int x, int y)
+void BrowserAPI::pressMiddle(int x, int y)
 {
 	Browser::pressMouse(MBT_MIDDLE, x, y);
 }
 
-void BrowserAPI::pressRightAt(int x, int y)
+void BrowserAPI::pressRight(int x, int y)
 {
 	Browser::pressMouse(MBT_RIGHT, x, y);
 }
 
-void BrowserAPI::releaseLeftAt(int x, int y)
+void BrowserAPI::releaseLeft(int x, int y)
 {
 	Browser::releaseMouse(MBT_LEFT, x, y);
 }
 
-void BrowserAPI::releaseMiddleAt(int x, int y)
+void BrowserAPI::releaseMiddle(int x, int y)
 {
 	Browser::releaseMouse(MBT_MIDDLE, x, y);
 }
 
-void BrowserAPI::releaseRightAt(int x, int y)
+void BrowserAPI::releaseRight(int x, int y)
 {
 	Browser::releaseMouse(MBT_RIGHT, x, y);
 }

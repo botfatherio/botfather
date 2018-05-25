@@ -33,15 +33,15 @@ public:
 	Q_INVOKABLE int getWidth();
 	Q_INVOKABLE int getHeight();
 	Q_INVOKABLE void executeJavascript(QString javascript_code);
-	Q_INVOKABLE void leftClickAt(int x, int y);
-	Q_INVOKABLE void middleClickAt(int x, int y);
-	Q_INVOKABLE void rightClickAt(int x, int y);
-	Q_INVOKABLE void pressLeftAt(int x, int y);
-	Q_INVOKABLE void pressMiddleAt(int x, int y);
-	Q_INVOKABLE void pressRightAt(int x, int y);
-	Q_INVOKABLE void releaseLeftAt(int x, int y);
-	Q_INVOKABLE void releaseMiddleAt(int x, int y);
-	Q_INVOKABLE void releaseRightAt(int x, int y);
+	Q_INVOKABLE void leftClick(int x, int y);
+	Q_INVOKABLE void middleClick(int x, int y);
+	Q_INVOKABLE void rightClick(int x, int y);
+	Q_INVOKABLE void pressLeft(int x, int y);
+	Q_INVOKABLE void pressMiddle(int x, int y);
+	Q_INVOKABLE void pressRight(int x, int y);
+	Q_INVOKABLE void releaseLeft(int x, int y);
+	Q_INVOKABLE void releaseMiddle(int x, int y);
+	Q_INVOKABLE void releaseRight(int x, int y);
 	Q_INVOKABLE void moveMouseTo(int x, int y);
 	Q_INVOKABLE void scrollWheel(int x, int y, int delta_x, int delta_y);
 	
