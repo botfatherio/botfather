@@ -50,13 +50,7 @@ unix {
     #CONFIG(release, debug|release):QMAKE_POST_LINK += ../botfather/tools/collect_deps.sh $${DESTDIR} Release $${LINUX_CEF_DIR}
     #else:CONFIG(debug, debug|release):QMAKE_POST_LINK += ../botfather/tools/collect_deps.sh $${DESTDIR} Debug $${LINUX_CEF_DIR}
 
-    HEADERS += \
-        ./src/desktop/x11_screen.h \
-        ./src/desktop/uinput_faker.h
-    SOURCES += \
-        ./src/desktop/x11_screen.cpp \
-        ./src/desktop/uinput_faker.cpp \
-        ./src/desktop/desktop_x11.cpp
+    SOURCES += ./src/desktop/desktop_x11.cpp
 }
 
 win32 {
