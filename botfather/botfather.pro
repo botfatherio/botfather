@@ -123,8 +123,9 @@ HEADERS += \
     ./src/android/android_settings.h \
     ./src/desktop/desktop_api.h \
     ./src/desktop/desktop.h \
-    ./src/scripting/point.h \
-    src/desktop/keymap.h
+    ./src/scripting/script_point.h \
+    src/desktop/keymap.h \
+    src/scripting/script_point_factory.h
 SOURCES += ./src/android/adb_device_info.cpp \
     ./src/android/adb_wrapper.cpp \
     ./src/android/android_api.cpp \
@@ -155,7 +156,8 @@ SOURCES += ./src/android/adb_device_info.cpp \
     ./src/vision/vision.cpp \
     ./src/vision/vision_api.cpp \
     ./src/desktop/desktop_api.cpp \
-    ./src/scripting/point.cpp
+    ./src/scripting/script_point.cpp \
+    src/scripting/script_point_factory.cpp
 FORMS += ./src/gui/config_dialog.ui \
     ./src/gui/control_window.ui \
     ./src/gui/browser_window.ui \
