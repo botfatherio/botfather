@@ -70,7 +70,7 @@ void ConfigDialog::loadConfig()
 	this->ui->use_system_flash->setChecked(s.value(browser::options::USE_SYSTEM_FLASH, browser::fallback::USE_SYSTEM_FLASH).toBool());
 	this->ui->adb_binary->setText(s.value(android::options::ADB_BINARY).toString());
 	ui->autokill->setChecked(s.value(general::options::AUTOKILL, general::fallback::AUTOKILL).toBool());
-	ui->autokill_period->setValue(s.value(general::options::AUTOKILL_PERIOD, general::options::AUTOKILL_PERIOD).toInt());
+	ui->autokill_period->setValue(s.value(general::options::AUTOKILL_PERIOD, general::fallback::AUTOKILL_PERIOD).toInt());
 	ui->kill_shortcut->setKeySequence(QKeySequence::fromString(s.value(general::options::KILL_SHORTCUT).toString()));
 	ui->stop_shortcut->setKeySequence(QKeySequence::fromString(s.value(general::options::STOP_SHORTCUT).toString()));
 }
