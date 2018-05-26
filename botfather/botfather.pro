@@ -125,7 +125,8 @@ HEADERS += \
     ./src/desktop/desktop.h \
     ./src/scripting/script_point.h \
     src/desktop/keymap.h \
-    src/scripting/script_point_factory.h
+    src/scripting/script_point_factory.h \
+    src/scripting/general_settings.h
 SOURCES += ./src/android/adb_device_info.cpp \
     ./src/android/adb_wrapper.cpp \
     ./src/android/android_api.cpp \

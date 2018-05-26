@@ -21,6 +21,7 @@ public slots:
 	void on_browse_flash_manifest_pressed();
 	void saveConfig();
 	void loadConfig();
+	void registerShortcuts();
 	
 private:
 	Ui::ConfigDialog *ui;
