@@ -29,6 +29,9 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	// signals (start button pressed, kill button pressed).
 	connect(ui->actionStart, &QAction::triggered, this, &ControlWindow::stopKillTimer);
 	connect(ui->actionKill, &QAction::triggered, this, &ControlWindow::stopKillTimer);
+	
+	connect(ui->actionBrowser, &QAction::triggered, browser_window, &BrowserWindow::show);
+	connect(ui->actionAndroid, &QAction::triggered, android_dialog, &AndroidDialog::exec);
 }
 
 ControlWindow::~ControlWindow()
@@ -155,16 +158,6 @@ void ControlWindow::on_actionSettings_triggered()
 	config_dialog->exec();
 }
 
-void ControlWindow::on_actionBrowser_triggered()
-{
-	this->browser_window->show();
-}
-
-void ControlWindow::on_actionAndroid_triggered()
-{
-	android_dialog->exec();
-}
-
 void ControlWindow::on_actionScripts_triggered()
 {
 	QDesktopServices::openUrl(QUrl("https://botfather.io/scripts/"));
@@ -215,11 +208,6 @@ void ControlWindow::on_save_button_clicked()
 	}
 	file.write(log.toUtf8());
 	file.close();
-}
-
-void ControlWindow::on_clear_button_clicked()
-{
-	this->ui->log_text->clear();
 }
 
 void ControlWindow::appendMessage(QString log_message, bool from_client)

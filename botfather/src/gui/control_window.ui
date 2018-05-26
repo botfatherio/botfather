@@ -71,7 +71,7 @@
      <x>0</x>
      <y>0</y>
      <width>990</width>
-     <height>23</height>
+     <height>30</height>
     </rect>
    </property>
    <property name="contextMenuPolicy">
@@ -239,7 +239,7 @@
   </action>
   <action name="actionPremiumPlans">
    <property name="text">
-    <string>Premium Plans</string>
+    <string>&amp;Premium Plans</string>
    </property>
   </action>
  </widget>
@@ -247,5 +247,22 @@
  <resources>
   <include location="../res/gui.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>clear_button</sender>
+   <signal>pressed()</signal>
+   <receiver>log_text</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>940</x>
+     <y>591</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>494</x>
+     <y>336</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
