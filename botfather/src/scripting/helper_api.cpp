@@ -29,25 +29,17 @@ bool HelperAPI::fileExists(QString file_path)
 	return this->m_bot_p->fileExists(file_path);
 }
 
-void HelperAPI::sleep(int seconds, bool deep)
+void HelperAPI::sleep(int seconds)
 {
 	if (seconds <= 0) {
 		m_engine_p->currentContext()->throwError("Timeout must be at least 1 second.");
 		return;
 	}
-	if (deep) {
-		QThread::sleep(seconds);
-		return;
-	}
-	
-	// Sleep in 250ms intervals while checking whether stop has been requested.
-	// We do so to make stopping a script while it's sleeping look more fluent.
-	for (int i = 0; i < seconds * 4; i++) {
-		if (stopRequested()) {
-			break;
-		}
-		QThread::msleep(250);
-	}
+	// Not sleeping for at least one ms can cause trouble. Better don't stop sleeping when stop is
+	// requested to prevent bugs. Par example:
+	// Stpping a script having an infinit loop with sleep in it will result in the bot going crazy.
+	// CPU usage rockets up and one can no longer stop nor kill the script (because it will never sleep).
+	QThread::sleep(seconds);
 }
 
 void HelperAPI::msleep(int milliseconds)
@@ -112,7 +104,7 @@ void HelperAPI::playWavSound(QString path_to_wav_file, bool blocking)
 		QAudioBuffer buffer(wav_file.readAll(), format);
 		//qDebug() << "DURATION:" << buffer.duration() / 1000 / 1000 << "seconds";
 		//QThread::usleep(buffer.duration());
-		sleep(buffer.duration() / 1000 / 1000, false);
+		sleep(buffer.duration() / 1000 / 1000);
 	}
 }
 
