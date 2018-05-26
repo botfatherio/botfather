@@ -45,6 +45,7 @@ public slots:
 	void on_actionLogout_triggered();
 	void playWavSound(QString path_to_wav_file);
 	void stopWavSound();
+	void stopKillTimer();
 	
 private:
 	Ui::ControlWindow *ui;
@@ -56,6 +57,7 @@ private:
 	bool trial = true;
 	QString original_window_title;
 	QSoundEffect *script_sound_effect;
+	QTimer *kill_timer;
 };
 
 #endif // BFP__GUI__CONTROL_WINDOW_H

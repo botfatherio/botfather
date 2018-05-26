@@ -6,9 +6,11 @@
 #include <QDesktopServices>
 #include <QCloseEvent>
 #include <QHBoxLayout>
+#include <QSettings>
 #include "config_dialog.h"
 #include "browser_window.h"
 #include "android_dialog.h"
+#include "../scripting/general_settings.h"
 
 ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::ControlWindow)
 {
@@ -21,6 +23,12 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	
 	// Store the original window title so it can be restored eg after the user logged out.
 	original_window_title = windowTitle();
+	
+	// The kill timer must be stopped if the user manually kills the script or the script terminates after some time.
+	// Unfortunately there is no signal emitted when we kill the bot thread thus we must cancel the timer using other
+	// signals (start button pressed, kill button pressed).
+	connect(ui->actionStart, &QAction::triggered, this, &ControlWindow::stopKillTimer);
+	connect(ui->actionKill, &QAction::triggered, this, &ControlWindow::stopKillTimer);
 }
 
 ControlWindow::~ControlWindow()
@@ -101,6 +109,16 @@ void ControlWindow::on_actionStop_triggered()
 	
 	// This causes HelperAPI::shouldRun() to return false.
 	this->bot_thread->requestInterruption();
+	
+	// Kill the script if it doesn't stop in time.
+	QSettings s;
+	if (s.value(general::options::AUTOKILL, general::fallback::AUTOKILL).toBool()) {
+		kill_timer = new QTimer(this);
+		kill_timer->setSingleShot(true);
+		connect(kill_timer, &QTimer::timeout, this, &ControlWindow::on_actionKill_triggered);
+		// Kill timer canceling connection are setup in the constructor.
+		kill_timer->start(s.value(general::options::AUTOKILL_PERIOD, general::fallback::AUTOKILL_PERIOD).toInt() * 1000);
+	}
 }
 
 void ControlWindow::on_actionKill_triggered()
@@ -252,4 +270,11 @@ void ControlWindow::playWavSound(QString path_to_wav_file)
 void ControlWindow::stopWavSound()
 {
 	script_sound_effect->stop();
+}
+
+void ControlWindow::stopKillTimer()
+{
+	if (kill_timer && kill_timer->isActive()) {
+		kill_timer->stop();
+	}
 }
