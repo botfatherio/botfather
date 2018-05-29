@@ -144,6 +144,7 @@ void ControlWindow::on_actionKill_triggered()
 	this->bot_thread->terminate();
 	this->appendMessage("The script has been killed. RIP.", true);
 	this->bot_stopped(true);
+	stopKillTimer();
 }
 
 void ControlWindow::bot_stopped(bool without_errors)
