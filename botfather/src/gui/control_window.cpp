@@ -22,9 +22,12 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	file_dialog = new QFileDialog(this);
 	script_sound_effect = new QSoundEffect(this);
 
+	// LOL everything must be inited. When not initializing kill_timer even checking whether it's
+	// a nullptr can cause the program zu crash.
+	kill_timer = nullptr;
+	
 	stop_hotkey = new QHotkey();
 	kill_hotkey = new QHotkey();
-	
 	connect(stop_hotkey, &QHotkey::activated, this, &ControlWindow::on_actionStop_triggered);
 	connect(kill_hotkey, &QHotkey::activated, this, &ControlWindow::on_actionKill_triggered);
 	
