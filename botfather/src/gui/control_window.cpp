@@ -16,10 +16,17 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 {
 	ui->setupUi(this);
 
+	config_dialog = new ConfigDialog(this);
 	browser_window = new BrowserWindow(this);
 	android_dialog = new AndroidDialog(this);
 	file_dialog = new QFileDialog(this);
 	script_sound_effect = new QSoundEffect(this);
+
+	stop_hotkey = new QHotkey();
+	kill_hotkey = new QHotkey();
+	
+	connect(stop_hotkey, &QHotkey::activated, this, &ControlWindow::on_actionStop_triggered);
+	connect(kill_hotkey, &QHotkey::activated, this, &ControlWindow::on_actionKill_triggered);
 	
 	// Store the original window title so it can be restored eg after the user logged out.
 	original_window_title = windowTitle();
@@ -30,8 +37,12 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	connect(ui->actionStart, &QAction::triggered, this, &ControlWindow::stopKillTimer);
 	connect(ui->actionKill, &QAction::triggered, this, &ControlWindow::stopKillTimer);
 	
+	connect(ui->actionSettings, &QAction::triggered, config_dialog, &ConfigDialog::exec);
 	connect(ui->actionBrowser, &QAction::triggered, browser_window, &BrowserWindow::show);
 	connect(ui->actionAndroid, &QAction::triggered, android_dialog, &AndroidDialog::exec);
+	
+	connect(config_dialog, &ConfigDialog::configLoaded, this, &ControlWindow::updateHotkeys);
+	connect(config_dialog, &ConfigDialog::configSaved, this, &ControlWindow::updateHotkeys);
 }
 
 ControlWindow::~ControlWindow()
@@ -150,14 +161,6 @@ void ControlWindow::bot_stopped(bool without_errors)
 	}
 }
 
-void ControlWindow::on_actionSettings_triggered()
-{
-	// Initiate a new config dialog making it load all current settings and
-	// execute it, so that the control window can't be clicked while it's open.
-	ConfigDialog *config_dialog = new ConfigDialog(this);
-	config_dialog->exec();
-}
-
 void ControlWindow::on_actionScripts_triggered()
 {
 	QDesktopServices::openUrl(QUrl("https://botfather.io/scripts/"));
@@ -265,4 +268,18 @@ void ControlWindow::stopKillTimer()
 	if (kill_timer && kill_timer->isActive()) {
 		kill_timer->stop();
 	}
+}
+
+void ControlWindow::updateHotkeys()
+{
+	QSettings s;
+	
+	stop_hotkey->resetShortcut();
+	kill_hotkey->resetShortcut();
+	
+	stop_hotkey->setShortcut(QKeySequence::fromString(s.value(general::options::STOP_SHORTCUT).toString()));
+	kill_hotkey->setShortcut(QKeySequence::fromString(s.value(general::options::KILL_SHORTCUT).toString()));
+	
+	stop_hotkey->setRegistered(true);
+	kill_hotkey->setRegistered(true);
 }

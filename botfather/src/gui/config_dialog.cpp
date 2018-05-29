@@ -58,6 +58,7 @@ void ConfigDialog::saveConfig()
 	s.setValue(general::options::AUTOKILL_PERIOD, ui->autokill_period->value());
 	s.setValue(general::options::KILL_SHORTCUT, ui->kill_shortcut->keySequence().toString());
 	s.setValue(general::options::STOP_SHORTCUT, ui->stop_shortcut->keySequence().toString());
+	emit configSaved();
 }
 
 void ConfigDialog::loadConfig()
@@ -73,11 +74,7 @@ void ConfigDialog::loadConfig()
 	ui->autokill_period->setValue(s.value(general::options::AUTOKILL_PERIOD, general::fallback::AUTOKILL_PERIOD).toInt());
 	ui->kill_shortcut->setKeySequence(QKeySequence::fromString(s.value(general::options::KILL_SHORTCUT).toString()));
 	ui->stop_shortcut->setKeySequence(QKeySequence::fromString(s.value(general::options::STOP_SHORTCUT).toString()));
-}
-
-void ConfigDialog::registerShortcuts()
-{
-	// TODO: Implement me (registerShortcuts method)
+	emit configLoaded();
 }
 
 void ConfigDialog::on_adb_binary_browse_button_pressed()

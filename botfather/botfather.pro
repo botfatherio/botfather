@@ -89,6 +89,8 @@ win32 {
     SOURCES += ./src/desktop/desktop_win.cpp
 }
 
+include(./src/3rdparty/qhotkey.pri)
+
 HEADERS += \
     ./src/android/adb_device_info.h \
     ./src/browser/browser.h \

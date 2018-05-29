@@ -4,9 +4,11 @@
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QSoundEffect>
+#include <QHotkey>
 #include "../scripting/bot.h"
 #include "../scripting/bot_thread.h"
 
+class ConfigDialog;
 class BrowserWindow;
 class AndroidDialog;
 
@@ -33,7 +35,6 @@ public slots:
 	void on_actionKill_triggered();
 	void bot_stopped(bool without_errors);
 	void on_actionScripts_triggered();
-	void on_actionSettings_triggered();
 	void on_save_button_clicked();
 	void appendMessage(QString log_message, bool from_client = false);
 	void on_actionAbout_triggered();
@@ -43,10 +44,12 @@ public slots:
 	void playWavSound(QString path_to_wav_file);
 	void stopWavSound();
 	void stopKillTimer();
+	void updateHotkeys();
 	
 private:
 	Ui::ControlWindow *ui;
 	QFileDialog *file_dialog;
+	ConfigDialog *config_dialog;
 	BrowserWindow *browser_window;
 	AndroidDialog *android_dialog;
 	Bot* bot;
@@ -55,6 +58,8 @@ private:
 	QString original_window_title;
 	QSoundEffect *script_sound_effect;
 	QTimer *kill_timer;
+	QHotkey *stop_hotkey;
+	QHotkey *kill_hotkey;
 };
 
 #endif // BFP__GUI__CONTROL_WINDOW_H

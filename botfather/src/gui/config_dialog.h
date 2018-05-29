@@ -14,6 +14,10 @@ class ConfigDialog : public QDialog
 public:
 	explicit ConfigDialog(QWidget *parent = 0);
 	~ConfigDialog();
+
+signals:
+	void configLoaded();
+	void configSaved();
 	
 public slots:
 	void on_adb_binary_browse_button_pressed();
@@ -21,7 +25,6 @@ public slots:
 	void on_browse_flash_manifest_pressed();
 	void saveConfig();
 	void loadConfig();
-	void registerShortcuts();
 	
 private:
 	Ui::ConfigDialog *ui;
