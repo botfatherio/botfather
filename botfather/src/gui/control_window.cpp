@@ -116,6 +116,9 @@ void ControlWindow::bot_started()
 {
 	// The bot started, enable the stop button.
 	this->ui->actionStop->setEnabled(true);
+	
+	stop_hotkey->setRegistered(true);
+	kill_hotkey->setRegistered(true);
 }
 
 void ControlWindow::on_actionStop_triggered()
@@ -141,7 +144,9 @@ void ControlWindow::on_actionStop_triggered()
 
 void ControlWindow::on_actionKill_triggered()
 {
-	this->bot_thread->terminate();
+	if (bot_thread->isRunning()) {
+		bot_thread->terminate();
+	}
 	this->appendMessage("The script has been killed. RIP.", true);
 	this->bot_stopped(true);
 	stopKillTimer();
@@ -149,6 +154,9 @@ void ControlWindow::on_actionKill_triggered()
 
 void ControlWindow::bot_stopped(bool without_errors)
 {
+	stop_hotkey->setRegistered(false);
+	kill_hotkey->setRegistered(false);
+	
 	this->ui->actionStop->setVisible(true);
 	this->ui->actionKill->setVisible(false);
 	this->ui->actionStart->setEnabled(true);
@@ -285,6 +293,7 @@ void ControlWindow::updateHotkeys()
 	stop_hotkey->setShortcut(QKeySequence::fromString(s.value(general::options::STOP_SHORTCUT).toString()));
 	kill_hotkey->setShortcut(QKeySequence::fromString(s.value(general::options::KILL_SHORTCUT).toString()));
 	
-	stop_hotkey->setRegistered(true);
-	kill_hotkey->setRegistered(true);
+	// Those shortcuts are not registered yet. We only enable them when they are legal to trigger.
+	// eg. kill shall only be triggered when there is something to kill, otherwise the program
+	// will crash. Same goes for stop.
 }
