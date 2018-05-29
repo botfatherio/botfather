@@ -30,6 +30,7 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	kill_hotkey = new QHotkey();
 	connect(stop_hotkey, &QHotkey::activated, this, &ControlWindow::on_actionStop_triggered);
 	connect(kill_hotkey, &QHotkey::activated, this, &ControlWindow::on_actionKill_triggered);
+	updateHotkeys();
 	
 	// Store the original window title so it can be restored eg after the user logged out.
 	original_window_title = windowTitle();
