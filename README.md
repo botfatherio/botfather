@@ -1,51 +1,49 @@
 # BotFather
-A scriptable environment for running browser related bot for automatisation or website testing.
-Scripts can be written in Javascript. They call functions of BotFathers API allowing them to control the inbuild browser.
-There is also a vision API which makes it possible to react to things happening visually in the browser.
+With botfather one can write crossplatform bots for Android, Desktop and Web (browser) applications in JavaScript.
+For this purpose Botfather provides several JavaScript APIs featuring image matching and more.
+Furthermore scripts can be turned into crossplatform binaries using Botfather Binary Generator Tool.
 
-## Gettings started (Linux)
-- Assuming Arch Linux
-- Install the following packages with Pacman or Yaourt: ```sudo pacman -S cmake qtcreator xlib opencv``` or ```yaourt -S cmake qtcreator xlib opencv```.
+------
+## Build instructions for Arch Linux or Ubuntu 18.04
 
-#### Chromium Embedded Framework (Linux)
-CEF powers bot fathers browser thus it's required to build botfather.
-- Download the latest Chromium Embedded Framework (CEF) Linux 64bit from http://opensource.spotify.com/cefbuilds/index.html
-- Unpack the just downloaded CEF files to ```/opt/cef/``` (because that where botfather expects the cef headers to be for simplixity (atleast for now))
+### Install third party software
+
+##### From your repository
+- On Ubuntu 18.04: ```sudo apt install git qtdeclarative5-dev qtmultimedia5-dev qtscript5-dev qtcreator libopencv-*```
+- On Arch Linux: ```sudo pacman -S qtcreator xlib opencv```
+
+##### Chromium Embedded Framework from source
+- Download CEF Linux 64bit from http://opensource.spotify.com/cefbuilds/index.html
+- Unpack the just downloaded CEF files to ```/opt/cef/``` (thats where botfather will expect CEF)
 - (There is no need to build CEF because it's a binary distribution)
-- (```/opt/cef/Resources/```, ```/opt/cef/Debug/``` and ```/opt/cef/Release/``` contain all files we need to bundle with botfather)
 
-#### Build the BotFather Helper (Linux)
+### Build the BotFather Helper
 - Open botfather_helper/botfather_helper.pro with QtCreator and configure the project.
 - Try to build the project. It will fail. But we need Qt to create the build folder(s).
 - Now copy the contents of ```/opt/cef/Resources/``` to the build folder.
 - Building the BotFather helper should work now as expected.
 
-#### Build BotFather (Linux)
+### Build BotFather
 - Open botfather/botfahter.pro with QtCreator and configure the project.
 - Try to build the project. It will fail. But we need Qt to create the build folder(s).
-- Now copy the contents of ```/opt/cef/Resources/``` and (depending on your desired build) ```/opt/cef/Debug/``` or ```/opt/cef/Release/``` to the build folder.
+- Now copy the contents of ```/opt/cef/Resources/``` and ```/opt/cef/Debug/``` or ```/opt/cef/Release/``` to the build folder.
 - Building the BotFather should work now as expected.
 
-#### Add/Update Flashplayer (Linux)
-- Download the latest PPAPI for Opera and Chrome for Linux 64bit as tar.gz from https://get.adobe.com/de/flashplayer/otherversions/ and extract it's contents.
-- Place the ```libpepflashplayer.so``` in the BotFather build output directory.
-- The version number can be found in the ```readme.txt``` bundled with the ```libpepflashplayer.so``` file. 
-- Adjust the flashplayer version specified in ```browser/browser_app.cpp``` where it says ```command_line->AppendSwitchWithValue("ppapi-flash-version", "YOUR.VERSION.HERE");```.
-
-#### Run BotFather (Linux)
-Before you can run BotFather you need to copy the botfather_helper binary from the respective build dir (depending on the build type (debug/release)) to the BotFather binary.
-They have to be in the same folder and they need to be deployed together.
-
-## Getting started (Microsoft Windows)
+------
+### Build instructions for Microsoft Windows 7, 8, 10
 - Install CMAKE.
 - Install Microsoft Visual Studio 2015 with C++ support and the latest toolset updates.
 - Install Qtcreator and a Qt version.
-- Install Qtaddin for MS VS 2015. VS -> Tools -> Extensions and Updates -> Online -> (search) qt -> (install) QtPackage. Restart System.
-- Select Qt Version. VS -> QT5 -> Qt Options -> (Qt Versions) Add -> (eg. C:\Qt\5.10.0\msvc2015_64) matching the compiler and platform.
 
-#### Chromium Embedded Framework (Windows)
-CEF powers bot fathers browser thus it's required to build botfather.
-- Download the latest Chromium Embedded Framework (CEF) Linux 64bit from http://opensource.spotify.com/cefbuilds/index.html
+### Install third party software
+
+##### From the internet
+- Install CMAKE.
+- Install Microsoft Visual Studio 2015 with C++ support and the latest toolset updates.
+- Install Qtcreator and a Qt version.
+
+##### Chromium Embedded Framework from source
+- Download Chromium Embedded Framework (CEF) Windows 64-bit from http://opensource.spotify.com/cefbuilds/index.html
 - Unpack CEF to C:/CEF/your_cef_version_here
 - Open CMAKE. Choose 64bit ms2015 compiler.
 - Make the cef version dir the source and build dir.
@@ -54,22 +52,7 @@ CEF powers bot fathers browser thus it's required to build botfather.
 - Change VS -> Project -> libcef_dll_wrapper Properties -> C/C++ -> Code Generation -> Runtime Library to MDd (debug) and MD (release).
 - Build libcef_dll_wrapper both debug and release.
 
-#### Build the BotFather Helper (Windows)
-- Create new Project. VS -> File -> New -> Project -> Templates -> Visual C++ -> General -> Empty Project
-- Copy all botfather helper source code (exclusing the qt project file) into the just created projects folder.
-- Open the VS Project an right click on the source code folders and files and include them into the Project
-- Adjust project props:
-- C/C++ -> General -> Additional Include Directories -> ```C:\CEF\your_cef_version_here``` (release & debug)
-- Linker -> General -> Additional Library Directories -> ```C:\CEF\your_cef_version_here\Release``` and ```C:\CEF\your_cef_version_here\libcef_dll_wrapper\Release``` (release)
-- Linker -> General -> Additional Library Directories -> ```C:\CEF\your_cef_version_here\Debug``` and ```C:\CEF\your_cef_version_here\libcef_dll_wrapper\Debug``` (debug)
-- Linker -> Input -> Additional Dependencies -> ```libcef_dll_wrapper.lib``` and ```libcef.lib``` (release & debug)
-- Linker -> System -> SubSystem -> Windows (/SUBSYSTEM:WINDOWS) (release & debug)
-- Copy ```compatibility.manifest``` and ```cefsimple.exe.manifest``` from ```C:\CEF\your_cef_version_here\tests\cefsimple\``` into the botfather project directory.
-- Merge both manifest files into one manifest file called ```compatibility.manifest```
-- Goto VS -> Manifest Tool -> Input Output -> Additional manifest file and Add the compatibility manifest.
-- Compile
-
-#### Build OpenCV (Windows)
+##### Build OpenCV from source
 - Download the latest OpenCV Win Pack from https://opencv.org/releases.html
 - Run/Unpack it (it's probably a self extracting zip archive).
 - Place OpenCV in ```C:\OPENCV\your_opencv_version```
@@ -78,33 +61,21 @@ CEF powers bot fathers browser thus it's required to build botfather.
 - Open the generated OpenCV Project with Visual Studio 2015.
 - Build ALL_BUILD both debug and release. Done.
 
-#### Build BotFather (Windows)
-- Create an new C/C++ -> General -> Empty Project in Visual Studio 2015
-- Copy all botfather source code (exclusing the qt project file) into the just created projects folder.
-- Open the VS Project an right click on the source code folders and files and include them into the Project
-- Make sure all files are included (.ui and .qrc files too, they are may not added automatically)
-- Adjust project props:
-- C/C++ -> General -> Additional Include Directories -> ```C:\OPENCV\XXX\build\include```
-- C/C++ -> General -> Additional Include Directories -> ```C:\CEF\your_cef_version_here``` (release & debug)
-- Linker -> General -> Additional Library Directories -> ```C:\OPENCV\XXX\build\x64\vc15\lib``` (release & debug)
-- Linker -> General -> Additional Library Directories -> ```C:\CEF\your_cef_version_here\Release``` and ```C:\CEF\your_cef_version_here\libcef_dll_wrapper\Release``` (release)
-- Linker -> General -> Additional Library Directories -> ```C:\CEF\your_cef_version_here\Debug``` and ```C:\CEF\your_cef_version_here\libcef_dll_wrapper\Debug``` (debug)
-- Linker -> Input -> Additional Dependencies -> ```libcef_dll_wrapper.lib``` and ```libcef.lib``` (release & debug)
-- Linker -> Input -> Additional Dependencies -> ```opencv_world340d.lib``` (debug)
-- Linker -> Input -> Additional Dependencies -> ```opencv_world340.lib``` (release)
-- Copy ```compatibility.manifest``` and ```cefsimple.exe.manifest``` from ```C:\CEF\your_cef_version_here\tests\cefsimple\``` into the botfather project directory.
-- Merge both manifest files into one manifest file called ```compatibility.manifest```
-- Goto VS -> Manifest Tool -> Input Output -> Additional manifest file and Add the compatibility manifest.
-- Include the manifest into the project (like earlier the source code)
-- Compile
+### Build the BotFather Helper
+- Open botfather_helper/botfather_helper.pro with QtCreator and configure the project.
+- Eventually adjust the ```INCLUDEPATH``` to match your cef version.
+- Try to build the project. It will fail. But we need Qt to create the build folder(s).
+- Now copy the contents of ```/CEF/your_version_here/Resources/``` to the build folder.
+- Building the BotFather helper should work now as expected.
 
-#### Run BotFather (Linux)
-Before you can run BotFather you need to copy the botfather_helper binary from the respective build dir (depending on the build type (debug/release)) to the BotFather binary.
-They have to be in the same folder and they need to be deployed together.
+### Build BotFather
+- Open botfather/botfahter.pro with QtCreator and configure the project.
+- Eventually adjust the ```INCLUDEPATH``` to match your cef version.
+- Try to build the project. It will fail. But we need Qt to create the build folder(s).
+- Now copy the contents of ```/CEF/your_version_here/Resources/``` and ```/CEF/your_version_here/Debug/``` or ```/CEF/your_version_here/Release/``` to the build folder.
+- Building the BotFather should work now as expected.
 
-## Gettings started (Apple MacOS)
-...to be added...
-
+------
 ## Troubleshooting
 ##### LaunchProcess: failed to execvp: ./botfather_helper
 This means you forgot to copy the botfather_helper binary from it's build folder to the bots folder from which you're probably trying to run a bot binary.
