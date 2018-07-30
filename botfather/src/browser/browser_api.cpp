@@ -47,6 +47,13 @@ void BrowserAPI::loadUrl(QString url)
 	Browser::loadUrl(url);
 }
 
+void BrowserAPI::beOnUrl(QString url)
+{
+	if (url != Browser::getUrl().toString()) {
+		Browser::loadUrl(url);
+	}
+}
+
 QString BrowserAPI::getUrl()
 {
 	return Browser::getUrl().toString();

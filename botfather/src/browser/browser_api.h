@@ -20,6 +20,7 @@ public:
 	Q_INVOKABLE void unmodifyRessource(QString ressource_pattern);
 	Q_INVOKABLE void unmodifyRessources();
 	Q_INVOKABLE void loadUrl(QString url);
+	Q_INVOKABLE void beOnUrl(QString url);
 	Q_INVOKABLE QString getUrl();
 	Q_INVOKABLE void reload();
 	Q_INVOKABLE void reloadIgnoringCache();
