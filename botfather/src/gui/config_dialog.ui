@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../res/gui.qrc">
-    <normaloff>:/gui/black_on_trans.png</normaloff>:/gui/black_on_trans.png</iconset>
+    <normaloff>:/gui/logo_v2.png</normaloff>:/gui/logo_v2.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

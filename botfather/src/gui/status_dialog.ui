@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../res/gui.qrc">
+    <normaloff>:/gui/logo_v2.png</normaloff>:/gui/logo_v2.png</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QProgressBar" name="progressBar">
@@ -60,7 +64,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../res/gui.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>
