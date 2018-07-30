@@ -97,13 +97,11 @@ HEADERS += \
     ./src/browser/browser_app.h \
     ./src/scripting/bot_thread.h \
     ./src/vision/vision.h \
-    ./src/auth/authenticator.h \
     ./src/android/adb_wrapper.h \
     ./src/android/android_api.h \
     ./src/gui/browser_address_bar.h \
     ./src/gui/browser_window.h \
     ./src/gui/android_dialog.h \
-    ./src/gui/auth_dialog.h \
     ./src/updater/update_checker.h \
     ./src/updater/updater_dialog.h \
     ./src/vision/vision_api.h \
@@ -128,17 +126,19 @@ HEADERS += \
     ./src/scripting/script_point.h \
     src/desktop/keymap.h \
     src/scripting/script_point_factory.h \
-    src/scripting/general_settings.h
+    src/scripting/general_settings.h \
+    src/auth/rest_api_client.h \
+    src/auth/status_api_client.h \
+    src/auth/license_api_client.h \
+    src/gui/status_dialog.h
 SOURCES += ./src/android/adb_device_info.cpp \
     ./src/android/adb_wrapper.cpp \
     ./src/android/android_api.cpp \
-    ./src/auth/authenticator.cpp \
     ./src/browser/browser.cpp \
     ./src/browser/browser_api.cpp \
     ./src/browser/browser_app.cpp \
     ./src/browser/browser_client.cpp \
     ./src/gui/android_dialog.cpp \
-    ./src/gui/auth_dialog.cpp \
     ./src/gui/browser_address_bar.cpp \
     ./src/gui/browser_widget.cpp \
     ./src/gui/browser_window.cpp \
@@ -160,11 +160,16 @@ SOURCES += ./src/android/adb_device_info.cpp \
     ./src/vision/vision_api.cpp \
     ./src/desktop/desktop_api.cpp \
     ./src/scripting/script_point.cpp \
-    src/scripting/script_point_factory.cpp
+    src/scripting/script_point_factory.cpp \
+    src/auth/rest_api_client.cpp \
+    src/auth/status_api_client.cpp \
+    src/auth/license_api_client.cpp \
+    src/gui/status_dialog.cpp
 FORMS += ./src/gui/config_dialog.ui \
     ./src/gui/control_window.ui \
     ./src/gui/browser_window.ui \
     ./src/updater/updater_dialog.ui \
     ./src/gui/auth_dialog.ui \
-    ./src/gui/android_dialog.ui
+    ./src/gui/android_dialog.ui \
+    src/gui/status_dialog.ui
 RESOURCES += ./src/res/gui.qrc
