@@ -109,13 +109,3 @@ void BrowserApp::OnBeforeCommandLineProcessing(const CefString& process_type, Ce
 	//command_line->AppendSwitch("disable-gpu-compositing");
 	//command_line->AppendSwitch("disable-accelerated-video-decode");
 }
-
-bool BrowserApp::OnBeforeNavigation(
-	CefRefPtr<CefBrowser> browser,
-	CefRefPtr<CefFrame> frame,
-	CefRefPtr<CefRequest> request,
-	CefRenderProcessHandler::NavigationType navigation_type,
-	bool is_redirect)
-{
-	return false;
-}

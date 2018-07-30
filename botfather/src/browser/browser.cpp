@@ -130,6 +130,8 @@ void Browser::initCefSettings(CefSettings& settings)
 	// Don't use sandbox. Because there are special permissions required and
 	// we don't need sandboxed processes at all.
 	settings.no_sandbox = true;
+	
+	settings.windowless_rendering_enabled = true;
 }
 
 void Browser::resize(QSize new_size)

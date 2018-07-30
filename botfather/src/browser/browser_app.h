@@ -20,16 +20,6 @@ public:
 
 	// Called on the browser process UI thread immediately after the CEF context has been initialized.
 	virtual void OnContextInitialized() OVERRIDE;
-
-	// |CefRenderProcessHandler|. Called before browser navigation. Return true
-	// to cancel the navigation or false to allow the navigation to proceed.
-	// The |request| object cannot be modified in this callback. 
-	virtual bool OnBeforeNavigation(
-		CefRefPtr<CefBrowser> browser,
-		CefRefPtr<CefFrame> frame,
-		CefRefPtr<CefRequest> request,
-		CefRenderProcessHandler::NavigationType navigation_type,
-		bool is_redirect) OVERRIDE;
 	
 private:
 	// Include the default reference counting implementation.
