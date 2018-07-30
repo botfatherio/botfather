@@ -49,7 +49,7 @@ void BrowserAPI::loadUrl(QString url)
 
 QString BrowserAPI::getUrl()
 {
-	return Browser::getUrl();
+	return Browser::getUrl().toString();
 }
 
 void BrowserAPI::reload()

@@ -183,10 +183,10 @@ void Browser::loadUrl(QString url)
 	BrowserClient::instance()->getBrowser()->GetMainFrame()->LoadURL(url.toStdString());
 }
 
-QString Browser::getUrl()
+QUrl Browser::getUrl()
 {
 	Q_ASSERT(BrowserClient::instance());
-	return QString::fromStdString(BrowserClient::instance()->getBrowser()->GetMainFrame()->GetURL().ToString());
+	return QUrl(QString::fromStdString(BrowserClient::instance()->getBrowser()->GetMainFrame()->GetURL().ToString()));
 }
 
 void Browser::reloadIgnoringCache()

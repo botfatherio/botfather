@@ -18,5 +18,5 @@ void BrowserAddressBar::navigate()
 
 void BrowserAddressBar::updateUrl()
 {
-	this->setText(Browser::getUrl());
+	this->setText(Browser::getUrl().toString());
 }

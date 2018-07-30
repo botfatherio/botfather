@@ -2,6 +2,7 @@
 #define BFP__BROWSER__BROWSER_H
 
 #include <QString>
+#include <QUrl>
 #include <QImage>
 #include <include/cef_base.h>
 
@@ -35,7 +36,7 @@ public:
 	static void loadUrl(QString url);
 	
 	// Returns the currently loaded url.
-	static QString getUrl();
+	static QUrl getUrl();
 
 	// Reloads the current page ignoring any cached data. 
 	static void reloadIgnoringCache();
