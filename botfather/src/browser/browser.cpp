@@ -202,7 +202,7 @@ bool Browser::loading()
 	return BrowserClient::instance()->loading();
 }
 
-bool Browser::bideLoading(int timeout_seconds)
+bool Browser::finishLoading(int timeout_seconds)
 {
 	Q_ASSERT(BrowserClient::instance());
 	

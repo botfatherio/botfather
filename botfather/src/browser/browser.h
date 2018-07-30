@@ -46,7 +46,7 @@ public:
 	
 	// Blocks until the browser stopped loading or the timeour expired. Returns false
 	// when the timeout expired.
-	static bool bideLoading(int timeout_seconds);
+	static bool finishLoading(int timeout_seconds);
 	
 	// Returns true if the browser can navigate backwards.
 	static bool canGoBack();

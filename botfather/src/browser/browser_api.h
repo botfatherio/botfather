@@ -25,7 +25,7 @@ public:
 	Q_INVOKABLE void reload();
 	Q_INVOKABLE void reloadIgnoringCache();
 	Q_INVOKABLE bool loading();
-	Q_INVOKABLE bool bideLoading(int timeout_seconds);
+	Q_INVOKABLE bool finishLoading(int timeout_seconds);
 	Q_INVOKABLE void stopLoading();
 	Q_INVOKABLE bool canGoBack();
 	Q_INVOKABLE bool canGoForward();
