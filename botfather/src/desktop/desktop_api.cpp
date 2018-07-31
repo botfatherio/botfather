@@ -5,6 +5,7 @@
 #include "../vision/image.h"
 #include "../vision/match.h"
 #include "../vision/vision.h"
+#include "../vision/vision_api.h"
 #include "../scripting/bot.h"
 #include "../scripting/script_point.h"
 
@@ -122,4 +123,18 @@ bool DesktopAPI::findAndClick(Image* tpl, double threshold, int button)
 		return false;
 	}
 	return true;
+}
+
+QScriptValue DesktopAPI::findMatches(Image* tpl, double threshold, int max_matches)
+{
+	VisionAPI *vapi = new VisionAPI(m_bot_p, m_engine_p);
+	Image *screenshot = qscriptvalue_cast<Image*>(takeScreenshot());
+	return vapi->findMatches(screenshot, tpl, threshold, max_matches);
+}
+
+QScriptValue DesktopAPI::findMatch(Image* tpl, double threshold)
+{
+	VisionAPI *vapi = new VisionAPI(m_bot_p, m_engine_p);
+	Image *screenshot = qscriptvalue_cast<Image*>(takeScreenshot());
+	return vapi->findMatch(screenshot, tpl, threshold);
 }
