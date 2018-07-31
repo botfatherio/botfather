@@ -1,12 +1,13 @@
 #include "android_api.h"
 #include "adb_wrapper.h"
 #include "android_settings.h"
+#include "../vision/vision_api.h"
 #include "../vision/vision.h"
 #include "../vision/image.h"
 #include "../vision/match.h"
 #include "../scripting/bot.h"
 
-AndroidAPI::AndroidAPI(Bot* bot_p, QScriptEngine* engine_p) : QObject(bot_p), m_engine_p(engine_p)
+AndroidAPI::AndroidAPI(Bot* bot_p, QScriptEngine* engine_p) : QObject(bot_p), m_bot_p(bot_p), m_engine_p(engine_p)
 {
 	QString adb_binary = m_settings.value(android::options::ADB_BINARY).toString();
 	adb = new AdbWrapper(this, adb_binary);
@@ -118,4 +119,18 @@ bool AndroidAPI::findAndTap(Image* tpl, double threshold)
 	Match *match = Vision::findMatch(screenshot, tpl->getUMat(), threshold);
 	sendTap(match->getX(), match->getY());
 	return true;
+}
+
+QScriptValue AndroidAPI::findMatches(Image* tpl, double threshold, int max_matches)
+{
+	VisionAPI *vapi = new VisionAPI(m_bot_p, m_engine_p);
+	Image *screenshot = qscriptvalue_cast<Image*>(takeScreenshot());
+	return vapi->findMatches(screenshot, tpl, threshold, max_matches);
+}
+
+QScriptValue AndroidAPI::findMatch(Image* tpl, double threshold)
+{
+	VisionAPI *vapi = new VisionAPI(m_bot_p, m_engine_p);
+	Image *screenshot = qscriptvalue_cast<Image*>(takeScreenshot());
+	return vapi->findMatch(screenshot, tpl, threshold);
 }

@@ -34,8 +34,11 @@ public:
 	Q_INVOKABLE int getDeviceHeight();
 	
 	Q_INVOKABLE bool findAndTap(Image *tpl, double threshold = 0.8);
+	Q_INVOKABLE QScriptValue findMatches(Image* tpl, double threshold = 0.8, int max_matches = 7);
+	Q_INVOKABLE QScriptValue findMatch(Image* tpl, double threshold = 0.8);
 	
 private:
+	Bot *m_bot_p;
 	QScriptEngine *m_engine_p;
 	QSettings m_settings;
 	AdbWrapper *adb;
