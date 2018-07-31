@@ -84,15 +84,7 @@
     <addaction name="actionAbout"/>
     <addaction name="actionAboutQt"/>
    </widget>
-   <widget class="QMenu" name="menuAccount">
-    <property name="title">
-     <string>Acco&amp;unt</string>
-    </property>
-    <addaction name="actionPremiumPlans"/>
-    <addaction name="actionLogout"/>
-   </widget>
    <addaction name="menuHelp"/>
-   <addaction name="menuAccount"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="enabled">
