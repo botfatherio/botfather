@@ -3,11 +3,12 @@
 #include <QDebug>
 #include "browser.h"
 #include "../vision/vision.h"
+#include "../vision/vision_api.h"
 #include "../vision/image.h"
 #include "../vision/match.h"
 #include "../scripting/bot.h"
 
-BrowserAPI::BrowserAPI(Bot *bot_p, QScriptEngine *engine_p) : QObject(bot_p), m_engine_p(engine_p)
+BrowserAPI::BrowserAPI(Bot *bot_p, QScriptEngine *engine_p) : QObject(bot_p),  m_bot_p(bot_p), m_engine_p(engine_p)
 {}
 
 void BrowserAPI::enable(Bot *bot_p, QScriptEngine *engine_p)
@@ -207,4 +208,18 @@ bool BrowserAPI::findAndClick(Image* tpl, double threshold, int button)
 		return false;
 	}
 	return true;
+}
+
+QScriptValue BrowserAPI::findMatches(Image* tpl, double threshold, int max_matches)
+{
+	VisionAPI *vapi = new VisionAPI(m_bot_p, m_engine_p);
+	Image *screenshot = qscriptvalue_cast<Image*>(takeScreenshot());
+	return vapi->findMatches(screenshot, tpl, threshold, max_matches);
+}
+
+QScriptValue BrowserAPI::findMatch(Image* tpl, double threshold)
+{
+	VisionAPI *vapi = new VisionAPI(m_bot_p, m_engine_p);
+	Image *screenshot = qscriptvalue_cast<Image*>(takeScreenshot());
+	return vapi->findMatch(screenshot, tpl, threshold);
 }
