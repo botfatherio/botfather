@@ -6,6 +6,7 @@
 #include <QString>
 
 class Bot;
+class Image;
 
 class BrowserAPI : public QObject
 {
@@ -45,6 +46,8 @@ public:
 	Q_INVOKABLE void releaseRight(int x, int y);
 	Q_INVOKABLE void moveMouseTo(int x, int y);
 	Q_INVOKABLE void scrollWheel(int x, int y, int delta_x, int delta_y);
+	
+	Q_INVOKABLE bool findAndClick(Image* tpl, double threshold = 0.8, int button = 1);
 	
 private:
 	QScriptEngine* m_engine_p;

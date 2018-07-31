@@ -4,6 +4,7 @@
 #include "browser.h"
 #include "../vision/vision.h"
 #include "../vision/image.h"
+#include "../vision/match.h"
 #include "../scripting/bot.h"
 
 BrowserAPI::BrowserAPI(Bot *bot_p, QScriptEngine *engine_p) : QObject(bot_p), m_engine_p(engine_p)
@@ -178,4 +179,32 @@ void BrowserAPI::moveMouseTo(int x, int y)
 void BrowserAPI::scrollWheel(int x, int y, int delta_x, int delta_y)
 {
 	Browser::scrollWheel(x, y, delta_x, delta_y);
+}
+
+bool BrowserAPI::findAndClick(Image* tpl, double threshold, int button)
+{
+	cv::UMat screenshot = Vision::qimageToBGRUmat(Browser::takeScreenshot()).clone();
+	
+	if (screenshot.empty() || !tpl) {
+		return false;
+	}
+	if (screenshot.cols <= tpl->getWidth() || screenshot.rows <= tpl->getHeight()) {
+		return false;
+	}
+	Match *match = Vision::findMatch(screenshot, tpl->getUMat(), threshold);
+	switch (button) {
+	case 1:
+		leftClick(match->getX(), match->getY());
+		break;
+	case 2:
+		middleClick(match->getX(), match->getY());
+		break;
+	case 3:
+		rightClick(match->getX(), match->getY());
+		break;
+	default:
+		m_engine_p->currentContext()->throwError("Unknown button code.");
+		return false;
+	}
+	return true;
 }
