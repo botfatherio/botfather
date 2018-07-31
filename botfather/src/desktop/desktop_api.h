@@ -6,6 +6,7 @@
 
 class Bot;
 class Desktop;
+class Image;
 
 class DesktopAPI : public QObject
 {
@@ -33,6 +34,8 @@ public:
 	
 	Q_INVOKABLE void warpCursor(int x, int y);
 	Q_INVOKABLE QScriptValue getCursorPosition();
+	
+	Q_INVOKABLE bool findAndClick(Image* tpl, double threshold = 0.8, int button = 1);
 	
 private:
 	Bot *m_bot_p;

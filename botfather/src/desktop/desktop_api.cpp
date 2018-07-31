@@ -3,6 +3,8 @@
 #include <QDebug>
 #include "desktop.h"
 #include "../vision/image.h"
+#include "../vision/match.h"
+#include "../vision/vision.h"
 #include "../scripting/bot.h"
 #include "../scripting/script_point.h"
 
@@ -93,4 +95,31 @@ QScriptValue DesktopAPI::getCursorPosition()
 		// Getting the cursor position failed.
 	}
 	return m_engine_p->newQObject(new ScriptPoint(x, y));
+}
+
+bool DesktopAPI::findAndClick(Image* tpl, double threshold, int button)
+{
+	cv::UMat screenshot;
+	if (!desktop->takeScreenshot(screenshot) || !tpl) {
+		return false;
+	}
+	if (screenshot.cols <= tpl->getWidth() || screenshot.rows <= tpl->getHeight()) {
+		return false;
+	}
+	Match *match = Vision::findMatch(screenshot, tpl->getUMat(), threshold);
+	switch (button) {
+	case 1:
+		leftClick(match->getX(), match->getY());
+		break;
+	case 2:
+		middleClick(match->getX(), match->getY());
+		break;
+	case 3:
+		rightClick(match->getX(), match->getY());
+		break;
+	default:
+		m_engine_p->currentContext()->throwError("Unknown button code.");
+		return false;
+	}
+	return true;
 }
