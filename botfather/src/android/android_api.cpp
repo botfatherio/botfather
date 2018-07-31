@@ -3,6 +3,7 @@
 #include "android_settings.h"
 #include "../vision/vision.h"
 #include "../vision/image.h"
+#include "../vision/match.h"
 #include "../scripting/bot.h"
 
 AndroidAPI::AndroidAPI(Bot* bot_p, QScriptEngine* engine_p) : QObject(bot_p), m_engine_p(engine_p)
@@ -102,4 +103,19 @@ int AndroidAPI::getDeviceHeight()
 		return -1;
 	}
 	return qimage.height();
+}
+
+bool AndroidAPI::findAndTap(Image* tpl, double threshold)
+{
+	QImage qimage;
+	if (!adb->takeScreenshot(serial_number, qimage) || !tpl) {
+		return false;
+	}
+	cv::UMat screenshot = Vision::qimageToBGRUmat(qimage).clone();
+	if (screenshot.cols <= tpl->getWidth() || screenshot.rows <= tpl->getHeight()) {
+		return false;
+	}
+	Match *match = Vision::findMatch(screenshot, tpl->getUMat(), threshold);
+	sendTap(match->getX(), match->getY());
+	return true;
 }
