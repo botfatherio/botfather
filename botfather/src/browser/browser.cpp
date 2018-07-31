@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QElapsedTimer>
 #include <QObject>
+#include <QStandardPaths>
 #include "browser_client.h"
 #include "browser_app.h"
 #include "browser_settings.h"
@@ -87,12 +88,9 @@ void Browser::quit()
 
 void Browser::initCefSettings(CefSettings& settings)
 {
-	// Specify the path for the sub-process executable.
-#if defined(_WIN32) || defined(_WIN64)
-	CefString(&settings.browser_subprocess_path).FromASCII("./botfather_helper.exe");
-#else
-	CefString(&settings.browser_subprocess_path).FromASCII("./botfather_helper");
-#endif
+	// Works with windows exe files. See https://doc.qt.io/qt-5/qstandardpaths.html#findExecutable
+	QString helper_path = QStandardPaths::findExecutable("botfather_helper", { QApplication::applicationDirPath() });
+	CefString(&settings.browser_subprocess_path).FromASCII(helper_path.toUtf8());
 	
 	// Set path to the ressources (cef.pak and/or devtools_resources.pak) directoy.
 	CefString(&settings.resources_dir_path) = CefString();
