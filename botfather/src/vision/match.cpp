@@ -28,7 +28,7 @@ void Match::fromScriptValue(const QScriptValue &object, Match* &out)
 
 bool Match::found() const
 {
-	return m_score != -1;
+	return m_score > 0;
 }
 
 double Match::getScore() const

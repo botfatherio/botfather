@@ -17,30 +17,30 @@ QScriptValue BlobTplFactory::create(QScriptContext *context, QScriptEngine *engi
 	if (context->argumentCount() < 2) {
 		return context->throwError("Too few arguments.");
 	}
-	if (!context->argument(0).isQObject() || (qobject_cast<HSVColor*>(context->argument(0).toQObject()) == 0)) {
+	if (!context->argument(0).isQObject() || !qobject_cast<HSVColor*>(context->argument(0).toQObject())) {
 		return context->throwError("Argument 'hsv_min' must be an HSVColor object.");
 	}
-	if (!context->argument(1).isQObject() || (qobject_cast<HSVColor*>(context->argument(1).toQObject()) == 0)) {
+	if (!context->argument(1).isQObject() || !qobject_cast<HSVColor*>(context->argument(1).toQObject())) {
 		return context->throwError("Argument 'max_hsv' must be an HSVColor object.");
 	}
 	
 	HSVColor *min_hsv = qobject_cast<HSVColor*>(context->argument(0).toQObject());
 	HSVColor *max_hsv = qobject_cast<HSVColor*>(context->argument(1).toQObject());
 	
-	int min_area = context->argument(3).isNumber() ? context->argument(3).toNumber() : -1;
-	int max_area = context->argument(4).isNumber() ? context->argument(4).toNumber() : -1;
+	float min_area = context->argument(3).isNumber() ? static_cast<float>(context->argument(3).toNumber()) : -1;
+	float max_area = context->argument(4).isNumber() ? static_cast<float>(context->argument(4).toNumber()) : -1;
 	bool filter_by_area = min_area > 0 && max_area > 0 && context->argument(2).isBool() && context->argument(2).toBool();
 	
-	double min_circularity = context->argument(6).isNumber() ? context->argument(6).toNumber() : -1;
-	double max_circularity = context->argument(7).isNumber() ? context->argument(7).toNumber() : -1;
+	float min_circularity = context->argument(6).isNumber() ? static_cast<float>(context->argument(6).toNumber()) : -1;
+	float max_circularity = context->argument(7).isNumber() ? static_cast<float>(context->argument(7).toNumber()) : -1;
 	bool filter_by_circularity = min_circularity > 0 && max_circularity > 0 && context->argument(5).isBool() && context->argument(5).toBool();
 	
-	double min_convexity = context->argument(9).isNumber() ? context->argument(9).toNumber() : -1;
-	double max_convexity = context->argument(10).isNumber() ? context->argument(10).toNumber() : -1;
+	float min_convexity = context->argument(9).isNumber() ? static_cast<float>(context->argument(9).toNumber()) : -1;
+	float max_convexity = context->argument(10).isNumber() ? static_cast<float>(context->argument(10).toNumber()) : -1;
 	bool filter_by_convexity = min_convexity > 0 && max_convexity > 0 && context->argument(8).isBool() && context->argument(8).toBool();
 	
-	double min_inertia = context->argument(12).isNumber() ? context->argument(12).toNumber() : -1;
-	double max_inertia = context->argument(13).isNumber() ? context->argument(13).toNumber() : -1;
+	float min_inertia = context->argument(12).isNumber() ? static_cast<float>(context->argument(12).toNumber()) : -1;
+	float max_inertia = context->argument(13).isNumber() ? static_cast<float>(context->argument(13).toNumber()) : -1;
 	bool filter_by_inertia = min_inertia > 0 && max_inertia > 0 && context->argument(11).isBool() && context->argument(11).toBool();
 	
 	return engine->toScriptValue(new BlobTpl(

@@ -21,8 +21,8 @@ QScriptValue ScriptPointFactory::create(QScriptContext *context, QScriptEngine *
 		if (!context->argument(0).isNumber() || context->argument(1).isNumber()){
 			return context->throwError("Both x and y must be numbers.");
 		}
-		x = context->argument(0).toNumber();
-		y = context->argument(1).toNumber();
+		x = static_cast<int>(context->argument(0).toNumber());
+		y = static_cast<int>(context->argument(1).toNumber());
 	}
 	else if (context->argumentCount() != 0) {
 		return context->throwError("Either 2 or no arguments were expected.");

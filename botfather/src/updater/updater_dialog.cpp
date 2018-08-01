@@ -105,5 +105,5 @@ void UpdaterDialog::onUpdateCheckFailed(UpdateChecker::ErrorType error_type)
 
 void UpdaterDialog::disconnectUpdateChecker()
 {
-	disconnect(update_checker, 0, this, 0);
+	disconnect(update_checker, nullptr, this, nullptr);
 }

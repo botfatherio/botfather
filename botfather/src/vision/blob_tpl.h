@@ -15,17 +15,17 @@ public:
 		HSVColor* min_hsv_p,
 		HSVColor* max_hsv_p,
 		bool filter_by_area,
-		int min_area,
-		int max_area,
+		float min_area,
+		float max_area,
 		bool filter_by_circularity = false,
-		double min_circularity = 0.0f,
-		double max_circularity = 1.0f,
+		float min_circularity = 0.0f,
+		float max_circularity = 1.0f,
 		bool filter_by_convexity = false,
-		double min_convexity = 0.0f,
-		double max_convexity = 1.0f,
+		float min_convexity = 0.0f,
+		float max_convexity = 1.0f,
 		bool filter_by_inertia = false,
-		double min_inertia_ration = 0.0f,
-		double max_inertia_ration = 1.0f
+		float min_inertia_ration = 0.0f,
+		float max_inertia_ration = 1.0f
 	);
 	
 	static QScriptValue toScriptValue(QScriptEngine *engine, BlobTpl* const &in);
@@ -42,38 +42,38 @@ public:
 	Q_INVOKABLE void setFilterByArea(bool filter_by_area);
 	Q_INVOKABLE bool getFilterByArea() const;
 	
-	Q_INVOKABLE void setMinArea(int min_area);
-	Q_INVOKABLE int getMinArea() const;
+	Q_INVOKABLE void setMinArea(float min_area);
+	Q_INVOKABLE float getMinArea() const;
 	
-	Q_INVOKABLE void setMaxArea(int max_area);
-	Q_INVOKABLE int getMaxAarea() const;
+	Q_INVOKABLE void setMaxArea(float max_area);
+	Q_INVOKABLE float getMaxAarea() const;
 	
 	Q_INVOKABLE void setFilterByCircularity(bool filter_by_circularity);
 	Q_INVOKABLE bool getFilterByCircularity() const;
 	
-	Q_INVOKABLE void setMinCircularity(double min_circularity);
-	Q_INVOKABLE double getMinCircularity() const;
+	Q_INVOKABLE void setMinCircularity(float min_circularity);
+	Q_INVOKABLE float getMinCircularity() const;
 	
-	Q_INVOKABLE void setMaxCircularity(double max_circularity);
-	Q_INVOKABLE double getMaxCircularity() const;
+	Q_INVOKABLE void setMaxCircularity(float max_circularity);
+	Q_INVOKABLE float getMaxCircularity() const;
 	
 	Q_INVOKABLE void setFilterByConvexity(bool filter_by_convexity);
 	Q_INVOKABLE bool getFilterByConvexity() const;
 	
-	Q_INVOKABLE void setMinConvexity(double min_convexity);
-	Q_INVOKABLE double getMinConvexity() const;
+	Q_INVOKABLE void setMinConvexity(float min_convexity);
+	Q_INVOKABLE float getMinConvexity() const;
 	
-	Q_INVOKABLE void setMaxConvexity(double max_convexity);
-	Q_INVOKABLE double getMaxConvexity() const;
+	Q_INVOKABLE void setMaxConvexity(float max_convexity);
+	Q_INVOKABLE float getMaxConvexity() const;
 	
 	Q_INVOKABLE void setFilterByInertia(bool filter_by_inertia);
 	Q_INVOKABLE bool getFilterByInertia() const;
 	
-	Q_INVOKABLE void setMinInertiaRation(double min_inertia_ration);
-	Q_INVOKABLE double getMinInertiaRation() const;
+	Q_INVOKABLE void setMinInertiaRation(float min_inertia_ration);
+	Q_INVOKABLE float getMinInertiaRation() const;
 	
-	Q_INVOKABLE void setMaxInertiaRation(double max_inertia_ration);
-	Q_INVOKABLE double getMaxInertiaRation() const;
+	Q_INVOKABLE void setMaxInertiaRation(float max_inertia_ration);
+	Q_INVOKABLE float getMaxInertiaRation() const;
 
 private:
 	HSVColor* m_min_hsv_p;

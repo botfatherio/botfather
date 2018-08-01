@@ -98,6 +98,7 @@ void BrowserClient::setLoading(bool state)
 
 bool BrowserClient::DoClose(CefRefPtr<CefBrowser> browser)
 {
+	Q_UNUSED(browser)
 	CEF_REQUIRE_UI_THREAD();
 
 	// Closing the main window requires special handling. See the DoClose()
@@ -124,6 +125,7 @@ void BrowserClient::OnAfterCreated(CefRefPtr<CefBrowser> browser)
 
 void BrowserClient::OnBeforeClose(CefRefPtr<CefBrowser> browser)
 {
+	Q_UNUSED(browser)
 	CEF_REQUIRE_UI_THREAD();
 
 	// Free the browser pointer so that the browser can be destroyed.
@@ -143,6 +145,17 @@ bool BrowserClient::OnBeforePopup(
 	CefBrowserSettings& settings,
 	bool* no_javascript_access)
 {
+	Q_UNUSED(browser)
+	Q_UNUSED(frame)
+	Q_UNUSED(target_frame_name)
+	Q_UNUSED(target_disposition)
+	Q_UNUSED(user_gesture)
+	Q_UNUSED(popupFeatures)
+	Q_UNUSED(windowInfo)
+	Q_UNUSED(client)
+	Q_UNUSED(settings)
+	Q_UNUSED(no_javascript_access)	
+	
 	// TODO: Eventually block certain popups from being opened at all.
 
 	// Open popup url in osr browser.
@@ -154,6 +167,7 @@ bool BrowserClient::OnBeforePopup(
 
 bool BrowserClient::GetViewRect(CefRefPtr<CefBrowser> browser, CefRect& rect)
 {
+	Q_UNUSED(browser)
 	CEF_REQUIRE_UI_THREAD();
 
 	QSettings settings;
@@ -168,8 +182,17 @@ bool BrowserClient::GetViewRect(CefRefPtr<CefBrowser> browser, CefRect& rect)
 	return true;
 }
 
-void BrowserClient::OnPaint(CefRefPtr<CefBrowser> browser, PaintElementType type, const RectList& dirtyRects, const void* buffer, int width, int height)
+void BrowserClient::OnPaint(
+	CefRefPtr<CefBrowser> browser,
+	PaintElementType type,
+	const RectList& dirtyRects,
+	const void* buffer,
+	int width,
+	int height)
 {
+	Q_UNUSED(browser)
+	Q_UNUSED(type)
+	Q_UNUSED(dirtyRects)
 	CEF_REQUIRE_UI_THREAD();
 
 	// QPixmap is stored on the XServer when using X11 backend, whereas QImage is just an "array in memory" of the client program.
@@ -178,18 +201,25 @@ void BrowserClient::OnPaint(CefRefPtr<CefBrowser> browser, PaintElementType type
 	// QPixmap objects can be passed around by value since the QPixmap class uses implicit data sharing.
 	// For more information, see the Implicit Data Sharing documentation.QPixmap objects can also be streamed.
 
-	g_browser_image = QImage((unsigned char*)buffer, width, height, QImage::Format_RGB32);
+	g_browser_image = QImage(static_cast<const unsigned char*>(buffer), width, height, QImage::Format_RGB32);
 	emit paintSignal(g_browser_image);
 }
 
 void BrowserClient::OnLoadEnd(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, int httpStatusCode)
 {
+	Q_UNUSED(browser)
+	Q_UNUSED(frame)
+	Q_UNUSED(httpStatusCode)
 	CEF_REQUIRE_UI_THREAD();
 	emit this->loadingFinishedSignal();
 }
 
 void BrowserClient::OnLoadError(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, ErrorCode errorCode, const CefString& errorText, const CefString& failedUrl)
 {
+	Q_UNUSED(browser)
+	Q_UNUSED(frame)
+	Q_UNUSED(errorText)
+	Q_UNUSED(failedUrl)
 	CEF_REQUIRE_UI_THREAD();
 
 	// Don't display an error for downloaded files.
@@ -204,6 +234,9 @@ void BrowserClient::OnLoadError(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFram
 
 void BrowserClient::OnLoadingStateChange(CefRefPtr<CefBrowser> browser, bool isLoading, bool canGoBack, bool canGoForward)
 {
+	Q_UNUSED(browser)
+	Q_UNUSED(canGoBack)
+	Q_UNUSED(canGoForward)
 	CEF_REQUIRE_UI_THREAD();
 	this->is_loading = isLoading;
 	emit loadingStateChangedSignal(isLoading);
@@ -211,12 +244,23 @@ void BrowserClient::OnLoadingStateChange(CefRefPtr<CefBrowser> browser, bool isL
 
 void BrowserClient::OnLoadStart(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefLoadHandler::TransitionType transition_type)
 {
+	Q_UNUSED(browser)
+	Q_UNUSED(frame)
+	Q_UNUSED(transition_type)
 	CEF_REQUIRE_UI_THREAD();
 	emit this->loadingStartedSignal();
 }
 
-CefRequestHandler::ReturnValue BrowserClient::OnBeforeResourceLoad(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request, CefRefPtr<CefRequestCallback> callback)
+CefRequestHandler::ReturnValue BrowserClient::OnBeforeResourceLoad(
+	CefRefPtr<CefBrowser> browser,
+	CefRefPtr<CefFrame> frame,
+	CefRefPtr<CefRequest> request,
+	CefRefPtr<CefRequestCallback> callback)
 {
+	Q_UNUSED(browser)
+	Q_UNUSED(frame)
+	Q_UNUSED(callback)
+	
 	QString url = QString::fromStdString(request->GetURL().ToString());
 
 	for (int i = 0; i < modified_ressources.length(); i++) {
@@ -269,7 +313,7 @@ void BrowserClient::OnRenderProcessTerminated(CefRefPtr<CefBrowser> browser, Cef
 		qDebug() << Q_FUNC_INFO << "Renderer Crashed. Segmentation fault.";
 		break;
 	default:
-		//qDebug("RIP " << status);
+		qDebug() << "RIP " << status;
 		break;
 	}
 	emit rendererCrashedSignal();

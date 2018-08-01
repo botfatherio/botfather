@@ -21,7 +21,7 @@ class ControlWindow : public QMainWindow
 	Q_OBJECT
 	
 public:
-	explicit ControlWindow(QWidget *parent = 0);
+	explicit ControlWindow(QWidget *parent = nullptr);
 	~ControlWindow();
 	
 signals:

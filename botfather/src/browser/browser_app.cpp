@@ -36,7 +36,7 @@ void BrowserApp::OnContextInitialized()
 		// "about:blank",
 		"about:version",
 		browser_settings,
-		NULL
+		nullptr
 	);
 	
 	// A url (like about:blank) must be loaded first. Otherwise loadString doesnt work.

@@ -4,7 +4,7 @@
 #include "../browser/browser_client.h"
 #include "../browser/browser.h"
 
-BrowserWidget::BrowserWidget(QWidget* parent)
+BrowserWidget::BrowserWidget(QWidget* parent) : QLabel(parent)
 {
 	// Make this widget expand to it's parents size.
 	this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
@@ -19,7 +19,7 @@ BrowserWidget::BrowserWidget(QWidget* parent)
 
 void BrowserWidget::mousePressEvent(QMouseEvent *event)
 {
-	int cef_button_code = Browser::qtToCefMouseButtonType(event->button());
+	int cef_button_code = Browser::qtToCefMouseButtonType(static_cast<int>(event->button()));
 	if (cef_button_code == -1) {
 		return;
 	}
@@ -28,7 +28,7 @@ void BrowserWidget::mousePressEvent(QMouseEvent *event)
 
 void BrowserWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-	int cef_button_code = Browser::qtToCefMouseButtonType(event->button());
+	int cef_button_code = Browser::qtToCefMouseButtonType(static_cast<int>(event->button()));
 	if (cef_button_code == -1) {
 		return;
 	}
@@ -47,8 +47,11 @@ void BrowserWidget::wheelEvent(QWheelEvent *event)
 
 void BrowserWidget::keyPressEvent(QKeyEvent *event)
 {
+	Q_UNUSED(event)
 	QMessageBox::information(this, "No Keyboard Support yet!", "Use the rightclick context menu to paste text into fields on the website.");
 }
 
 void BrowserWidget::keyReleaseEvent(QKeyEvent *event)
-{}
+{
+	Q_UNUSED(event)
+}

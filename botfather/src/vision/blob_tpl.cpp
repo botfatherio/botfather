@@ -4,17 +4,17 @@ BlobTpl::BlobTpl(
 	HSVColor* min_hsv_p,
 	HSVColor* max_hsv_p,
 	bool filter_by_area,
-	int min_area,
-	int max_area,
+	float min_area,
+	float max_area,
 	bool filter_by_circularity,
-	double min_circularity,
-	double max_circularity,
+	float min_circularity,
+	float max_circularity,
 	bool filter_by_convexity,
-	double min_convexity,
-	double max_convexity,
+	float min_convexity,
+	float max_convexity,
 	bool filter_by_inertia,
-	double min_inertia_ration,
-	double max_inertia_ration)
+	float min_inertia_ration,
+	float max_inertia_ration)
 {
 	this->m_min_hsv_p = min_hsv_p;
 	this->m_max_hsv_p = max_hsv_p;
@@ -79,22 +79,22 @@ bool BlobTpl::getFilterByArea() const
 	return this->m_blob_params.filterByArea;
 }
 
-void BlobTpl::setMinArea(int min_area)
+void BlobTpl::setMinArea(float min_area)
 {
 	this->m_blob_params.minArea = min_area;
 }
 
-int BlobTpl::getMinArea() const
+float BlobTpl::getMinArea() const
 {
 	return this->m_blob_params.minArea;
 }
 
-void BlobTpl::setMaxArea(int max_area)
+void BlobTpl::setMaxArea(float max_area)
 {
 	this->m_blob_params.maxArea = max_area;
 }
 
-int BlobTpl::getMaxAarea() const
+float BlobTpl::getMaxAarea() const
 {
 	return this->m_blob_params.maxArea;
 }
@@ -109,22 +109,22 @@ bool BlobTpl::getFilterByCircularity() const
 	return this->m_blob_params.filterByCircularity;
 }
 
-void BlobTpl::setMinCircularity(double min_circularity)
+void BlobTpl::setMinCircularity(float min_circularity)
 {
 	this->m_blob_params.minCircularity = min_circularity;
 }
 
-double BlobTpl::getMinCircularity() const
+float BlobTpl::getMinCircularity() const
 {
 	return this->m_blob_params.minCircularity;
 }
 
-void BlobTpl::setMaxCircularity(double max_circularity)
+void BlobTpl::setMaxCircularity(float max_circularity)
 {
 	this->m_blob_params.maxCircularity = max_circularity;
 }
 
-double BlobTpl::getMaxCircularity() const
+float BlobTpl::getMaxCircularity() const
 {
 	return this->m_blob_params.maxCircularity;
 }
@@ -139,22 +139,22 @@ bool BlobTpl::getFilterByConvexity() const
 	return this->m_blob_params.filterByConvexity;
 }
 
-void BlobTpl::setMinConvexity(double min_convexity)
+void BlobTpl::setMinConvexity(float min_convexity)
 {
 	this->m_blob_params.minConvexity = min_convexity;
 }
 
-double BlobTpl::getMinConvexity() const
+float BlobTpl::getMinConvexity() const
 {
 	return this->m_blob_params.minConvexity;
 }
 
-void BlobTpl::setMaxConvexity(double max_convexity)
+void BlobTpl::setMaxConvexity(float max_convexity)
 {
 	this->m_blob_params.maxConvexity = max_convexity;
 }
 
-double BlobTpl::getMaxConvexity() const
+float BlobTpl::getMaxConvexity() const
 {
 	return this->m_blob_params.maxConvexity;
 }
@@ -169,22 +169,22 @@ bool BlobTpl::getFilterByInertia() const
 	return this->m_blob_params.filterByInertia;
 }
 
-void BlobTpl::setMinInertiaRation(double min_inertia)
+void BlobTpl::setMinInertiaRation(float min_inertia)
 {
 	this->m_blob_params.minInertiaRatio = min_inertia;
 }
 
-double BlobTpl::getMinInertiaRation() const
+float BlobTpl::getMinInertiaRation() const
 {
 	return this->m_blob_params.minInertiaRatio;
 }
 
-void BlobTpl::setMaxInertiaRation(double max_inertia)
+void BlobTpl::setMaxInertiaRation(float max_inertia)
 {
 	this->m_blob_params.maxInertiaRatio = max_inertia;
 }
 
-double BlobTpl::getMaxInertiaRation() const
+float BlobTpl::getMaxInertiaRation() const
 {
 	return this->m_blob_params.maxInertiaRatio;
 }

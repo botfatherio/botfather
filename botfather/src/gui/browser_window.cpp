@@ -107,6 +107,8 @@ void BrowserWindow::updateNavigationButtons(bool browser_loading_state)
 
 void BrowserWindow::showEvent(QShowEvent *event)
 {
+	Q_UNUSED(event)
+	
 	// Attract mouse and keyboard events.
 	this->setMouseTracking(true);
 	this->setFocusPolicy(Qt::ClickFocus);
@@ -117,12 +119,16 @@ void BrowserWindow::showEvent(QShowEvent *event)
 
 void BrowserWindow::hideEvent(QHideEvent *event)
 {
+	Q_UNUSED(event)
+	
 	// Stop rendering the websites content when the browser dialog gets closed.
 	QObject::disconnect(BrowserClient::instance(), SIGNAL(paintSignal(QImage)), this, SLOT(paintSlot(QImage)));
 }
 
 void BrowserWindow::resizeEvent(QResizeEvent *event)
 {
+	Q_UNUSED(event)
+	
 	// No longer paint stuff before the user decided what size he wants.
 	// We do no longer paint because qt tends to do segmentation faults.
 	// Thats due to qt and cef being async and having seperate event loops.

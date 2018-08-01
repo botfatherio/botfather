@@ -26,7 +26,7 @@ public:
 	struct uinput_setup usetup;
 	int fd;
 	
-	void emitEvent(int type, int code, int val)
+	void emitEvent(unsigned short type, unsigned short code, int val)
 	{
 		struct input_event ie;
 		
@@ -35,7 +35,7 @@ public:
 		ie.value = val;
 		
 		// Timestamp values below can be ignored (by setting them to 0)
-		ie.time.tv_sec = std::time(0);
+		ie.time.tv_sec = std::time(nullptr);
 		ie.time.tv_usec = 0;
 		
 		write(fd, &ie, sizeof(ie));
@@ -48,19 +48,19 @@ public:
 		emitEvent(EV_SYN, SYN_REPORT, 0);
 	}
 	
-	void hold(int keycode)
+	void hold(unsigned short keycode)
 	{
 		emitEvent(EV_KEY, keycode, 1);
 		emitEvent(EV_SYN, SYN_REPORT, 0);
 	}
 	
-	void release(int keycode)
+	void release(unsigned short keycode)
 	{
 		emitEvent(EV_KEY, keycode, 0);
 		emitEvent(EV_SYN, SYN_REPORT, 0);
 	}
 	
-	void press(int keycode)
+	void press(unsigned short keycode)
 	{
 		hold(keycode);
 		release(keycode);
@@ -212,7 +212,7 @@ bool Desktop::takeScreenshot(cv::UMat &screenshot)
 	int width = attributes.width;
 	int height = attributes.height;
 	
-	XImage *x_image = XGetImage(d_ptr->display, d_ptr->root, 0, 0, width, height, AllPlanes, ZPixmap);
+	XImage *x_image = XGetImage(d_ptr->display, d_ptr->root, 0, 0, static_cast<unsigned int>(width), static_cast<unsigned int>(height), AllPlanes, ZPixmap);
 	int bits_per_pixel = x_image->bits_per_pixel;
 	
 	cv::Mat mat(height, width, bits_per_pixel > 24 ? CV_8UC4 : CV_8UC3, x_image->data);
@@ -263,12 +263,12 @@ void Desktop::pressKey(QString key) {
 
 void Desktop::holdKey(QString key)
 {
-	d_ptr->hold(KEYMAP[key.toLower()]);
+	d_ptr->hold(static_cast<unsigned short>(KEYMAP[key.toLower()]));
 }
 
 void Desktop::releaseKey(QString key)
 {
-	d_ptr->release(KEYMAP[key.toLower()]);
+	d_ptr->release(static_cast<unsigned short>(KEYMAP[key.toLower()]));
 }
 
 void Desktop::warpCursor(int x, int y)

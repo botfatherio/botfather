@@ -19,9 +19,9 @@ QScriptValue HSVColorFactory::create(QScriptContext *context, QScriptEngine *eng
 		return context->throwError("All arguments must be numbers.");
 	}
 	
-	int h = context->argument(0).toNumber();
-	int s = context->argument(1).toNumber();
-	int v = context->argument(2).toNumber();
+	int h = static_cast<int>(context->argument(0).toNumber());
+	int s = static_cast<int>(context->argument(1).toNumber());
+	int v = static_cast<int>(context->argument(2).toNumber());
 	
 	if (h < 0 || h > 360) {
 		return context->throwError("Argument h must be between 0 and 360°.");

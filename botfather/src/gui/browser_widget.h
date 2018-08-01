@@ -8,7 +8,7 @@ class BrowserWidget : public QLabel {
 	Q_OBJECT
 
 public:
-	explicit BrowserWidget(QWidget* parent = 0);
+	explicit BrowserWidget(QWidget* parent = nullptr);
 
 private:
 	void mousePressEvent(QMouseEvent *event);

@@ -39,7 +39,7 @@ void HelperAPI::sleep(int seconds)
 	// requested to prevent bugs. Par example:
 	// Stpping a script having an infinit loop with sleep in it will result in the bot going crazy.
 	// CPU usage rockets up and one can no longer stop nor kill the script (because it will never sleep).
-	QThread::sleep(seconds);
+	QThread::sleep(static_cast<unsigned int>(seconds));
 }
 
 void HelperAPI::msleep(int milliseconds)
@@ -48,7 +48,7 @@ void HelperAPI::msleep(int milliseconds)
 		m_engine_p->currentContext()->throwError("Timeout must be at least 1 millisecond.");
 		return;
 	}
-	QThread::msleep(milliseconds);
+	QThread::msleep(static_cast<unsigned long>(milliseconds));
 }
 
 QString HelperAPI::getVersion()
@@ -104,7 +104,7 @@ void HelperAPI::playWavSound(QString path_to_wav_file, bool blocking)
 		QAudioBuffer buffer(wav_file.readAll(), format);
 		//qDebug() << "DURATION:" << buffer.duration() / 1000 / 1000 << "seconds";
 		//QThread::usleep(buffer.duration());
-		sleep(buffer.duration() / 1000 / 1000);
+		QThread::sleep(static_cast<unsigned long>(buffer.duration() / 1000 / 1000));
 	}
 }
 

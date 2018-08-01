@@ -13,7 +13,7 @@ class UpdaterDialog : public QDialog
 	Q_OBJECT
 	
 public:
-	explicit UpdaterDialog(QWidget *parent = 0);
+	explicit UpdaterDialog(QWidget *parent = nullptr);
 	~UpdaterDialog();
 	
 public slots:

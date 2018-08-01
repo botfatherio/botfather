@@ -193,11 +193,11 @@ QScriptValue VisionAPI::findBlobs(BlobTpl *blob_tpl, Image *image)
 	// can interpret.
 	for (cv::KeyPoint kp : keypoints) {
 		
-		int left = kp.pt.x + (kp.size / 2);
-		int top = kp.pt.y + (kp.size / 2);
+		int left = static_cast<int>(kp.pt.x + (kp.size / 2));
+		int top = static_cast<int>(kp.pt.y + (kp.size / 2));
 		
-		QScriptValue js_match = m_engine_p->newQObject(new Match(1, left, top, kp.size, kp.size));
-		matches.setProperty(number_of_matches, js_match);
+		QScriptValue js_match = m_engine_p->newQObject(new Match(1, left, top, static_cast<int>(kp.size), static_cast<int>(kp.size)));
+		matches.setProperty(static_cast<quint32>(number_of_matches), js_match);
 		number_of_matches++;
 	}
 	

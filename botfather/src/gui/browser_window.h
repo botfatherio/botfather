@@ -18,7 +18,7 @@ class BrowserWindow : public QMainWindow
 	Q_OBJECT
 	
 public:
-	explicit BrowserWindow(QWidget *parent = 0);
+	explicit BrowserWindow(QWidget *parent = nullptr);
 	~BrowserWindow();
 	
 public slots:

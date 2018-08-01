@@ -56,6 +56,8 @@ ControlWindow::~ControlWindow()
 
 void ControlWindow::applyRemoteApiInfo(int curtime, int premend, bool stable)
 {	
+	Q_UNUSED(stable)
+	
 	trial = curtime > premend;
 	// No longer alter the title. Just leave it be Botfather.
 	// This method is still usefull though to make scripts stop when premium finished.
