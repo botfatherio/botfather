@@ -34,8 +34,8 @@ public:
 	Q_INVOKABLE QScriptValue findMatch(Image* image, Image* tpl, double threshold = 0.8);
 	
 	Q_INVOKABLE QScriptValue findBlobs(BlobTpl* blob_tpl, Image* image );
-	Q_INVOKABLE QScriptValue markMatches(Image* image, QScriptValue matches, int r, int g, int b, int thickness);
-	Q_INVOKABLE QScriptValue markMatch(Image* image, Match* match, int r, int g, int b, int thickness);
+	Q_INVOKABLE QScriptValue markMatches(Image* image, QScriptValue matches, int r = 255, int g = 0, int b = 255, int thickness = 2);
+	Q_INVOKABLE QScriptValue markMatch(Image* image, Match* match, int r = 255, int g = 0, int b = 255, int thickness = 2);
 	
 private:
 	Bot* m_bot_p;
