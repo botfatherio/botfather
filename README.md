@@ -9,13 +9,14 @@ Furthermore scripts can be turned into crossplatform binaries using Botfather Bi
 ### Install third party software
 
 ##### From your repository
-- On Ubuntu 18.04: ```sudo apt install git qtdeclarative5-dev qtmultimedia5-dev qtscript5-dev qtcreator libopencv-*```
+- On Ubuntu 18.04: ```sudo apt install git qtdeclarative5-dev qtmultimedia5-dev qtscript5-dev qtcreator libqt5x11extras5-dev libopencv-*```
 - On Arch Linux: ```sudo pacman -S qtcreator xlib opencv```
 
 ##### Chromium Embedded Framework from source
 - Download CEF Linux 64bit from http://opensource.spotify.com/cefbuilds/index.html
 - Unpack the just downloaded CEF files to ```/opt/cef/``` (thats where botfather will expect CEF)
-- (There is no need to build CEF because it's a binary distribution)
+- Config the source with `cmake-gui` (2x configure, 1x generate)
+- Compile CEF with `make -j 9`. It will eventuelly fail AFTER the dll wrapper has been build. Thats okay
 
 ### Build the BotFather Helper
 - Open botfather_helper/botfather_helper.pro with QtCreator and configure the project.
