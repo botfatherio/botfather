@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
 #endif
 	
 	bool browser_initialized = false;
-	StatusDialog *status_dialog = new StatusDialog();
+	StatusDialog *status_dialog = new StatusDialog("Pcf7yLFmp9TguDgVSS6teEyZDHdgF4vc");
 	
 	// Initialize the browser and start the controlwindow only when this version is supported
 	QObject::connect(status_dialog, &StatusDialog::accepted, [&](){
