@@ -12,7 +12,7 @@ void StatusApiClient::requestStatus()
 
 QUrl StatusApiClient::getApiEndpoint()
 {
-	return QUrl("http://127.0.0.1:8000/api/v6/status/");
+	return QUrl("https://botfather.io/api/v6/status/");
 }
 
 void StatusApiClient::processJsonResponse(QJsonDocument json)
