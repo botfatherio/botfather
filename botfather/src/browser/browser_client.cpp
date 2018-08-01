@@ -60,30 +60,30 @@ void BrowserClient::closeAllBrowsers(bool force_close)
 	}
 }
 
-void BrowserClient::blockRessource(QString ressource_pattern)
+void BrowserClient::blockResource(QString resource_pattern)
 {
-	modified_ressources.append({ressource_pattern, ""});
+	modified_resources.append({resource_pattern, ""});
 }
 
-void BrowserClient::replaceRessource(QString old_ressource_pattern, QString new_ressource_url)
+void BrowserClient::replaceResource(QString old_resource_pattern, QString new_resource_url)
 {
-	modified_ressources.append({old_ressource_pattern, new_ressource_url});
+	modified_resources.append({old_resource_pattern, new_resource_url});
 }
 
-void BrowserClient::unmodifyRessource(QString ressource_pattern)
+void BrowserClient::unmodifyResource(QString resource_pattern)
 {
-	for (int i = 0; i < modified_ressources.length(); i++) {
-		QString pattern = modified_ressources[i].first;
-		if (pattern == ressource_pattern) {
-			modified_ressources.remove(i);
+	for (int i = 0; i < modified_resources.length(); i++) {
+		QString pattern = modified_resources[i].first;
+		if (pattern == resource_pattern) {
+			modified_resources.remove(i);
 			return;
 		}
 	}
 }
 
-void BrowserClient::unmodifyRessources()
+void BrowserClient::unmodifyResources()
 {
-	this->modified_ressources.clear();
+	this->modified_resources.clear();
 }
 
 bool BrowserClient::loading() const
@@ -263,19 +263,19 @@ CefRequestHandler::ReturnValue BrowserClient::OnBeforeResourceLoad(
 	
 	QString url = QString::fromStdString(request->GetURL().ToString());
 
-	for (int i = 0; i < modified_ressources.length(); i++) {
+	for (int i = 0; i < modified_resources.length(); i++) {
 		
-		QString pattern = modified_ressources[i].first;
+		QString pattern = modified_resources[i].first;
 		QRegularExpression regex(pattern);
 		
 		if (!regex.match(url).hasMatch()) {
 			continue;
 		}
 		
-		QString new_url = modified_ressources[i].second;
+		QString new_url = modified_resources[i].second;
 		if (new_url.isEmpty()) {
 			qDebug() << "blocking" << url;
-			return RV_CANCEL; // Block the ressource from loading.
+			return RV_CANCEL; // Block the resource from loading.
 		}
 		
 		qDebug() << "replacing" << url << "with" << new_url;

@@ -20,17 +20,17 @@ public:
 	// Returns screenshot of browser as QImage
 	static QImage takeScreenshot();
 	
-	// Adds a ressource to the block list. Blocked ressources are not loaded.
-	static void blockRessource(QString ressource);
+	// Adds a resource to the block list. Blocked resources are not loaded.
+	static void blockResource(QString resource);
 	
-	// Makes the browser load a custom ressource instead of the original.
-	static void replaceRessource(QString old_ressource, QString new_ressource);
+	// Makes the browser load a custom resource instead of the original.
+	static void replaceResource(QString old_resource, QString new_resource);
 	
-	// Resets block and replace settings for a ressource.
-	static void unmodifyRessource(QString ressource);
+	// Resets block and replace settings for a resource.
+	static void unmodifyResource(QString resource);
 	
-	// Resets block and replace settings for all ressources.
-	static void unmodifyRessources();
+	// Resets block and replace settings for all resources.
+	static void unmodifyResources();
 	
 	// Load the given url/website.
 	static void loadUrl(QString url);

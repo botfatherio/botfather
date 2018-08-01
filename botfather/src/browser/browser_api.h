@@ -16,10 +16,10 @@ public:
 	static void enable(Bot *bot_p, QScriptEngine* engine_p);
 	
 	Q_INVOKABLE QScriptValue takeScreenshot();
-	Q_INVOKABLE void blockRessource(QString ressource_pattern);
-	Q_INVOKABLE void replaceRessource(QString old_ressource_pattern, QString new_ressource);
-	Q_INVOKABLE void unmodifyRessource(QString ressource_pattern);
-	Q_INVOKABLE void unmodifyRessources();
+	Q_INVOKABLE void blockResource(QString resource_pattern);
+	Q_INVOKABLE void replaceResource(QString old_resource_pattern, QString new_resource);
+	Q_INVOKABLE void unmodifyResource(QString resource_pattern);
+	Q_INVOKABLE void unmodifyResources();
 	Q_INVOKABLE void loadUrl(QString url);
 	Q_INVOKABLE void beOnUrl(QString url);
 	Q_INVOKABLE QString getUrl();

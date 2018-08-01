@@ -46,22 +46,22 @@ public:
 	// when all browsers have been closed).
 	void closeAllBrowsers(bool force_close);
 	
-	// Makes the ressource no longe been loaded by the browser.
-	void blockRessource(QString ressource_pattern);
+	// Makes the resource no longe been loaded by the browser.
+	void blockResource(QString resource_pattern);
 	
-	// Causes the browser to load the new ressource instead of the original one.
-	void replaceRessource(QString old_ressource_pattern, QString new_url);
+	// Causes the browser to load the new resource instead of the original one.
+	void replaceResource(QString old_resource_pattern, QString new_url);
 	
-	// Removes any replace or block rule from a given ressource.
-	void unmodifyRessource(QString ressource_pattern);
+	// Removes any replace or block rule from a given resource.
+	void unmodifyResource(QString resource_pattern);
 	
-	// Removes all replace and block rules for all ressources.
-	void unmodifyRessources();
+	// Removes all replace and block rules for all resources.
+	void unmodifyResources();
 	
 	// Synces way of telling whether the browser loads something or not.
 	bool loading() const;
 	
-	// Call this any time you cause the browser to load a ressource.
+	// Call this any time you cause the browser to load a resource.
 	void setLoading(bool state);
 
 	// CefClient methods:
@@ -132,7 +132,7 @@ private:
 	// the original url.
 	// The second item is either empty, meaning the url should not be loaded (is blocked),
 	// or there is a second url provided, meaning the second url should be loaded instead.
-	QVector<QPair<QString, QString>> modified_ressources;
+	QVector<QPair<QString, QString>> modified_resources;
 	
 	// Include the default reference counting implementation.
 	IMPLEMENT_REFCOUNTING(BrowserClient);

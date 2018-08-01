@@ -21,7 +21,7 @@ void Bot::runScript()
 	emit this->started();
 	
 	// Reset settings eventually made by a previously run script.
-	Browser::unmodifyRessources();
+	Browser::unmodifyResources();
 	
 	// Create script engine and enable our api in it's global context.
 	QScriptEngine *script_engine = new QScriptEngine(this);

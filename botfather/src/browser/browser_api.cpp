@@ -24,24 +24,24 @@ QScriptValue BrowserAPI::takeScreenshot()
 	return m_engine_p->newQObject(new Image(umat));
 }
 
-void BrowserAPI::blockRessource(QString ressource)
+void BrowserAPI::blockResource(QString resource)
 {
-	Browser::blockRessource(ressource);
+	Browser::blockResource(resource);
 }
 
-void BrowserAPI::replaceRessource(QString old_ressource, QString new_ressource)
+void BrowserAPI::replaceResource(QString old_resource, QString new_resource)
 {
-	Browser::replaceRessource(old_ressource, new_ressource);
+	Browser::replaceResource(old_resource, new_resource);
 }
 
-void BrowserAPI::unmodifyRessource(QString ressource)
+void BrowserAPI::unmodifyResource(QString resource)
 {
-	Browser::unmodifyRessource(ressource);
+	Browser::unmodifyResource(resource);
 }
 
-void BrowserAPI::unmodifyRessources()
+void BrowserAPI::unmodifyResources()
 {
-	Browser::unmodifyRessources();
+	Browser::unmodifyResources();
 }
 
 void BrowserAPI::loadUrl(QString url)

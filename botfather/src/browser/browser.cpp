@@ -150,28 +150,28 @@ QImage Browser::takeScreenshot()
 	return BrowserClient::takeScreenshot();
 }
 
-void Browser::blockRessource(QString ressource)
+void Browser::blockResource(QString resource)
 {
 	Q_ASSERT(BrowserClient::instance());
-	BrowserClient::instance()->blockRessource(ressource);
+	BrowserClient::instance()->blockResource(resource);
 }
 
-void Browser::replaceRessource(QString old_ressource, QString new_ressource)
+void Browser::replaceResource(QString old_resource, QString new_resource)
 {
 	Q_ASSERT(BrowserClient::instance());
-	BrowserClient::instance()->replaceRessource(old_ressource, new_ressource);
+	BrowserClient::instance()->replaceResource(old_resource, new_resource);
 }
 
-void Browser::unmodifyRessource(QString ressource)
+void Browser::unmodifyResource(QString resource)
 {
 	Q_ASSERT(BrowserClient::instance());
-	BrowserClient::instance()->unmodifyRessource(ressource);
+	BrowserClient::instance()->unmodifyResource(resource);
 }
 
-void Browser::unmodifyRessources()
+void Browser::unmodifyResources()
 {
 	Q_ASSERT(BrowserClient::instance());
-	BrowserClient::instance()->unmodifyRessources();
+	BrowserClient::instance()->unmodifyResources();
 }
 
 void Browser::loadUrl(QString url)
