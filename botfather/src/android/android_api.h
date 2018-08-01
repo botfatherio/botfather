@@ -21,7 +21,7 @@ public:
 	Q_INVOKABLE QScriptValue listPackages();
 	Q_INVOKABLE bool startApp(QString package);
 	Q_INVOKABLE bool sendTap(int x, int y);
-	Q_INVOKABLE bool sendSwipe(int x1, int y1, int x2, int y2, int duration_in_ms);
+	Q_INVOKABLE bool sendSwipe(int x1, int y1, int x2, int y2, int duration_in_ms = 500);
 	Q_INVOKABLE bool sendEvent(QString device, int type, int code, int value);
 	Q_INVOKABLE bool sendKeyEvent(QString key_event_code); // https://developer.android.com/reference/android/view/KeyEvent.html
 	Q_INVOKABLE bool sendTextInput(QString text);
