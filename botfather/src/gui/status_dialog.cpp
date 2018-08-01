@@ -5,12 +5,12 @@
 #include <QProcess>
 #include "../auth/status_api_client.h"
 
-StatusDialog::StatusDialog(QWidget *parent)
+StatusDialog::StatusDialog(QString version_secret, QWidget *parent)
 	: QDialog(parent)
 	, ui(new Ui::StatusDialog)
 {
 	ui->setupUi(this);
-	status_api_client = new StatusApiClient("botfather", QCoreApplication::applicationVersion(), "supersecret");
+	status_api_client = new StatusApiClient("botfather", QCoreApplication::applicationVersion(), version_secret);
 	connect(status_api_client, &StatusApiClient::networkError, this, &StatusDialog::handleNetworkError);
 	connect(status_api_client, &StatusApiClient::restApiError, this, &StatusDialog::handleRestApiError);
 	connect(status_api_client, &StatusApiClient::integrityError, this, &StatusDialog::handleIntegrityError);

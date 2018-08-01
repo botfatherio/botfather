@@ -16,7 +16,7 @@ class StatusDialog : public QDialog
 	Q_OBJECT
 	
 public:
-	explicit StatusDialog(QWidget *parent = nullptr);
+	explicit StatusDialog(QString version_secret, QWidget *parent = nullptr);
 	~StatusDialog();
 	
 public slots:
