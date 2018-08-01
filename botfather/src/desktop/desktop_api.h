@@ -37,7 +37,7 @@ public:
 	
 	Q_INVOKABLE bool findAndClick(Image* tpl, double threshold = 0.8, int button = 1);
 	
-	Q_INVOKABLE QScriptValue findMatches(Image* tpl, double threshold = 0.8, int max_matches = 7);
+	Q_INVOKABLE QScriptValue findMatches(Image* tpl, double threshold = 0.8, int max_matches = -1);
 	Q_INVOKABLE QScriptValue findMatch(Image* tpl, double threshold = 0.8);
 	
 private:

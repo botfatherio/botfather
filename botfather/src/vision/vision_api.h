@@ -27,10 +27,10 @@ public:
 	Q_INVOKABLE QScriptValue isolateColor(Image* image, HSVColor* min_hsv, HSVColor* max_hsv, bool keep_color = false);
 	Q_INVOKABLE bool sameImages(Image* image_1, Image* image_2);
 	
-	Q_INVOKABLE QScriptValue findMaskedMatches(Image* image, Image* tpl, Image* mask, double threshold, int max_matches);
-	Q_INVOKABLE QScriptValue findMaskedMatch(Image* image, Image* tpl, Image* mask, double threshold);
+	Q_INVOKABLE QScriptValue findMaskedMatches(Image* image, Image* tpl, Image* mask, double threshold = 0.8, int max_matches = -1);
+	Q_INVOKABLE QScriptValue findMaskedMatch(Image* image, Image* tpl, Image* mask, double threshold = 0.8);
 	
-	Q_INVOKABLE QScriptValue findMatches(Image* image, Image* tpl, double threshold = 0.8, int max_matches = 7);
+	Q_INVOKABLE QScriptValue findMatches(Image* image, Image* tpl, double threshold = 0.8, int max_matches = -1);
 	Q_INVOKABLE QScriptValue findMatch(Image* image, Image* tpl, double threshold = 0.8);
 	
 	Q_INVOKABLE QScriptValue findBlobs(BlobTpl* blob_tpl, Image* image );

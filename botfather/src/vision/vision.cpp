@@ -153,7 +153,7 @@ QVector<Match*> Vision::findMaskedMatches(cv::UMat image, cv::UMat tpl, cv::UMat
 	//cv::namedWindow("Result", cv::WINDOW_AUTOSIZE);
 	//cv::imshow("Result", result);
 	
-	while (matches.size() < max_matches){
+	while (matches.size() < max_matches || max_matches == -1){
 		
 		// Find the lightest spot aka the best matching location
 		cv::minMaxLoc(result, &min_val, &max_val, &min_loc, &max_loc, cv::Mat());
