@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 			"Botfathers Desktop API uses the uinput linux kernel module to generate keyboard and mouse input events. "
 			"Thus botfather requires write permission on the '/dev/uinput' file.\n"
 			"On some distributions that file is writable by default. On your machine it's currently not writable. "
-			"The command 'chmod 660 /dev/uinput' makes it writable.\n"
+			"The command 'chmod 662 /dev/uinput' makes it writable.\n"
 			"When 'pkexec' is installed on your system botfather can execute the command for you. "
 			"Otherwise you have to execute it manually from a command line.\n"
 			"If you don't want to run scripts controlling your desktop anyway, you don't have to make that file writable."
@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
 		if (pkexec_path.isEmpty()) {
 			box->setText(
 				"Botfather requires write permissions on '/dev/uinput' to fake keyboard and mouse input events.\n"
-				"Please run 'sudo chmod 660 /dev/uinput' to grant the required permissions."
+				"Please run 'sudo chmod 662 /dev/uinput' to grant the required permissions."
 			);
 		} else {
 			box->setText(
@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
 		
 		if (box->exec() == QMessageBox::Ok && !pkexec_path.isEmpty()) {
 			QProcess *p = new QProcess;
-			p->start(pkexec_path, {"chmod", "660", "/dev/uinput"});
+			p->start(pkexec_path, {"chmod", "662", "/dev/uinput"});
 			p->waitForFinished();
 		}
 	}
