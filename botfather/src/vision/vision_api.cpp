@@ -155,7 +155,7 @@ QScriptValue VisionAPI::findMatches(Image *image, Image *tpl, double threshold, 
 	if (image->getUMat().rows <= tpl->getUMat().rows || image->getUMat().cols <= tpl->getUMat().cols) {
 		return m_engine_p->currentContext()->throwError("The template must be smaller than the image.");
 	}
-	// Dont call findMaskedMatches here instead to save some checks, it requires a non empty mask.
+	// NOTE: Dont call findMaskedMatches here instead to save some checks, it requires a non empty mask.
 	QVector<Match*> matches = Vision::findMatches(image->getUMat(), tpl->getUMat(), threshold, max_matches);
 	return qScriptValueFromSequence(m_engine_p, matches);
 }
@@ -171,8 +171,9 @@ QScriptValue VisionAPI::findMatch(Image *image, Image *tpl, double threshold)
 	if (image->getUMat().rows <= tpl->getUMat().rows || image->getUMat().cols <= tpl->getUMat().cols) {
 		return m_engine_p->currentContext()->throwError("The template must be smaller than the image.");
 	}
-	// Dont call findMaskedMatch here instead to save some checks, it requires a non empty mask.
-	return VisionAPI::findMaskedMatch(image, tpl, new Image(), threshold);
+	// NOTE: Dont call findMaskedMatch here instead to save some checks, it requires a non empty mask.
+	Match *match = Vision::findMatch(image->getUMat(), tpl->getUMat(), threshold);
+	return m_engine_p->newQObject(match);
 }
 
 QScriptValue VisionAPI::findBlobs(BlobTpl *blob_tpl, Image *image)
