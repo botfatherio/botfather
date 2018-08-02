@@ -146,8 +146,8 @@ bool Desktop::getCursorPosition(int *x, int *y)
 {
 	POINT cursor_position;
 	if (GetCursorPos(&cursor_position)) {
-		x = cursor_position.x;
-		y = curosr_position.y;
+        x = (int *)cursor_position.x;
+        y = (int *)cursor_position.y;
 		return true;
 	}
 	return false;
