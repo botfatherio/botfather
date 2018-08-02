@@ -14,7 +14,7 @@ win32 {
     # Disables "unreferenced formal parameter" warning on windows
     QMAKE_CXXFLAGS_WARN_ON -= -w34100
 
-    CEF_DIR = C:\CEF\3.3202.1682
+    CEF_DIR = C:\CEF\3.3202.1694
     INCLUDEPATH += $${CEF_DIR}
 
     CONFIG(release, debug|release):LIBS += -L$${CEF_DIR}\libcef_dll_wrapper\Release -llibcef_dll_wrapper
