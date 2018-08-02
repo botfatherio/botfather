@@ -17,6 +17,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # Disable output from qDebug() like mecros in release builds.
 CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 
+CEF_VERSION = 3.3202.1694
+
 unix {
     LINUX_CEF_DIR = /opt/cef
 
@@ -59,14 +61,17 @@ win32 {
     # Disables "unreferenced formal parameter" warning on windows
     QMAKE_CXXFLAGS_WARN_ON -= -w34100
 
+    # The seconds \ is required cause qts syntac sucks
+    WIN_CEF_DIR =  C:\CEF\\$${CEF_VERSION}
+
     INCLUDEPATH += C:\OPENCV\3.4.0\build\include
-    INCLUDEPATH += C:\CEF\3.3202.1682
+    INCLUDEPATH += $$WIN_CEF_DIR
 
-    CONFIG(release, debug|release):LIBS += -LC:\CEF\3.3202.1682\libcef_dll_wrapper\Release -llibcef_dll_wrapper
-    else:CONFIG(debug, debug|release):LIBS += -LC:\CEF\3.3202.1682\libcef_dll_wrapper\Debug -llibcef_dll_wrapper
+    CONFIG(release, debug|release):LIBS += -L$$WIN_CEF_DIR\libcef_dll_wrapper\Release -llibcef_dll_wrapper
+    else:CONFIG(debug, debug|release):LIBS += -L$$WIN_CEF_DIR\libcef_dll_wrapper\Debug -llibcef_dll_wrapper
 
-    CONFIG(release, debug|release):LIBS += -LC:\CEF\3.3202.1682\Release -llibcef
-    else: CONFIG(debug, debug|release):LIBS += -LC:\CEF\3.3202.1682\Debug -llibcef
+    CONFIG(release, debug|release):LIBS += -L$$WIN_CEF_DIR\Release -llibcef
+    else: CONFIG(debug, debug|release):LIBS += -L$$WIN_CEF_DIR\Debug -llibcef
 
     CONFIG(release, debug|release):LIBS += -LC:\OPENCV\3.4.0\build\lib\Release -lopencv_world340
     else:CONFIG(debug, debug|release):LIBS += -LC:\OPENCV\3.4.0\build\lib\Debug -lopencv_world340d
@@ -81,8 +86,6 @@ win32 {
     WINRT_MANIFEST = ./src/res/compatibility.manifest
 
     # Copy required dlls and CEF ressources
-    CEF_DIR = C:/CEF/3.3202.1682
-
     CONFIG(release, debug|release):CEF_EXTRA_DIR = $${CEF_DIR}/Release/*
     else:CONFIG(debug, debug|release):CEF_EXTRA_DIR = $${CEF_DIR}/Debug/*
 
