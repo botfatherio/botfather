@@ -18,7 +18,7 @@ void VisionAPI::enable(Bot* bot_p, QScriptEngine* engine_p)
 	HSVColorFactory::enable(engine_p);
 	BlobTplFactory::enable(engine_p);
 	
-	QScriptValue vision_obj = engine_p->newQObject(new VisionAPI(bot_p, engine_p));
+	QScriptValue vision_obj = engine_p->newQObject(new VisionAPI(bot_p, engine_p), QScriptEngine::AutoOwnership);
 	engine_p->globalObject().setProperty("Vision", vision_obj);
 }
 
@@ -39,7 +39,7 @@ void VisionAPI::saveImage(Image* image, QString path)
 QScriptValue VisionAPI::loadImage(QString path) {
 	path = this->m_bot_p->normalisePath(path);
 	if (this->m_bot_p->fileExists(path)){
-		return m_engine_p->newQObject(new Image(Vision::loadImage(path)));
+		return m_engine_p->newQObject(new Image(Vision::loadImage(path)), QScriptEngine::ScriptOwnership);
 	}
 	return m_engine_p->currentContext()->throwError("Invalid path.");
 }
@@ -57,7 +57,7 @@ QScriptValue VisionAPI::cropImage(Image* image, int x_offset, int y_offset, int 
 	}
 	QRect region(x_offset, y_offset, width, height);
 	cv::UMat cropped_image = Vision::cropImage(image->getUMat(), region);
-	return m_engine_p->newQObject(new Image(cropped_image));
+	return m_engine_p->newQObject(new Image(cropped_image), QScriptEngine::ScriptOwnership);
 }
 
 QScriptValue VisionAPI::grayImage(Image *image)
@@ -66,7 +66,7 @@ QScriptValue VisionAPI::grayImage(Image *image)
 		return m_engine_p->currentContext()->throwError("Invalid or empty image.");
 	}
 	cv::UMat gray_image = Vision::grayImage(image->getUMat());
-	return m_engine_p->newQObject(new Image(gray_image));
+	return m_engine_p->newQObject(new Image(gray_image), QScriptEngine::ScriptOwnership);
 }
 
 QScriptValue VisionAPI::resizeImage(Image *image, int new_width, int new_height)
@@ -78,7 +78,7 @@ QScriptValue VisionAPI::resizeImage(Image *image, int new_width, int new_height)
 		return m_engine_p->currentContext()->throwError("Width and height must be at least 1.");
 	}
 	cv::UMat resized_image = Vision::resizeImage(image->getUMat(), new_width, new_height);
-	return m_engine_p->newQObject(new Image(resized_image));
+	return m_engine_p->newQObject(new Image(resized_image), QScriptEngine::ScriptOwnership);
 }
 
 QScriptValue VisionAPI::isolateColor(Image *image, HSVColor* min_hsv, HSVColor* max_hsv, bool keep_color)
@@ -90,7 +90,7 @@ QScriptValue VisionAPI::isolateColor(Image *image, HSVColor* min_hsv, HSVColor* 
 		m_engine_p->currentContext()->throwError("Invalid HSV color.");
 	}
 	cv::UMat result_image = Vision::isolateColor(image->getUMat(), min_hsv->getScalar(), max_hsv->getScalar(), keep_color);
-	return m_engine_p->newQObject(new Image(result_image));
+	return m_engine_p->newQObject(new Image(result_image), QScriptEngine::ScriptOwnership);
 }
 
 bool VisionAPI::sameImages(Image* image_1, Image* image_2)
@@ -141,7 +141,7 @@ QScriptValue VisionAPI::findMaskedMatch(Image *image, Image *tpl, Image *mask, d
 		return m_engine_p->currentContext()->throwError("Mask and template must have the same size.");
 	}
 	Match* match = Vision::findMaskedMatch(image->getUMat(), tpl->getUMat(), mask->getUMat(), threshold);
-	return m_engine_p->newQObject(match);
+	return m_engine_p->newQObject(match, QScriptEngine::ScriptOwnership);
 }
 
 QScriptValue VisionAPI::findMatches(Image *image, Image *tpl, double threshold, int max_matches)
@@ -173,7 +173,7 @@ QScriptValue VisionAPI::findMatch(Image *image, Image *tpl, double threshold)
 	}
 	// NOTE: Dont call findMaskedMatch here instead to save some checks, it requires a non empty mask.
 	Match *match = Vision::findMatch(image->getUMat(), tpl->getUMat(), threshold);
-	return m_engine_p->newQObject(match);
+	return m_engine_p->newQObject(match, QScriptEngine::ScriptOwnership);
 }
 
 QScriptValue VisionAPI::findBlobs(BlobTpl *blob_tpl, Image *image)
@@ -197,7 +197,8 @@ QScriptValue VisionAPI::findBlobs(BlobTpl *blob_tpl, Image *image)
 		int left = static_cast<int>(kp.pt.x + (kp.size / 2));
 		int top = static_cast<int>(kp.pt.y + (kp.size / 2));
 		
-		QScriptValue js_match = m_engine_p->newQObject(new Match(1, left, top, static_cast<int>(kp.size), static_cast<int>(kp.size)));
+		Match *match = new Match(1, left, top, static_cast<int>(kp.size), static_cast<int>(kp.size));
+		QScriptValue js_match = m_engine_p->newQObject(match, QScriptEngine::ScriptOwnership);
 		matches.setProperty(static_cast<quint32>(number_of_matches), js_match);
 		number_of_matches++;
 	}
@@ -218,7 +219,7 @@ QScriptValue VisionAPI::markMatches(Image *image, QScriptValue matches, int r, i
 	qScriptValueToSequence(matches, native_matches);
 	
 	cv::UMat umat = Vision::markMatches(image->getUMat(), native_matches, cv::Scalar(b, g, r), thickness);
-	return m_engine_p->newQObject(new Image(umat));
+	return m_engine_p->newQObject(new Image(umat), QScriptEngine::ScriptOwnership);
 }
 
 QScriptValue VisionAPI::markMatch(Image *image, Match *match, int r, int g, int b, int thickness)
@@ -230,5 +231,5 @@ QScriptValue VisionAPI::markMatch(Image *image, Match *match, int r, int g, int 
 		return m_engine_p->currentContext()->throwError("Invalid match.");
 	}
 	cv::UMat result_image = Vision::markMatch(image->getUMat(), match, cv::Scalar(b, g, r), thickness);
-	return m_engine_p->newQObject(new Image(result_image));
+	return m_engine_p->newQObject(new Image(result_image), QScriptEngine::ScriptOwnership);
 }

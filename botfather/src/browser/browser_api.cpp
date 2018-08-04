@@ -13,7 +13,7 @@ BrowserAPI::BrowserAPI(Bot *bot_p, QScriptEngine *engine_p) : QObject(bot_p),  m
 
 void BrowserAPI::enable(Bot *bot_p, QScriptEngine *engine_p)
 {
-	QScriptValue vision_obj = engine_p->newQObject(new BrowserAPI(bot_p, engine_p));
+	QScriptValue vision_obj = engine_p->newQObject(new BrowserAPI(bot_p, engine_p), QScriptEngine::AutoOwnership);
 	engine_p->globalObject().setProperty("Browser", vision_obj);
 }
 
@@ -21,7 +21,7 @@ QScriptValue BrowserAPI::takeScreenshot()
 {
 	QImage qimage = Browser::takeScreenshot();
 	cv::UMat umat = Vision::qimageToBGRUmat(qimage).clone();
-	return m_engine_p->newQObject(new Image(umat));
+	return m_engine_p->newQObject(new Image(umat), QScriptEngine::ScriptOwnership);
 }
 
 void BrowserAPI::blockResource(QString resource)

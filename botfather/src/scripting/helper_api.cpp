@@ -19,7 +19,7 @@ void HelperAPI::enable(Bot* bot_p, BotThread* bot_thread_p, QScriptEngine* engin
 {
 	ScriptPointFactory::enable(engine_p);
 	
-	QScriptValue vision_obj = engine_p->newQObject(new HelperAPI(bot_p, bot_thread_p, engine_p));
+	QScriptValue vision_obj = engine_p->newQObject(new HelperAPI(bot_p, bot_thread_p, engine_p), QScriptEngine::AutoOwnership);
 	engine_p->globalObject().setProperty("Helper", vision_obj);
 }
 

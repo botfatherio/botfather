@@ -9,7 +9,7 @@ Image::Image(cv::UMat umat)
 
 QScriptValue Image::toScriptValue(QScriptEngine *engine, Image* const &in)
 {
-	return engine->newQObject(in);
+	return engine->newQObject(in, QScriptEngine::AutoOwnership);
 }
 
 void Image::fromScriptValue(const QScriptValue &object, Image* &out)

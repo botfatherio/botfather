@@ -36,7 +36,7 @@ BlobTpl::BlobTpl(
 
 QScriptValue BlobTpl::toScriptValue(QScriptEngine *engine, BlobTpl* const &in)
 {
-	return engine->newQObject(in);
+	return engine->newQObject(in, QScriptEngine::AutoOwnership);
 }
 
 void BlobTpl::fromScriptValue(const QScriptValue &object, BlobTpl* &out)

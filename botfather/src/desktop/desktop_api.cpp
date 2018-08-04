@@ -16,7 +16,7 @@ DesktopAPI::DesktopAPI(Bot *bot_p, QScriptEngine *engine_p) : QObject(bot_p), m_
 
 void DesktopAPI::enable(Bot *bot_p, QScriptEngine *engine_p)
 {
-	QScriptValue vision_obj = engine_p->newQObject(new DesktopAPI(bot_p, engine_p));
+	QScriptValue vision_obj = engine_p->newQObject(new DesktopAPI(bot_p, engine_p), QScriptEngine::AutoOwnership);
 	engine_p->globalObject().setProperty("Desktop", vision_obj);
 }
 
@@ -26,7 +26,7 @@ QScriptValue DesktopAPI::takeScreenshot()
 	if (!desktop->takeScreenshot(screenshot)) {
 		// Taking the screenshot failed.
 	}
-	return m_engine_p->newQObject(new Image(screenshot));
+	return m_engine_p->newQObject(new Image(screenshot), QScriptEngine::ScriptOwnership);
 }
 
 int DesktopAPI::getWidth()
@@ -95,7 +95,7 @@ QScriptValue DesktopAPI::getCursorPosition()
 	if (!desktop->getCursorPosition(&x, &y)) {
 		// Getting the cursor position failed.
 	}
-	return m_engine_p->newQObject(new ScriptPoint(x, y));
+	return m_engine_p->newQObject(new ScriptPoint(x, y), QScriptEngine::ScriptOwnership);
 }
 
 bool DesktopAPI::findAndClick(Image* tpl, double threshold, int button)

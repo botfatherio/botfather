@@ -17,7 +17,7 @@ AndroidAPI::AndroidAPI(Bot* bot_p, QScriptEngine* engine_p) : QObject(bot_p), m_
 
 void AndroidAPI::enable(Bot* bot_p, QScriptEngine *engine_p)
 {
-	QScriptValue vision_obj = engine_p->newQObject(new AndroidAPI(bot_p, engine_p));
+	QScriptValue vision_obj = engine_p->newQObject(new AndroidAPI(bot_p, engine_p), QScriptEngine::AutoOwnership);
 	engine_p->globalObject().setProperty("Android", vision_obj);
 }
 
@@ -83,7 +83,7 @@ QScriptValue AndroidAPI::takeScreenshot()
 		// Taking screenshot failed. TODO: print system debug info in some later version...
 	}
 	cv::UMat umat = Vision::qimageToBGRUmat(qimage).clone();
-	return m_engine_p->newQObject(new Image(umat));
+	return m_engine_p->newQObject(new Image(umat), QScriptEngine::ScriptOwnership);
 }
 
 int AndroidAPI::getDeviceWidth()
