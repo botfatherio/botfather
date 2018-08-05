@@ -18,7 +18,7 @@ QScriptValue ScriptPointFactory::create(QScriptContext *context, QScriptEngine *
 	
 	// A ScriptPoint can either be constructed providing x and y or no parameters.
 	if (context->argumentCount() == 2) {
-		if (!context->argument(0).isNumber() || context->argument(1).isNumber()){
+		if (!context->argument(0).isNumber() || !context->argument(1).isNumber()){
 			return context->throwError("Both x and y must be numbers.");
 		}
 		x = static_cast<int>(context->argument(0).toNumber());
