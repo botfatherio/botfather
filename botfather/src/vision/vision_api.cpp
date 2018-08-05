@@ -18,7 +18,7 @@ void VisionAPI::enable(Bot* bot_p, QScriptEngine* engine_p)
 	HSVColorFactory::enable(engine_p);
 	BlobTplFactory::enable(engine_p);
 	
-	QScriptValue vision_obj = engine_p->newQObject(new VisionAPI(bot_p, engine_p), QScriptEngine::AutoOwnership);
+	QScriptValue vision_obj = engine_p->newQObject(new VisionAPI(bot_p, engine_p), QScriptEngine::ScriptOwnership);
 	engine_p->globalObject().setProperty("Vision", vision_obj);
 }
 

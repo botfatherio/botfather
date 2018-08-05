@@ -12,7 +12,7 @@ ScriptPoint::ScriptPoint(int x, int y) : m_x(x), m_y(y)
 
 QScriptValue ScriptPoint::toScriptValue(QScriptEngine *engine, ScriptPoint * const &in)
 {
-	return engine->newQObject(in, QScriptEngine::AutoOwnership);
+	return engine->newQObject(in, QScriptEngine::ScriptOwnership);
 }
 
 void ScriptPoint::fromScriptValue(const QScriptValue &object, ScriptPoint *&out)

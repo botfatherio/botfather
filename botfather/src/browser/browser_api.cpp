@@ -13,7 +13,7 @@ BrowserAPI::BrowserAPI(Bot *bot_p, QScriptEngine *engine_p) : QObject(bot_p),  m
 
 void BrowserAPI::enable(Bot *bot_p, QScriptEngine *engine_p)
 {
-	QScriptValue vision_obj = engine_p->newQObject(new BrowserAPI(bot_p, engine_p), QScriptEngine::AutoOwnership);
+	QScriptValue vision_obj = engine_p->newQObject(new BrowserAPI(bot_p, engine_p), QScriptEngine::ScriptOwnership);
 	engine_p->globalObject().setProperty("Browser", vision_obj);
 }
 

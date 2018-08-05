@@ -9,7 +9,7 @@ HSVColor::HSVColor(int h, int s, int v)
 
 QScriptValue HSVColor::toScriptValue(QScriptEngine *engine, HSVColor* const &in)
 {
-	return engine->newQObject(in, QScriptEngine::AutoOwnership);
+	return engine->newQObject(in, QScriptEngine::ScriptOwnership);
 }
 
 void HSVColor::fromScriptValue(const QScriptValue &object, HSVColor* &out)

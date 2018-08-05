@@ -16,7 +16,7 @@ DesktopAPI::DesktopAPI(Bot *bot_p, QScriptEngine *engine_p) : QObject(bot_p), m_
 
 void DesktopAPI::enable(Bot *bot_p, QScriptEngine *engine_p)
 {
-	QScriptValue vision_obj = engine_p->newQObject(new DesktopAPI(bot_p, engine_p), QScriptEngine::AutoOwnership);
+	QScriptValue vision_obj = engine_p->newQObject(new DesktopAPI(bot_p, engine_p), QScriptEngine::ScriptOwnership);
 	engine_p->globalObject().setProperty("Desktop", vision_obj);
 }
 

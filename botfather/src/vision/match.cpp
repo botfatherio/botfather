@@ -18,7 +18,7 @@ Match::Match(double score, int left, int top, int width, int height)
 
 QScriptValue Match::toScriptValue(QScriptEngine *engine, Match* const &in)
 {
-	return engine->newQObject(in, QScriptEngine::AutoOwnership);
+	return engine->newQObject(in, QScriptEngine::ScriptOwnership);
 }
 
 void Match::fromScriptValue(const QScriptValue &object, Match* &out)
