@@ -23,6 +23,10 @@ win32 {
     CONFIG(release, debug|release):LIBS += -L$${CEF_DIR}\Release -llibcef
     else: CONFIG(debug, debug|release):LIBS += -L$${CEF_DIR}\Debug -llibcef
 
+    # Build static
+    QMAKE_CXXFLAGS_DEBUG += /MTd
+    QMAKE_CXXFLAGS_RELEASE += /MT
+
     # Use the compatibility manifest required by CEF
     WINRT_MANIFEST = ./src/compatibility.manifest
 }
@@ -40,6 +44,9 @@ unix {
     QMAKE_CXXFLAGS_WARN_OFF -= -Wunused-parameter
     QMAKE_CFLAGS = -Wno-unused-parameter
     QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
+
+    # Build static
+    QMAKE_CXXFLAGS += -static
 
     # Define where to look for extra libraries
     QMAKE_RPATHDIR += ./
