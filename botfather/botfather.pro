@@ -17,7 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # Disable output from qDebug() like mecros in release builds.
 CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 
-CEF_VERSION = 3.3202.1694
+CEF_VERSION = 3.3325.1758
 
 unix {
     LINUX_CEF_DIR = /opt/cef/$${CEF_VERSION}
