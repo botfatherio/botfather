@@ -1,6 +1,8 @@
 #include "desktop.h"
 #include <windows.h>
 #include <QSize>
+#include <QPixmap>
+#include <QtWin>
 #include "keymap.h"
 
 class DesktopPrivate {
@@ -43,9 +45,7 @@ Desktop::~Desktop()
 	
 }
 
-#include <opencv2/highgui.hpp>
-
-bool Desktop::takeScreenshot(cv::Mat &screenshot)
+QImage Desktop::takeScreenshot()
 {
     HWND hwnd = GetDesktopWindow();
     HDC hwindow_dc = GetDC(hwnd);
@@ -57,7 +57,6 @@ bool Desktop::takeScreenshot(cv::Mat &screenshot)
 
     int window_width = window_size.right;
     int window_height = window_size.bottom;
-    cv::Mat mat(window_height, window_width, CV_8UC4);
 
     // Create a bitmap
     HBITMAP window_hbitmap = CreateCompatibleBitmap(hwindow_dc, window_width, window_height);
@@ -76,18 +75,15 @@ bool Desktop::takeScreenshot(cv::Mat &screenshot)
 
     SelectObject(hwindow_compatible_dc, window_hbitmap);
     StretchBlt(hwindow_compatible_dc, 0, 0, window_width, window_height, hwindow_dc, 0, 0, window_width, window_height, SRCCOPY);
-    GetDIBits(hwindow_compatible_dc, window_hbitmap, 0, window_height, mat.data, (BITMAPINFO *)&bitmap_info_header, DIB_RGB_COLORS);
+
+    QImage image(QtWin::fromHBITMAP(window_hbitmap).toImage());
+    image = image.convertToFormat(QImage::Format_RGB888);
 
     // Free objects to prevent memory leaks.
     DeleteObject(window_hbitmap);
     DeleteDC(hwindow_compatible_dc);
     DeleteDC(hwindow_dc);
-
-    // Remove alpha channel
-    cv::cvtColor(mat, mat, cv::COLOR_BGRA2BGR);
-
-    screenshot = mat;
-    return true;
+    return image;
 }
 
 int Desktop::getWidth()
