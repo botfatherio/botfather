@@ -76,6 +76,9 @@ Furthermore scripts can be turned into crossplatform binaries using Botfather Bi
 - Now copy the contents of ```/CEF/your_version_here/Resources/``` and ```/CEF/your_version_here/Debug/``` or ```/CEF/your_version_here/Release/``` to the build folder.
 - Building the BotFather should work now as expected.
 
+### Deploy Botfather
+- Get the latest precompiled openssl dlls from https://indy.fulgan.com/SSL/ (scroll down) and ship them with botfather
+
 ------
 ## Troubleshooting / FAQ
 ##### LaunchProcess: failed to execvp: ./botfather_helper
