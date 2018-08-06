@@ -56,6 +56,7 @@ unix {
 }
 
 win32 {
+    QT += winextras
     DEFINES += _UNICODE WIN64 QT_DLL QT_WIDGETS_LIB QT_QML_LIB QT_NETWORK_LIB
 
     # Disables "unreferenced formal parameter" warning on windows
