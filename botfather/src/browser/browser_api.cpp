@@ -20,8 +20,7 @@ void BrowserAPI::enable(Bot *bot_p, QScriptEngine *engine_p)
 QScriptValue BrowserAPI::takeScreenshot()
 {
 	QImage qimage = Browser::takeScreenshot();
-	cv::UMat umat = Vision::qimageToBGRUmat(qimage).clone();
-	return m_engine_p->newQObject(new Image(umat), QScriptEngine::ScriptOwnership);
+	return m_engine_p->newQObject(new Image(qimage), QScriptEngine::ScriptOwnership);
 }
 
 void BrowserAPI::blockResource(QString resource)
@@ -184,15 +183,24 @@ void BrowserAPI::scrollWheel(int x, int y, int delta_x, int delta_y)
 
 bool BrowserAPI::findAndClick(Image* tpl, double threshold, int button)
 {
-	cv::UMat screenshot = Vision::qimageToBGRUmat(Browser::takeScreenshot()).clone();
+	QImage screenshot = Browser::takeScreenshot();
 	
-	if (screenshot.empty() || !tpl) {
+	if (screenshot.isNull() || !tpl) {
 		return false;
 	}
-	if (screenshot.cols <= tpl->getWidth() || screenshot.rows <= tpl->getHeight()) {
+	if (screenshot.width() <= tpl->getWidth() || screenshot.height() <= tpl->getHeight()) {
 		return false;
 	}
-	Match *match = Vision::findMatch(screenshot, tpl->getUMat(), threshold);
+	
+	cv::Mat ref_mat = Vision::qimageToBGRMat(screenshot);
+	cv::Mat tpl_mat = Vision::qimageToBGRMat(tpl->getQImage());
+	
+	Match *match = Vision::findMatch(ref_mat, tpl_mat, threshold);
+	
+	ref_mat.release();
+	tpl_mat.release();
+	
+	
 	switch (button) {
 	case 1:
 		leftClick(match->getX(), match->getY());

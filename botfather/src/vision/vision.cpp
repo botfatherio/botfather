@@ -5,45 +5,32 @@
 #include "match.h"
 
 // static
-void Vision::saveImage(cv::UMat image, QString path)
-{
-	cv::Mat mat = image.getMat(cv::ACCESS_READ);
-	cv::imwrite(path.toStdString(), mat);
-}
-
-// static
-cv::UMat Vision::loadImage(QString path)
-{
-	return cv::imread(path.toStdString(), cv::IMREAD_COLOR).getUMat(cv::ACCESS_FAST);
-}
-
-// static
-cv::UMat Vision::cropImage(cv::UMat image, QRect region)
+cv::Mat Vision::cropImage(cv::Mat image, QRect region)
 {
 	cv::Rect target_region(region.x(), region.y(), region.width(), region.height());
 	return image(target_region);
 }
 
 // static
-cv::UMat Vision::grayImage(cv::UMat image)
+cv::Mat Vision::grayImage(cv::Mat image)
 {
-	cv::UMat gray_image;
+	cv::Mat gray_image;
 	cv::cvtColor(image, gray_image, CV_BGR2GRAY);
 	return gray_image;
 }
 
 // static
-cv::UMat Vision::resizeImage(cv::UMat image, int new_width, int new_height)
+cv::Mat Vision::resizeImage(cv::Mat image, int new_width, int new_height)
 {
-	cv::UMat resized_image;
+	cv::Mat resized_image;
 	cv::resize(image, resized_image, cv::Size(new_width, new_height));
 	return resized_image;
 }
 
 // static
-cv::UMat Vision::isolateColor(cv::UMat image, cv::Scalar min_hsv, cv::Scalar max_hsv, bool keep_color)
+cv::Mat Vision::isolateColor(cv::Mat image, cv::Scalar min_hsv, cv::Scalar max_hsv, bool keep_color)
 {
-	cv::UMat hsv_image, bgr_result_image;
+	cv::Mat hsv_image, bgr_result_image;
 	cv::Mat threshold_image;
 	
 	// Convert from BGR to HSV, because cv::inRange only works with HSV mats.
@@ -68,7 +55,7 @@ cv::UMat Vision::isolateColor(cv::UMat image, cv::Scalar min_hsv, cv::Scalar max
 }
 
 // static
-bool Vision::sameImages(cv::UMat image_1, cv::UMat image_2)
+bool Vision::sameImages(cv::Mat image_1, cv::Mat image_2)
 {
 	// Tread two empty images as identical
 	if (image_1.empty() && image_2.empty()) {
@@ -81,12 +68,12 @@ bool Vision::sameImages(cv::UMat image_1, cv::UMat image_2)
 	}
 	
 	// Make both images grayscale (for better performance)
-	cv::UMat image_1_gray, image_2_gray;
+	cv::Mat image_1_gray, image_2_gray;
 	cv::cvtColor(image_1, image_1_gray, CV_BGR2GRAY);
 	cv::cvtColor(image_2, image_2_gray, CV_BGR2GRAY);
 	
 	// Then compare them
-	cv::UMat diff;
+	cv::Mat diff;
 	cv::compare(image_1_gray, image_2_gray, diff, cv::CMP_NE);
 	int non_zero = cv::countNonZero(diff);
 	
@@ -94,7 +81,7 @@ bool Vision::sameImages(cv::UMat image_1, cv::UMat image_2)
 	return non_zero == 0;
 }
 
-QVector<Match*> Vision::findMaskedMatches(cv::UMat image, cv::UMat tpl, cv::UMat mask, double threshold, int max_matches)
+QVector<Match*> Vision::findMaskedMatches(cv::Mat image, cv::Mat tpl, cv::Mat mask, double threshold, int max_matches)
 {
 	// Note: Only CV_TM_SQDIFF and CV_TM_CCORR_NORMED accept maskes.
 	static const int match_method = CV_TM_CCORR_NORMED;
@@ -201,7 +188,7 @@ QVector<Match*> Vision::findMaskedMatches(cv::UMat image, cv::UMat tpl, cv::UMat
 }
 
 
-Match* Vision::findMaskedMatch(cv::UMat image, cv::UMat tpl, cv::UMat mask, double threshold)
+Match* Vision::findMaskedMatch(cv::Mat image, cv::Mat tpl, cv::Mat mask, double threshold)
 {
 	QVector<Match*> matches = Vision::findMaskedMatches(image, tpl, mask, threshold, 1);
 	if (!matches.isEmpty()) {
@@ -210,20 +197,20 @@ Match* Vision::findMaskedMatch(cv::UMat image, cv::UMat tpl, cv::UMat mask, doub
 	return new Match();
 }
 
-QVector<Match*> Vision::findMatches(cv::UMat image, cv::UMat tpl, double threshold, int max_matches)
+QVector<Match*> Vision::findMatches(cv::Mat image, cv::Mat tpl, double threshold, int max_matches)
 {
-	return Vision::findMaskedMatches(image, tpl, cv::UMat(), threshold, max_matches);
+	return Vision::findMaskedMatches(image, tpl, cv::Mat(), threshold, max_matches);
 }
 
-Match* Vision::findMatch(cv::UMat image, cv::UMat tpl, double threshold)
+Match* Vision::findMatch(cv::Mat image, cv::Mat tpl, double threshold)
 {
-	return Vision::findMaskedMatch(image, tpl, cv::UMat(), threshold);
+	return Vision::findMaskedMatch(image, tpl, cv::Mat(), threshold);
 }
 
-QVector<cv::KeyPoint> Vision::findBlobs(BlobTpl *blob_tpl, cv::UMat image)
+QVector<cv::KeyPoint> Vision::findBlobs(BlobTpl *blob_tpl, cv::Mat image)
 {
 	// Make pixels in the color of our intereset white and everything else black.
-	cv::UMat threshold_umat = Vision::isolateColor(
+	cv::Mat threshold_umat = Vision::isolateColor(
 		image,
 		blob_tpl->getMinHSV()->getScalar(),
 		blob_tpl->getMaxHSV()->getScalar(),
@@ -231,7 +218,8 @@ QVector<cv::KeyPoint> Vision::findBlobs(BlobTpl *blob_tpl, cv::UMat image)
 	);
 	
 	// Turning the threshold umat into a mat in one step causes ocv to fuck up dealocation stuff.
-	cv::Mat threshold_mat = threshold_umat.getMat(cv::ACCESS_READ);
+	//cv::Mat threshold_mat = threshold_umat.getMat(cv::ACCESS_READ);
+	cv::Mat threshold_mat = threshold_umat;
 	
 	// Detect wanted (now white) color blobs as keypoints
 	cv::Ptr<cv::SimpleBlobDetector> detector = cv::SimpleBlobDetector::create(blob_tpl->getBlobParams());
@@ -241,7 +229,7 @@ QVector<cv::KeyPoint> Vision::findBlobs(BlobTpl *blob_tpl, cv::UMat image)
 	return QVector<cv::KeyPoint>::fromStdVector(keypoints);
 }
 
-cv::UMat Vision::markMatches(cv::UMat image, QVector<Match *> matches, cv::Scalar color, int thickness)
+cv::Mat Vision::markMatches(cv::Mat image, QVector<Match *> matches, cv::Scalar color, int thickness)
 {
 	for (Match* match : matches) {
 		image = Vision::markMatch(image, match, color, thickness);
@@ -249,7 +237,7 @@ cv::UMat Vision::markMatches(cv::UMat image, QVector<Match *> matches, cv::Scala
 	return image;
 }
 
-cv::UMat Vision::markMatch(cv::UMat image, Match *match, cv::Scalar color, int thickness)
+cv::Mat Vision::markMatch(cv::Mat image, Match *match, cv::Scalar color, int thickness)
 {
 	cv::rectangle(
 		image,
@@ -263,81 +251,114 @@ cv::UMat Vision::markMatch(cv::UMat image, Match *match, cv::Scalar color, int t
 	return image;
 }
 
-cv::UMat Vision::qimageToBGRUmat(const QImage &q_image)
+cv::Mat Vision::qimageToBGRMat(const QImage &qimage)
 {
-	// We always clone the q_image data as we probably always use temporary qimages.
-	switch (q_image.format()) {
-
+	switch(qimage.format()) {
+	
 	// 8-bit, 4 channel
 	case QImage::Format_ARGB32:
 	case QImage::Format_ARGB32_Premultiplied: {
 		cv::Mat mat(
-			q_image.height(),
-			q_image.width(),
+			qimage.height(),
+			qimage.width(),
 			CV_8UC4,
-			const_cast<uchar*>(q_image.bits()),
-			static_cast<size_t>(q_image.bytesPerLine())
+			const_cast<uchar*>(qimage.bits()),
+			static_cast<size_t>(qimage.bytesPerLine())
 		);
-		
-		cv::UMat umat;
-		mat.clone().copyTo(umat);
-		
-		cv::cvtColor(umat, umat, cv::COLOR_BGRA2BGR);
-		return umat;
+	 
+		return mat.clone();
 	}
 	
 	// 8-bit, 3 channel
 	case QImage::Format_RGB32: {
 		cv::Mat mat(
-			q_image.height(), q_image.width(),
+			qimage.height(),
+			qimage.width(),
 			CV_8UC4,
-			const_cast<uchar*>(q_image.bits()),
-			static_cast<size_t>(q_image.bytesPerLine())
+			const_cast<uchar*>(qimage.bits()),
+			static_cast<size_t>(qimage.bytesPerLine())
 		);
-	
-		cv::UMat umat;
-		mat.clone().copyTo(umat);
-		
-		cv::cvtColor(umat, umat, cv::COLOR_BGRA2BGR);
-		return umat;
+	 
+		cv::Mat mat_without_alpha;
+		cv::cvtColor(mat, mat_without_alpha, cv::COLOR_BGRA2BGR);
+		return mat_without_alpha;
 	}
-	
+	 
 	// 8-bit, 3 channel
 	case QImage::Format_RGB888: {
-		QImage swapped = q_image.rgbSwapped();
-		cv::Mat mat(
+		QImage swapped = qimage.rgbSwapped();
+		return cv::Mat(
 			swapped.height(),
 			swapped.width(),
 			CV_8UC3,
 			const_cast<uchar*>(swapped.bits()),
 			static_cast<size_t>(swapped.bytesPerLine())
-		);
-		
-		cv::UMat umat;
-		mat.clone().copyTo(umat);
-		
-		return umat;
+		).clone();
 	}
-	
+	 
 	// 8-bit, 1 channel
 	case QImage::Format_Indexed8: {
-		cv::Mat mat( q_image.height(), q_image.width(),
+		cv::Mat mat(
+			qimage.height(),
+			qimage.width(),
 			CV_8UC1,
-			const_cast<uchar*>(q_image.bits()),
-			static_cast<size_t>(q_image.bytesPerLine())
+			const_cast<uchar*>(qimage.bits()),
+			static_cast<size_t>(qimage.bytesPerLine())
 		);
-		
-		cv::UMat umat;
-		mat.clone().copyTo(umat);
-		
-		cv::cvtColor(umat, umat, cv::COLOR_GRAY2BGR);
-		return umat;
+		return mat.clone();
 	}
 	
-	default: {
-		qWarning() << Q_FUNC_INFO << "QImage format not handled in switch:" << q_image.format();
+	default:
+		qWarning() << "QImage format not handled in switch:" << qimage.format();
 		break;
 	}
+	return cv::Mat();
+}
+
+QImage Vision::cvMatToQImage(const cv::Mat &mat)
+{
+	switch (mat.type()) {
+	
+	// 8-bit, 4 channel
+    case CV_8UC4: {
+		QImage image(
+			mat.data,
+			mat.cols,
+			mat.rows,
+            static_cast<int>(mat.step),
+			QImage::Format_ARGB32
+		);
+		return image;
 	}
-	return cv::UMat();
+ 
+    // 8-bit, 3 channel
+	case CV_8UC3: {
+		QImage image(
+			mat.data,
+			mat.cols,
+			mat.rows,
+			static_cast<int>(mat.step),
+			QImage::Format_RGB888
+		);
+		return image.rgbSwapped();
+	}
+ 
+	// 8-bit, 1 channel
+	case CV_8UC1: {
+		QImage image(
+			mat.data,
+            mat.cols,
+            mat.rows,
+            static_cast<int>(mat.step),
+            QImage::Format_Grayscale8
+		);
+		return image;
+	}
+ 
+    default:
+		qWarning() << "cv::Mat image type not handled in switch:" << mat.type();
+		break;
+	}
+ 
+	return QImage();
 }

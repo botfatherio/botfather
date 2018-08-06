@@ -3,8 +3,8 @@
 
 #include <QObject>
 #include <QString>
+#include <QImage>
 #include <QScopedPointer>
-#include <opencv2/opencv.hpp>
 
 class DesktopPrivate;
 
@@ -15,7 +15,7 @@ public:
 	Desktop(QObject *parent = nullptr);
 	~Desktop();
 	
-	bool takeScreenshot(cv::UMat &screenshot);
+	QImage takeScreenshot();
 	int getWidth();
 	int getHeight();
 	void leftClick(int x, int y);

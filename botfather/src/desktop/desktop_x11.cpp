@@ -7,7 +7,6 @@
 #include <string.h> // memset, strcpy
 #include <fcntl.h> // open
 #include <ctime> // time
-#include <opencv2/opencv.hpp>
 #include <linux/uinput.h>
 #include <X11/Xlib.h> // Import X11 stuff always last. Otherwise compilation fails.
 #include <X11/Xutil.h>
@@ -204,28 +203,30 @@ Desktop::~Desktop()
 	XCloseDisplay(d_ptr->display);
 }
 
-bool Desktop::takeScreenshot(cv::UMat &screenshot)
+QImage Desktop::takeScreenshot()
 {
 	XWindowAttributes attributes;
 	XGetWindowAttributes(d_ptr->display, d_ptr->root, &attributes);
 	
-	int width = attributes.width;
-	int height = attributes.height;
+	unsigned int width = static_cast<unsigned int>(attributes.width);
+	unsigned int height = static_cast<unsigned int>(attributes.height);
 	
-	XImage *x_image = XGetImage(d_ptr->display, d_ptr->root, 0, 0, static_cast<unsigned int>(width), static_cast<unsigned int>(height), AllPlanes, ZPixmap);
-	int bits_per_pixel = x_image->bits_per_pixel;
+	XImage *x_image = XGetImage(d_ptr->display, d_ptr->root, 0, 0, width, height, AllPlanes, ZPixmap);
 	
-	cv::Mat mat(height, width, bits_per_pixel > 24 ? CV_8UC4 : CV_8UC3, x_image->data);
+	QImage::Format format = x_image->bits_per_pixel > 24 ? QImage::Format_ARGB32 : QImage::Format_RGB888;
 	
-	if (bits_per_pixel > 24) {
-		// Cut off the alpha channel (because there is a chance the image will be completely transparent otherwise).
-		// And desktop screenshots usually don't feature any transparency at all.
-		cv::cvtColor(mat, mat, cv::COLOR_BGRA2BGR);
+	// TODO: The Qt doc states that an qimages buffer will not get freed by Qt. But on can pass a function that does so.
+	// In our case X deletes our data. But this might also mean, that our images are not safe to use. We should make a
+	// copy and pass a function that deletes it. Currently doing a copy will result in a mem leak.
+	
+	QImage qimage = QImage(reinterpret_cast<uchar*>(x_image->data), x_image->width, x_image->height, x_image->bytes_per_line, format);
+	
+	if (x_image->bits_per_pixel > 24) {
+		qimage = qimage.convertToFormat(QImage::Format_RGB888);
 	}
-	mat.copyTo(screenshot);
 	
 	XDestroyImage(x_image);
-	return true;
+	return qimage;
 }
 
 int Desktop::getWidth()

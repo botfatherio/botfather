@@ -1,10 +1,11 @@
 #include "image.h"
+#include <QtDebug>
 
 Image::Image()
 {}
 
-Image::Image(cv::UMat umat)
-	: m_umat(umat)
+Image::Image(QImage qimage)
+	: qimage(qimage)
 {}
 
 QScriptValue Image::toScriptValue(QScriptEngine *engine, Image* const &in)
@@ -17,22 +18,22 @@ void Image::fromScriptValue(const QScriptValue &object, Image* &out)
 	out = qobject_cast<Image*>(object.toQObject());
 }
 
-cv::UMat Image::getUMat() const
+QImage Image::getQImage() const
 {
-	return this->m_umat;
+	return qimage;
 }
 
 bool Image::isValid()
 {
-	return !this->m_umat.empty();
+	return !qimage.isNull();
 }
 
 int Image::getWidth()
 {
-	return m_umat.cols;
+	return qimage.width();
 }
 
 int Image::getHeight()
 {
-	return m_umat.rows;
+	return qimage.height();
 }

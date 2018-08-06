@@ -45,7 +45,7 @@ Desktop::~Desktop()
 
 #include <opencv2/highgui.hpp>
 
-bool Desktop::takeScreenshot(cv::UMat &screenshot)
+bool Desktop::takeScreenshot(cv::Mat &screenshot)
 {
     HWND hwnd = GetDesktopWindow();
     HDC hwindow_dc = GetDC(hwnd);
@@ -86,7 +86,7 @@ bool Desktop::takeScreenshot(cv::UMat &screenshot)
     // Remove alpha channel
     cv::cvtColor(mat, mat, cv::COLOR_BGRA2BGR);
 
-    mat.copyTo(screenshot);
+    screenshot = mat;
     return true;
 }
 

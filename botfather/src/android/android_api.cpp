@@ -82,8 +82,7 @@ QScriptValue AndroidAPI::takeScreenshot()
 	if (!adb->takeScreenshot(serial_number, qimage)) {
 		// Taking screenshot failed. TODO: print system debug info in some later version...
 	}
-	cv::UMat umat = Vision::qimageToBGRUmat(qimage).clone();
-	return m_engine_p->newQObject(new Image(umat), QScriptEngine::ScriptOwnership);
+	return m_engine_p->newQObject(new Image(qimage), QScriptEngine::ScriptOwnership);
 }
 
 int AndroidAPI::getDeviceWidth()
@@ -112,11 +111,12 @@ bool AndroidAPI::findAndTap(Image* tpl, double threshold)
 	if (!adb->takeScreenshot(serial_number, qimage) || !tpl) {
 		return false;
 	}
-	cv::UMat screenshot = Vision::qimageToBGRUmat(qimage).clone();
-	if (screenshot.cols <= tpl->getWidth() || screenshot.rows <= tpl->getHeight()) {
+	if (qimage.width() <= tpl->getWidth() || qimage.height() <= tpl->getHeight()) {
 		return false;
 	}
-	Match *match = Vision::findMatch(screenshot, tpl->getUMat(), threshold);
+	cv::Mat image_mat = Vision::qimageToBGRMat(qimage);
+	cv::Mat tpl_mat = Vision::qimageToBGRMat(tpl->getQImage());
+	Match *match = Vision::findMatch(image_mat, tpl_mat, threshold);
 	sendTap(match->getX(), match->getY());
 	return true;
 }

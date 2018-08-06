@@ -22,11 +22,8 @@ void DesktopAPI::enable(Bot *bot_p, QScriptEngine *engine_p)
 
 QScriptValue DesktopAPI::takeScreenshot()
 {
-	cv::UMat screenshot;
-	if (!desktop->takeScreenshot(screenshot)) {
-		// Taking the screenshot failed.
-	}
-	return m_engine_p->newQObject(new Image(screenshot), QScriptEngine::ScriptOwnership);
+	QImage qimage = desktop->takeScreenshot();
+	return m_engine_p->newQObject(new Image(qimage), QScriptEngine::ScriptOwnership);
 }
 
 int DesktopAPI::getWidth()
@@ -100,14 +97,17 @@ QScriptValue DesktopAPI::getCursorPosition()
 
 bool DesktopAPI::findAndClick(Image* tpl, double threshold, int button)
 {
-	cv::UMat screenshot;
-	if (!desktop->takeScreenshot(screenshot) || !tpl) {
+	QImage screenshot = desktop->takeScreenshot();
+	if (screenshot.isNull() || !tpl) {
 		return false;
 	}
-	if (screenshot.cols <= tpl->getWidth() || screenshot.rows <= tpl->getHeight()) {
+	if (screenshot.width() <= tpl->getWidth() || screenshot.height() <= tpl->getHeight()) {
 		return false;
 	}
-	Match *match = Vision::findMatch(screenshot, tpl->getUMat(), threshold);
+	cv::Mat tpl_mat = Vision::qimageToBGRMat(tpl->getQImage());
+	cv::Mat screenshot_mat = Vision::qimageToBGRMat(screenshot);
+	Match *match = Vision::findMatch(screenshot_mat, tpl_mat, threshold);
+	
 	switch (button) {
 	case 1:
 		leftClick(match->getX(), match->getY());
