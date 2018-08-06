@@ -62,8 +62,10 @@ void Bot::runScript()
 	QScriptValue result;
 	try{
 		result = script_engine->evaluate(contents, this->m_script_path);
+		delete script_engine;
 	}
 	catch (...) {
+		delete script_engine;
 		QString debug_msg(
 			"<b style='color:red'>Internal exception cought!</b> You script nearly crashed botfather."
 			"<b style='color:green'>Please send us your script, so that the problem can be solved."
