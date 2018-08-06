@@ -121,8 +121,10 @@ void BrowserApp::OnBeforeCommandLineProcessing(const CefString& process_type, Ce
 	// Necesarry to view DRM protected content
 	command_line->AppendSwitch("enable-widevine-cdm");
 	
-	//command_line->AppendSwitch("no-sandbox");
-	//command_line->AppendSwitch("disable-setuid-sandbox");
+	// On some CEF versions only commandline args disable sandbox properly
+	command_line->AppendSwitch("no-sandbox");
+	command_line->AppendSwitch("disable-setuid-sandbox");
+	
 	//command_line->AppendSwitch("show-paint-rects");
 	//command_line->AppendSwitch("disable-accelerated-video-decode");
 }
