@@ -51,7 +51,7 @@ void Browser::init(int argc, char **argv)
 #endif
 	
 	// We don't use the sandbox thus there is no info.
-	void* sandbox_info = NULL;
+	void* sandbox_info = nullptr;
 
 	// Structure for passing command-line arguments. (platform-specific).
 #if defined(_WIN32) || defined(_WIN64)
@@ -81,6 +81,13 @@ void Browser::quit()
 {
 	// Close all windows so that cef can be shutdown without complaining.
 	BrowserClient::instance()->closeAllBrowsers(true);
+	
+	// Calling CefDoMessageLoopWork() a few times before shutting down prevents leaking object references.
+	// https://magpcss.org/ceforum/viewtopic.php?f=6&t=14275
+	// https://magpcss.org/ceforum/viewtopic.php?f=6&t=13777&start=10
+	CefDoMessageLoopWork();
+	CefDoMessageLoopWork();
+	CefDoMessageLoopWork();
 	CefShutdown();
 }
 
