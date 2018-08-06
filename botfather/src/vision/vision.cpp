@@ -90,23 +90,12 @@ QVector<Match*> Vision::findMaskedMatches(cv::Mat image, cv::Mat tpl, cv::Mat ma
 	
 	QVector<Match*> matches;
 	
-	if (image.empty()) {
-		// This must be prevented by the API.
-		qDebug() << Q_FUNC_INFO << "Image empty";
-		return matches;
-	}
+	//qDebug() << image.type() << tpl.type();
+	//qDebug() << image.dims << tpl.dims;
+	//qDebug() << image.depth() << tpl.depth();
 	
-	if (tpl.empty()) {
-		// This must be prevented by the API.
-		qDebug() << Q_FUNC_INFO << "Template empty";
-		return matches;
-	}
-	
-	if (image.rows <= tpl.rows || image.cols <= tpl.cols) {
-		// This must be prevented by the API.
-		qDebug() << Q_FUNC_INFO << "Image smaller than the tpl";
-		return matches;
-	}
+	cv::UMat uimage = image.getUMat(cv::ACCESS_RW);
+	cv::UMat utpl = tpl.getUMat(cv::ACCESS_RW);
 
 	double min_val, max_val, match_val;
 	cv::Point min_loc, max_loc, match_loc;
@@ -115,14 +104,14 @@ QVector<Match*> Vision::findMaskedMatches(cv::Mat image, cv::Mat tpl, cv::Mat ma
 	// for some reason. But 
 	// We tested saving it using: cv::imwrite("result.png", result.getMat(cv::ACCESS_READ).clone());
 	// But result.png is always black, no matter where in this method we tried to save it.
-	cv::UMat result(image.rows - tpl.rows + 1, image.cols - tpl.cols + 1, CV_32FC1);
-
+	cv::UMat uresult(uimage.rows - utpl.rows + 1, uimage.cols - utpl.cols + 1, CV_32FC1);
+	
 	// Marks spots on the result mat than lighten than the template matches on the image.
 	// When a mask is used ignore those regions which are black on the mask.
 	if (use_mask && match_method_accepts_mask) {
-		cv::matchTemplate(image, tpl, result, match_method, mask);
+		cv::matchTemplate(uimage, utpl, uresult, match_method, mask);
 	} else {
-		cv::matchTemplate(image, tpl, result, match_method);
+		cv::matchTemplate(uimage, utpl, uresult, match_method);
 	}
 	
 	// Makes not so good results better which results in "better" matches in some
@@ -133,7 +122,7 @@ QVector<Match*> Vision::findMaskedMatches(cv::Mat image, cv::Mat tpl, cv::Mat ma
 	// Make areas completely black which are not as intensive as the threshold
 	// requires. Looking for minmax values and using floodfill are faster after
 	// thresholding.
-	cv::threshold(result, result, threshold, 1.0, CV_THRESH_TOZERO);
+	cv::threshold(uresult, uresult, threshold, 1.0, CV_THRESH_TOZERO);
 	
 	// Uncomment the following 2 lines of code to see where matches were found.
 	// One may disabled thresholding to understand the result better.
@@ -143,7 +132,7 @@ QVector<Match*> Vision::findMaskedMatches(cv::Mat image, cv::Mat tpl, cv::Mat ma
 	while (matches.size() < max_matches || max_matches == -1){
 		
 		// Find the lightest spot aka the best matching location
-		cv::minMaxLoc(result, &min_val, &max_val, &min_loc, &max_loc, cv::Mat());
+		cv::minMaxLoc(uresult, &min_val, &max_val, &min_loc, &max_loc, cv::Mat());
 		
 		// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
 		if (match_method == CV_TM_SQDIFF || match_method == CV_TM_SQDIFF_NORMED) {
@@ -172,16 +161,16 @@ QVector<Match*> Vision::findMaskedMatches(cv::Mat image, cv::Mat tpl, cv::Mat ma
 		if (match_method == CV_TM_SQDIFF || match_method == CV_TM_SQDIFF_NORMED) {
 			// Here we use the color white to hide processed matches.
 			// A thickness of -1 means the circle shall be filled.
-			cv::circle(result, match_loc, tpl.cols / 2, cv::Scalar(255), -1);
+			cv::circle(uresult, match_loc, utpl.cols / 2, cv::Scalar(255), -1);
 		} else {
 			// ... black to hide processed matches.
-			cv::circle(result, match_loc, tpl.cols / 2, cv::Scalar(0), -1);
+			cv::circle(uresult, match_loc, utpl.cols / 2, cv::Scalar(0), -1);
 		}
 		
 		// Format the match and push it to the other matches. x and y of match_loc are
 		// the left and top coordinates of the match. Note: in our Match class x and y
 		// mark the center of the match.
-		matches.push_back(new Match(match_val, match_loc.x, match_loc.y, tpl.cols, tpl.rows));
+		matches.push_back(new Match(match_val, match_loc.x, match_loc.y, utpl.cols, utpl.rows));
 	}
 	
 	return matches;
@@ -210,16 +199,12 @@ Match* Vision::findMatch(cv::Mat image, cv::Mat tpl, double threshold)
 QVector<cv::KeyPoint> Vision::findBlobs(BlobTpl *blob_tpl, cv::Mat image)
 {
 	// Make pixels in the color of our intereset white and everything else black.
-	cv::Mat threshold_umat = Vision::isolateColor(
+	cv::Mat threshold_mat = Vision::isolateColor(
 		image,
 		blob_tpl->getMinHSV()->getScalar(),
 		blob_tpl->getMaxHSV()->getScalar(),
 		false
 	);
-	
-	// Turning the threshold umat into a mat in one step causes ocv to fuck up dealocation stuff.
-	//cv::Mat threshold_mat = threshold_umat.getMat(cv::ACCESS_READ);
-	cv::Mat threshold_mat = threshold_umat;
 	
 	// Detect wanted (now white) color blobs as keypoints
 	cv::Ptr<cv::SimpleBlobDetector> detector = cv::SimpleBlobDetector::create(blob_tpl->getBlobParams());
