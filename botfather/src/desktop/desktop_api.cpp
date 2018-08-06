@@ -23,6 +23,7 @@ void DesktopAPI::enable(Bot *bot_p, QScriptEngine *engine_p)
 QScriptValue DesktopAPI::takeScreenshot()
 {
 	QImage qimage = desktop->takeScreenshot();
+	m_engine_p->reportAdditionalMemoryCost(static_cast<int>(qimage.sizeInBytes()));
 	return m_engine_p->newQObject(new Image(qimage), QScriptEngine::ScriptOwnership);
 }
 

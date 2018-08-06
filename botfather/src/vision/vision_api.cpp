@@ -41,6 +41,7 @@ QScriptValue VisionAPI::loadImage(QString path) {
 	if (this->m_bot_p->fileExists(path)){
 		QImage qimage;
 		qimage.load(path);
+		m_engine_p->reportAdditionalMemoryCost(static_cast<int>(qimage.sizeInBytes()));
 		return m_engine_p->newQObject(new Image(qimage), QScriptEngine::ScriptOwnership);
 	}
 	return m_engine_p->currentContext()->throwError("Invalid path.");
@@ -59,6 +60,7 @@ QScriptValue VisionAPI::cropImage(Image* image, int x_offset, int y_offset, int 
 	}
 	QRect region(x_offset, y_offset, width, height);
 	QImage cropped = image->getQImage().copy(region);
+	m_engine_p->reportAdditionalMemoryCost(static_cast<int>(cropped.sizeInBytes()));
 	return m_engine_p->newQObject(new Image(cropped), QScriptEngine::ScriptOwnership);
 }
 
@@ -68,6 +70,7 @@ QScriptValue VisionAPI::grayImage(Image *image)
 		return m_engine_p->currentContext()->throwError("Invalid or empty image.");
 	}
 	QImage grayscale = image->getQImage().convertToFormat(QImage::Format_Grayscale8);
+	m_engine_p->reportAdditionalMemoryCost(static_cast<int>(grayscale.sizeInBytes()));
 	return m_engine_p->newQObject(new Image(grayscale), QScriptEngine::ScriptOwnership);
 }
 
@@ -80,6 +83,7 @@ QScriptValue VisionAPI::resizeImage(Image *image, int new_width, int new_height)
 		return m_engine_p->currentContext()->throwError("Width and height must be at least 1.");
 	}
 	QImage scaled = image->getQImage().scaled(new_width, new_height, Qt::KeepAspectRatio);
+	m_engine_p->reportAdditionalMemoryCost(static_cast<int>(scaled.sizeInBytes()));
 	return m_engine_p->newQObject(new Image(scaled), QScriptEngine::ScriptOwnership);
 }
 
@@ -96,10 +100,11 @@ QScriptValue VisionAPI::isolateColor(Image *image, HSVColor* min_hsv, HSVColor* 
 	cv::Mat result_image = Vision::isolateColor(mat, min_hsv->getScalar(), max_hsv->getScalar(), keep_color);
 	mat.release();
 	
-	QImage qimat = Vision::cvMatToQImage(result_image);
+	QImage qimage = Vision::cvMatToQImage(result_image);
 	result_image.release();
 	
-	return m_engine_p->newQObject(new Image(qimat), QScriptEngine::ScriptOwnership);
+	m_engine_p->reportAdditionalMemoryCost(static_cast<int>(qimage.sizeInBytes()));
+	return m_engine_p->newQObject(new Image(qimage), QScriptEngine::ScriptOwnership);
 }
 
 bool VisionAPI::sameImages(Image* image_1, Image* image_2)
@@ -277,6 +282,7 @@ QScriptValue VisionAPI::markMatches(Image *image, QScriptValue matches, int r, i
 	mat.release();
 	image_mat.release();
 	
+	m_engine_p->reportAdditionalMemoryCost(static_cast<int>(qimage.sizeInBytes()));
 	return m_engine_p->newQObject(new Image(qimage), QScriptEngine::ScriptOwnership);
 }
 
@@ -296,5 +302,6 @@ QScriptValue VisionAPI::markMatch(Image *image, Match *match, int r, int g, int 
 	
 	image_mat.release();
 	
+	m_engine_p->reportAdditionalMemoryCost(static_cast<int>(qimage.sizeInBytes()));
 	return m_engine_p->newQObject(new Image(qimage), QScriptEngine::ScriptOwnership);
 }

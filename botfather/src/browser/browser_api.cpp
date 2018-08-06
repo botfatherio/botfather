@@ -20,6 +20,9 @@ void BrowserAPI::enable(Bot *bot_p, QScriptEngine *engine_p)
 QScriptValue BrowserAPI::takeScreenshot()
 {
 	QImage qimage = Browser::takeScreenshot();
+	// NOTE: It's okay to report additional cost before creating the new object.
+	// Because we can expect the new object to not be instantly garbage...
+	m_engine_p->reportAdditionalMemoryCost(static_cast<int>(qimage.sizeInBytes()));
 	return m_engine_p->newQObject(new Image(qimage), QScriptEngine::ScriptOwnership);
 }
 

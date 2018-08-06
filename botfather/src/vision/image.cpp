@@ -10,6 +10,7 @@ Image::Image(QImage qimage)
 
 QScriptValue Image::toScriptValue(QScriptEngine *engine, Image* const &in)
 {
+	engine->reportAdditionalMemoryCost(static_cast<int>(in->getQImage().sizeInBytes()));
 	return engine->newQObject(in, QScriptEngine::ScriptOwnership);
 }
 
