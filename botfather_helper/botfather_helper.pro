@@ -8,20 +8,22 @@ DESTDIR = ./BuildOutput
 OBJECTS_DIR += ./CompiledObjects
 SOURCES += ./src/main.cpp
 
+CEF_VERSION = 3.3202.1694
+
 win32 {
     DEFINES += _UNICODE WIN64 QT_DLL QT_WIDGETS_LIB QT_QML_LIB QT_NETWORK_LIB
 
     # Disables "unreferenced formal parameter" warning on windows
     QMAKE_CXXFLAGS_WARN_ON -= -w34100
 
-    CEF_DIR = C:\CEF\3.3202.1694
-    INCLUDEPATH += $${CEF_DIR}
+    WIN_CEF_DIR =  C:\CEF\\$${CEF_VERSION}
+    INCLUDEPATH += $${WIN_CEF_DIR}
 
-    CONFIG(release, debug|release):LIBS += -L$${CEF_DIR}\libcef_dll_wrapper\Release -llibcef_dll_wrapper
-    else:CONFIG(debug, debug|release):LIBS += -L$${CEF_DIR}\libcef_dll_wrapper\Debug -llibcef_dll_wrapper
+    CONFIG(release, debug|release):LIBS += -L$${WIN_CEF_DIR}\libcef_dll_wrapper\Release -llibcef_dll_wrapper
+    else:CONFIG(debug, debug|release):LIBS += -L$${WIN_CEF_DIR}\libcef_dll_wrapper\Debug -llibcef_dll_wrapper
 
-    CONFIG(release, debug|release):LIBS += -L$${CEF_DIR}\Release -llibcef
-    else: CONFIG(debug, debug|release):LIBS += -L$${CEF_DIR}\Debug -llibcef
+    CONFIG(release, debug|release):LIBS += -L$${WIN_CEF_DIR}\Release -llibcef
+    else: CONFIG(debug, debug|release):LIBS += -L$${WIN_CEF_DIR}\Debug -llibcef
 
     # Build static
     QMAKE_CXXFLAGS_DEBUG += /MTd
@@ -32,7 +34,7 @@ win32 {
 }
 
 unix {
-    LINUX_CEF_DIR = /opt/cef
+    LINUX_CEF_DIR = /opt/cef/$${CEF_VERSION}
 
     INCLUDEPATH += $${LINUX_CEF_DIR}
     LIBS += -L$${LINUX_CEF_DIR}/libcef_dll_wrapper/ -lcef_dll_wrapper
