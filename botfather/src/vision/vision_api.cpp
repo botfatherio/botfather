@@ -41,6 +41,7 @@ QScriptValue VisionAPI::loadImage(QString path) {
 	if (this->m_bot_p->fileExists(path)){
 		QImage qimage;
 		qimage.load(path);
+		qimage = qimage.convertToFormat(QImage::Format_RGB888);
 		m_engine_p->reportAdditionalMemoryCost(static_cast<int>(qimage.sizeInBytes()));
 		return m_engine_p->newQObject(new Image(qimage), QScriptEngine::ScriptOwnership);
 	}
