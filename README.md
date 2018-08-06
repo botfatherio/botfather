@@ -77,7 +77,14 @@ Furthermore scripts can be turned into crossplatform binaries using Botfather Bi
 - Building the BotFather should work now as expected.
 
 ------
-## Troubleshooting
+## Troubleshooting / FAQ
 ##### LaunchProcess: failed to execvp: ./botfather_helper
 This means you forgot to copy the botfather_helper binary from it's build folder to the bots folder from which you're probably trying to run a bot binary.
 Place botfather_helper binary matching platform and build type (release/debug) next to your bots binary to fix the problem.
+
+##### Browser is blank / nothing works after CEF Update
+Make sure you rebuild(!) the botfather_helper and(!) botfather. Also make sure you copy the updated botfather_helper correctly.
+
+##### How to choose a new CEF version
+See what branches are supported and stable on [CEF Release Branches](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-release-branches)
+CEF releases considered stable mostly aren't. Check what CEF release other project like CefSharp use in their latest stable release. [CefSharp Releases](https://github.com/cefsharp/CefSharp/releases)
