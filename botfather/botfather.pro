@@ -20,7 +20,7 @@ CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 CEF_VERSION = 3.3202.1694
 
 unix {
-    LINUX_CEF_DIR = /opt/cef
+    LINUX_CEF_DIR = /opt/cef/$${CEF_VERSION}
 
     # Disables unused warnings
     QMAKE_CXXFLAGS_WARN_OFF -= -Wunused-parameter
