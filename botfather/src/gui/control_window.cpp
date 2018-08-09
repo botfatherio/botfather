@@ -8,6 +8,7 @@
 #include <QHBoxLayout>
 #include <QSettings>
 #include <QThread>
+#include <QDateTime>
 #include "config_dialog.h"
 #include "browser_window.h"
 #include "android_dialog.h"
@@ -194,13 +195,13 @@ void ControlWindow::on_save_button_clicked()
 	file.close();
 }
 
-void ControlWindow::appendMessage(QString log_message, bool from_client)
+void ControlWindow::appendMessage(QString message, bool from_botfather, bool error)
 {
-	if (from_client){
-		this->ui->log_text->append("<strong style='color:#555'>&lt;botfather&gt;</strong> " + log_message);
-	} else{
-		this->ui->log_text->append("<strong style='color:#555'>&lt;botscript&gt;</strong> " + log_message);
-	}
+	QString color(error ? "#ff3860" : (from_botfather ? "#209cee" : "#4a4a4a"));
+	QString time(QDateTime::currentDateTime().toString("HH:mm:ss"));
+	QString user(from_botfather ? "system" : "script");
+	QString text = QString("<span style='color:%1'>%2 | %3 &gt; %4</span>").arg(color).arg(time).arg(user).arg(message);
+	ui->log_text->append(text);
 }
 
 void ControlWindow::on_actionPremiumPlans_triggered()

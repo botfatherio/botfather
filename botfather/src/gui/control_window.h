@@ -34,7 +34,7 @@ public slots:
 	void bot_stopped(bool without_errors);
 	void on_actionScripts_triggered();
 	void on_save_button_clicked();
-	void appendMessage(QString log_message, bool from_client = false);
+	void appendMessage(QString message, bool from_botfather, bool error = false);
 	void on_actionAbout_triggered();
 	void on_actionAboutQt_triggered();
 	void on_actionPremiumPlans_triggered();

@@ -28,7 +28,7 @@ public slots:
 signals:
 	void started();
 	void stopped(bool without_errors);
-	void message(QString log_message, bool from_client);
+	void message(QString log_message, bool from_client, bool error = false);
 	
 	// Start/stop a wav sound in the main thread.
 	void playWavSound(QString path_to_wav_file);

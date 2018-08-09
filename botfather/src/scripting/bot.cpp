@@ -62,9 +62,9 @@ void Bot::runScript()
 	
 	// Check whether the script ended due to errors. If so print them to the users log.
 	if (result.isError()) {
-		QString debug_msg = QString("<b style='color:red'>Uncaught exception</b> at line %1 : %2")
+		QString debug_msg = QString("<b>Uncaught exception</b> at line %1 : %2")
 			.arg(result.property("lineNumber").toString()).arg(result.toString());
-		emit this->message(debug_msg, true);
+		emit this->message(debug_msg, true, true);
 	} else {
 		// Script execution/evaluation ended successfully.
 		emit this->message("Bot script execution finished.", true);
