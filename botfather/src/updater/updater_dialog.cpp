@@ -35,6 +35,7 @@ UpdaterDialog::UpdaterDialog(QWidget *parent) :
 UpdaterDialog::~UpdaterDialog()
 {
 	delete ui;
+	delete update_checker;
 }
 
 void UpdaterDialog::onUpdatesAvailable()

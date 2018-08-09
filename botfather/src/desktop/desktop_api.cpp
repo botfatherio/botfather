@@ -11,7 +11,7 @@
 
 DesktopAPI::DesktopAPI(Bot *bot_p, QScriptEngine *engine_p) : QObject(bot_p), m_bot_p(bot_p), m_engine_p(engine_p)
 {
-	desktop = new Desktop();
+	desktop = new Desktop(this);
 }
 
 void DesktopAPI::enable(Bot *bot_p, QScriptEngine *engine_p)

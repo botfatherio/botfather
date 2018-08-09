@@ -25,6 +25,7 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	// LOL everything must be inited. When not initializing kill_timer even checking whether it's
 	// a nullptr can cause the program zu crash.
 	kill_timer = nullptr;
+	bot = nullptr;
 	
 	stop_hotkey = new QHotkey();
 	kill_hotkey = new QHotkey();
@@ -52,6 +53,11 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 ControlWindow::~ControlWindow()
 {
 	delete ui;
+	delete bot;
+	delete bot_thread;
+	delete kill_timer;
+	delete stop_hotkey;
+	delete kill_hotkey;
 }
 
 void ControlWindow::applyRemoteApiInfo(int curtime, int premend, bool stable)
@@ -90,6 +96,7 @@ void ControlWindow::on_actionStart_triggered()
 	this->bot_thread = new BotThread(this);
 	
 	// Create an new bot instance with the given script path and move it into the thread.
+	delete bot;
 	bot = new Bot(this->bot_thread, script_path);
 	bot->moveToThread(this->bot_thread);
 
@@ -136,6 +143,7 @@ void ControlWindow::on_actionStop_triggered()
 	// Kill the script if it doesn't stop in time.
 	QSettings s;
 	if (s.value(general::options::AUTOKILL, general::fallback::AUTOKILL).toBool()) {
+		delete kill_timer;
 		kill_timer = new QTimer(this);
 		kill_timer->setSingleShot(true);
 		connect(kill_timer, &QTimer::timeout, this, &ControlWindow::on_actionKill_triggered);

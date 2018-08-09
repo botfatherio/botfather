@@ -10,7 +10,7 @@ StatusDialog::StatusDialog(QString version_secret, QWidget *parent)
 	, ui(new Ui::StatusDialog)
 {
 	ui->setupUi(this);
-	status_api_client = new StatusApiClient("botfather", QCoreApplication::applicationVersion(), version_secret);
+	status_api_client = new StatusApiClient("botfather", QCoreApplication::applicationVersion(), version_secret, this);
 	connect(status_api_client, &StatusApiClient::networkError, this, &StatusDialog::handleNetworkError);
 	connect(status_api_client, &StatusApiClient::restApiError, this, &StatusDialog::handleRestApiError);
 	connect(status_api_client, &StatusApiClient::integrityError, this, &StatusDialog::handleIntegrityError);

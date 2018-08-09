@@ -50,6 +50,9 @@ BrowserWindow::BrowserWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 BrowserWindow::~BrowserWindow()
 {
 	delete ui;
+	delete pixmap_placeholder;
+	delete address_bar;
+	delete addressbar;
 }
 
 void BrowserWindow::applyResizing()

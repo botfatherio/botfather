@@ -12,7 +12,9 @@
 #include "../android/android_api.h"
 #include "../desktop/desktop_api.h"
 
-Bot::Bot(BotThread *thread_p, QString script_path) : m_thread_p(thread_p), m_script_path(script_path)
+Bot::Bot(BotThread *thread_p, QString script_path)
+	: m_thread_p(thread_p)
+	, m_script_path(script_path)
 {}
 
 void Bot::runScript()
@@ -58,35 +60,24 @@ void Bot::runScript()
 	// script interruption requests.
 	m_thread_p->setTerminationEnabled(true);
 	
-	// Run the script.
-	QScriptValue result;
-	try{
-		result = script_engine->evaluate(contents, this->m_script_path);
-		delete script_engine;
-	}
-	catch (...) {
-		delete script_engine;
-		QString debug_msg(
-			"<b style='color:red'>Internal exception cought!</b> You script nearly crashed botfather."
-			"<b style='color:green'>Please send us your script, so that the problem can be solved."
-		);
-		emit this->message(debug_msg, true);
-		emit this->stopped(false);
-		return;
-	}
+	// Run the script and clean up after doing so.
+	// NOTE: Putting this in a try-catch statement does nothing.
+	// I threw a exception in the browser api and the program crashed.
+	QScriptValue result = script_engine->evaluate(contents, this->m_script_path);
+	script_engine->collectGarbage();
 	
 	// Check whether the script ended due to errors. If so print them to the users log.
 	if (result.isError()) {
-		QString debug_msg("<b style='color:red'>Uncaught exception</b> at line " + result.property("lineNumber").toString() + ": " + result.toString());
+		QString debug_msg = QString("<b style='color:red'>Uncaught exception</b> at line %1 : %2")
+			.arg(result.property("lineNumber").toString()).arg(result.toString());
 		emit this->message(debug_msg, true);
-		emit this->stopped(false);
-		return;
+	} else {
+		// Script execution/evaluation ended successfully.
+		emit this->message("Bot script execution finished.", true);
 	}
-
-	// Script execution/evaluation ended successfully.
+	
 	running = false;
-	emit this->message("Bot script execution finished.", true);
-	emit this->stopped(true);
+	emit stopped(!result.isError());
 }
 
 bool Bot::isRunning() const {

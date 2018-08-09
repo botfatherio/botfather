@@ -76,8 +76,8 @@ public:
 	Q_INVOKABLE float getMaxInertiaRation() const;
 
 private:
-	HSVColor* m_min_hsv_p;
-	HSVColor* m_max_hsv_p;
+	HSVColor* m_min_hsv_p; // NOTE: Script owned
+	HSVColor* m_max_hsv_p; // NOTE: Script owned
 	cv::SimpleBlobDetector::Params m_blob_params;
 };
 
