@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QString>
-#include "bot_thread.h"
+#include <QScriptEngine>
 
 class Bot : public QObject
 {
@@ -11,11 +11,12 @@ class Bot : public QObject
 
 public:
 	// Giving Bot a parent results in: QObject::moveToThread: Cannot move objects with a parent
-	Bot(BotThread *thread_p, QString script_path);
+	Bot(QString script_path);
 	
 public slots:
 	void runScript();
 	bool isRunning() const;
+	void stop();
 	
 	// Makes a relative path to an absolute path relative to the script dir. Returns already
 	// absolute paths as they are.
@@ -34,7 +35,7 @@ signals:
 	void stopWavSound();
 	
 private:
-	BotThread* m_thread_p;
+	QScriptEngine *script_engine;
 	QString m_script_path;
 	bool running = false;
 };

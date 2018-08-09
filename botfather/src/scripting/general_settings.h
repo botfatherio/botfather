@@ -7,15 +7,10 @@
 namespace general
 {
 	namespace options {
-		static const QString AUTOKILL = "scripts/autokill";
-		static const QString AUTOKILL_PERIOD = "scripts/autokill_period";
 		static const QString STOP_SHORTCUT = "shortcuts/stop_shortcut";
-		static const QString KILL_SHORTCUT = "shortcuts/kill_shortcut";
 	}
 	namespace fallback
 	{
-		static const bool AUTOKILL = false;
-		static const int AUTOKILL_PERIOD = 7;
 	}
 }
 

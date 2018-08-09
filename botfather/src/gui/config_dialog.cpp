@@ -54,9 +54,6 @@ void ConfigDialog::saveConfig()
 	s.setValue(browser::options::FLASH_MANIFEST, this->ui->flash_manifest->text());
 	s.setValue(browser::options::USE_SYSTEM_FLASH, this->ui->use_system_flash->isChecked());
 	s.setValue(android::options::ADB_BINARY, this->ui->adb_binary->text());
-	s.setValue(general::options::AUTOKILL, ui->autokill->isChecked());
-	s.setValue(general::options::AUTOKILL_PERIOD, ui->autokill_period->value());
-	s.setValue(general::options::KILL_SHORTCUT, ui->kill_shortcut->keySequence().toString());
 	s.setValue(general::options::STOP_SHORTCUT, ui->stop_shortcut->keySequence().toString());
 	emit configSaved();
 }
@@ -70,9 +67,6 @@ void ConfigDialog::loadConfig()
 	this->ui->flash_manifest->setText(s.value(browser::options::FLASH_MANIFEST).toString());
 	this->ui->use_system_flash->setChecked(s.value(browser::options::USE_SYSTEM_FLASH, browser::fallback::USE_SYSTEM_FLASH).toBool());
 	this->ui->adb_binary->setText(s.value(android::options::ADB_BINARY).toString());
-	ui->autokill->setChecked(s.value(general::options::AUTOKILL, general::fallback::AUTOKILL).toBool());
-	ui->autokill_period->setValue(s.value(general::options::AUTOKILL_PERIOD, general::fallback::AUTOKILL_PERIOD).toInt());
-	ui->kill_shortcut->setKeySequence(QKeySequence::fromString(s.value(general::options::KILL_SHORTCUT).toString()));
 	ui->stop_shortcut->setKeySequence(QKeySequence::fromString(s.value(general::options::STOP_SHORTCUT).toString()));
 	emit configLoaded();
 }

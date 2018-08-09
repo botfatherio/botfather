@@ -12,9 +12,8 @@
 #include "../android/android_api.h"
 #include "../desktop/desktop_api.h"
 
-Bot::Bot(BotThread *thread_p, QString script_path)
-	: m_thread_p(thread_p)
-	, m_script_path(script_path)
+Bot::Bot(QString script_path)
+	: m_script_path(script_path)
 {}
 
 void Bot::runScript()
@@ -26,8 +25,8 @@ void Bot::runScript()
 	Browser::unmodifyResources();
 	
 	// Create script engine and enable our api in it's global context.
-	QScriptEngine *script_engine = new QScriptEngine(this);
-	HelperAPI::enable(this, m_thread_p, script_engine);
+	script_engine = new QScriptEngine(this);
+	HelperAPI::enable(this, script_engine);
 	VisionAPI::enable(this, script_engine);
 	BrowserAPI::enable(this, script_engine);
 	AndroidAPI::enable(this, script_engine);
@@ -55,11 +54,6 @@ void Bot::runScript()
 	script_file.close();
 	emit this->message("Executing bot script " + this->m_script_path, true);
 	
-	// Enable termination for the thread the bot and thus the script is running in,
-	// so that the user can kill the script when it's stuck or doesn't react to
-	// script interruption requests.
-	m_thread_p->setTerminationEnabled(true);
-	
 	// Run the script and clean up after doing so.
 	// NOTE: Putting this in a try-catch statement does nothing.
 	// I threw a exception in the browser api and the program crashed.
@@ -82,6 +76,11 @@ void Bot::runScript()
 
 bool Bot::isRunning() const {
 	return running;
+}
+
+void Bot::stop()
+{
+	script_engine->abortEvaluation();
 }
 
 QString Bot::normalisePath(QString path)

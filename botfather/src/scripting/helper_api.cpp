@@ -7,19 +7,20 @@
 #include <QAudioBuffer>
 #include <QDebug>
 #include "bot.h"
-#include "bot_thread.h"
 #include "script_point_factory.h"
 
-HelperAPI::HelperAPI(Bot* bot_p, BotThread* bot_thread_p, QScriptEngine* engine_p)
-	: QObject(bot_p), m_bot_thread_p(bot_thread_p), m_bot_p(bot_p), m_engine_p(engine_p)
+HelperAPI::HelperAPI(Bot* bot_p, QScriptEngine* engine_p)
+	: QObject(bot_p)
+	, m_bot_p(bot_p)
+	, m_engine_p(engine_p)
 {}
 
 // static
-void HelperAPI::enable(Bot* bot_p, BotThread* bot_thread_p, QScriptEngine* engine_p)
+void HelperAPI::enable(Bot* bot_p, QScriptEngine* engine_p)
 {
 	ScriptPointFactory::enable(engine_p);
 	
-	QScriptValue vision_obj = engine_p->newQObject(new HelperAPI(bot_p, bot_thread_p, engine_p), QScriptEngine::ScriptOwnership);
+	QScriptValue vision_obj = engine_p->newQObject(new HelperAPI(bot_p, engine_p), QScriptEngine::ScriptOwnership);
 	engine_p->globalObject().setProperty("Helper", vision_obj);
 }
 
@@ -64,11 +65,6 @@ QString HelperAPI::getClientMode()
 void HelperAPI::log(QString log_message)
 {
 	emit m_bot_p->message(log_message, false);
-}
-
-bool HelperAPI::stopRequested()
-{
-	return m_bot_thread_p->isInterruptionRequested();
 }
 
 QString HelperAPI::getAbsoluteScriptDirPath()

@@ -119,7 +119,6 @@
    </attribute>
    <addaction name="actionStart"/>
    <addaction name="actionStop"/>
-   <addaction name="actionKill"/>
    <addaction name="separator"/>
    <addaction name="actionScripts"/>
    <addaction name="actionSettings"/>
@@ -178,21 +177,6 @@
    </property>
    <property name="text">
     <string>Scripts</string>
-   </property>
-  </action>
-  <action name="actionKill">
-   <property name="icon">
-    <iconset resource="../res/gui.qrc">
-     <normaloff>:/gui/icons8-cancel-64.png</normaloff>:/gui/icons8-cancel-64.png</iconset>
-   </property>
-   <property name="text">
-    <string>Kill</string>
-   </property>
-   <property name="toolTip">
-    <string>Kill the script</string>
-   </property>
-   <property name="visible">
-    <bool>false</bool>
    </property>
   </action>
   <action name="actionAboutQt">

@@ -99,7 +99,6 @@ HEADERS += \
     ./src/android/adb_device_info.h \
     ./src/browser/browser.h \
     ./src/browser/browser_app.h \
-    ./src/scripting/bot_thread.h \
     ./src/vision/vision.h \
     ./src/android/adb_wrapper.h \
     ./src/android/android_api.h \
@@ -150,7 +149,6 @@ SOURCES += ./src/android/adb_device_info.cpp \
     ./src/gui/control_window.cpp \
     ./src/main.cpp \
     ./src/scripting/bot.cpp \
-    ./src/scripting/bot_thread.cpp \
     ./src/scripting/helper_api.cpp \
     ./src/updater/updater_dialog.cpp \
     ./src/updater/update_checker.cpp \
