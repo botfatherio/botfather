@@ -67,11 +67,6 @@ int HelperAPI::getPatchVersion()
 	return QVersionNumber::fromString(QApplication::applicationVersion()).microVersion();
 }
 
-QString HelperAPI::getClientMode()
-{
-	return "gui"; // TODO: Make this actually based on the clients mode.
-}
-
 void HelperAPI::log(QString log_message)
 {
 	emit m_bot_p->message(log_message, false);

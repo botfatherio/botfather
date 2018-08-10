@@ -34,9 +34,6 @@ public:
 	// Returns the path part of the programs version.
 	Q_INVOKABLE int getPatchVersion();
 
-	// Returns the programs mode (gui, console).
-	Q_INVOKABLE QString getClientMode();
-	
 	// Logs the message in the users chat.
 	Q_INVOKABLE void log(QString log_message);
 	
