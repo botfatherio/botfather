@@ -42,7 +42,7 @@ QScriptValue VisionAPI::loadImage(QString path) {
 		QImage qimage;
 		qimage.load(path);
 		qimage = qimage.convertToFormat(QImage::Format_RGB888);
-		m_engine_p->reportAdditionalMemoryCost(static_cast<int>(qimage.sizeInBytes()));
+		m_engine_p->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(qimage)));
 		return m_engine_p->newQObject(new Image(qimage), QScriptEngine::ScriptOwnership);
 	}
 	return m_engine_p->currentContext()->throwError("Invalid path.");
@@ -61,7 +61,7 @@ QScriptValue VisionAPI::cropImage(Image* image, int x_offset, int y_offset, int 
 	}
 	QRect region(x_offset, y_offset, width, height);
 	QImage cropped = image->getQImage().copy(region);
-	m_engine_p->reportAdditionalMemoryCost(static_cast<int>(cropped.sizeInBytes()));
+	m_engine_p->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(cropped)));
 	return m_engine_p->newQObject(new Image(cropped), QScriptEngine::ScriptOwnership);
 }
 
@@ -71,7 +71,7 @@ QScriptValue VisionAPI::grayImage(Image *image)
 		return m_engine_p->currentContext()->throwError("Invalid or empty image.");
 	}
 	QImage grayscale = image->getQImage().convertToFormat(QImage::Format_Grayscale8);
-	m_engine_p->reportAdditionalMemoryCost(static_cast<int>(grayscale.sizeInBytes()));
+	m_engine_p->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(grayscale)));
 	return m_engine_p->newQObject(new Image(grayscale), QScriptEngine::ScriptOwnership);
 }
 
@@ -84,7 +84,7 @@ QScriptValue VisionAPI::resizeImage(Image *image, int new_width, int new_height)
 		return m_engine_p->currentContext()->throwError("Width and height must be at least 1.");
 	}
 	QImage scaled = image->getQImage().scaled(new_width, new_height, Qt::KeepAspectRatio);
-	m_engine_p->reportAdditionalMemoryCost(static_cast<int>(scaled.sizeInBytes()));
+	m_engine_p->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(scaled)));
 	return m_engine_p->newQObject(new Image(scaled), QScriptEngine::ScriptOwnership);
 }
 
@@ -104,7 +104,7 @@ QScriptValue VisionAPI::isolateColor(Image *image, HSVColor* min_hsv, HSVColor* 
 	QImage qimage = Vision::cvMatToQImage(result_image);
 	result_image.release();
 	
-	m_engine_p->reportAdditionalMemoryCost(static_cast<int>(qimage.sizeInBytes()));
+	m_engine_p->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(qimage)));
 	return m_engine_p->newQObject(new Image(qimage), QScriptEngine::ScriptOwnership);
 }
 
@@ -274,7 +274,6 @@ QScriptValue VisionAPI::markMatches(Image *image, QScriptValue matches, int r, i
 	QVector<Match*> native_matches;
 	qScriptValueToSequence(matches, native_matches);
 	
-	
 	cv::Mat image_mat = Vision::qimageToBGRMat(image->getQImage());
 	
 	cv::Mat mat = Vision::markMatches(image_mat, native_matches, cv::Scalar(b, g, r), thickness);
@@ -283,7 +282,7 @@ QScriptValue VisionAPI::markMatches(Image *image, QScriptValue matches, int r, i
 	mat.release();
 	image_mat.release();
 	
-	m_engine_p->reportAdditionalMemoryCost(static_cast<int>(qimage.sizeInBytes()));
+	m_engine_p->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(qimage)));
 	return m_engine_p->newQObject(new Image(qimage), QScriptEngine::ScriptOwnership);
 }
 
@@ -303,6 +302,6 @@ QScriptValue VisionAPI::markMatch(Image *image, Match *match, int r, int g, int 
 	
 	image_mat.release();
 	
-	m_engine_p->reportAdditionalMemoryCost(static_cast<int>(qimage.sizeInBytes()));
+	m_engine_p->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(qimage)));
 	return m_engine_p->newQObject(new Image(qimage), QScriptEngine::ScriptOwnership);
 }

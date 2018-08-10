@@ -4,6 +4,13 @@
 #include <QObject>
 #include <QScriptEngine>
 #include <QImage>
+#include <QtGlobal>
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
+#define ImageSizeInBytes(qimage) qimage.byteCount()
+#else
+#define ImageSizeInBytes(qimage) qimage.sizeInBytes()
+#endif
 
 class Image : public QObject
 {

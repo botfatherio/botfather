@@ -82,7 +82,7 @@ QScriptValue AndroidAPI::takeScreenshot()
 	if (!adb->takeScreenshot(serial_number, qimage)) {
 		// Taking screenshot failed. TODO: print system debug info in some later version...
 	}
-	m_engine_p->reportAdditionalMemoryCost(static_cast<int>(qimage.sizeInBytes()));
+	m_engine_p->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(qimage)));
 	return m_engine_p->newQObject(new Image(qimage), QScriptEngine::ScriptOwnership);
 }
 
