@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <QStandardPaths>
 #include <QProcess>
+#include <QVersionNumber>
 #include "../auth/status_api_client.h"
 
 StatusDialog::StatusDialog(QString version_secret, QWidget *parent)
@@ -62,17 +63,22 @@ void StatusDialog::handleIntegrityError()
 
 void StatusDialog::handleStatus(bool supported, bool stable, QString latest_stable_version)
 {
+	Q_UNUSED(stable);
+	
 	if (!supported) {
 		QMessageBox::warning(this, "Version unsupported", "This version of the program is no longer supported. Please update to a supported version.");
 	}	
 	
 	bool wants_to_update = false;
 	
-	if (stable && latest_stable_version != QCoreApplication::applicationVersion()) {
+	QVersionNumber current_version = QVersionNumber::fromString(QApplication::applicationVersion());
+	QVersionNumber latest_version = QVersionNumber::fromString(latest_stable_version);
+	
+	if (QVersionNumber::compare(current_version, latest_version) == -1) {
 		// new stable version available
 		wants_to_update = recommendUpdate();
 	}
-
+	
 	if (!supported || wants_to_update) {
 		reject();
 	} else {
