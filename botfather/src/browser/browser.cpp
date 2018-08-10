@@ -266,6 +266,7 @@ void Browser::pressMouse(int button_type, int x, int y)
 	cms.x = x;
 	cms.y = y;
 	BrowserClient::instance()->getBrowser()->GetHost()->SendMouseClickEvent(cms, mbt, false, 1);
+	BrowserClient::instance()->getBrowser()->GetHost()->SendFocusEvent(true);
 }
 
 void Browser::releaseMouse(int button_type, int x, int y)
