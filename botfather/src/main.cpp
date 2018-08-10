@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 	QCoreApplication::setOrganizationName("BotFatherProject");
 	QCoreApplication::setOrganizationDomain("botfather.io");
 	QCoreApplication::setApplicationName("Botfather");
-	QCoreApplication::setApplicationVersion("3.1.0");
+	QCoreApplication::setApplicationVersion("3.2.0");
 	QSettings::setDefaultFormat(QSettings::IniFormat);
 
 	// Seed the random function once using the current time in msec as seed.
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
 #endif
 	
 	bool browser_initialized = false;
-	StatusDialog *status_dialog = new StatusDialog("s8yZ7q7tjSugGRAoJ3d3sqsji5ESmL8b");
+	StatusDialog *status_dialog = new StatusDialog("JE5rXuLiUgQxta6W5pscSB2WcV2aHADV");
 	
 	// Initialize the browser and start the controlwindow only when this version is supported
 	QObject::connect(status_dialog, &StatusDialog::accepted, [&](){
