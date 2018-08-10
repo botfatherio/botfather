@@ -25,8 +25,14 @@ public:
 	// Makes the bot sleep for x milliseconds.
 	Q_INVOKABLE void msleep(int milliseconds);
 	
-	// Returns the applications version number.
-	Q_INVOKABLE QString getVersion();
+	// Returns the major part of the programs version.
+	Q_INVOKABLE int getMajorVersion();
+	
+	// Returns the minor part of the programs version.
+	Q_INVOKABLE int getMinorVersion();
+	
+	// Returns the path part of the programs version.
+	Q_INVOKABLE int getPatchVersion();
 
 	// Returns the programs mode (gui, console).
 	Q_INVOKABLE QString getClientMode();

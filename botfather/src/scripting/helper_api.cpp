@@ -2,9 +2,9 @@
 #include <QFileInfo>
 #include <QThread>
 #include <QApplication>
-#include <QMessageBox>
 #include <QInputDialog>
 #include <QAudioBuffer>
+#include <QVersionNumber>
 #include <QDebug>
 #include "bot.h"
 #include "script_point_factory.h"
@@ -52,9 +52,19 @@ void HelperAPI::msleep(int milliseconds)
 	QThread::msleep(static_cast<unsigned long>(milliseconds));
 }
 
-QString HelperAPI::getVersion()
+int HelperAPI::getMajorVersion()
 {
-	return QApplication::applicationVersion();
+	return QVersionNumber::fromString(QApplication::applicationVersion()).majorVersion();
+}
+
+int HelperAPI::getMinorVersion()
+{
+	return QVersionNumber::fromString(QApplication::applicationVersion()).minorVersion();
+}
+
+int HelperAPI::getPatchVersion()
+{
+	return QVersionNumber::fromString(QApplication::applicationVersion()).microVersion();
 }
 
 QString HelperAPI::getClientMode()
