@@ -110,10 +110,6 @@ HEADERS += \
     ./src/vision/vision_api.h \
     ./src/vision/match.h \
     ./src/vision/image.h \
-    ./src/vision/hsv_color_factory.h \
-    ./src/vision/hsv_color.h \
-    ./src/vision/blob_tpl_factory.h \
-    ./src/vision/blob_tpl.h \
     ./src/engine/helper_api.h \
     ./src/engine/bot.h \
     ./src/gui/control_window.h \
@@ -155,8 +151,6 @@ SOURCES += ./src/android/adb_device_info.cpp \
     ./src/engine/helper_api.cpp \
     ./src/updater/updater_dialog.cpp \
     ./src/updater/update_checker.cpp \
-    ./src/vision/blob_tpl.cpp \
-    ./src/vision/blob_tpl_factory.cpp \
     ./src/vision/image.cpp \
     ./src/vision/match.cpp \
     ./src/vision/vision.cpp \

@@ -3,10 +3,8 @@
 #include <QFileInfo>
 #include "vision.h"
 #include "match.h"
-#include "hsv_color_factory.h"
-#include "blob_tpl_factory.h"
-#include "../scripting/helper_api.h"
-#include "../scripting/bot.h"
+#include "../engine/helper_api.h"
+#include "../engine/bot.h"
 
 VisionAPI::VisionAPI(Bot* bot_p, QScriptEngine* engine_p)
 	: QObject(bot_p), m_bot_p(bot_p), m_engine_p(engine_p)
@@ -15,9 +13,6 @@ VisionAPI::VisionAPI(Bot* bot_p, QScriptEngine* engine_p)
 // static
 void VisionAPI::enable(Bot* bot_p, QScriptEngine* engine_p)
 {
-	HSVColorFactory::enable(engine_p);
-	BlobTplFactory::enable(engine_p);
-	
 	QScriptValue vision_obj = engine_p->newQObject(new VisionAPI(bot_p, engine_p), QScriptEngine::ScriptOwnership);
 	engine_p->globalObject().setProperty("Vision", vision_obj);
 }
@@ -88,17 +83,20 @@ QScriptValue VisionAPI::resizeImage(Image *image, int new_width, int new_height)
 	return m_engine_p->newQObject(new Image(scaled), QScriptEngine::ScriptOwnership);
 }
 
-QScriptValue VisionAPI::isolateColor(Image *image, HSVColor* min_hsv, HSVColor* max_hsv, bool keep_color)
+QScriptValue VisionAPI::isolateColor(Image *image, QColor* min_color, QColor* max_color, bool keep_color)
 {
 	if (!image || image->getQImage().isNull()) {
 		return m_engine_p->currentContext()->throwError("Invalid or empty image.");
 	}
-	if (!min_hsv || !max_hsv) {
-		m_engine_p->currentContext()->throwError("Invalid HSV color.");
+	if (!min_color || !max_color) {
+		m_engine_p->currentContext()->throwError("Invalid Color.");
 	}
 	
+	cv::Scalar min_hsv(min_color->hsvHue() / 2, min_color->hsvSaturation(), min_color->value());
+	cv::Scalar max_hsv(max_color->hsvHue() / 2, max_color->hsvSaturation(), max_color->value());
+	
 	cv::Mat mat = Vision::qimageToBGRMat(image->getQImage());
-	cv::Mat result_image = Vision::isolateColor(mat, min_hsv->getScalar(), max_hsv->getScalar(), keep_color);
+	cv::Mat result_image = Vision::isolateColor(mat, min_hsv, max_hsv, keep_color);
 	mat.release();
 	
 	QImage qimage = Vision::cvMatToQImage(result_image);
@@ -227,6 +225,7 @@ QScriptValue VisionAPI::findMatch(Image *image, Image *tpl, double threshold)
 	return m_engine_p->newQObject(match, QScriptEngine::ScriptOwnership);
 }
 
+/*
 QScriptValue VisionAPI::findBlobs(BlobTpl *blob_tpl, Image *image)
 {
 	if (!image || image->getQImage().isNull()) {
@@ -261,6 +260,7 @@ QScriptValue VisionAPI::findBlobs(BlobTpl *blob_tpl, Image *image)
 	
 	return matches;
 }
+*/
 
 QScriptValue VisionAPI::markMatches(Image *image, QScriptValue matches, int r, int g, int b, int thickness)
 {

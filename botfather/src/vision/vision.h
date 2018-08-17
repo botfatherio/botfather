@@ -25,7 +25,7 @@ public:
 	static QVector<Match*> findMatches(cv::Mat image, cv::Mat tpl, double threshold, int max_matches = 7);
 	static Match* findMatch(cv::Mat image, cv::Mat tpl, double threshold);
 	
-	static QVector<cv::KeyPoint> findBlobs(BlobTpl *blob_tpl, cv::Mat image);
+	//static QVector<cv::KeyPoint> findBlobs(BlobTpl *blob_tpl, cv::Mat image);
 	static cv::Mat markMatches(cv::Mat image, QVector<Match*> matches, cv::Scalar color = cv::Scalar(0, 0, 255), int thickness = 2);
 	static cv::Mat markMatch(cv::Mat image, Match* match, cv::Scalar color = cv::Scalar(0, 0, 255), int thickness = 2);
 	

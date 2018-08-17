@@ -1,7 +1,6 @@
 #include "vision.h"
 #include <opencv2/highgui.hpp>
 #include <QDebug>
-#include "blob_tpl.h"
 #include "match.h"
 
 // static
@@ -196,15 +195,17 @@ Match* Vision::findMatch(cv::Mat image, cv::Mat tpl, double threshold)
 	return Vision::findMaskedMatch(image, tpl, cv::Mat(), threshold);
 }
 
+/*
 QVector<cv::KeyPoint> Vision::findBlobs(BlobTpl *blob_tpl, cv::Mat image)
 {
+	QColor *min_color = blob_tpl->getMinHSV();
+	QColor *max_color = blob_tpl->getMaxHSV();
+	
+	cv::Scalar min_hsv(min_color->hslHue(), min_color->hslSaturation(), min_color->value());
+	cv::Scalar max_hsv(max_color->hslHue(), max_color->hslSaturation(), max_color->value());
+	
 	// Make pixels in the color of our intereset white and everything else black.
-	cv::Mat threshold_mat = Vision::isolateColor(
-		image,
-		blob_tpl->getMinHSV()->getScalar(),
-		blob_tpl->getMaxHSV()->getScalar(),
-		false
-	);
+	cv::Mat threshold_mat = Vision::isolateColor(image, min_hsv, max_hsv, false);
 	
 	// Detect wanted (now white) color blobs as keypoints
 	cv::Ptr<cv::SimpleBlobDetector> detector = cv::SimpleBlobDetector::create(blob_tpl->getBlobParams());
@@ -213,6 +214,7 @@ QVector<cv::KeyPoint> Vision::findBlobs(BlobTpl *blob_tpl, cv::Mat image)
 	
 	return QVector<cv::KeyPoint>::fromStdVector(keypoints);
 }
+*/
 
 cv::Mat Vision::markMatches(cv::Mat image, QVector<Match *> matches, cv::Scalar color, int thickness)
 {

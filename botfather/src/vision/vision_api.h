@@ -5,9 +5,12 @@
 #include <QObject>
 #include <QScriptEngine>
 #include "image.h"
-#include "blob_tpl.h"
-#include "hsv_color.h"
 #include "match.h"
+
+/*
+	NOTE: QColor HSV is H: 0 - 359, S: 0 - 255, V: 0 - 255
+	NOTE: OpenCV HSV is H: 0 - 180, S: 0 - 255, V: 0 - 255
+*/
 
 class Bot;
 
@@ -24,7 +27,7 @@ public:
 	Q_INVOKABLE QScriptValue cropImage(Image* image, int x_offset, int y_offset, int width, int height);
 	Q_INVOKABLE QScriptValue grayImage(Image* image);
 	Q_INVOKABLE QScriptValue resizeImage(Image* image, int new_width, int new_height);
-	Q_INVOKABLE QScriptValue isolateColor(Image* image, HSVColor* min_hsv, HSVColor* max_hsv, bool keep_color = false);
+	Q_INVOKABLE QScriptValue isolateColor(Image* image, QColor *min_color, QColor *max_color, bool keep_color = false);
 	Q_INVOKABLE bool sameImages(Image* image_1, Image* image_2);
 	
 	Q_INVOKABLE QScriptValue findMaskedMatches(Image* image, Image* tpl, Image* mask, double threshold = 0.8, int max_matches = -1);
@@ -33,7 +36,7 @@ public:
 	Q_INVOKABLE QScriptValue findMatches(Image* image, Image* tpl, double threshold = 0.8, int max_matches = -1);
 	Q_INVOKABLE QScriptValue findMatch(Image* image, Image* tpl, double threshold = 0.8);
 	
-	Q_INVOKABLE QScriptValue findBlobs(BlobTpl* blob_tpl, Image* image );
+	//Q_INVOKABLE QScriptValue findBlobs(BlobTpl* blob_tpl, Image* image );
 	Q_INVOKABLE QScriptValue markMatches(Image* image, QScriptValue matches, int r = 255, int g = 0, int b = 255, int thickness = 2);
 	Q_INVOKABLE QScriptValue markMatch(Image* image, Match* match, int r = 255, int g = 0, int b = 255, int thickness = 2);
 	
