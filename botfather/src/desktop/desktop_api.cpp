@@ -2,7 +2,6 @@
 #include <QPoint>
 #include <QDebug>
 #include "desktop.h"
-#include "../vision/image.h"
 #include "../vision/match.h"
 #include "../vision/vision.h"
 #include "../vision/vision_api.h"
@@ -22,8 +21,8 @@ void DesktopAPI::enable(Bot *bot_p, QScriptEngine *engine_p)
 QScriptValue DesktopAPI::takeScreenshot()
 {
 	QImage qimage = desktop->takeScreenshot();
-	m_engine_p->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(qimage)));
-	return m_engine_p->newQObject(new Image(qimage), QScriptEngine::ScriptOwnership);
+	//m_engine_p->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(qimage)));
+	return m_engine_p->toScriptValue(qimage);
 }
 
 int DesktopAPI::getWidth()
@@ -95,16 +94,16 @@ QScriptValue DesktopAPI::getCursorPosition()
 	return m_engine_p->toScriptValue(QPoint(x, y));
 }
 
-bool DesktopAPI::findAndClick(Image* tpl, double threshold, int button)
+bool DesktopAPI::findAndClick(QImage* tpl, double threshold, int button)
 {
 	QImage screenshot = desktop->takeScreenshot();
 	if (screenshot.isNull() || !tpl) {
 		return false;
 	}
-	if (screenshot.width() <= tpl->getWidth() || screenshot.height() <= tpl->getHeight()) {
+	if (screenshot.width() <= tpl->width() || screenshot.height() <= tpl->height()) {
 		return false;
 	}
-	cv::Mat tpl_mat = Vision::qimageToBGRMat(tpl->getQImage());
+	cv::Mat tpl_mat = Vision::qimageToBGRMat(*tpl); // Check whether this works or leaks mem
 	cv::Mat screenshot_mat = Vision::qimageToBGRMat(screenshot);
 	Match *match = Vision::findMatch(screenshot_mat, tpl_mat, threshold);
 	
@@ -125,16 +124,16 @@ bool DesktopAPI::findAndClick(Image* tpl, double threshold, int button)
 	return true;
 }
 
-QScriptValue DesktopAPI::findMatches(Image* tpl, double threshold, int max_matches)
+QScriptValue DesktopAPI::findMatches(QImage* tpl, double threshold, int max_matches)
 {
+	QImage screenshot = desktop->takeScreenshot();
 	VisionAPI *vapi = new VisionAPI(m_bot_p, m_engine_p);
-	Image *screenshot = qscriptvalue_cast<Image*>(takeScreenshot());
-	return vapi->findMatches(screenshot, tpl, threshold, max_matches);
+	return vapi->findMatches(&screenshot, tpl, threshold, max_matches); // FIXME: this pointer will leak mem
 }
 
-QScriptValue DesktopAPI::findMatch(Image* tpl, double threshold)
+QScriptValue DesktopAPI::findMatch(QImage* tpl, double threshold)
 {
+	QImage screenshot = desktop->takeScreenshot();
 	VisionAPI *vapi = new VisionAPI(m_bot_p, m_engine_p);
-	Image *screenshot = qscriptvalue_cast<Image*>(takeScreenshot());
-	return vapi->findMatch(screenshot, tpl, threshold);
+	return vapi->findMatch(&screenshot, tpl, threshold); // FIXME: this pointer will leak mem
 }

@@ -109,7 +109,6 @@ HEADERS += \
     ./src/updater/updater_dialog.h \
     ./src/vision/vision_api.h \
     ./src/vision/match.h \
-    ./src/vision/image.h \
     ./src/engine/helper_api.h \
     ./src/engine/bot.h \
     ./src/gui/control_window.h \
@@ -132,7 +131,8 @@ HEADERS += \
     src/engine/types/color_prototype.h \
     src/engine/types/abstract_prototype.h \
     src/engine/types/rect_prototype.h \
-    src/engine/types/point_prototype.h
+    src/engine/types/point_prototype.h \
+    src/engine/types/image_prototype.h
 SOURCES += ./src/android/adb_device_info.cpp \
     ./src/android/adb_wrapper.cpp \
     ./src/android/android_api.cpp \
@@ -151,7 +151,6 @@ SOURCES += ./src/android/adb_device_info.cpp \
     ./src/engine/helper_api.cpp \
     ./src/updater/updater_dialog.cpp \
     ./src/updater/update_checker.cpp \
-    ./src/vision/image.cpp \
     ./src/vision/match.cpp \
     ./src/vision/vision.cpp \
     ./src/vision/vision_api.cpp \
@@ -164,7 +163,8 @@ SOURCES += ./src/android/adb_device_info.cpp \
     src/engine/types/color_prototype.cpp \
     src/engine/types/abstract_prototype.cpp \
     src/engine/types/rect_prototype.cpp \
-    src/engine/types/point_prototype.cpp
+    src/engine/types/point_prototype.cpp \
+    src/engine/types/image_prototype.cpp
 FORMS += ./src/gui/config_dialog.ui \
     ./src/gui/control_window.ui \
     ./src/gui/browser_window.ui \

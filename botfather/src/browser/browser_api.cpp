@@ -4,7 +4,6 @@
 #include "browser.h"
 #include "../vision/vision.h"
 #include "../vision/vision_api.h"
-#include "../vision/image.h"
 #include "../vision/match.h"
 #include "../engine/bot.h"
 
@@ -22,8 +21,8 @@ QScriptValue BrowserAPI::takeScreenshot()
 	QImage qimage = Browser::takeScreenshot();
 	// NOTE: It's okay to report additional cost before creating the new object.
 	// Because we can expect the new object to not be instantly garbage...
-	m_engine_p->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(qimage)));
-	return m_engine_p->newQObject(new Image(qimage), QScriptEngine::ScriptOwnership);
+	//m_engine_p->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(qimage)));
+	return m_engine_p->toScriptValue(qimage);
 }
 
 void BrowserAPI::blockResource(QString resource)
@@ -184,19 +183,19 @@ void BrowserAPI::scrollWheel(int x, int y, int delta_x, int delta_y)
 	Browser::scrollWheel(x, y, delta_x, delta_y);
 }
 
-bool BrowserAPI::findAndClick(Image* tpl, double threshold, int button)
+bool BrowserAPI::findAndClick(QImage* tpl, double threshold, int button)
 {
 	QImage screenshot = Browser::takeScreenshot();
 	
 	if (screenshot.isNull() || !tpl) {
 		return false;
 	}
-	if (screenshot.width() <= tpl->getWidth() || screenshot.height() <= tpl->getHeight()) {
+	if (screenshot.width() <= tpl->width() || screenshot.height() <= tpl->height()) {
 		return false;
 	}
 	
 	cv::Mat ref_mat = Vision::qimageToBGRMat(screenshot);
-	cv::Mat tpl_mat = Vision::qimageToBGRMat(tpl->getQImage());
+	cv::Mat tpl_mat = Vision::qimageToBGRMat(*tpl); // Check whether this works or leaks mem
 	
 	Match *match = Vision::findMatch(ref_mat, tpl_mat, threshold);
 	
@@ -221,16 +220,16 @@ bool BrowserAPI::findAndClick(Image* tpl, double threshold, int button)
 	return true;
 }
 
-QScriptValue BrowserAPI::findMatches(Image* tpl, double threshold, int max_matches)
+QScriptValue BrowserAPI::findMatches(QImage* tpl, double threshold, int max_matches)
 {
+	QImage screenshot = Browser::takeScreenshot();
 	VisionAPI *vapi = new VisionAPI(m_bot_p, m_engine_p);
-	Image *screenshot = qscriptvalue_cast<Image*>(takeScreenshot());
-	return vapi->findMatches(screenshot, tpl, threshold, max_matches);
+	return vapi->findMatches(&screenshot, tpl, threshold, max_matches); // FIXME: this pointer will leak mem.
 }
 
-QScriptValue BrowserAPI::findMatch(Image* tpl, double threshold)
+QScriptValue BrowserAPI::findMatch(QImage* tpl, double threshold)
 {
+	QImage screenshot = Browser::takeScreenshot();
 	VisionAPI *vapi = new VisionAPI(m_bot_p, m_engine_p);
-	Image *screenshot = qscriptvalue_cast<Image*>(takeScreenshot());
-	return vapi->findMatch(screenshot, tpl, threshold);
+	return vapi->findMatch(&screenshot, tpl, threshold); // FIXME: this pointer will leak mem.
 }

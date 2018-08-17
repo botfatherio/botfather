@@ -5,16 +5,18 @@
 #include <QFileInfo>
 #include <QDir>
 #include "helper_api.h"
-#include "../vision/vision_api.h"
-#include "../browser/browser_api.h"
-#include "../browser/browser.h"
-#include "../android/android_api.h"
-#include "../desktop/desktop_api.h"
 
 #include "types/point_prototype.h"
+#include "types/image_prototype.h"
 #include "types/color_prototype.h"
 #include "types/size_prototype.h"
 #include "types/rect_prototype.h"
+
+#include "../vision/vision_api.h"
+#include "../browser/browser_api.h"
+#include "../browser/browser.h"
+//#include "../android/android_api.h"
+#include "../desktop/desktop_api.h"
 
 Bot::Bot(QString script_path)
 	: m_script_path(script_path)
@@ -35,12 +37,13 @@ void Bot::runScript()
 	HelperAPI::enable(this, script_engine);
 	VisionAPI::enable(this, script_engine);
 	BrowserAPI::enable(this, script_engine);
-	AndroidAPI::enable(this, script_engine);
+	//AndroidAPI::enable(this, script_engine);
 	DesktopAPI::enable(this, script_engine);
 	
 	
 
 	REGISTER_PROTO(script_engine, PointPrototype, QPoint, "Point");
+	REGISTER_PROTO(script_engine, ImagePrototype, QImage, "Image");
 	REGISTER_PROTO(script_engine, ColorPrototype, QColor, "Color");
 	REGISTER_PROTO(script_engine, SizePrototype, QSize, "Size");
 	REGISTER_PROTO(script_engine, RectPrototype, QRect, "Rect");
@@ -57,7 +60,6 @@ void Bot::runScript()
 	// Register custom QObject based types.
 	// registriert man den typ nicht, kann man ihn nicht direkt returnen, also sowas wie Size Size::resize(...) geht nicht.
 	// QScriptValue Size::resize(...) geht allerdings schon.
-	qScriptRegisterMetaType(script_engine, Image::toScriptValue, Image::fromScriptValue);
 	qScriptRegisterMetaType(script_engine, Match::toScriptValue, Match::fromScriptValue);
 
 	

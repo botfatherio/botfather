@@ -8,7 +8,6 @@
 
 class Bot;
 class AdbWrapper;
-class Image;
 
 class AndroidAPI : public QObject
 {
@@ -33,9 +32,9 @@ public:
 	// Returns the android devices screenshot height or -1 if it couldn't be obtained.
 	Q_INVOKABLE int getDeviceHeight();
 	
-	Q_INVOKABLE bool findAndTap(Image *tpl, double threshold = 0.8);
-	Q_INVOKABLE QScriptValue findMatches(Image* tpl, double threshold = 0.8, int max_matches = -1);
-	Q_INVOKABLE QScriptValue findMatch(Image* tpl, double threshold = 0.8);
+	Q_INVOKABLE bool findAndTap(QImage *tpl, double threshold = 0.8);
+	Q_INVOKABLE QScriptValue findMatches(QImage* tpl, double threshold = 0.8, int max_matches = -1);
+	Q_INVOKABLE QScriptValue findMatch(QImage* tpl, double threshold = 0.8);
 	
 private:
 	Bot *m_bot_p;

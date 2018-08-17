@@ -3,7 +3,6 @@
 #include "android_settings.h"
 #include "../vision/vision_api.h"
 #include "../vision/vision.h"
-#include "../vision/image.h"
 #include "../vision/match.h"
 #include "../engine/bot.h"
 
@@ -82,8 +81,8 @@ QScriptValue AndroidAPI::takeScreenshot()
 	if (!adb->takeScreenshot(serial_number, qimage)) {
 		// Taking screenshot failed. TODO: print system debug info in some later version...
 	}
-	m_engine_p->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(qimage)));
-	return m_engine_p->newQObject(new Image(qimage), QScriptEngine::ScriptOwnership);
+	//m_engine_p->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(qimage)));
+	return m_engine_p->toScriptValue(qimage);
 }
 
 int AndroidAPI::getDeviceWidth()
@@ -106,32 +105,34 @@ int AndroidAPI::getDeviceHeight()
 	return qimage.height();
 }
 
-bool AndroidAPI::findAndTap(Image* tpl, double threshold)
+bool AndroidAPI::findAndTap(QImage* tpl, double threshold)
 {
 	QImage qimage;
 	if (!adb->takeScreenshot(serial_number, qimage) || !tpl) {
 		return false;
 	}
-	if (qimage.width() <= tpl->getWidth() || qimage.height() <= tpl->getHeight()) {
+	if (qimage.width() <= tpl->width() || qimage.height() <= tpl->height()) {
 		return false;
 	}
 	cv::Mat image_mat = Vision::qimageToBGRMat(qimage);
-	cv::Mat tpl_mat = Vision::qimageToBGRMat(tpl->getQImage());
+	cv::Mat tpl_mat = Vision::qimageToBGRMat(*tpl); // TODO: Check whether this works or leaks mem
 	Match *match = Vision::findMatch(image_mat, tpl_mat, threshold);
 	sendTap(match->getX(), match->getY());
 	return true;
 }
 
-QScriptValue AndroidAPI::findMatches(Image* tpl, double threshold, int max_matches)
+QScriptValue AndroidAPI::findMatches(QImage* tpl, double threshold, int max_matches)
 {
+	QImage screenshot;
+	adb->takeScreenshot(serial_number, screenshot);
 	VisionAPI *vapi = new VisionAPI(m_bot_p, m_engine_p);
-	Image *screenshot = qscriptvalue_cast<Image*>(takeScreenshot());
-	return vapi->findMatches(screenshot, tpl, threshold, max_matches);
+	return vapi->findMatches(&screenshot, tpl, threshold, max_matches); // FIXME: this pointer will leak mem
 }
 
-QScriptValue AndroidAPI::findMatch(Image* tpl, double threshold)
+QScriptValue AndroidAPI::findMatch(QImage* tpl, double threshold)
 {
+	QImage screenshot;
+	adb->takeScreenshot(serial_number, screenshot);
 	VisionAPI *vapi = new VisionAPI(m_bot_p, m_engine_p);
-	Image *screenshot = qscriptvalue_cast<Image*>(takeScreenshot());
-	return vapi->findMatch(screenshot, tpl, threshold);
+	return vapi->findMatch(&screenshot, tpl, threshold); // FIXME: this pointer will leak mem
 }
