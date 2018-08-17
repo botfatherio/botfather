@@ -6,7 +6,7 @@
 #include "../vision/vision_api.h"
 #include "../vision/image.h"
 #include "../vision/match.h"
-#include "../scripting/bot.h"
+#include "../engine/bot.h"
 
 BrowserAPI::BrowserAPI(Bot *bot_p, QScriptEngine *engine_p) : QObject(bot_p),  m_bot_p(bot_p), m_engine_p(engine_p)
 {}

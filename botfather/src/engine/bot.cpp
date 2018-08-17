@@ -4,7 +4,6 @@
 #include <QDebug>
 #include <QFileInfo>
 #include <QDir>
-#include "script_point.h"
 #include "helper_api.h"
 #include "../vision/vision_api.h"
 #include "../browser/browser_api.h"
@@ -12,9 +11,16 @@
 #include "../android/android_api.h"
 #include "../desktop/desktop_api.h"
 
+#include "types/point_prototype.h"
+#include "types/color_prototype.h"
+#include "types/size_prototype.h"
+#include "types/rect_prototype.h"
+
 Bot::Bot(QString script_path)
 	: m_script_path(script_path)
 {}
+
+//Q_SCRIPT_DECLARE_QMETAOBJECT(Point, QObject*);
 
 void Bot::runScript()
 {
@@ -32,12 +38,28 @@ void Bot::runScript()
 	AndroidAPI::enable(this, script_engine);
 	DesktopAPI::enable(this, script_engine);
 	
+	
+
+	REGISTER_PROTO(script_engine, PointPrototype, QPoint, "Point");
+	REGISTER_PROTO(script_engine, ColorPrototype, QColor, "Color");
+	REGISTER_PROTO(script_engine, SizePrototype, QSize, "Size");
+	REGISTER_PROTO(script_engine, RectPrototype, QRect, "Rect");
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
 	// Register custom QObject based types.
+	// registriert man den typ nicht, kann man ihn nicht direkt returnen, also sowas wie Size Size::resize(...) geht nicht.
+	// QScriptValue Size::resize(...) geht allerdings schon.
 	qScriptRegisterMetaType(script_engine, Image::toScriptValue, Image::fromScriptValue);
-	qScriptRegisterMetaType(script_engine, HSVColor::toScriptValue, HSVColor::fromScriptValue);
-	qScriptRegisterMetaType(script_engine, BlobTpl::toScriptValue, BlobTpl::fromScriptValue);
 	qScriptRegisterMetaType(script_engine, Match::toScriptValue, Match::fromScriptValue);
-	qScriptRegisterMetaType(script_engine, ScriptPoint::toScriptValue, ScriptPoint::fromScriptValue);
+
 	
 	// Try to open the submitted script file.
 	QFile script_file(this->m_script_path);
