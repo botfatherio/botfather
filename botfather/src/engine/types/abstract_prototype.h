@@ -40,6 +40,7 @@ public:
 	
 	static bool isQPoint(QScriptValue value);
 	static bool isQSize(QScriptValue value);
+	static bool isQRect(QScriptValue value);
 };
 
 #endif // ENGINE_TYPES_ABSTRACT_PROTOTYPE_H
