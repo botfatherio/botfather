@@ -126,14 +126,14 @@ HEADERS += \
     src/auth/status_api_client.h \
     src/auth/license_api_client.h \
     src/gui/status_dialog.h \
-    src/engine/types/size_prototype.h \
-    src/engine/types/color_prototype.h \
-    src/engine/types/abstract_prototype.h \
-    src/engine/types/rect_prototype.h \
-    src/engine/types/point_prototype.h \
-    src/engine/types/image_prototype.h \
+    src/engine/prototypes/size_prototype.h \
+    src/engine/prototypes/color_prototype.h \
+    src/engine/prototypes/abstract_prototype.h \
+    src/engine/prototypes/rect_prototype.h \
+    src/engine/prototypes/point_prototype.h \
+    src/engine/prototypes/image_prototype.h \
     src/engine/types/match.h \
-    src/engine/types/match_prototype.h
+    src/engine/prototypes/match_prototype.h
 SOURCES += ./src/android/adb_device_info.cpp \
     ./src/android/adb_wrapper.cpp \
     ./src/android/android_api.cpp \
@@ -159,13 +159,13 @@ SOURCES += ./src/android/adb_device_info.cpp \
     src/auth/status_api_client.cpp \
     src/auth/license_api_client.cpp \
     src/gui/status_dialog.cpp \
-    src/engine/types/size_prototype.cpp \
-    src/engine/types/color_prototype.cpp \
-    src/engine/types/abstract_prototype.cpp \
-    src/engine/types/rect_prototype.cpp \
-    src/engine/types/point_prototype.cpp \
-    src/engine/types/image_prototype.cpp \
-    src/engine/types/match_prototype.cpp \
+    src/engine/prototypes/size_prototype.cpp \
+    src/engine/prototypes/color_prototype.cpp \
+    src/engine/prototypes/abstract_prototype.cpp \
+    src/engine/prototypes/rect_prototype.cpp \
+    src/engine/prototypes/point_prototype.cpp \
+    src/engine/prototypes/image_prototype.cpp \
+    src/engine/prototypes/match_prototype.cpp \
     src/engine/types/match.cpp
 FORMS += ./src/gui/config_dialog.ui \
     ./src/gui/control_window.ui \

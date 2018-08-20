@@ -1,12 +1,9 @@
-#ifndef ENGINE_TYPES_IMAGE_PROTOTYPE_H
-#define ENGINE_TYPES_IMAGE_PROTOTYPE_H
+#ifndef ENGINE_PROTOTYPES_IMAGE_PROTOTYPE_H
+#define ENGINE_PROTOTYPES_IMAGE_PROTOTYPE_H
 #define IMAGE_PROTOTYPE_DOCS "https://botfather.io/docs/apiref/image/"
 
-#include <QImage>
 #include "abstract_prototype.h"
-
-Q_DECLARE_METATYPE(QImage)
-Q_DECLARE_METATYPE(QImage*)
+#include <QImage>
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
 #define ImageSizeInBytes(qimage) qimage.byteCount()
@@ -33,4 +30,4 @@ public:
 	Q_INVOKABLE QString toString() const;
 };
 
-#endif // ENGINE_TYPES_IMAGE_PROTOTYPE_H
+#endif // ENGINE_PROTOTYPES_IMAGE_PROTOTYPE_H

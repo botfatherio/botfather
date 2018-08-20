@@ -1,12 +1,10 @@
-#ifndef ENGINE_TYPES_RECT_PROTOTYPE_H
-#define ENGINE_TYPES_RECT_PROTOTYPE_H
-#define RECT_PROTOTYPE_DOCS "https://botfather.io/docs/apiref/size/"
+#ifndef ENGINE_PROTOTYPES_RECT_PROTOTYPE_H
+#define ENGINE_PROTOTYPES_RECT_PROTOTYPE_H
+#define RECT_PROTOTYPE_DOCS "https://botfather.io/docs/apiref/rect/"
 
-#include <QRect>
 #include "abstract_prototype.h"
-
-Q_DECLARE_METATYPE(QRect)
-Q_DECLARE_METATYPE(QRect*)
+#include <QRect>
+#include <QPoint>
 
 class RectPrototype : public AbstractPrototype
 {
@@ -42,4 +40,4 @@ public:
 	Q_INVOKABLE QString toString() const;
 };
 
-#endif // ENGINE_TYPES_RECT_PROTOTYPE_H
+#endif // ENGINE_PROTOTYPES_RECT_PROTOTYPE_H

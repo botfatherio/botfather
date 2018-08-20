@@ -6,12 +6,12 @@
 #include <QDir>
 #include "helper_api.h"
 
-#include "types/point_prototype.h"
-#include "types/image_prototype.h"
-#include "types/color_prototype.h"
-#include "types/match_prototype.h"
-#include "types/size_prototype.h"
-#include "types/rect_prototype.h"
+#include "prototypes/point_prototype.h"
+#include "prototypes/image_prototype.h"
+#include "prototypes/color_prototype.h"
+#include "prototypes/match_prototype.h"
+#include "prototypes/size_prototype.h"
+#include "prototypes/rect_prototype.h"
 
 #include "../vision/vision_api.h"
 #include "../browser/browser_api.h"

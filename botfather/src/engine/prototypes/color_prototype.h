@@ -1,12 +1,9 @@
-#ifndef ENGINE_TYPES_COLOR_PROTOTYPE_H
-#define ENGINE_TYPES_COLOR_PROTOTYPE_H
+#ifndef ENGINE_PROTOTYPES_COLOR_PROTOTYPE_H
+#define ENGINE_PROTOTYPES_COLOR_PROTOTYPE_H
 #define COLOR_PROTOTYPE_DOCS "https://botfather.io/docs/apiref/color/"
 
-#include <QColor>
 #include "abstract_prototype.h"
-
-Q_DECLARE_METATYPE(QColor)
-Q_DECLARE_METATYPE(QColor*)
+#include <QColor>
 
 class ColorPrototype : public AbstractPrototype
 {
@@ -28,4 +25,4 @@ public:
 	Q_INVOKABLE QString toString() const;
 };
 
-#endif // ENGINE_TYPES_COLOR_PROTOTYPE_H
+#endif // ENGINE_PROTOTYPES_COLOR_PROTOTYPE_H

@@ -1,12 +1,9 @@
-#ifndef ENGINE_TYPES_SIZE_PROTOTYPE_H
-#define ENGINE_TYPES_SIZE_PROTOTYPE_H
+#ifndef ENGINE_PROTOTYPES_SIZE_PROTOTYPE_H
+#define ENGINE_PROTOTYPES_SIZE_PROTOTYPE_H
 #define SIZE_PROTOTYPE_DOCS "https://botfather.io/docs/apiref/size/"
 
 #include <QSize>
 #include "abstract_prototype.h"
-
-Q_DECLARE_METATYPE(QSize)
-Q_DECLARE_METATYPE(QSize*)
 
 class SizePrototype : public AbstractPrototype
 {
@@ -25,4 +22,4 @@ public:
 	Q_INVOKABLE QString toString() const;
 };
 
-#endif // ENGINE_TYPES_SIZE_PROTOTYPE_H
+#endif // ENGINE_PROTOTYPES_SIZE_PROTOTYPE_H

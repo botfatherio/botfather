@@ -1,9 +1,9 @@
-#ifndef ENGINE_TYPES_MATCH_PROTOTYPE_H
-#define ENGINE_TYPES_MATCH_PROTOTYPE_H
+#ifndef ENGINE_PROTOTYPES_MATCH_PROTOTYPE_H
+#define ENGINE_PROTOTYPES_MATCH_PROTOTYPE_H
 #define MATCH_PROTOTYPE_DOCS QString("https://botfather.io/docs/apiref/match/")
 
 #include "rect_prototype.h"
-#include "match.h"
+#include "../types/match.h"
 
 class MatchPrototype : public RectPrototype
 {
@@ -21,4 +21,4 @@ public:
 	Q_INVOKABLE QString toString() const;
 };
 
-#endif // ENGINE_TYPES_MATCH_PROTOTYPE_H
+#endif // ENGINE_PROTOTYPES_MATCH_PROTOTYPE_H
