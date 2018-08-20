@@ -5,6 +5,9 @@
 #include "abstract_prototype.h"
 #include <QColor>
 
+Q_DECLARE_METATYPE(QColor)
+Q_DECLARE_METATYPE(QColor*)
+
 class ColorPrototype : public AbstractPrototype
 {
 	Q_OBJECT

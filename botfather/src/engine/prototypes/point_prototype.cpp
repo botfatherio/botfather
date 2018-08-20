@@ -42,5 +42,5 @@ void PointPrototype::setY(int y)
 QString PointPrototype::toString() const
 {
 	QPoint point = THIS_POINT();
-	return QString("Point(%1, %2)").arg(point.x()).arg(point.y());
+	return QString("Point(x: %1, y: %2)").arg(point.x()).arg(point.y());
 }

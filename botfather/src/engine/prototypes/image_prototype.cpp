@@ -43,5 +43,5 @@ bool ImagePrototype::isNull() const
 QString ImagePrototype::toString() const
 {
 	QImage image = THIS_IMAGE();
-	return QString("Image(%1x%2, %3 bytes)").arg(image.width()).arg(image.height()).arg(ImageSizeInBytes(image));
+	return QString("Image(width: %1, height: %2, bytes: %3)").arg(image.width()).arg(image.height()).arg(ImageSizeInBytes(image));
 }

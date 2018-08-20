@@ -5,6 +5,9 @@
 #include <QSize>
 #include "abstract_prototype.h"
 
+Q_DECLARE_METATYPE(QSize)
+Q_DECLARE_METATYPE(QSize*)
+
 class SizePrototype : public AbstractPrototype
 {
 	Q_OBJECT

@@ -6,6 +6,9 @@
 #include <QRect>
 #include <QPoint>
 
+Q_DECLARE_METATYPE(QRect)
+Q_DECLARE_METATYPE(QRect*)
+
 class RectPrototype : public AbstractPrototype
 {
 	Q_OBJECT

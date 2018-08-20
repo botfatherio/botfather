@@ -5,6 +5,9 @@
 #include "abstract_prototype.h"
 #include <QPoint>
 
+Q_DECLARE_METATYPE(QPoint)
+Q_DECLARE_METATYPE(QPoint*)
+
 class PointPrototype : public AbstractPrototype
 {
 	Q_OBJECT

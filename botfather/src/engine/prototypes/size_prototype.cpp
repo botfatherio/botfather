@@ -1,5 +1,7 @@
 #include "size_prototype.h"
-#include <QDebug>
+
+#define THIS_SIZE() qscriptvalue_cast<QSize>(thisObject())
+#define THIS_SIZE_P() qscriptvalue_cast<QSize*>(thisObject())
 
 QScriptValue SizePrototype::constructor(QScriptContext *context, QScriptEngine *engine)
 {
@@ -21,30 +23,26 @@ QScriptValue SizePrototype::constructor(QScriptContext *context, QScriptEngine *
 
 int SizePrototype::getWidth() const
 {
-	QSize size = qscriptvalue_cast<QSize>(thisObject());
-	return size.width();
+	return THIS_SIZE().width();
 }
 
 void SizePrototype::setWidth(int width)
 {
-	QSize *size = qscriptvalue_cast<QSize*>(thisObject());
-	if (size) { size->setWidth(width); }
+	THIS_SIZE_P()->setWidth(width);
 }
 
 int SizePrototype::getHeight() const
 {
-	QSize size = qscriptvalue_cast<QSize>(thisObject());
-	return size.height();
+	return THIS_SIZE().height();
 }
 
 void SizePrototype::setHeight(int height)
 {
-	QSize *size = qscriptvalue_cast<QSize*>(thisObject());
-	if (size) { size->setHeight(height); }
+	THIS_SIZE_P()->setHeight(height);
 }
 
 QString SizePrototype::toString() const
 {
-	QSize size = qscriptvalue_cast<QSize>(thisObject());
-	return QString("%1x%2").arg(size.width()).arg(size.height());
+	QSize size = THIS_SIZE();
+	return QString("Size(width: %1, height: %2").arg(size.width()).arg(size.height());
 }

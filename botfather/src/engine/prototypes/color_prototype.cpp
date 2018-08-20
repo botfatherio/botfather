@@ -1,6 +1,9 @@
 #include "color_prototype.h"
 #include <QHash>
 
+#define THIS_COLOR() qscriptvalue_cast<QColor>(thisObject())
+#define THIS_COLOR_P() qscriptvalue_cast<QColor*>(thisObject())
+
 static QHash<QString, QColor> color_map = {
 	{ "black", Qt::black },
 	{ "blue", Qt::blue },
@@ -63,42 +66,36 @@ QScriptValue ColorPrototype::constructor(QScriptContext *context, QScriptEngine 
 
 int ColorPrototype::getRed() const
 {
-	QColor color = qscriptvalue_cast<QColor>(thisObject());
-	return color.red();
+	return THIS_COLOR().red();
 }
 
 void ColorPrototype::setRed(int red)
 {
-	QColor *color = qscriptvalue_cast<QColor*>(thisObject());
-	if (color) { color->setRed(red); }
+	THIS_COLOR_P()->setRed(red);
 }
 
 int ColorPrototype::getGreen() const
 {
-	QColor color = qscriptvalue_cast<QColor>(thisObject());
-	return color.green();
+	return THIS_COLOR().green();
 }
 
 void ColorPrototype::setGreen(int green)
 {
-	QColor *color = qscriptvalue_cast<QColor*>(thisObject());
-	if (color) { color->setGreen(green); }
+	THIS_COLOR_P()->setGreen(green);
 }
 
 int ColorPrototype::getBlue() const
 {
-	QColor color = qscriptvalue_cast<QColor>(thisObject());
-	return color.blue();
+	return THIS_COLOR().blue();
 }
 
 void ColorPrototype::setBlue(int blue)
 {
-	QColor *color = qscriptvalue_cast<QColor*>(thisObject());
-	if (color) { color->setBlue(blue); }
+	THIS_COLOR_P()->setBlue(blue);
 }
 
 QString ColorPrototype::toString() const
 {
-	QColor color = qscriptvalue_cast<QColor>(thisObject());
-	return QString("rgb(%1, %2, %3)").arg(color.red()).arg(color.green()).arg(color.blue());
+	QColor color = THIS_COLOR();
+	return QString("Color(r: %1, g: %2, b: %3)").arg(color.red()).arg(color.green()).arg(color.blue());
 }

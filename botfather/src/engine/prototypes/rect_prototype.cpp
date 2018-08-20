@@ -122,5 +122,5 @@ void RectPrototype::setHeight(int height)
 QString RectPrototype::toString() const
 {
 	QRect rect = THIS_RECT();
-	return QString("Rect(%1, %2, %3, %4)").arg(rect.left()).arg(rect.top()).arg(rect.width()).arg(rect.height());
+	return QString("Rect(left: %1, right: %2, width: %3, height: %4)").arg(rect.left()).arg(rect.top()).arg(rect.width()).arg(rect.height());
 }
