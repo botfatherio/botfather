@@ -3,7 +3,7 @@
 #include "android_settings.h"
 #include "../vision/vision_api.h"
 #include "../vision/vision.h"
-#include "../vision/match.h"
+#include "../engine/types/match.h"
 #include "../engine/bot.h"
 
 AndroidAPI::AndroidAPI(Bot* bot_p, QScriptEngine* engine_p) : QObject(bot_p), m_bot_p(bot_p), m_engine_p(engine_p)
@@ -116,8 +116,8 @@ bool AndroidAPI::findAndTap(QImage* tpl, double threshold)
 	}
 	cv::Mat image_mat = Vision::qimageToBGRMat(qimage);
 	cv::Mat tpl_mat = Vision::qimageToBGRMat(*tpl); // TODO: Check whether this works or leaks mem
-	Match *match = Vision::findMatch(image_mat, tpl_mat, threshold);
-	sendTap(match->getX(), match->getY());
+	Match match = Vision::findMatch(image_mat, tpl_mat, threshold);
+	sendTap(match.center().x(), match.center().y());
 	return true;
 }
 

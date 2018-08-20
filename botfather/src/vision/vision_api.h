@@ -4,7 +4,7 @@
 #include <opencv2/opencv.hpp>
 #include <QObject>
 #include <QScriptEngine>
-#include "match.h"
+#include "../engine/types/match.h"
 
 /*
 	NOTE: QColor HSV is H: 0 - 359, S: 0 - 255, V: 0 - 255

@@ -2,7 +2,6 @@
 #include <QDebug>
 #include <QFileInfo>
 #include "vision.h"
-#include "match.h"
 #include "../engine/helper_api.h"
 #include "../engine/bot.h"
 
@@ -143,7 +142,7 @@ QScriptValue VisionAPI::findMaskedMatches(QImage *image, QImage *tpl, QImage *ma
 	cv::Mat tpl_mat = Vision::qimageToBGRMat(*tpl);
 	cv::Mat msk_mat = Vision::qimageToBGRMat(*mask);
 	
-	QVector<Match*> matches = Vision::findMaskedMatches(ref_mat, tpl_mat, msk_mat, threshold, max_matches);
+	QVector<Match> matches = Vision::findMaskedMatches(ref_mat, tpl_mat, msk_mat, threshold, max_matches);
 	return qScriptValueFromSequence(m_engine_p, matches);
 }
 
@@ -169,13 +168,13 @@ QScriptValue VisionAPI::findMaskedMatch(QImage *image, QImage *tpl, QImage *mask
 	cv::Mat tpl_mat = Vision::qimageToBGRMat(*tpl);
 	cv::Mat mask_mat = Vision::qimageToBGRMat(*mask);
 	
-	Match* match = Vision::findMaskedMatch(image_mat, tpl_mat, mask_mat, threshold);
+	Match match = Vision::findMaskedMatch(image_mat, tpl_mat, mask_mat, threshold);
 	
 	image_mat.release();
 	tpl_mat.release();
 	mask_mat.release();
 	
-	return m_engine_p->newQObject(match, QScriptEngine::ScriptOwnership);
+	return m_engine_p->toScriptValue(match);
 }
 
 QScriptValue VisionAPI::findMatches(QImage *image, QImage *tpl, double threshold, int max_matches)
@@ -194,7 +193,7 @@ QScriptValue VisionAPI::findMatches(QImage *image, QImage *tpl, double threshold
 	cv::Mat tpl_mat = Vision::qimageToBGRMat(*tpl);
 	
 	// NOTE: Dont call findMaskedMatches here instead to save some checks, it requires a non empty mask.
-	QVector<Match*> matches = Vision::findMatches(image_mat, tpl_mat, threshold, max_matches);
+	QVector<Match> matches = Vision::findMatches(image_mat, tpl_mat, threshold, max_matches);
 	
 	image_mat.release();
 	tpl_mat.release();
@@ -218,12 +217,12 @@ QScriptValue VisionAPI::findMatch(QImage *image, QImage *tpl, double threshold)
 	cv::Mat tpl_mat = Vision::qimageToBGRMat(*tpl);
 	
 	// NOTE: Dont call findMaskedMatch here instead to save some checks, it requires a non empty mask.
-	Match *match = Vision::findMatch(image_mat, tpl_mat, threshold);
+	Match match = Vision::findMatch(image_mat, tpl_mat, threshold);
 	
 	image_mat.release();
 	tpl_mat.release();
 	
-	return m_engine_p->newQObject(match, QScriptEngine::ScriptOwnership);
+	return m_engine_p->toScriptValue(match);
 }
 
 /*
@@ -272,7 +271,7 @@ QScriptValue VisionAPI::markMatches(QImage *image, QScriptValue matches, int r, 
 		return m_engine_p->currentContext()->throwError("Matches must be an array.");
 	}
 	
-	QVector<Match*> native_matches;
+	QVector<Match> native_matches;
 	qScriptValueToSequence(matches, native_matches);
 	
 	cv::Mat image_mat = Vision::qimageToBGRMat(*image); // TODO: check whether this works or leaks mem
@@ -298,7 +297,7 @@ QScriptValue VisionAPI::markMatch(QImage *image, Match *match, int r, int g, int
 	
 	cv::Mat image_mat = Vision::qimageToBGRMat(*image); // TODO: check whether this works or leaks mem
 	
-	cv::Mat result_image = Vision::markMatch(image_mat, match, cv::Scalar(b, g, r), thickness);
+	cv::Mat result_image = Vision::markMatch(image_mat, *match, cv::Scalar(b, g, r), thickness);
 	QImage qimage = Vision::cvMatToQImage(result_image);
 	
 	image_mat.release();

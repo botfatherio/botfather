@@ -1,7 +1,7 @@
 #include "vision.h"
 #include <opencv2/highgui.hpp>
 #include <QDebug>
-#include "match.h"
+#include "../engine/types/match.h"
 
 // static
 cv::Mat Vision::cropImage(cv::Mat image, QRect region)
@@ -80,14 +80,14 @@ bool Vision::sameImages(cv::Mat image_1, cv::Mat image_2)
 	return non_zero == 0;
 }
 
-QVector<Match*> Vision::findMaskedMatches(cv::Mat image, cv::Mat tpl, cv::Mat mask, double threshold, int max_matches)
+QVector<Match> Vision::findMaskedMatches(cv::Mat image, cv::Mat tpl, cv::Mat mask, double threshold, int max_matches)
 {
 	// Note: Only CV_TM_SQDIFF and CV_TM_CCORR_NORMED accept maskes.
 	static const int match_method = CV_TM_CCORR_NORMED;
 	bool match_method_accepts_mask = (CV_TM_SQDIFF == match_method || match_method == CV_TM_CCORR_NORMED);
 	bool use_mask = !mask.empty();
 	
-	QVector<Match*> matches;
+	QVector<Match> matches;
 	
 	//qDebug() << image.type() << tpl.type();
 	//qDebug() << image.dims << tpl.dims;
@@ -169,28 +169,28 @@ QVector<Match*> Vision::findMaskedMatches(cv::Mat image, cv::Mat tpl, cv::Mat ma
 		// Format the match and push it to the other matches. x and y of match_loc are
 		// the left and top coordinates of the match. Note: in our Match class x and y
 		// mark the center of the match.
-		matches.push_back(new Match(match_val, match_loc.x, match_loc.y, utpl.cols, utpl.rows));
+		matches.push_back(Match(QRect(match_loc.x, match_loc.y, utpl.cols, utpl.rows), match_val));
 	}
 	
 	return matches;
 }
 
 
-Match* Vision::findMaskedMatch(cv::Mat image, cv::Mat tpl, cv::Mat mask, double threshold)
+Match Vision::findMaskedMatch(cv::Mat image, cv::Mat tpl, cv::Mat mask, double threshold)
 {
-	QVector<Match*> matches = Vision::findMaskedMatches(image, tpl, mask, threshold, 1);
+	QVector<Match> matches = Vision::findMaskedMatches(image, tpl, mask, threshold, 1);
 	if (!matches.isEmpty()) {
 		return matches[0];
 	}
-	return new Match();
+	return Match();
 }
 
-QVector<Match*> Vision::findMatches(cv::Mat image, cv::Mat tpl, double threshold, int max_matches)
+QVector<Match> Vision::findMatches(cv::Mat image, cv::Mat tpl, double threshold, int max_matches)
 {
 	return Vision::findMaskedMatches(image, tpl, cv::Mat(), threshold, max_matches);
 }
 
-Match* Vision::findMatch(cv::Mat image, cv::Mat tpl, double threshold)
+Match Vision::findMatch(cv::Mat image, cv::Mat tpl, double threshold)
 {
 	return Vision::findMaskedMatch(image, tpl, cv::Mat(), threshold);
 }
@@ -216,20 +216,20 @@ QVector<cv::KeyPoint> Vision::findBlobs(BlobTpl *blob_tpl, cv::Mat image)
 }
 */
 
-cv::Mat Vision::markMatches(cv::Mat image, QVector<Match *> matches, cv::Scalar color, int thickness)
+cv::Mat Vision::markMatches(cv::Mat image, QVector<Match> matches, cv::Scalar color, int thickness)
 {
-	for (Match* match : matches) {
+	for (Match match : matches) {
 		image = Vision::markMatch(image, match, color, thickness);
 	}
 	return image;
 }
 
-cv::Mat Vision::markMatch(cv::Mat image, Match *match, cv::Scalar color, int thickness)
+cv::Mat Vision::markMatch(cv::Mat image, Match match, cv::Scalar color, int thickness)
 {
 	cv::rectangle(
 		image,
-		cv::Point(match->getLeft(), match->getTop()),
-		cv::Point(match->getRight(), match->getBottom()),
+		cv::Point(match.left(), match.top()),
+		cv::Point(match.right(), match.y() + match.height()),
 		color,
 		thickness,
 		8,

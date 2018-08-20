@@ -4,7 +4,7 @@
 #include "browser.h"
 #include "../vision/vision.h"
 #include "../vision/vision_api.h"
-#include "../vision/match.h"
+#include "../engine/types/match.h"
 #include "../engine/bot.h"
 
 BrowserAPI::BrowserAPI(Bot *bot_p, QScriptEngine *engine_p) : QObject(bot_p),  m_bot_p(bot_p), m_engine_p(engine_p)
@@ -197,7 +197,7 @@ bool BrowserAPI::findAndClick(QImage* tpl, double threshold, int button)
 	cv::Mat ref_mat = Vision::qimageToBGRMat(screenshot);
 	cv::Mat tpl_mat = Vision::qimageToBGRMat(*tpl); // Check whether this works or leaks mem
 	
-	Match *match = Vision::findMatch(ref_mat, tpl_mat, threshold);
+	Match match = Vision::findMatch(ref_mat, tpl_mat, threshold);
 	
 	ref_mat.release();
 	tpl_mat.release();
@@ -205,13 +205,13 @@ bool BrowserAPI::findAndClick(QImage* tpl, double threshold, int button)
 	
 	switch (button) {
 	case 1:
-		leftClick(match->getX(), match->getY());
+		leftClick(match.center().x(), match.center().y());
 		break;
 	case 2:
-		middleClick(match->getX(), match->getY());
+		middleClick(match.center().x(), match.center().y());
 		break;
 	case 3:
-		rightClick(match->getX(), match->getY());
+		rightClick(match.center().x(), match.center().y());
 		break;
 	default:
 		m_engine_p->currentContext()->throwError("Unknown button code.");

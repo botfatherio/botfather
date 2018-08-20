@@ -2,7 +2,7 @@
 #include <QPoint>
 #include <QDebug>
 #include "desktop.h"
-#include "../vision/match.h"
+#include "../engine/types/match.h"
 #include "../vision/vision.h"
 #include "../vision/vision_api.h"
 #include "../engine/bot.h"
@@ -105,17 +105,17 @@ bool DesktopAPI::findAndClick(QImage* tpl, double threshold, int button)
 	}
 	cv::Mat tpl_mat = Vision::qimageToBGRMat(*tpl); // Check whether this works or leaks mem
 	cv::Mat screenshot_mat = Vision::qimageToBGRMat(screenshot);
-	Match *match = Vision::findMatch(screenshot_mat, tpl_mat, threshold);
+	Match match = Vision::findMatch(screenshot_mat, tpl_mat, threshold);
 	
 	switch (button) {
 	case 1:
-		leftClick(match->getX(), match->getY());
+		leftClick(match.center().x(), match.center().y());
 		break;
 	case 2:
-		middleClick(match->getX(), match->getY());
+		middleClick(match.center().x(), match.center().y());
 		break;
 	case 3:
-		rightClick(match->getX(), match->getY());
+		rightClick(match.center().x(), match.center().y());
 		break;
 	default:
 		m_engine_p->currentContext()->throwError("Unknown button code.");
