@@ -3,16 +3,15 @@
 
 #include <QObject>
 #include <QScriptEngine>
+#include "abstract_api.h"
 
-class Bot;
 class Desktop;
 
-class DesktopAPI : public QObject
+class DesktopAPI : public AbstractAPI
 {
 	Q_OBJECT
 public:
-	explicit DesktopAPI(Bot* bot_p, QScriptEngine* engine_p);
-	static void enable(Bot* bot_p, QScriptEngine* engine_p);
+	using AbstractAPI::AbstractAPI;
 	
 	// Returns a Image showing a screenshot of the desktop.
 	Q_INVOKABLE QScriptValue takeScreenshot();
@@ -40,8 +39,6 @@ public:
 	Q_INVOKABLE QScriptValue findMatch(QImage* tpl, double threshold = 0.8);
 	
 private:
-	Bot *m_bot_p;
-	QScriptEngine *m_engine_p;
 	Desktop *desktop;
 };
 

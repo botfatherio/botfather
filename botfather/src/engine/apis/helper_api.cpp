@@ -6,32 +6,17 @@
 #include <QAudioBuffer>
 #include <QVersionNumber>
 #include <QDebug>
-#include "../bot.h"
-
-HelperAPI::HelperAPI(Bot* bot_p, QScriptEngine* engine_p)
-	: QObject(bot_p)
-	, m_bot_p(bot_p)
-	, m_engine_p(engine_p)
-{
-	
-}
-
-void HelperAPI::enable(Bot* bot_p, QScriptEngine* engine_p)
-{
-	QScriptValue vision_obj = engine_p->newQObject(new HelperAPI(bot_p, engine_p), QScriptEngine::ScriptOwnership);
-	engine_p->globalObject().setProperty("Helper", vision_obj);
-}
 
 bool HelperAPI::fileExists(QString file_path)
 {
-	file_path = this->m_bot_p->normalisePath(file_path);
-	return this->m_bot_p->fileExists(file_path);
+	file_path = bot()->normalisePath(file_path);
+	return bot()->fileExists(file_path);
 }
 
 void HelperAPI::sleep(int seconds)
 {
 	if (seconds <= 0) {
-		m_engine_p->currentContext()->throwError("Timeout must be at least 1 second.");
+		engine()->currentContext()->throwError("Timeout must be at least 1 second.");
 		return;
 	}
 	// Not sleeping for at least one ms can cause trouble. Better don't stop sleeping when stop is
@@ -44,7 +29,7 @@ void HelperAPI::sleep(int seconds)
 void HelperAPI::msleep(int milliseconds)
 {
 	if (milliseconds <= 0) {
-		m_engine_p->currentContext()->throwError("Timeout must be at least 1 millisecond.");
+		engine()->currentContext()->throwError("Timeout must be at least 1 millisecond.");
 		return;
 	}
 	QThread::msleep(static_cast<unsigned long>(milliseconds));
@@ -67,25 +52,25 @@ int HelperAPI::getPatchVersion()
 
 void HelperAPI::log(QString log_message)
 {
-	emit m_bot_p->message(log_message, false);
+	emit bot()->message(log_message, false);
 }
 
 QString HelperAPI::getAbsoluteScriptDirPath()
 {
-	return m_bot_p->getAbsoluteScriptDirPath();
+	return bot()->getAbsoluteScriptDirPath();
 }
 
 void HelperAPI::playWavSound(QString path_to_wav_file, bool blocking)
 {
 	if (!fileExists(path_to_wav_file)) {
-		m_engine_p->currentContext()->throwError("Wav file does not exist.");
+		engine()->currentContext()->throwError("Wav file does not exist.");
 		return;
 	}
 	
-	emit m_bot_p->playWavSound(m_bot_p->normalisePath(path_to_wav_file));
+	emit bot()->playWavSound(bot()->normalisePath(path_to_wav_file));
 	
 	if (blocking) {
-		QFile wav_file(m_bot_p->normalisePath(path_to_wav_file));
+		QFile wav_file(bot()->normalisePath(path_to_wav_file));
 		if(!wav_file.open(QIODevice::ReadOnly)) {
 			// Reading the wav file failed.
 			return;
@@ -109,5 +94,5 @@ void HelperAPI::playWavSound(QString path_to_wav_file, bool blocking)
 
 void HelperAPI::stopWavSound()
 {
-	emit m_bot_p->stopWavSound();
+	emit bot()->stopWavSound();
 }

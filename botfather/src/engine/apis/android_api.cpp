@@ -6,21 +6,12 @@
 #include "../bot.h"
 #include "vision_api.h"
 
-AndroidAPI::AndroidAPI(Bot* bot_p, QScriptEngine* engine_p)
-	: QObject(bot_p)
-	, m_bot_p(bot_p)
-	, m_engine_p(engine_p)
+AndroidAPI::AndroidAPI(Bot *bot, QObject *parent) : AbstractAPI(bot, parent)
 {
 	QString adb_binary = m_settings.value(android::options::ADB_BINARY).toString();
 	adb = new AdbWrapper(this, adb_binary);
 	adb->startAdbServer();
 	serial_number = m_settings.value(android::options::SERIAL_NUMBER).toString();
-}
-
-void AndroidAPI::enable(Bot* bot_p, QScriptEngine *engine_p)
-{
-	QScriptValue vision_obj = engine_p->newQObject(new AndroidAPI(bot_p, engine_p), QScriptEngine::ScriptOwnership);
-	engine_p->globalObject().setProperty("Android", vision_obj);
 }
 
 bool AndroidAPI::connected()
@@ -41,7 +32,7 @@ QScriptValue AndroidAPI::listPackages()
 	if (!adb->listPackages(serial_number, packages)) {
 		// Listing the packages failed. A empty list will be returned.
 	}
-	return qScriptValueFromSequence(m_engine_p, packages);
+	return qScriptValueFromSequence(engine(), packages);
 }
 
 bool AndroidAPI::startApp(QString package)
@@ -57,7 +48,7 @@ bool AndroidAPI::sendTap(int x, int y)
 bool AndroidAPI::sendSwipe(int x1, int y1, int x2, int y2, int duration_in_ms)
 {
 	if (duration_in_ms < 0) {
-		m_engine_p->currentContext()->throwError("Duration must be positive.");
+		engine()->currentContext()->throwError("Duration must be positive.");
 		return false;
 	} 
 	return adb->sendSwipe(serial_number, x1, y1, x2, y2, duration_in_ms);
@@ -85,7 +76,7 @@ QScriptValue AndroidAPI::takeScreenshot()
 		// Taking screenshot failed. TODO: print system debug info in some later version...
 	}
 	//m_engine_p->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(qimage)));
-	return m_engine_p->toScriptValue(qimage);
+	return engine()->toScriptValue(qimage);
 }
 
 int AndroidAPI::getDeviceWidth()
@@ -128,7 +119,7 @@ QScriptValue AndroidAPI::findMatches(QImage* tpl, double threshold, int max_matc
 {
 	QImage screenshot;
 	adb->takeScreenshot(serial_number, screenshot);
-	VisionAPI *vapi = new VisionAPI(m_bot_p, m_engine_p);
+	VisionAPI *vapi = new VisionAPI(bot(), engine());
 	return vapi->findMatches(&screenshot, tpl, threshold, max_matches); // FIXME: this pointer will leak mem
 }
 
@@ -136,6 +127,6 @@ QScriptValue AndroidAPI::findMatch(QImage* tpl, double threshold)
 {
 	QImage screenshot;
 	adb->takeScreenshot(serial_number, screenshot);
-	VisionAPI *vapi = new VisionAPI(m_bot_p, m_engine_p);
+	VisionAPI *vapi = new VisionAPI(bot(), engine());
 	return vapi->findMatch(&screenshot, tpl, threshold); // FIXME: this pointer will leak mem
 }

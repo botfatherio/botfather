@@ -4,28 +4,13 @@
 #include "../modules/desktop/desktop.h"
 #include "../modules/vision/vision.h"
 #include "../types/match.h"
-#include "../bot.h"
 #include "vision_api.h"
-
-DesktopAPI::DesktopAPI(Bot *bot_p, QScriptEngine *engine_p)
-    : QObject(bot_p)
-    , m_bot_p(bot_p)
-    , m_engine_p(engine_p)
-{
-    desktop = new Desktop(this);
-}
-
-void DesktopAPI::enable(Bot *bot_p, QScriptEngine *engine_p)
-{
-    QScriptValue vision_obj = engine_p->newQObject(new DesktopAPI(bot_p, engine_p), QScriptEngine::ScriptOwnership);
-    engine_p->globalObject().setProperty("Desktop", vision_obj);
-}
 
 QScriptValue DesktopAPI::takeScreenshot()
 {
     QImage qimage = desktop->takeScreenshot();
-    //m_engine_p->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(qimage)));
-    return m_engine_p->toScriptValue(qimage);
+    //engine()->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(qimage)));
+    return engine()->toScriptValue(qimage);
 }
 
 int DesktopAPI::getWidth()
@@ -58,7 +43,7 @@ void DesktopAPI::pressKey(QString key) {
     // missing between both methods. UinputFaker has such. One is needed because of uinput events
     // not beeing synchronious.
     if (!desktop->keyExists(key)) {
-	    m_engine_p->currentContext()->throwError("Unknown keycode.");
+	    engine()->currentContext()->throwError("Unknown keycode.");
 	    return;
     }
     desktop->pressKey(key);
@@ -67,7 +52,7 @@ void DesktopAPI::pressKey(QString key) {
 void DesktopAPI::holdKey(QString key)
 {
     if (!desktop->keyExists(key)) {
-	    m_engine_p->currentContext()->throwError("Unknown keycode.");
+	    engine()->currentContext()->throwError("Unknown keycode.");
 	    return;
     }
     desktop->holdKey(key);
@@ -76,7 +61,7 @@ void DesktopAPI::holdKey(QString key)
 void DesktopAPI::releaseKey(QString key)
 {
     if (!desktop->keyExists(key)) {
-	    m_engine_p->currentContext()->throwError("Unknown keycode.");
+	    engine()->currentContext()->throwError("Unknown keycode.");
 	    return;
     }
     desktop->releaseKey(key);
@@ -94,7 +79,7 @@ QScriptValue DesktopAPI::getCursorPosition()
     if (!desktop->getCursorPosition(&x, &y)) {
 	    // Getting the cursor position failed.
     }
-    return m_engine_p->toScriptValue(QPoint(x, y));
+    return engine()->toScriptValue(QPoint(x, y));
 }
 
 bool DesktopAPI::findAndClick(QImage* tpl, double threshold, int button)
@@ -121,7 +106,7 @@ bool DesktopAPI::findAndClick(QImage* tpl, double threshold, int button)
 	    rightClick(match.center().x(), match.center().y());
 	    break;
     default:
-	    m_engine_p->currentContext()->throwError("Unknown button code.");
+	    engine()->currentContext()->throwError("Unknown button code.");
 	    return false;
     }
     return true;
@@ -130,13 +115,13 @@ bool DesktopAPI::findAndClick(QImage* tpl, double threshold, int button)
 QScriptValue DesktopAPI::findMatches(QImage* tpl, double threshold, int max_matches)
 {
     QImage screenshot = desktop->takeScreenshot();
-    VisionAPI *vapi = new VisionAPI(m_bot_p, m_engine_p);
+    VisionAPI *vapi = new VisionAPI(bot(), engine());
     return vapi->findMatches(&screenshot, tpl, threshold, max_matches); // FIXME: this pointer will leak mem
 }
 
 QScriptValue DesktopAPI::findMatch(QImage* tpl, double threshold)
 {
     QImage screenshot = desktop->takeScreenshot();
-    VisionAPI *vapi = new VisionAPI(m_bot_p, m_engine_p);
+    VisionAPI *vapi = new VisionAPI(bot(), engine());
     return vapi->findMatch(&screenshot, tpl, threshold); // FIXME: this pointer will leak mem
 }

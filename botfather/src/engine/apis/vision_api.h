@@ -1,20 +1,16 @@
 #ifndef BFP_ENGINE_APIS_VISION_VISION_API_H
 #define BFP_ENGINE_APIS_VISION_VISION_API_H
 
-#include <QObject>
-#include <QScriptEngine>
 #include <QImage>
+#include "abstract_api.h"
 #include "../types/match.h"
 
-class Bot;
-
-class VisionAPI : public QObject
+class VisionAPI : public AbstractAPI
 {
 	Q_OBJECT
 	
 public:
-	VisionAPI(Bot* bot_p, QScriptEngine* engine_p);
-	static void enable(Bot* bot_p, QScriptEngine* engine_p);
+	using AbstractAPI::AbstractAPI;
 	
 	Q_INVOKABLE void saveImage(QImage* image, QString path);
 	Q_INVOKABLE QScriptValue loadImage(QString path);
@@ -33,10 +29,6 @@ public:
 	//Q_INVOKABLE QScriptValue findBlobs(BlobTpl* blob_tpl, Image* image );
 	Q_INVOKABLE QScriptValue markMatches(QImage image, QScriptValue matches, QColor color, int thickness = 2);
 	Q_INVOKABLE QScriptValue markMatch(QImage image, Match match, QColor color, int thickness = 2);
-	
-private:
-	Bot* m_bot_p;
-	QScriptEngine* m_engine_p;
 };
 
 #endif // BFP_ENGINE_APIS_VISION_VISION_API_H

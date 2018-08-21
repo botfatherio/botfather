@@ -4,22 +4,7 @@
 #include "../modules/browser/browser.h"
 #include "../modules/vision/vision.h"
 #include "../types/match.h"
-#include "../bot.h"
 #include "vision_api.h"
-
-BrowserAPI::BrowserAPI(Bot *bot_p, QScriptEngine *engine_p)
-	: QObject(bot_p)
-	, m_bot_p(bot_p)
-	, m_engine_p(engine_p)
-{
-	
-}
-
-void BrowserAPI::enable(Bot *bot_p, QScriptEngine *engine_p)
-{
-	QScriptValue vision_obj = engine_p->newQObject(new BrowserAPI(bot_p, engine_p), QScriptEngine::ScriptOwnership);
-	engine_p->globalObject().setProperty("Browser", vision_obj);
-}
 
 QScriptValue BrowserAPI::takeScreenshot()
 {
@@ -27,7 +12,7 @@ QScriptValue BrowserAPI::takeScreenshot()
 	// NOTE: It's okay to report additional cost before creating the new object.
 	// Because we can expect the new object to not be instantly garbage...
 	//m_engine_p->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(qimage)));
-	return m_engine_p->toScriptValue(qimage);
+	return engine()->toScriptValue(qimage);
 }
 
 void BrowserAPI::blockResource(QString resource)
@@ -219,7 +204,7 @@ bool BrowserAPI::findAndClick(QImage* tpl, double threshold, int button)
 		rightClick(match.center().x(), match.center().y());
 		break;
 	default:
-		m_engine_p->currentContext()->throwError("Unknown button code.");
+		engine()->currentContext()->throwError("Unknown button code.");
 		return false;
 	}
 	return true;
@@ -228,13 +213,13 @@ bool BrowserAPI::findAndClick(QImage* tpl, double threshold, int button)
 QScriptValue BrowserAPI::findMatches(QImage* tpl, double threshold, int max_matches)
 {
 	QImage screenshot = Browser::takeScreenshot();
-	VisionAPI *vapi = new VisionAPI(m_bot_p, m_engine_p);
+	VisionAPI *vapi = new VisionAPI(bot(), engine());
 	return vapi->findMatches(&screenshot, tpl, threshold, max_matches); // FIXME: this pointer will leak mem.
 }
 
 QScriptValue BrowserAPI::findMatch(QImage* tpl, double threshold)
 {
 	QImage screenshot = Browser::takeScreenshot();
-	VisionAPI *vapi = new VisionAPI(m_bot_p, m_engine_p);
+	VisionAPI *vapi = new VisionAPI(bot(), engine());
 	return vapi->findMatch(&screenshot, tpl, threshold); // FIXME: this pointer will leak mem.
 }

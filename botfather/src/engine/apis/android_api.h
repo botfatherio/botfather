@@ -5,16 +5,15 @@
 #include <QScriptEngine>
 #include <QString>
 #include <QSettings>
+#include "abstract_api.h"
 
-class Bot;
 class AdbWrapper;
 
-class AndroidAPI : public QObject
+class AndroidAPI : public AbstractAPI
 {
 	Q_OBJECT
 public:
-	explicit AndroidAPI(Bot* bot_p, QScriptEngine* engine_p);
-	static void enable(Bot* bot_p, QScriptEngine* engine_p);
+	AndroidAPI(Bot *bot, QObject *parent = nullptr);
 	
 	Q_INVOKABLE bool connected();
 	Q_INVOKABLE QScriptValue listPackages();
@@ -37,8 +36,6 @@ public:
 	Q_INVOKABLE QScriptValue findMatch(QImage* tpl, double threshold = 0.8);
 	
 private:
-	Bot *m_bot_p;
-	QScriptEngine *m_engine_p;
 	QSettings m_settings;
 	AdbWrapper *adb;
 	QString serial_number;

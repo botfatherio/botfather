@@ -4,15 +4,13 @@
 #include <QObject>
 #include <QScriptEngine>
 #include <QString>
+#include "abstract_api.h"
 
-class Bot;
-
-class BrowserAPI : public QObject
+class BrowserAPI : public AbstractAPI
 {
 	Q_OBJECT
 public:
-	explicit BrowserAPI(Bot *bot_p, QScriptEngine* engine_p);
-	static void enable(Bot *bot_p, QScriptEngine* engine_p);
+	using AbstractAPI::AbstractAPI;
 	
 	Q_INVOKABLE QScriptValue takeScreenshot();
 	Q_INVOKABLE void blockResource(QString resource_pattern);
@@ -49,10 +47,6 @@ public:
 	Q_INVOKABLE bool findAndClick(QImage* tpl, double threshold = 0.8, int button = 1);
 	Q_INVOKABLE QScriptValue findMatches(QImage* tpl, double threshold = 0.8, int max_matches = -1);
 	Q_INVOKABLE QScriptValue findMatch(QImage* tpl, double threshold = 0.8);
-	
-private:
-	Bot *m_bot_p;
-	QScriptEngine* m_engine_p;
 };
 
 #endif // BFP_ENGINE_APIS_BROWSER_BROWSER_API_H

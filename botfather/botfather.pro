@@ -133,7 +133,8 @@ HEADERS += \
     src/gui/control_window.h \
     src/gui/status_dialog.h \
     src/updater/update_checker.h \
-    src/updater/updater_dialog.h
+    src/updater/updater_dialog.h \
+    src/engine/apis/abstract_api.h
 SOURCES += \
     src/auth/license_api_client.cpp \
     src/auth/rest_api_client.cpp \
@@ -167,7 +168,8 @@ SOURCES += \
     src/gui/status_dialog.cpp \
     src/main.cpp \
     src/updater/update_checker.cpp \
-    src/updater/updater_dialog.cpp
+    src/updater/updater_dialog.cpp \
+    src/engine/apis/abstract_api.cpp
 FORMS += \
     src/gui/android_dialog.ui \
     src/gui/auth_dialog.ui \

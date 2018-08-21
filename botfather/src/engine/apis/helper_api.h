@@ -4,16 +4,14 @@
 #include <QObject>
 #include <QScriptEngine>
 #include <QString>
+#include "abstract_api.h"
 
-class Bot;
-
-class HelperAPI : public QObject
+class HelperAPI : public AbstractAPI
 {
 	Q_OBJECT
 	
 public:
-	HelperAPI(Bot* bot_p, QScriptEngine* engine_p);
-	static void enable(Bot* bot_p, QScriptEngine* engine_p);
+	using AbstractAPI::AbstractAPI;
 	
 	// Returns true if the file exists.
 	Q_INVOKABLE bool fileExists(QString file_path);
@@ -44,10 +42,6 @@ public:
 	
 	// Stops any started wav sounds started by the bot from playing.
 	Q_INVOKABLE void stopWavSound();
-
-private:
-	Bot* m_bot_p;
-	QScriptEngine* m_engine_p;
 };
 
 #endif // BFP_ENGINE_APIS_HELPER_API_H
