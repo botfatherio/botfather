@@ -1,5 +1,5 @@
-#ifndef BFP__BROWSER__BROWSER_CLIENT_H
-#define BFP__BROWSER__BROWSER_CLIENT_H
+#ifndef BFP_ENGINE_MODULES_BROWSER_BROWSER_CLIENT_H
+#define BFP_ENGINE_MODULES_BROWSER_BROWSER_CLIENT_H
 
 #include <QObject>
 #include <QImage>
@@ -23,7 +23,7 @@ public:
 	explicit BrowserClient();
 	
 	// Frees the singletons global pointer.
-	~BrowserClient();
+	~BrowserClient() OVERRIDE;
 	
 	// Disable the clone operation (because it's a singleton).
 	BrowserClient(BrowserClient const&) = delete;
@@ -135,7 +135,7 @@ private:
 	QVector<QPair<QString, QString>> modified_resources;
 	
 	// Include the default reference counting implementation.
-	IMPLEMENT_REFCOUNTING(BrowserClient);
+	IMPLEMENT_REFCOUNTING(BrowserClient)
 };
 
-#endif // !BFP__BROWSER__BROWSER_CLIENT_H
+#endif // !BFP_ENGINE_MODULES_BROWSER_BROWSER_CLIENT_H

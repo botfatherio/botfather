@@ -1,7 +1,7 @@
 #include "vision.h"
 #include <opencv2/highgui.hpp>
 #include <QDebug>
-#include "../engine/types/match.h"
+#include "../../types/match.h"
 
 // static
 cv::Mat Vision::cropImage(cv::Mat image, QRect region)

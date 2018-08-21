@@ -1,5 +1,5 @@
-#ifndef BFP__DESKTOP__KEYMAP_H
-#define BFP__DESKTOP__KEYMAP_H
+#ifndef BFP_ENGINE_MODULES_DESKTOP_KEYMAP_H
+#define BFP_ENGINE_MODULES_DESKTOP_KEYMAP_H
 
 #include <QHash>
 
@@ -131,4 +131,4 @@ static const QHash<QString, KEY_TYPE> KEYMAP = {
     {"volume_down", KEY_CODE(VK_VOLUME_DOWN, KEY_VOLUMEDOWN)}
 };
 
-#endif // BFP__DESKTOP__KEYMAP_H
+#endif // BFP_ENGINE_MODULES_DESKTOP_KEYMAP_H

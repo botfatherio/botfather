@@ -1,5 +1,5 @@
-#ifndef ENGINE_PROTOTYPES_POINT_PROTOTYPE_H
-#define ENGINE_PROTOTYPES_POINT_PROTOTYPE_H
+#ifndef BFP_ENGINE_PROTOTYPES_POINT_PROTOTYPE_H
+#define BFP_ENGINE_PROTOTYPES_POINT_PROTOTYPE_H
 #define POINT_PROTOTYPE_DOCS "https://botfather.io/docs/apiref/point/"
 
 #include "abstract_prototype.h"
@@ -25,4 +25,4 @@ public:
 	Q_INVOKABLE QString toString() const;
 };
 
-#endif // ENGINE_PROTOTYPES_POINT_PROTOTYPE_H
+#endif // BFP_ENGINE_PROTOTYPES_POINT_PROTOTYPE_H

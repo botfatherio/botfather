@@ -1,5 +1,5 @@
-#ifndef BFP__BROWSER__BROWSER_H
-#define BFP__BROWSER__BROWSER_H
+#ifndef BFP_ENGINE_MODULES_BROWSER_BROWSER_H
+#define BFP_ENGINE_MODULES_BROWSER_BROWSER_H
 
 #include <QString>
 #include <QUrl>
@@ -98,4 +98,4 @@ private:
 	static void initCefSettings(CefSettings& settings);
 };
 
-#endif // !BFP__BROWSER__BROWSER_H
+#endif // !BFP_ENGINE_MODULES_BROWSER_BROWSER_H

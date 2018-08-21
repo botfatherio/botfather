@@ -1,14 +1,19 @@
 #include "browser_api.h"
 #include <QThread>
 #include <QDebug>
-#include "browser.h"
-#include "../vision/vision.h"
-#include "../vision/vision_api.h"
-#include "../engine/types/match.h"
-#include "../engine/bot.h"
+#include "../modules/browser/browser.h"
+#include "../modules/vision/vision.h"
+#include "../types/match.h"
+#include "../bot.h"
+#include "vision_api.h"
 
-BrowserAPI::BrowserAPI(Bot *bot_p, QScriptEngine *engine_p) : QObject(bot_p),  m_bot_p(bot_p), m_engine_p(engine_p)
-{}
+BrowserAPI::BrowserAPI(Bot *bot_p, QScriptEngine *engine_p)
+	: QObject(bot_p)
+	, m_bot_p(bot_p)
+	, m_engine_p(engine_p)
+{
+	
+}
 
 void BrowserAPI::enable(Bot *bot_p, QScriptEngine *engine_p)
 {

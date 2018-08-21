@@ -1,12 +1,15 @@
 #include "android_api.h"
-#include "adb_wrapper.h"
-#include "android_settings.h"
-#include "../vision/vision_api.h"
-#include "../vision/vision.h"
-#include "../engine/types/match.h"
-#include "../engine/bot.h"
+#include "../modules/android/adb_wrapper.h"
+#include "../modules/android/android_settings.h"
+#include "../modules/vision/vision.h"
+#include "../types/match.h"
+#include "../bot.h"
+#include "vision_api.h"
 
-AndroidAPI::AndroidAPI(Bot* bot_p, QScriptEngine* engine_p) : QObject(bot_p), m_bot_p(bot_p), m_engine_p(engine_p)
+AndroidAPI::AndroidAPI(Bot* bot_p, QScriptEngine* engine_p)
+	: QObject(bot_p)
+	, m_bot_p(bot_p)
+	, m_engine_p(engine_p)
 {
 	QString adb_binary = m_settings.value(android::options::ADB_BINARY).toString();
 	adb = new AdbWrapper(this, adb_binary);

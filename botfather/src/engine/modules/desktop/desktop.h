@@ -1,5 +1,5 @@
-#ifndef BFP__DESKTOP__DESKTOP_H
-#define BFP__DESKTOP__DESKTOP_H
+#ifndef BFP_ENGINE_MODULES_DESKTOP_DESKTOP_H
+#define BFP_ENGINE_MODULES_DESKTOP_DESKTOP_H
 
 #include <QObject>
 #include <QString>
@@ -33,4 +33,4 @@ private:
 	Q_DECLARE_PRIVATE(Desktop)
 };
 
-#endif // BFP__DESKTOP__DESKTOP_H
+#endif // BFP_ENGINE_MODULES_DESKTOP_DESKTOP_H

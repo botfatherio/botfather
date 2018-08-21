@@ -6,8 +6,8 @@
 #include <QFileInfo>
 #include <QMessageBox>
 #include "gui/control_window.h"
-#include "browser/browser.h"
 #include "gui/status_dialog.h"
+#include "engine/modules/browser/browser.h"
 
 #if defined(_WIN32) || defined(_WIN64)
 #include <Windows.h>

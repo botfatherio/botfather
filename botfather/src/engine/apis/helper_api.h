@@ -1,12 +1,11 @@
-#ifndef BFP__SCRIPTING__HELPER_API_H
-#define BFP__SCRIPTING__HELPER_API_H
+#ifndef BFP_ENGINE_APIS_HELPER_API_H
+#define BFP_ENGINE_APIS_HELPER_API_H
 
 #include <QObject>
 #include <QScriptEngine>
 #include <QString>
 
 class Bot;
-class BotThread;
 
 class HelperAPI : public QObject
 {
@@ -51,4 +50,4 @@ private:
 	QScriptEngine* m_engine_p;
 };
 
-#endif // BFP__SCRIPTING__HELPER_API_H
+#endif // BFP_ENGINE_APIS_HELPER_API_H

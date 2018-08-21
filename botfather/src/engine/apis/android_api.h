@@ -1,5 +1,5 @@
-#ifndef BFP__ANDROID__ANDROID_API_H
-#define BFP__ANDROID__ANDROID_API_H
+#ifndef BFP_ENGINE_APIS_ANDROID_ANDROID_API_H
+#define BFP_ENGINE_APIS_ANDROID_ANDROID_API_H
 
 #include <QObject>
 #include <QScriptEngine>
@@ -44,4 +44,4 @@ private:
 	QString serial_number;
 };
 
-#endif // BFP__ANDROID__ANDROID_API_H
+#endif // BFP_ENGINE_APIS_ANDROID_ANDROID_API_H

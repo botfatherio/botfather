@@ -1,5 +1,5 @@
-#ifndef BFP__BROWSER__BROWSER_APP_H
-#define BFP__BROWSER__BROWSER_APP_H
+#ifndef BFP_ENGINE_MODULES_BROWSER_BROWSER_APP_H
+#define BFP_ENGINE_MODULES_BROWSER_BROWSER_APP_H
 
 #include "include/cef_app.h"
 
@@ -23,7 +23,7 @@ public:
 	
 private:
 	// Include the default reference counting implementation.
-	IMPLEMENT_REFCOUNTING(BrowserApp);
+	IMPLEMENT_REFCOUNTING(BrowserApp)
 };
 
-#endif // !BFP__BROWSER__BROWSER_APP_H
+#endif // !BFP_ENGINE_MODULES_BROWSER_BROWSER_APP_H

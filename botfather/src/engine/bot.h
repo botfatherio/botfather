@@ -1,5 +1,5 @@
-#ifndef BFB__SCRIPTING__BOT_H
-#define BFB__SCRIPTING__BOT_H
+#ifndef BFB_ENGINE_BOT_H
+#define BFB_ENGINE_BOT_H
 
 #include <QObject>
 #include <QString>
@@ -43,4 +43,4 @@ private:
 	bool running = false;
 };
 
-#endif // BFB__SCRIPTING__BOT_H
+#endif // BFB_ENGINE_BOT_H

@@ -6,15 +6,16 @@
 #include <QAudioBuffer>
 #include <QVersionNumber>
 #include <QDebug>
-#include "bot.h"
+#include "../bot.h"
 
 HelperAPI::HelperAPI(Bot* bot_p, QScriptEngine* engine_p)
 	: QObject(bot_p)
 	, m_bot_p(bot_p)
 	, m_engine_p(engine_p)
-{}
+{
+	
+}
 
-// static
 void HelperAPI::enable(Bot* bot_p, QScriptEngine* engine_p)
 {
 	QScriptValue vision_obj = engine_p->newQObject(new HelperAPI(bot_p, engine_p), QScriptEngine::ScriptOwnership);

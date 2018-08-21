@@ -1,5 +1,5 @@
-#ifndef ENGINE_PROTOTYPES_MATCH_PROTOTYPE_H
-#define ENGINE_PROTOTYPES_MATCH_PROTOTYPE_H
+#ifndef BFP_ENGINE_PROTOTYPES_MATCH_PROTOTYPE_H
+#define BFP_ENGINE_PROTOTYPES_MATCH_PROTOTYPE_H
 #define MATCH_PROTOTYPE_DOCS QString("https://botfather.io/docs/apiref/match/")
 
 #include "rect_prototype.h"
@@ -21,4 +21,4 @@ public:
 	Q_INVOKABLE QString toString() const;
 };
 
-#endif // ENGINE_PROTOTYPES_MATCH_PROTOTYPE_H
+#endif // BFP_ENGINE_PROTOTYPES_MATCH_PROTOTYPE_H

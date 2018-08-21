@@ -1,16 +1,10 @@
-#ifndef BFP__VISION__VISION_API_H
-#define BFP__VISION__VISION_API_H
+#ifndef BFP_ENGINE_APIS_VISION_VISION_API_H
+#define BFP_ENGINE_APIS_VISION_VISION_API_H
 
-#include <opencv2/opencv.hpp>
 #include <QObject>
 #include <QScriptEngine>
 #include <QImage>
-#include "../engine/types/match.h"
-
-/*
-	NOTE: QColor HSV is H: 0 - 359, S: 0 - 255, V: 0 - 255
-	NOTE: OpenCV HSV is H: 0 - 180, S: 0 - 255, V: 0 - 255
-*/
+#include "../types/match.h"
 
 class Bot;
 
@@ -45,4 +39,4 @@ private:
 	QScriptEngine* m_engine_p;
 };
 
-#endif // BFP__VISION__VISION_API_H
+#endif // BFP_ENGINE_APIS_VISION_VISION_API_H

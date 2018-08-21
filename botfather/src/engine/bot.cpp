@@ -1,28 +1,26 @@
 #include "bot.h"
-#include <QtScript/QScriptEngine>
+#include <QScriptEngine>
+#include <QTextStream>
 #include <QFile>
-#include <QDebug>
 #include <QFileInfo>
 #include <QDir>
-#include <QMetaType>
-#include "helper_api.h"
-
 #include "prototypes/point_prototype.h"
 #include "prototypes/image_prototype.h"
 #include "prototypes/color_prototype.h"
 #include "prototypes/match_prototype.h"
 #include "prototypes/size_prototype.h"
 #include "prototypes/rect_prototype.h"
+#include "apis/helper_api.h"
+#include "apis/vision_api.h"
+#include "apis/browser_api.h"
+#include "apis/android_api.h"
+#include "apis/desktop_api.h"
+#include "modules/browser/browser.h"
 
-#include "../vision/vision_api.h"
-#include "../browser/browser_api.h"
-#include "../browser/browser.h"
-#include "../android/android_api.h"
-#include "../desktop/desktop_api.h"
-
-Bot::Bot(QString script_path)
-	: m_script_path(script_path)
-{}
+Bot::Bot(QString script_path) : m_script_path(script_path)
+{
+	
+}
 
 void Bot::runScript()
 {

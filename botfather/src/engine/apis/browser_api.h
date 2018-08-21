@@ -1,5 +1,5 @@
-#ifndef BFP__BROWSER__BROWSER_API_H
-#define BFP__BROWSER__BROWSER_API_H
+#ifndef BFP_ENGINE_APIS_BROWSER_BROWSER_API_H
+#define BFP_ENGINE_APIS_BROWSER_BROWSER_API_H
 
 #include <QObject>
 #include <QScriptEngine>
@@ -55,4 +55,4 @@ private:
 	QScriptEngine* m_engine_p;
 };
 
-#endif // BFP__BROWSER__BROWSER_API_H
+#endif // BFP_ENGINE_APIS_BROWSER_BROWSER_API_H

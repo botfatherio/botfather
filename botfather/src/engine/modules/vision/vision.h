@@ -1,5 +1,5 @@
-#ifndef BFP__VISION__VISION_H
-#define BFP__VISION__VISION_H
+#ifndef BFP_ENGINE_MODULES_VISION_VISION_H
+#define BFP_ENGINE_MODULES_VISION_VISION_H
 
 #include <opencv2/opencv.hpp>
 #include <QString>
@@ -7,7 +7,6 @@
 #include <QVector>
 #include <QImage>
 
-class BlobTpl;
 class Match;
 
 class Vision
@@ -35,4 +34,4 @@ public:
 	static QImage cvMatToQImage(const cv::Mat &mat);
 };
 
-#endif // BFP__VISION__VISION_H
+#endif // BFP_ENGINE_MODULES_VISION_VISION_H
