@@ -262,10 +262,10 @@ QScriptValue VisionAPI::findBlobs(BlobTpl *blob_tpl, Image *image)
 }
 */
 
-QScriptValue VisionAPI::markMatches(QImage *image, QScriptValue matches, int r, int g, int b, int thickness)
+QScriptValue VisionAPI::markMatches(QImage image, QScriptValue matches, QColor color, int thickness)
 {
-	if (!image || image->isNull()) {
-		return m_engine_p->currentContext()->throwError("Invalid or empty image.");
+	if (image.isNull()) {
+		return m_engine_p->currentContext()->throwError("The image must not be null.");
 	}
 	if (!matches.isArray()) {
 		return m_engine_p->currentContext()->throwError("Matches must be an array.");
@@ -274,34 +274,29 @@ QScriptValue VisionAPI::markMatches(QImage *image, QScriptValue matches, int r, 
 	QVector<Match> native_matches;
 	qScriptValueToSequence(matches, native_matches);
 	
-	cv::Mat image_mat = Vision::qimageToBGRMat(*image); // TODO: check whether this works or leaks mem
+	cv::Mat image_mat = Vision::qimageToBGRMat(image);
+	cv::Scalar cv_color(color.blue(), color.green(), color.red());
+	cv::Mat mat = Vision::markMatches(image_mat, native_matches, cv_color, thickness);
 	
-	cv::Mat mat = Vision::markMatches(image_mat, native_matches, cv::Scalar(b, g, r), thickness);
 	QImage qimage = Vision::cvMatToQImage(mat);
-	
-	mat.release();
-	image_mat.release();
-	
 	//m_engine_p->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(qimage)));
 	return m_engine_p->toScriptValue(qimage);
 }
 
-QScriptValue VisionAPI::markMatch(QImage *image, Match *match, int r, int g, int b, int thickness)
+QScriptValue VisionAPI::markMatch(QImage image, Match match, QColor color, int thickness)
 {
-	if (!image || image->isNull()) {
-		return m_engine_p->currentContext()->throwError("Invalid or empty image.");
+	if (image.isNull()) {
+		return m_engine_p->currentContext()->throwError(QScriptContext::TypeError, "The image must not be null.");
 	}
-	if (!match) {
-		return m_engine_p->currentContext()->throwError("Invalid match.");
+	if (!match.found()) {
+		return m_engine_p->currentContext()->throwError(QScriptContext::TypeError, "The match must be found.");
 	}
 	
-	cv::Mat image_mat = Vision::qimageToBGRMat(*image); // TODO: check whether this works or leaks mem
+	cv::Mat image_mat = Vision::qimageToBGRMat(image);
+	cv::Scalar cv_color(color.blue(), color.green(), color.red());
+	cv::Mat result_image = Vision::markMatch(image_mat, match, cv_color, thickness);
 	
-	cv::Mat result_image = Vision::markMatch(image_mat, *match, cv::Scalar(b, g, r), thickness);
 	QImage qimage = Vision::cvMatToQImage(result_image);
-	
-	image_mat.release();
-	
 	//m_engine_p->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(qimage)));
 	return m_engine_p->toScriptValue(qimage);
 }

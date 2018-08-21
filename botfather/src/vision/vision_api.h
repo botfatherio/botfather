@@ -4,6 +4,7 @@
 #include <opencv2/opencv.hpp>
 #include <QObject>
 #include <QScriptEngine>
+#include <QImage>
 #include "../engine/types/match.h"
 
 /*
@@ -36,8 +37,8 @@ public:
 	Q_INVOKABLE QScriptValue findMatch(QImage* image, QImage* tpl, double threshold = 0.8);
 	
 	//Q_INVOKABLE QScriptValue findBlobs(BlobTpl* blob_tpl, Image* image );
-	Q_INVOKABLE QScriptValue markMatches(QImage* image, QScriptValue matches, int r = 255, int g = 0, int b = 255, int thickness = 2);
-	Q_INVOKABLE QScriptValue markMatch(QImage* image, Match* match, int r = 255, int g = 0, int b = 255, int thickness = 2);
+	Q_INVOKABLE QScriptValue markMatches(QImage image, QScriptValue matches, QColor color, int thickness = 2);
+	Q_INVOKABLE QScriptValue markMatch(QImage image, Match match, QColor color, int thickness = 2);
 	
 private:
 	Bot* m_bot_p;
