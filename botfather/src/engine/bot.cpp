@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QFileInfo>
 #include <QDir>
+#include <QMetaType>
 #include "helper_api.h"
 
 #include "prototypes/point_prototype.h"
@@ -69,8 +70,8 @@ void Bot::runScript()
 	
 	// Check whether the script ended due to errors. If so print them to the users log.
 	if (result.isError()) {
-		QString debug_msg = QString("<b>Uncaught exception</b> at line %1 : %2")
-			.arg(result.property("lineNumber").toString()).arg(result.toString());
+		QString error_msg = replaceQTypes(result.toString());
+		QString debug_msg = QString("<b>Uncaught exception</b> at line %1 : %2").arg(result.property("lineNumber").toString()).arg(error_msg);
 		emit this->message(debug_msg, true, true);
 	} else {
 		// Script execution/evaluation ended successfully.
@@ -88,6 +89,27 @@ bool Bot::isRunning() const {
 void Bot::stop()
 {
 	script_engine->abortEvaluation();
+}
+
+QString Bot::replaceQTypes(QString text)
+{
+	// List "QType*" before "QType" otherwise "QType" will be replaced but the "*" stays.
+	static QList<QPair<QString, QString>> replacements = {
+		{ QMetaType::typeName(qMetaTypeId<QColor*>()), "Color" },
+		{ QMetaType::typeName(qMetaTypeId<QColor>()), "Color" },
+		{ QMetaType::typeName(qMetaTypeId<QImage*>()), "Image" },
+		{ QMetaType::typeName(qMetaTypeId<QImage>()), "Image" },
+		{ QMetaType::typeName(qMetaTypeId<QPoint*>()), "Point" },
+		{ QMetaType::typeName(qMetaTypeId<QPoint>()), "Point" },
+		{ QMetaType::typeName(qMetaTypeId<QRect*>()), "Rect" },
+		{ QMetaType::typeName(qMetaTypeId<QRect>()), "Rect" },
+		{ QMetaType::typeName(qMetaTypeId<QSize*>()), "QSize" },
+		{ QMetaType::typeName(qMetaTypeId<QSize>()), "QSize" },
+	};
+	for (QPair<QString, QString> pair : replacements) {
+		text.replace(pair.first, pair.second);
+	}
+	return text;
 }
 
 QString Bot::normalisePath(QString path)

@@ -18,6 +18,9 @@ public slots:
 	bool isRunning() const;
 	void stop();
 	
+	// TODO: move this (and eventually the following methods too) in a util class
+	QString replaceQTypes(QString text);
+	
 	// Makes a relative path to an absolute path relative to the script dir. Returns already
 	// absolute paths as they are.
 	QString normalisePath(QString path);
