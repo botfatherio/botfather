@@ -99,8 +99,8 @@ QString Bot::replaceQTypes(QString text)
 		{ QMetaType::typeName(qMetaTypeId<QPoint>()), "Point" },
 		{ QMetaType::typeName(qMetaTypeId<QRect*>()), "Rect" },
 		{ QMetaType::typeName(qMetaTypeId<QRect>()), "Rect" },
-		{ QMetaType::typeName(qMetaTypeId<QSize*>()), "QSize" },
-		{ QMetaType::typeName(qMetaTypeId<QSize>()), "QSize" },
+		{ QMetaType::typeName(qMetaTypeId<QSize*>()), "Size" },
+		{ QMetaType::typeName(qMetaTypeId<QSize>()), "Size" },
 	};
 	for (QPair<QString, QString> pair : replacements) {
 		text.replace(pair.first, pair.second);
