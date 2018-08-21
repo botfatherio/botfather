@@ -7,12 +7,6 @@
 #include <QVersionNumber>
 #include <QDebug>
 
-bool HelperAPI::fileExists(QString file_path)
-{
-	file_path = bot()->normalisePath(file_path);
-	return bot()->fileExists(file_path);
-}
-
 void HelperAPI::sleep(int seconds)
 {
 	if (seconds <= 0) {
@@ -62,7 +56,7 @@ QString HelperAPI::getAbsoluteScriptDirPath()
 
 void HelperAPI::playWavSound(QString path_to_wav_file, bool blocking)
 {
-	if (!fileExists(path_to_wav_file)) {
+	if (!bot()->fileExists(path_to_wav_file)) {
 		engine()->currentContext()->throwError("Wav file does not exist.");
 		return;
 	}

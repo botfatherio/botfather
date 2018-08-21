@@ -13,9 +13,6 @@ class HelperAPI : public AbstractAPI
 public:
 	using AbstractAPI::AbstractAPI;
 	
-	// Returns true if the file exists.
-	Q_INVOKABLE bool fileExists(QString file_path);
-	
 	// Makes the bot sleep for x seconds.
 	Q_INVOKABLE void sleep(int seconds);
 	
