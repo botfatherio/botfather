@@ -20,7 +20,7 @@ void VisionAPI::saveImage(QImage* image, QString path)
 QScriptValue VisionAPI::loadImage(QString path)
 {
     path = bot()->normalisePath(path);
-    if (bot()->fileExists(path)){
+    if (bot()->scriptFileExists(path)){
 	    QImage qimage;
 	    qimage.load(path);
 	    qimage = qimage.convertToFormat(QImage::Format_RGB888);

@@ -13,21 +13,17 @@ public:
 	// Giving Bot a parent results in: QObject::moveToThread: Cannot move objects with a parent
 	Bot(QString script_path);
 	
+	// Considers relative paths relative to the scripts dir and makes them absolute.
+	QString normalisePath(QString path);
+	
+	QString getAbsoluteScriptDirPath();
+	bool scriptFileExists(QString file_path);
+	
 public slots:
 	void runScript();
 	bool isRunning() const;
 	void stop();
-	
-	// TODO: move this (and eventually the following methods too) in a util class
-	QString replaceQTypes(QString text);
-	
-	// Makes a relative path to an absolute path relative to the script dir. Returns already
-	// absolute paths as they are.
-	QString normalisePath(QString path);
-	
-	QString getAbsoluteScriptDirPath();
-	bool fileExists(QString file_path);
-	
+
 signals:
 	void started();
 	void stopped(bool without_errors);
@@ -37,9 +33,12 @@ signals:
 	void playWavSound(QString path_to_wav_file);
 	void stopWavSound();
 	
+protected:
+	static QString replaceQtWithEngineTypeNames(QString text);
+	
 private:
 	QScriptEngine *script_engine;
-	QString m_script_path;
+	QString script_path;
 	bool running = false;
 };
 

@@ -1,9 +1,9 @@
 #include "bot.h"
 #include <QScriptEngine>
 #include <QTextStream>
+#include <QDir>
 #include <QFile>
 #include <QFileInfo>
-#include <QDir>
 #include "prototypes/point_prototype.h"
 #include "prototypes/image_prototype.h"
 #include "prototypes/color_prototype.h"
@@ -17,9 +17,31 @@
 #include "apis/desktop_api.h"
 #include "modules/browser/browser.h"
 
-Bot::Bot(QString script_path) : m_script_path(script_path)
+Bot::Bot(QString script_path) : script_path(script_path)
 {
 	script_engine = new QScriptEngine(this);
+}
+
+QString Bot::getAbsoluteScriptDirPath()
+{
+	QFileInfo file_info(script_path);
+	return file_info.dir().absolutePath();
+}
+
+QString Bot::normalisePath(QString path)
+{
+	QFileInfo file_info(path);
+	if (file_info.isRelative()) {
+		return QDir(getAbsoluteScriptDirPath()).filePath(path);
+	}
+	return path;
+}
+
+bool Bot::scriptFileExists(QString file_path)
+{
+	file_path = normalisePath(file_path);
+	QFileInfo file_info(file_path);
+	return file_info.exists() && file_info.isFile();
 }
 
 void Bot::runScript()
@@ -44,9 +66,9 @@ void Bot::runScript()
 	REGISTER_PROTO(script_engine, RectPrototype, QRect, "Rect");
 
 	// Try to open the submitted script file.
-	QFile script_file(m_script_path);
+	QFile script_file(script_path);
 	if (!script_file.open(QIODevice::ReadOnly)) {
-		QString debug_msg("Can't read the contents from " + m_script_path + ". Please check the files permissions.");
+		QString debug_msg("Can't read the contents from " + script_path + ". Please check the files permissions.");
 		emit message(debug_msg, true);
 		emit stopped(false);
 		return;
@@ -56,17 +78,17 @@ void Bot::runScript()
 	QTextStream stream(&script_file);
 	QString contents = stream.readAll();
 	script_file.close();
-	emit message("Executing bot script " + m_script_path, true);
+	emit message("Executing bot script " + script_path, true);
 	
 	// Run the script and clean up after doing so.
 	// NOTE: Putting this in a try-catch statement does nothing.
 	// I threw a exception in the browser api and the program crashed.
-	QScriptValue result = script_engine->evaluate(contents, m_script_path);
+	QScriptValue result = script_engine->evaluate(contents, script_path);
 	script_engine->collectGarbage();
 	
 	// Check whether the script ended due to errors. If so print them to the users log.
 	if (result.isError()) {
-		QString error_msg = replaceQTypes(result.toString());
+		QString error_msg = replaceQtWithEngineTypeNames(result.toString());
 		QString debug_msg = QString("<b>Uncaught exception</b> at line %1 : %2").arg(result.property("lineNumber").toString()).arg(error_msg);
 		emit message(debug_msg, true, true);
 	} else {
@@ -87,7 +109,7 @@ void Bot::stop()
 	script_engine->abortEvaluation();
 }
 
-QString Bot::replaceQTypes(QString text)
+QString Bot::replaceQtWithEngineTypeNames(QString text)
 {
 	// List "QType*" before "QType" otherwise "QType" will be replaced but the "*" stays.
 	static QList<QPair<QString, QString>> replacements = {
@@ -106,26 +128,4 @@ QString Bot::replaceQTypes(QString text)
 		text.replace(pair.first, pair.second);
 	}
 	return text;
-}
-
-QString Bot::normalisePath(QString path)
-{
-	QFileInfo file_info(path);
-	if (file_info.isRelative()) {
-		return QDir(getAbsoluteScriptDirPath()).filePath(path);
-	}
-	return path;
-}
-
-QString Bot::getAbsoluteScriptDirPath()
-{
-	QFileInfo file_info(m_script_path);
-	return file_info.dir().absolutePath();
-}
-
-bool Bot::fileExists(QString file_path)
-{
-	file_path = normalisePath(file_path);
-	QFileInfo file_info(file_path);
-	return file_info.exists() && file_info.isFile();
 }
