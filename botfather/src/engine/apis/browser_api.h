@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QScriptEngine>
+#include <QImage>
 #include <QString>
 #include "abstract_api.h"
 
@@ -44,9 +45,9 @@ public:
 	Q_INVOKABLE void moveMouseTo(int x, int y);
 	Q_INVOKABLE void scrollWheel(int x, int y, int delta_x, int delta_y);
 	
-	Q_INVOKABLE bool findAndClick(QImage* tpl, double threshold = 0.8, int button = 1);
-	Q_INVOKABLE QScriptValue findMatches(QImage* tpl, double threshold = 0.8, int max_matches = -1);
-	Q_INVOKABLE QScriptValue findMatch(QImage* tpl, double threshold = 0.8);
+	Q_INVOKABLE bool findAndClick(QImage tpl, double threshold = 0.8, int button = 1);
+	Q_INVOKABLE QScriptValue findMatches(QImage tpl, double threshold = 0.8, int max_matches = -1);
+	Q_INVOKABLE QScriptValue findMatch(QImage tpl, double threshold = 0.8);
 };
 
 #endif // BFP_ENGINE_APIS_BROWSER_BROWSER_API_H

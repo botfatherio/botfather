@@ -3,18 +3,18 @@
 #include <QFileInfo>
 #include "../modules/vision/vision.h"
 
-void VisionAPI::saveImage(QImage* image, QString path)
+void VisionAPI::saveImage(QImage image, QString path)
 {
-    if (!image || image->isNull()) {
-	    engine()->currentContext()->throwError("Invalid or empty image.");
+    if (image.isNull()) {
+	    engine()->currentContext()->throwError("The image must not be null.");
 	    return;
     }
     if (path.isEmpty()) {
-	    engine()->currentContext()->throwError("Empty path.");
+	    engine()->currentContext()->throwError("The path must not be empty.");
 	    return;
     }
     path = bot()->normalisePath(path);
-    image->save(path);
+    image.save(path);
 }
 
 QScriptValue VisionAPI::loadImage(QString path)
@@ -71,17 +71,17 @@ QScriptValue VisionAPI::resizeImage(QImage *image, int new_width, int new_height
     return engine()->toScriptValue(scaled);
 }
 
-QScriptValue VisionAPI::isolateColor(QImage *image, QColor* min_color, QColor* max_color, bool keep_color)
+QScriptValue VisionAPI::isolateColor(QImage *image, QColor min_color, QColor max_color, bool keep_color)
 {
     if (!image || image->isNull()) {
 	    return engine()->currentContext()->throwError("Invalid or empty image.");
     }
-    if (!min_color || !max_color) {
-	    engine()->currentContext()->throwError("Invalid Color.");
+    if (!min_color.isValid() || !max_color.isValid()) {
+	    engine()->currentContext()->throwError("Both colors must be valid.");
     }
     
-    cv::Scalar min_hsv(min_color->hsvHue() / 2, min_color->hsvSaturation(), min_color->value());
-    cv::Scalar max_hsv(max_color->hsvHue() / 2, max_color->hsvSaturation(), max_color->value());
+    cv::Scalar min_hsv(min_color.hsvHue() / 2, min_color.hsvSaturation(), min_color.value());
+    cv::Scalar max_hsv(max_color.hsvHue() / 2, max_color.hsvSaturation(), max_color.value());
     
     cv::Mat mat = Vision::qimageToBGRMat(*image); // TODO: check whether this works or leaks mem
     cv::Mat result_image = Vision::isolateColor(mat, min_hsv, max_hsv, keep_color);
@@ -94,67 +94,67 @@ QScriptValue VisionAPI::isolateColor(QImage *image, QColor* min_color, QColor* m
     return engine()->toScriptValue(qimage);
 }
 
-bool VisionAPI::sameImages(QImage* image_1, QImage* image_2)
+bool VisionAPI::sameImages(QImage image_1, QImage image_2)
 {
-    if (!image_1 || !image_2) {
-	    engine()->currentContext()->throwError("Invalid image(s).");
+    if (image_1.isNull() || image_1.isNull()) {
+	    engine()->currentContext()->throwError("Both images must not be null.");
 	    return false;
     }
-    cv::Mat mat1 = Vision::qimageToBGRMat(*image_1); // TODO: check whether this works or leaks mem
-    cv::Mat mat2 = Vision::qimageToBGRMat(*image_2);
+    cv::Mat mat1 = Vision::qimageToBGRMat(image_1);
+    cv::Mat mat2 = Vision::qimageToBGRMat(image_2);
     bool result = Vision::sameImages(mat1, mat2);
     mat1.release();
     mat2.release();
     return result;
 }
 
-QScriptValue VisionAPI::findMaskedMatches(QImage *image, QImage *tpl, QImage *mask, double threshold, int max_matches)
+QScriptValue VisionAPI::findMaskedMatches(QImage image, QImage tpl, QImage mask, double threshold, int max_matches)
 {
-    if (!image || image->isNull()) {
+    if (image.isNull()) {
 	    return engine()->currentContext()->throwError("Invalid or empty image.");
     }
-    if (!tpl || tpl->isNull()){
+    if (tpl.isNull()){
 	    return engine()->currentContext()->throwError("Invalid or empty template.");
     }
-    if (!mask || mask->isNull()) {
+    if (mask.isNull()) {
 	    return engine()->currentContext()->throwError("Invalid or empty mask.");
     }
-    if (image->height() <= tpl->height() || image->width() <= tpl->width()) {
+    if (image.height() <= tpl.height() || image.width() <= tpl.width()) {
 	    return engine()->currentContext()->throwError("The template must be smaller than the image.");
     }
-    if (tpl->height() != mask->height() || tpl->width() != mask->width()) {
+    if (tpl.height() != mask.height() || tpl.width() != mask.width()) {
 	    return engine()->currentContext()->throwError("Mask and template must have the same size.");
     }
     
-    cv::Mat ref_mat = Vision::qimageToBGRMat(*image); // TODO: check whether this works or leaks mem
-    cv::Mat tpl_mat = Vision::qimageToBGRMat(*tpl);
-    cv::Mat msk_mat = Vision::qimageToBGRMat(*mask);
+    cv::Mat ref_mat = Vision::qimageToBGRMat(image);
+    cv::Mat tpl_mat = Vision::qimageToBGRMat(tpl);
+    cv::Mat msk_mat = Vision::qimageToBGRMat(mask);
     
     QVector<Match> matches = Vision::findMaskedMatches(ref_mat, tpl_mat, msk_mat, threshold, max_matches);
     return qScriptValueFromSequence(engine(), matches);
 }
 
-QScriptValue VisionAPI::findMaskedMatch(QImage *image, QImage *tpl, QImage *mask, double threshold)
+QScriptValue VisionAPI::findMaskedMatch(QImage image, QImage tpl, QImage mask, double threshold)
 {
-    if (!image || image->isNull()) {
+    if (image.isNull()) {
 	    return engine()->currentContext()->throwError("Invalid or empty image.");
     }
-    if (!tpl || tpl->isNull()) {
+    if (tpl.isNull()) {
 	    return engine()->currentContext()->throwError("Invalid or empty template.");
     }
-    if (!mask || mask->isNull()) {
+    if (mask.isNull()) {
 	    return engine()->currentContext()->throwError("Invalid or empty mask.");
     }
-    if (image->height() <= tpl->height() || image->width() <= tpl->width()) {
+    if (image.height() <= tpl.height() || image.width() <= tpl.width()) {
 	    return engine()->currentContext()->throwError("The template must be smaller than the image.");
     }
-    if (tpl->height() != mask->height() || tpl->width() != mask->width()) {
+    if (tpl.height() != mask.height() || tpl.width() != mask.width()) {
 	    return engine()->currentContext()->throwError("Mask and template must have the same size.");
     }
     
-    cv::Mat image_mat = Vision::qimageToBGRMat(*image); // TODO: check whether this works or leaks mem
-    cv::Mat tpl_mat = Vision::qimageToBGRMat(*tpl);
-    cv::Mat mask_mat = Vision::qimageToBGRMat(*mask);
+    cv::Mat image_mat = Vision::qimageToBGRMat(image);
+    cv::Mat tpl_mat = Vision::qimageToBGRMat(tpl);
+    cv::Mat mask_mat = Vision::qimageToBGRMat(mask);
     
     Match match = Vision::findMaskedMatch(image_mat, tpl_mat, mask_mat, threshold);
     
@@ -165,20 +165,20 @@ QScriptValue VisionAPI::findMaskedMatch(QImage *image, QImage *tpl, QImage *mask
     return engine()->toScriptValue(match);
 }
 
-QScriptValue VisionAPI::findMatches(QImage *image, QImage *tpl, double threshold, int max_matches)
+QScriptValue VisionAPI::findMatches(QImage image, QImage tpl, double threshold, int max_matches)
 {
-    if (!image || image->isNull()) {
+    if (image.isNull()) {
 	    return engine()->currentContext()->throwError("Invalid or empty image.");
     }
-    if (!tpl || tpl->isNull()) {
+    if (tpl.isNull()) {
 	    return engine()->currentContext()->throwError("Invalid or empty template.");
     }
-    if (image->height() <= tpl->height() || image->width() <= tpl->width()) {
+    if (image.height() <= tpl.height() || image.width() <= tpl.width()) {
 	    return engine()->currentContext()->throwError("The template must be smaller than the image.");
     }
     
-    cv::Mat image_mat = Vision::qimageToBGRMat(*image); // TODO: check whether this works or leaks mem
-    cv::Mat tpl_mat = Vision::qimageToBGRMat(*tpl);
+    cv::Mat image_mat = Vision::qimageToBGRMat(image);
+    cv::Mat tpl_mat = Vision::qimageToBGRMat(tpl);
     
     // NOTE: Dont call findMaskedMatches here instead to save some checks, it requires a non empty mask.
     QVector<Match> matches = Vision::findMatches(image_mat, tpl_mat, threshold, max_matches);
@@ -189,20 +189,20 @@ QScriptValue VisionAPI::findMatches(QImage *image, QImage *tpl, double threshold
     return qScriptValueFromSequence(engine(), matches);
 }
 
-QScriptValue VisionAPI::findMatch(QImage *image, QImage *tpl, double threshold)
+QScriptValue VisionAPI::findMatch(QImage image, QImage tpl, double threshold)
 {
-    if (!image || image->isNull()) {
+    if (image.isNull()) {
 	    return engine()->currentContext()->throwError("Invalid or empty image.");
     }
-    if (!tpl || tpl->isNull()) {
+    if (tpl.isNull()) {
 	    return engine()->currentContext()->throwError("Invalid or empty template.");
     }
-    if (image->height() <= tpl->height() || image->width() <= tpl->width()) {
+    if (image.height() <= tpl.height() || image.width() <= tpl.width()) {
 	    return engine()->currentContext()->throwError("The template must be smaller than the image.");
     }
     
-    cv::Mat image_mat = Vision::qimageToBGRMat(*image); // TODO: check whether this works or leaks mem
-    cv::Mat tpl_mat = Vision::qimageToBGRMat(*tpl);
+    cv::Mat image_mat = Vision::qimageToBGRMat(image);
+    cv::Mat tpl_mat = Vision::qimageToBGRMat(tpl);
     
     // NOTE: Dont call findMaskedMatch here instead to save some checks, it requires a non empty mask.
     Match match = Vision::findMatch(image_mat, tpl_mat, threshold);
@@ -214,7 +214,7 @@ QScriptValue VisionAPI::findMatch(QImage *image, QImage *tpl, double threshold)
 }
 
 /*
-QScriptValue VisionAPI::findBlobs(BlobTpl *blob_tpl, Image *image)
+QScriptValue VisionAPI::findBlobs(BlobTpl blob_tpl, Image image)
 {
     if (!image || image->getQImage().isNull()) {
 	    return m_engine_p->currentContext()->throwError("Invalid or empty image.");

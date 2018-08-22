@@ -173,25 +173,24 @@ void BrowserAPI::scrollWheel(int x, int y, int delta_x, int delta_y)
 	Browser::scrollWheel(x, y, delta_x, delta_y);
 }
 
-bool BrowserAPI::findAndClick(QImage* tpl, double threshold, int button)
+bool BrowserAPI::findAndClick(QImage tpl, double threshold, int button)
 {
 	QImage screenshot = Browser::takeScreenshot();
 	
-	if (screenshot.isNull() || !tpl) {
+	if (screenshot.isNull() || tpl.isNull()) {
 		return false;
 	}
-	if (screenshot.width() <= tpl->width() || screenshot.height() <= tpl->height()) {
+	if (screenshot.width() <= tpl.width() || screenshot.height() <= tpl.height()) {
 		return false;
 	}
 	
 	cv::Mat ref_mat = Vision::qimageToBGRMat(screenshot);
-	cv::Mat tpl_mat = Vision::qimageToBGRMat(*tpl); // Check whether this works or leaks mem
+	cv::Mat tpl_mat = Vision::qimageToBGRMat(tpl);
 	
 	Match match = Vision::findMatch(ref_mat, tpl_mat, threshold);
 	
 	ref_mat.release();
 	tpl_mat.release();
-	
 	
 	switch (button) {
 	case 1:
@@ -210,16 +209,20 @@ bool BrowserAPI::findAndClick(QImage* tpl, double threshold, int button)
 	return true;
 }
 
-QScriptValue BrowserAPI::findMatches(QImage* tpl, double threshold, int max_matches)
+QScriptValue BrowserAPI::findMatches(QImage tpl, double threshold, int max_matches)
 {
-	QImage screenshot = Browser::takeScreenshot();
-	VisionAPI *vapi = new VisionAPI(bot(), engine());
-	return vapi->findMatches(&screenshot, tpl, threshold, max_matches); // FIXME: this pointer will leak mem.
+    QImage screenshot = Browser::takeScreenshot();
+    VisionAPI *vapi = new VisionAPI(bot(), engine());
+    QScriptValue matches = vapi->findMatches(screenshot, tpl, threshold, max_matches);
+	delete vapi;
+	return matches;
 }
 
-QScriptValue BrowserAPI::findMatch(QImage* tpl, double threshold)
+QScriptValue BrowserAPI::findMatch(QImage tpl, double threshold)
 {
-	QImage screenshot = Browser::takeScreenshot();
-	VisionAPI *vapi = new VisionAPI(bot(), engine());
-	return vapi->findMatch(&screenshot, tpl, threshold); // FIXME: this pointer will leak mem.
+    QImage screenshot = Browser::takeScreenshot();
+    VisionAPI *vapi = new VisionAPI(bot(), engine());
+	QScriptValue match = vapi->findMatch(screenshot, tpl, threshold);
+	delete vapi;
+    return match;
 }

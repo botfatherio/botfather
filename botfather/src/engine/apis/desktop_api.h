@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QScriptEngine>
+#include <QImage>
 #include "abstract_api.h"
 
 class Desktop;
@@ -33,10 +34,9 @@ public:
 	Q_INVOKABLE void warpCursor(int x, int y);
 	Q_INVOKABLE QScriptValue getCursorPosition();
 	
-	Q_INVOKABLE bool findAndClick(QImage* tpl, double threshold = 0.8, int button = 1);
-	
-	Q_INVOKABLE QScriptValue findMatches(QImage* tpl, double threshold = 0.8, int max_matches = -1);
-	Q_INVOKABLE QScriptValue findMatch(QImage* tpl, double threshold = 0.8);
+	Q_INVOKABLE bool findAndClick(QImage tpl, double threshold = 0.8, int button = 1);
+	Q_INVOKABLE QScriptValue findMatches(QImage tpl, double threshold = 0.8, int max_matches = -1);
+	Q_INVOKABLE QScriptValue findMatch(QImage tpl, double threshold = 0.8);
 	
 private:
 	Desktop *desktop;
