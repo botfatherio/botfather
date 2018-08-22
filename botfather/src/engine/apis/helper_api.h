@@ -28,9 +28,6 @@ public:
 	// Returns the path part of the programs version.
 	Q_INVOKABLE int getPatchVersion();
 
-	// Logs the message in the users chat.
-	Q_INVOKABLE void log(QString log_message);
-	
 	// Returns a absolute path to the dir of the currently run script.
 	Q_INVOKABLE QString getAbsoluteScriptDirPath();
 	
@@ -39,6 +36,13 @@ public:
 	
 	// Stops any started wav sounds started by the bot from playing.
 	Q_INVOKABLE void stopWavSound();
+	
+	// Methods added via extendGlobalApiObject():
+	// Helper.log(comma, seperated, QScriptValues, aka, the, message)
+	
+protected:
+	static QScriptValue testlog(QScriptContext *context, QScriptEngine *engine);
+	void extendGlobalApiObject(QScriptEngine *engine, QScriptValue &api_object);
 };
 
 #endif // BFP_ENGINE_APIS_HELPER_API_H

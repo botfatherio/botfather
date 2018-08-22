@@ -44,11 +44,6 @@ int HelperAPI::getPatchVersion()
 	return QVersionNumber::fromString(QApplication::applicationVersion()).microVersion();
 }
 
-void HelperAPI::log(QString log_message)
-{
-	emit bot()->message(log_message, false);
-}
-
 QString HelperAPI::getAbsoluteScriptDirPath()
 {
 	return bot()->getAbsoluteScriptDirPath();
@@ -89,4 +84,29 @@ void HelperAPI::playWavSound(QString path_to_wav_file, bool blocking)
 void HelperAPI::stopWavSound()
 {
 	emit bot()->stopWavSound();
+}
+
+QScriptValue HelperAPI::testlog(QScriptContext *context, QScriptEngine *engine)
+{
+	QString message;
+	
+    for (int i = 0; i < context->argumentCount(); ++i) {
+		if (i > 0) {
+            message.append(" ");
+		}
+        message.append(context->argument(i).toString());
+    }
+	
+    QScriptValue callee_data = context->callee().data();
+	HelperAPI *hapi = qobject_cast<HelperAPI*>(callee_data.toQObject());
+	emit hapi->bot()->message(message, false);
+
+    return engine->undefinedValue();
+}
+
+void HelperAPI::extendGlobalApiObject(QScriptEngine *engine, QScriptValue &api_object)
+{
+	QScriptValue fun = engine->newFunction(testlog);
+	fun.setData(engine->newQObject(this));
+	api_object.setProperty("log", fun);
 }

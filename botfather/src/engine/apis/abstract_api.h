@@ -12,9 +12,13 @@ class AbstractAPI : public QObject, public QScriptable
 	
 public:
 	AbstractAPI(Bot *bot, QObject *parent = nullptr);
+	void enable(QScriptEngine *engine, QString api_name);
 	
 protected:
 	Bot *bot() const;
+	
+	// Template method
+	virtual void extendGlobalApiObject(QScriptEngine *engine, QScriptValue &api_object);
 	
 private:
 	Bot *bot_p;
@@ -23,12 +27,7 @@ private:
 #define REGISTER_API(ENGINE_P, BOT_P, API_CLS, API_NAME) \
 { \
 	API_CLS *api_instance = new API_CLS(BOT_P, ENGINE_P); \
-	QScriptValue api_js_obj = ENGINE_P->newQObject( \
-		api_instance, \
-		QScriptEngine::ScriptOwnership, \
-		QScriptEngine::SkipMethodsInEnumeration | QScriptEngine::ExcludeSuperClassContents \
-	); \
-	ENGINE_P->globalObject().setProperty(API_NAME, api_js_obj); \
+	api_instance->enable(ENGINE_P, API_NAME); \
 }
 
 #endif // BFP_ENGINE_APIS_ABSTRACT_API_H
