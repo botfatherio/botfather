@@ -11,11 +11,15 @@ QScriptValue ImagePrototype::constructor(QScriptContext *context, QScriptEngine 
 	Bot *bot = qobject_cast<Bot *>(engine->parent());
 	Q_ASSERT(bot);
 	
-	if (context->argumentCount() == 0) {
+	// new Image();
+	if (context->argumentCount() == 0)
+	{
 		return engine->toScriptValue(QImage());
 	}
 	
-	if (context->argumentCount() == 1 && context->argument(0).isString()) {
+	// new Image(color_name);
+	if (context->argumentCount() == 1 && context->argument(0).isString())
+	{
 		QString filepath = context->argument(0).toString();
 		QString absolute_path = bot->normalisePath(filepath);
 		
@@ -25,7 +29,35 @@ QScriptValue ImagePrototype::constructor(QScriptContext *context, QScriptEngine 
 		return engine->toScriptValue(image);
 	}
 	
+	// new Image(new Size());
+	if (context->argumentCount() == 1 && isQSize(context->argument(0)))
+	{
+		QSize size = qscriptvalue_cast<QSize>(context->argument(0));
+		QImage image(size, QImage::Format_RGB32);
+		return engine->toScriptValue(image);
+	}
+	
+	// new Image(new Size(), new Color());
+	if (context->argumentCount() == 2 && isQSize(context->argument(0)) && isQColor(context->argument(1)))
+	{
+		QSize size = toQSize(context->argument(0));
+		QColor color = toQColor(context->argument(1));
+		QImage image(size, QImage::Format_RGB32);
+		image.fill(color);
+		return engine->toScriptValue(image);
+	}
+	
 	NO_MATCHING_CTOR("Image", IMAGE_PROTOTYPE_DOCS)
+}
+
+bool ImagePrototype::isNull() const
+{
+	return THIS_IMAGE().isNull();
+}
+
+bool ImagePrototype::hasAlphaChannel() const
+{
+	return THIS_IMAGE().hasAlphaChannel();
 }
 
 int ImagePrototype::getWidth() const
@@ -38,9 +70,9 @@ int ImagePrototype::getHeight() const
 	return THIS_IMAGE().height();
 }
 
-bool ImagePrototype::isNull() const
+QSize ImagePrototype::getSize() const
 {
-	return THIS_IMAGE().isNull();
+	return THIS_IMAGE().size();
 }
 
 void ImagePrototype::load(QString filepath)
@@ -57,6 +89,48 @@ void ImagePrototype::save(QString filepath)
 	Q_ASSERT(bot);
 	QString absolute_path = bot->normalisePath(filepath);
 	THIS_IMAGE().save(absolute_path);
+}
+
+void ImagePrototype::fill(QColor color)
+{
+	THIS_IMAGE_P()->fill(color);
+}
+
+QColor ImagePrototype::getPixelColor(QPoint position) const
+{
+	return THIS_IMAGE().pixelColor(position);
+}
+
+void ImagePrototype::setPixelColor(QPoint position, QColor color)
+{
+	THIS_IMAGE_P()->setPixelColor(position, color);
+}
+
+QImage ImagePrototype::copy(QRect sub_area)
+{
+	return THIS_IMAGE().copy(sub_area);
+}
+	
+QImage ImagePrototype::mirrored(bool horizontally, bool vertically)
+{
+	return THIS_IMAGE().mirrored(horizontally, vertically);
+}
+	
+QImage ImagePrototype::grayed()
+{
+	return THIS_IMAGE().convertToFormat(QImage::Format_Grayscale8);
+}
+	
+QImage ImagePrototype::createMaskFromColor(QColor color)
+{
+	return THIS_IMAGE().createMaskFromColor(color.rgb(), Qt::MaskOutColor);
+}
+
+QImage ImagePrototype::createMaskFromAlpha()
+{
+	QImage image = THIS_IMAGE().createAlphaMask();
+	image.invertPixels();
+	return image;
 }
 
 QString ImagePrototype::toString() const

@@ -4,29 +4,6 @@
 #include "../../types/match.h"
 
 // static
-cv::Mat Vision::cropImage(cv::Mat image, QRect region)
-{
-	cv::Rect target_region(region.x(), region.y(), region.width(), region.height());
-	return image(target_region);
-}
-
-// static
-cv::Mat Vision::grayImage(cv::Mat image)
-{
-	cv::Mat gray_image;
-	cv::cvtColor(image, gray_image, CV_BGR2GRAY);
-	return gray_image;
-}
-
-// static
-cv::Mat Vision::resizeImage(cv::Mat image, int new_width, int new_height)
-{
-	cv::Mat resized_image;
-	cv::resize(image, resized_image, cv::Size(new_width, new_height));
-	return resized_image;
-}
-
-// static
 cv::Mat Vision::isolateColor(cv::Mat image, cv::Scalar min_hsv, cv::Scalar max_hsv, bool keep_color)
 {
 	cv::Mat hsv_image, bgr_result_image;

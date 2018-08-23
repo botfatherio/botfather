@@ -12,9 +12,6 @@ class Match;
 class Vision
 {
 public:
-	static cv::Mat cropImage(cv::Mat image, QRect region);
-	static cv::Mat grayImage(cv::Mat image);
-	static cv::Mat resizeImage(cv::Mat image, int new_width, int new_height);
 	static cv::Mat isolateColor(cv::Mat image, cv::Scalar min_hsv, cv::Scalar max_hsv, bool keep_color);
 	static bool sameImages(cv::Mat image_1, cv::Mat image_2);
 	
