@@ -57,6 +57,40 @@ bool Vision::sameImages(cv::Mat image_1, cv::Mat image_2)
 	return non_zero == 0;
 }
 
+double Vision::histogramSimilarity(cv::Mat image_1, cv::Mat image_2)
+{
+	cv::Mat hsv_1, hsv_2;
+	cv::cvtColor(image_1, hsv_1, CV_BGR2HSV);
+	cv::cvtColor(image_2, hsv_2, CV_BGR2HSV);
+	
+	// Using 50 bins for hue and 60 for saturation
+	int h_bins = 50;
+	int s_bins = 60;
+	int v_bins = 60;
+	int hist_size[] = { h_bins, s_bins, v_bins };
+	
+	// Use the o-th and 1-st channels
+	int channels[] = { 0, 1, 2 };
+	
+	// hue varies from 0 to 179, saturation from 0 to 255
+	float h_ranges[] = { 0, 180 };
+	float s_ranges[] = { 0, 256 };
+	float v_ranges[] = { 0, 256 };
+	const float* ranges[] = { h_ranges, s_ranges, v_ranges };
+	
+	int dims = 3;
+	
+	cv::MatND hsv_1_hist, hsv_2_hist;
+	
+	cv::calcHist(&hsv_1, 1, channels, cv::Mat(), hsv_1_hist, dims, hist_size, ranges, true, false);
+	cv::normalize(hsv_1_hist, hsv_1_hist, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
+	
+	cv::calcHist(&hsv_2, 1, channels, cv::Mat(), hsv_2_hist, dims, hist_size, ranges, true, false);
+	cv::normalize(hsv_2_hist, hsv_2_hist, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());	
+	
+	return cv::compareHist(hsv_1_hist, hsv_2_hist, CV_COMP_CORREL);
+}
+
 QVector<Match> Vision::findMaskedMatches(cv::Mat image, cv::Mat tpl, cv::Mat mask, double threshold, int max_matches)
 {
 	// Note: Only CV_TM_SQDIFF and CV_TM_CCORR_NORMED accept maskes.
