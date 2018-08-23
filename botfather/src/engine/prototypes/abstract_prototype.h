@@ -42,6 +42,9 @@ public:
 	static bool isQPoint(QScriptValue value);
 	static bool isQSize(QScriptValue value);
 	static bool isQRect(QScriptValue value);
+	
+	static QColor toQColor(QScriptValue value);
+	static QSize toQSize(QScriptValue value);
 };
 
 #endif // BFP_ENGINE_PROTOTYPES_ABSTRACT_PROTOTYPE_H
