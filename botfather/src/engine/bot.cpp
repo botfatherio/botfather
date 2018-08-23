@@ -19,6 +19,8 @@
 
 Bot::Bot(QString script_path) : script_path(script_path)
 {
+	// The script engines parent MUST BE the bot instance. This way we can obtain a pointer to the bot
+	// instance in static functions (like constructors) by casting the engines parent to a Bot*.
 	script_engine = new QScriptEngine(this);
 }
 

@@ -1,23 +1,26 @@
 #include "image_prototype.h"
+#include "../bot.h"
 
 #define THIS_IMAGE() qscriptvalue_cast<QImage>(thisObject())
 #define THIS_IMAGE_P() qscriptvalue_cast<QImage*>(thisObject())
 
 QScriptValue ImagePrototype::constructor(QScriptContext *context, QScriptEngine *engine)
 {
+	// Instead of casting the engines parent to a Bot* we could expose required bot functionality
+	// via the HelperAPI to engine and call it from here.
+	Bot *bot = qobject_cast<Bot *>(engine->parent());
+	Q_ASSERT(bot);
+	
 	if (context->argumentCount() == 0) {
 		return engine->toScriptValue(QImage());
 	}
 	
 	if (context->argumentCount() == 1 && context->argument(0).isString()) {
 		QString filepath = context->argument(0).toString();
-		QImage image;
+		QString absolute_path = bot->normalisePath(filepath);
 		
-		if (!image.load(filepath))
-		{
-			QString message = QString("Couldn't load image from file %1").arg(filepath);
-			return context->throwError(QScriptContext::URIError, message);
-		}
+		QImage image;
+		image.load(absolute_path);
 		
 		return engine->toScriptValue(image);
 	}
