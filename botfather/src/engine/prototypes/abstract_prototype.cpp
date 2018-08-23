@@ -6,6 +6,11 @@ AbstractPrototype::AbstractPrototype(QObject *parent)
 	
 }
 
+bool AbstractPrototype::isQColor(QScriptValue value)
+{
+	return value.toVariant().canConvert(qMetaTypeId<QColor>());
+}
+
 bool AbstractPrototype::isQPoint(QScriptValue value)
 {
 	return value.toVariant().canConvert(qMetaTypeId<QPoint>());

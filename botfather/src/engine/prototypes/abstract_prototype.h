@@ -38,6 +38,7 @@ public:
 	
 	Q_INVOKABLE virtual QString toString() const = 0;
 	
+	static bool isQColor(QScriptValue value);
 	static bool isQPoint(QScriptValue value);
 	static bool isQSize(QScriptValue value);
 	static bool isQRect(QScriptValue value);
