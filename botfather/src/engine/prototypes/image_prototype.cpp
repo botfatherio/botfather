@@ -1,4 +1,6 @@
 #include "image_prototype.h"
+#include <QDebug>
+#include "../modules/vision/vision.h"
 #include "../bot.h"
 
 #define THIS_IMAGE() qscriptvalue_cast<QImage>(thisObject())
@@ -131,6 +133,18 @@ QImage ImagePrototype::createMaskFromAlpha()
 	QImage image = THIS_IMAGE().createAlphaMask();
 	image.invertPixels();
 	return image;
+}
+
+QImage ImagePrototype::isolateColorRange(QColor min, QColor max, bool keep_color)
+{
+	if (THIS_IMAGE().isNull()) {
+		return QImage();
+	}
+	cv::Mat image = Vision::qimageToBGRMat(THIS_IMAGE());
+	cv::Scalar min_hsv(min.hsvHue() / 2, min.hsvSaturation(), min.value());
+    cv::Scalar max_hsv(max.hsvHue() / 2, max.hsvSaturation(), max.value());
+	cv::Mat result = Vision::isolateColor(image, min_hsv, max_hsv, keep_color);
+	return Vision::cvMatToQImage(result);
 }
 
 QString ImagePrototype::toString() const

@@ -12,7 +12,6 @@ class VisionAPI : public AbstractAPI
 public:
 	using AbstractAPI::AbstractAPI;
 	
-	Q_INVOKABLE QScriptValue isolateColor(QImage* image, QColor min_color, QColor max_color, bool keep_color = false);
 	Q_INVOKABLE bool sameImages(QImage image_1, QImage image_2);
 	
 	Q_INVOKABLE QScriptValue findMaskedMatches(QImage image, QImage tpl, QImage mask, double threshold = 0.8, int max_matches = -1);

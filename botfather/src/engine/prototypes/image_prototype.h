@@ -82,7 +82,11 @@ public:
 	// Builds and returns a 1-bpp mask from the alpha buffer in this image.
 	// https://doc.qt.io/qt-5/qimage.html#createAlphaMask
 	Q_INVOKABLE QImage createMaskFromAlpha();
-		
+	
+	// Turns all pixels black which are not in range of min and max. Pixels in range keep their
+	// color or will be turned white depending on keep_color.
+	Q_INVOKABLE QImage isolateColorRange(QColor min, QColor max, bool keep_color = false);
+	
 	Q_INVOKABLE QString toString() const;
 };
 

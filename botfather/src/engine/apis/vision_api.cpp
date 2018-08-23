@@ -3,29 +3,6 @@
 #include <QFileInfo>
 #include "../modules/vision/vision.h"
 
-QScriptValue VisionAPI::isolateColor(QImage *image, QColor min_color, QColor max_color, bool keep_color)
-{
-    if (!image || image->isNull()) {
-	    return engine()->currentContext()->throwError("Invalid or empty image.");
-    }
-    if (!min_color.isValid() || !max_color.isValid()) {
-	    engine()->currentContext()->throwError("Both colors must be valid.");
-    }
-    
-    cv::Scalar min_hsv(min_color.hsvHue() / 2, min_color.hsvSaturation(), min_color.value());
-    cv::Scalar max_hsv(max_color.hsvHue() / 2, max_color.hsvSaturation(), max_color.value());
-    
-    cv::Mat mat = Vision::qimageToBGRMat(*image); // TODO: check whether this works or leaks mem
-    cv::Mat result_image = Vision::isolateColor(mat, min_hsv, max_hsv, keep_color);
-    mat.release();
-    
-    QImage qimage = Vision::cvMatToQImage(result_image);
-    result_image.release();
-    
-    //engine()->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(qimage)));
-    return engine()->toScriptValue(qimage);
-}
-
 bool VisionAPI::sameImages(QImage image_1, QImage image_2)
 {
     if (image_1.isNull() || image_1.isNull()) {
