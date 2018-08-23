@@ -61,6 +61,21 @@ QScriptValue ColorPrototype::constructor(QScriptContext *context, QScriptEngine 
 		return engine->toScriptValue(QColor(r, g, b));
 	}
 	
+	if (context->argumentCount() == 4 && context->argument(0).isNumber() && context->argument(1).isNumber()
+		&& context->argument(2).isNumber() && context->argument(3).isString() && context->argument(3).toString().toLower() == "hsv")
+	{
+		int h = context->argument(0).toInt32();
+		int s = context->argument(1).toInt32();
+		int v = context->argument(2).toInt32();
+		
+		if (h < 0 || s < 0 || v < 0 || h > 359 || s > 255 || v > 255)
+		{
+			return context->throwError(QScriptContext::RangeError, "Values must be in the following ranges: h 0-359, s and v 0-255");
+		}
+		
+		return engine->toScriptValue(QColor::fromHsv(h, s, v));
+	}
+	
 	NO_MATCHING_CTOR("Color", COLOR_PROTOTYPE_DOCS)
 }
 
