@@ -26,9 +26,11 @@ public:
 	Q_INVOKABLE int getHeight() const;
 	Q_INVOKABLE bool isNull() const;
 	
-	// Load and save image from and to the passed filepaths relativ to the script path, if the filepath is not absolute.
-	//Q_INVOKABLE void load(QString filepath);
-	//Q_INVOKABLE void save(QString filepath);
+	// Load image data from a file (relative paths are considered relative to the script)
+	Q_INVOKABLE void load(QString filepath);
+	
+	// Save the image (relative paths are considered relative to the script)
+	Q_INVOKABLE void save(QString filepath);
 	
 	Q_INVOKABLE QString toString() const;
 };

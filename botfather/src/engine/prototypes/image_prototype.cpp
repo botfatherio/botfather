@@ -43,6 +43,22 @@ bool ImagePrototype::isNull() const
 	return THIS_IMAGE().isNull();
 }
 
+void ImagePrototype::load(QString filepath)
+{
+	Bot *bot = qobject_cast<Bot *>(engine()->parent());
+	Q_ASSERT(bot);
+	QString absolute_path = bot->normalisePath(filepath);
+	THIS_IMAGE_P()->load(absolute_path);
+}
+
+void ImagePrototype::save(QString filepath)
+{
+	Bot *bot = qobject_cast<Bot *>(engine()->parent());
+	Q_ASSERT(bot);
+	QString absolute_path = bot->normalisePath(filepath);
+	THIS_IMAGE().save(absolute_path);
+}
+
 QString ImagePrototype::toString() const
 {
 	QImage image = THIS_IMAGE();
