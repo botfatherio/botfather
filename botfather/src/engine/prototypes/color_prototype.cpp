@@ -79,6 +79,11 @@ QScriptValue ColorPrototype::constructor(QScriptContext *context, QScriptEngine 
 	NO_MATCHING_CTOR("Color", COLOR_PROTOTYPE_DOCS)
 }
 
+bool ColorPrototype::isValid() const
+{
+	return THIS_COLOR().isValid();
+}
+
 int ColorPrototype::getRed() const
 {
 	return THIS_COLOR().red();
@@ -107,6 +112,31 @@ int ColorPrototype::getBlue() const
 void ColorPrototype::setBlue(int blue)
 {
 	THIS_COLOR_P()->setBlue(blue);
+}
+
+void ColorPrototype::setHsv(int h, int s, int v)
+{
+	if (h < 0 || s < 0 || v < 0 || h > 359 || s > 255 || v > 255)
+	{
+		context()->throwError(QScriptContext::RangeError, "Values must be in the following ranges: h 0-359, s and v 0-255");
+		return;
+	}
+	THIS_COLOR_P()->setHsv(h, s, v);
+}
+
+int ColorPrototype::hue() const
+{
+	return THIS_COLOR().hsvHue();
+}
+
+int ColorPrototype::saturation() const
+{
+	return THIS_COLOR().hsvSaturation();
+}
+
+int ColorPrototype::value() const
+{
+	return THIS_COLOR().value();
 }
 
 QString ColorPrototype::toString() const
