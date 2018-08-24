@@ -34,7 +34,7 @@ public:
 	
 	// Returns the dot product of this point and another
 	// http://doc.qt.io/archives/qt-5.10/qpoint.html#dotProduct
-	Q_INVOKABLE int dotProduct(QPoint other_point) const;
+	Q_INVOKABLE int dotProduct(const QPoint &other_point) const;
 	
 	// Returns the sum of the absolute values of x() and y(), traditionally known as the "Manhattan length" of the vector from the origin to the point
 	// http://doc.qt.io/archives/qt-5.10/qpoint.html#manhattanLength

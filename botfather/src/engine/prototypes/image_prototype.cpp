@@ -77,7 +77,7 @@ QSize ImagePrototype::getSize() const
 	return THIS_IMAGE().size();
 }
 
-void ImagePrototype::load(QString filepath)
+void ImagePrototype::load(const QString &filepath)
 {
 	Bot *bot = qobject_cast<Bot *>(engine()->parent());
 	Q_ASSERT(bot);
@@ -85,7 +85,7 @@ void ImagePrototype::load(QString filepath)
 	THIS_IMAGE_P()->load(absolute_path);
 }
 
-void ImagePrototype::save(QString filepath)
+void ImagePrototype::save(const QString &filepath)
 {
 	Bot *bot = qobject_cast<Bot *>(engine()->parent());
 	Q_ASSERT(bot);
@@ -93,22 +93,22 @@ void ImagePrototype::save(QString filepath)
 	THIS_IMAGE().save(absolute_path);
 }
 
-void ImagePrototype::fill(QColor color)
+void ImagePrototype::fill(const QColor &color)
 {
 	THIS_IMAGE_P()->fill(color);
 }
 
-QColor ImagePrototype::getPixelColor(QPoint position) const
+QColor ImagePrototype::getPixelColor(const QPoint &position) const
 {
 	return THIS_IMAGE().pixelColor(position);
 }
 
-void ImagePrototype::setPixelColor(QPoint position, QColor color)
+void ImagePrototype::setPixelColor(const QPoint &position, const QColor &color)
 {
 	THIS_IMAGE_P()->setPixelColor(position, color);
 }
 
-QImage ImagePrototype::copy(QRect sub_area)
+QImage ImagePrototype::copy(const QRect &sub_area)
 {
 	return THIS_IMAGE().copy(sub_area);
 }
@@ -123,7 +123,7 @@ QImage ImagePrototype::grayed()
 	return THIS_IMAGE().convertToFormat(QImage::Format_Grayscale8);
 }
 	
-QImage ImagePrototype::createMaskFromColor(QColor color)
+QImage ImagePrototype::createMaskFromColor(const QColor &color)
 {
 	return THIS_IMAGE().createMaskFromColor(color.rgb(), Qt::MaskOutColor);
 }
@@ -135,7 +135,7 @@ QImage ImagePrototype::createMaskFromAlpha()
 	return image;
 }
 
-QImage ImagePrototype::isolateColorRange(QColor min, QColor max, bool keep_color)
+QImage ImagePrototype::isolateColorRange(const QColor &min, const QColor &max, bool keep_color)
 {
 	if (THIS_IMAGE().isNull()) {
 		context()->throwError(QScriptContext::TypeError, "The image must not be null.");
@@ -147,7 +147,7 @@ QImage ImagePrototype::isolateColorRange(QColor min, QColor max, bool keep_color
 	return Vision::cvMatToQImage(result);
 }
 
-int ImagePrototype::countDifferentPixels(QImage other_image) const
+int ImagePrototype::countDifferentPixels(const QImage &other_image) const
 {
 	if (THIS_IMAGE().isNull() || other_image.isNull()) {
 		context()->throwError(QScriptContext::TypeError, "Both images must not be null.");

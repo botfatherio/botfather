@@ -41,12 +41,12 @@ void SizePrototype::setHeight(int height)
 	THIS_SIZE_P()->setHeight(height);
 }
 
-QSize SizePrototype::boundedTo(QSize other_size) const
+QSize SizePrototype::boundedTo(const QSize &other_size) const
 {
 	return THIS_SIZE().boundedTo(other_size);
 }
 
-QSize SizePrototype::expandedTo(QSize other_size) const
+QSize SizePrototype::expandedTo(const QSize &other_size) const
 {
 	return THIS_SIZE().expandedTo(other_size);
 }

@@ -34,11 +34,11 @@ public:
 	
 	// Returns a size holding the minimum width and height of this size and the given other_size.
 	// https://doc.qt.io/qt-5/qsize.html#boundedTo
-	Q_INVOKABLE QSize boundedTo(QSize other_size) const;
+	Q_INVOKABLE QSize boundedTo(const QSize &other_size) const;
 	
 	// Returns a size holding the maximum width and height of this size and the given other_size.
 	// https://doc.qt.io/qt-5/qsize.html#expandedTo
-	Q_INVOKABLE QSize expandedTo(QSize other_size) const;
+	Q_INVOKABLE QSize expandedTo(const QSize &other_size) const;
 	
 	// Returns true if either of the width and height is less than or equal to 0; otherwise returns false.
 	// https://doc.qt.io/qt-5/qsize.html#isEmpty

@@ -39,7 +39,7 @@ void PointPrototype::setY(int y)
 	THIS_POINT_P()->setY(y);
 }
 
-int PointPrototype::dotProduct(QPoint other_point) const
+int PointPrototype::dotProduct(const QPoint &other_point) const
 {
 	return QPoint::dotProduct(THIS_POINT(), other_point);
 }

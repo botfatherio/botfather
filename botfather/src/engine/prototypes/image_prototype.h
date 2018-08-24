@@ -44,27 +44,27 @@ public:
 	
 	// Load image data from a file (relative paths are considered relative to the script)
 	// https://doc.qt.io/qt-5/qimage.html#load
-	Q_INVOKABLE void load(QString filepath);
+	Q_INVOKABLE void load(const QString &filepath);
 	
 	// Save the image (relative paths are considered relative to the script)
 	// https://doc.qt.io/qt-5/qimage.html#save
-	Q_INVOKABLE void save(QString filepath);
+	Q_INVOKABLE void save(const QString &filepath);
 	
 	// Fills the entire image with the given color.
 	// https://doc.qt.io/qt-5/qimage.html#fill-1
-	Q_INVOKABLE void fill(QColor color);
+	Q_INVOKABLE void fill(const QColor &color);
 	
 	// Returns the color of the pixel at the given position as a QColor.
 	// https://doc.qt.io/qt-5/qimage.html#pixelColor
-	Q_INVOKABLE QColor getPixelColor(QPoint position) const;
+	Q_INVOKABLE QColor getPixelColor(const QPoint &position) const;
 	
 	// Sets the color at the given position to color.
 	// https://doc.qt.io/qt-5/qimage.html#setPixelColor
-	Q_INVOKABLE void setPixelColor(QPoint position, QColor color);
+	Q_INVOKABLE void setPixelColor(const QPoint &position, const QColor &color);
 	
 	// Returns a sub-area of the image as a new image.
 	// https://doc.qt.io/qt-5/qimage.html#copy
-	Q_INVOKABLE QImage copy(QRect sub_area);
+	Q_INVOKABLE QImage copy(const QRect &sub_area);
 	
 	// Returns a mirror of the image
 	// https://doc.qt.io/qt-5/qimage.html#mirrored
@@ -77,7 +77,7 @@ public:
 	
 	// Creates and returns a mask for this image based on the given color value
 	// https://doc.qt.io/qt-5/qimage.html#createMaskFromColor
-	Q_INVOKABLE QImage createMaskFromColor(QColor color);
+	Q_INVOKABLE QImage createMaskFromColor(const QColor &color);
 	
 	// Builds and returns a 1-bpp mask from the alpha buffer in this image.
 	// https://doc.qt.io/qt-5/qimage.html#createAlphaMask
@@ -85,11 +85,11 @@ public:
 	
 	// Turns all pixels black which are not in range of min and max. Pixels in range keep their
 	// color or will be turned white depending on keep_color.
-	Q_INVOKABLE QImage isolateColorRange(QColor min, QColor max, bool keep_color = false);
+	Q_INVOKABLE QImage isolateColorRange(const QColor &min, const QColor &max, bool keep_color = false);
 	
 	// Returns the number of pixels different on two images of the same size.
 	// Compares two same sized images and returns the number pixels they don't have in common.
-	Q_INVOKABLE int countDifferentPixels(QImage other_image) const;
+	Q_INVOKABLE int countDifferentPixels(const QImage &other_image) const;
 	
 	Q_INVOKABLE QString toString() const;
 };
