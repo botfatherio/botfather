@@ -41,6 +41,31 @@ void SizePrototype::setHeight(int height)
 	THIS_SIZE_P()->setHeight(height);
 }
 
+QSize SizePrototype::boundedTo(QSize other_size) const
+{
+	return THIS_SIZE().boundedTo(other_size);
+}
+
+QSize SizePrototype::expandedTo(QSize other_size) const
+{
+	return THIS_SIZE().expandedTo(other_size);
+}
+
+bool SizePrototype::isEmpty() const
+{
+	return THIS_SIZE().isEmpty();
+}
+
+void SizePrototype::transpose()
+{
+	THIS_SIZE_P()->transpose();
+}
+
+QSize SizePrototype::transposed() const
+{
+	return THIS_SIZE().transposed();
+}
+
 QString SizePrototype::toString() const
 {
 	QSize size = THIS_SIZE();
