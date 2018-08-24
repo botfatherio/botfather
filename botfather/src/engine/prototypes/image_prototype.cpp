@@ -138,7 +138,7 @@ QImage ImagePrototype::createMaskFromAlpha()
 QImage ImagePrototype::isolateColorRange(QColor min, QColor max, bool keep_color)
 {
 	if (THIS_IMAGE().isNull()) {
-		return QImage();
+		context()->throwError(QScriptContext::TypeError, "The image must not be null.");
 	}
 	cv::Mat image = Vision::qimageToBGRMat(THIS_IMAGE());
 	cv::Scalar min_hsv(min.hsvHue() / 2, min.hsvSaturation(), min.value());
