@@ -36,14 +36,14 @@ QScriptValue RectPrototype::constructor(QScriptContext *context, QScriptEngine *
 	NO_MATCHING_CTOR("Rect", RECT_PROTOTYPE_DOCS)
 }
 
+bool RectPrototype::isEmpty() const
+{
+	return THIS_RECT().isEmpty();
+}
+
 int RectPrototype::getTop() const
 {
 	return THIS_RECT().top();
-}
-
-void RectPrototype::setTop(int top)
-{
-	THIS_RECT_P()->setTop(top);
 }
 
 int RectPrototype::getLeft() const
@@ -51,19 +51,9 @@ int RectPrototype::getLeft() const
 	return THIS_RECT().left();
 }
 
-void RectPrototype::setLeft(int left)
-{
-	THIS_RECT_P()->setLeft(left);
-}
-
 int RectPrototype::getRight() const
 {
 	return THIS_RECT().right();
-}
-
-void RectPrototype::setRight(int right)
-{
-	THIS_RECT_P()->setRight(right);
 }
 
 int RectPrototype::getBottom() const
@@ -74,9 +64,9 @@ int RectPrototype::getBottom() const
 	return rect.top() + rect.height();
 }
 
-void RectPrototype::setBottom(int bottom)
+QPoint RectPrototype::getCenter() const
 {
-	THIS_RECT_P()->setBottom(bottom);
+	return THIS_RECT().center();
 }
 
 QPoint RectPrototype::getTopLeft() const
@@ -117,6 +107,51 @@ int RectPrototype::getHeight() const
 void RectPrototype::setHeight(int height)
 {
 	THIS_RECT_P()->setHeight(height);
+}
+
+QSize RectPrototype::getSize() const
+{
+	return THIS_RECT().size();
+}
+
+void RectPrototype::moveTop(int y)
+{
+	THIS_RECT_P()->moveTop(y);
+}
+
+void RectPrototype::moveLeft(int x)
+{
+	THIS_RECT_P()->moveTop(x);
+}
+
+void RectPrototype::moveRight(int x)
+{
+	THIS_RECT_P()->moveTop(x);
+}
+
+void RectPrototype::moveBottom(int y)
+{
+	THIS_RECT_P()->moveTop(y);
+}
+
+bool RectPrototype::contains(const QPoint &point, bool proper) const
+{
+	return THIS_RECT().contains(point, proper);
+}
+
+bool RectPrototype::contains(const QRect &other_rect, bool proper) const
+{
+	return THIS_RECT().contains(other_rect, proper);
+}
+
+bool RectPrototype::intersects(const QRect &other_rect) const
+{
+	return THIS_RECT().intersects(other_rect);
+}
+
+QRect RectPrototype::united(const QRect &other_rect) const
+{
+	return THIS_RECT().united(other_rect);
 }
 
 QString RectPrototype::toString() const
