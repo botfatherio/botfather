@@ -13,7 +13,6 @@ class Vision
 {
 public:
 	static cv::Mat isolateColor(cv::Mat image, cv::Scalar min_hsv, cv::Scalar max_hsv, bool keep_color);
-	static bool sameImages(cv::Mat image_1, cv::Mat image_2);
 	
 	static int countDifferentPixels(cv::Mat image_1, cv::Mat image_2);
 	

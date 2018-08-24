@@ -3,20 +3,6 @@
 #include <QFileInfo>
 #include "../modules/vision/vision.h"
 
-bool VisionAPI::sameImages(QImage image_1, QImage image_2)
-{
-    if (image_1.isNull() || image_1.isNull()) {
-	    engine()->currentContext()->throwError("Both images must not be null.");
-	    return false;
-    }
-    cv::Mat mat1 = Vision::qimageToBGRMat(image_1);
-    cv::Mat mat2 = Vision::qimageToBGRMat(image_2);
-    bool result = Vision::sameImages(mat1, mat2);
-    mat1.release();
-    mat2.release();
-    return result;
-}
-
 QScriptValue VisionAPI::findMaskedMatches(QImage image, QImage tpl, QImage mask, double threshold, int max_matches)
 {
     if (image.isNull()) {

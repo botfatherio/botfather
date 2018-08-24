@@ -30,33 +30,6 @@ cv::Mat Vision::isolateColor(cv::Mat image, cv::Scalar min_hsv, cv::Scalar max_h
 	return bgr_result_image;
 }
 
-// static
-bool Vision::sameImages(cv::Mat image_1, cv::Mat image_2)
-{
-	// Tread two empty images as identical
-	if (image_1.empty() && image_2.empty()) {
-		return true;
-	}
-	
-	// Images or not identical if they have different sizes or dimensions
-	if (image_1.cols != image_2.cols || image_1.rows != image_2.rows || image_1.dims != image_2.dims) {
-		return false;
-	}
-	
-	// Make both images grayscale (for better performance)
-	cv::Mat image_1_gray, image_2_gray;
-	cv::cvtColor(image_1, image_1_gray, CV_BGR2GRAY);
-	cv::cvtColor(image_2, image_2_gray, CV_BGR2GRAY);
-	
-	// Then compare them
-	cv::Mat diff;
-	cv::compare(image_1_gray, image_2_gray, diff, cv::CMP_NE);
-	int non_zero = cv::countNonZero(diff);
-	
-	// They are identical if there is no difference
-	return non_zero == 0;
-}
-
 int Vision::countDifferentPixels(cv::Mat image_1, cv::Mat image_2)
 {
 	cv::Mat image_1_gray, image_2_gray, diff;

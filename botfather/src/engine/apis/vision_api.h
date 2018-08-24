@@ -12,8 +12,6 @@ class VisionAPI : public AbstractAPI
 public:
 	using AbstractAPI::AbstractAPI;
 	
-	Q_INVOKABLE bool sameImages(QImage image_1, QImage image_2);
-	
 	Q_INVOKABLE QScriptValue findMaskedMatches(QImage image, QImage tpl, QImage mask, double threshold = 0.8, int max_matches = -1);
 	Q_INVOKABLE QScriptValue findMaskedMatch(QImage image, QImage tpl, QImage mask, double threshold = 0.8);
 	
