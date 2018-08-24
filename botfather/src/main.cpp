@@ -20,11 +20,37 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmd
 	// Initialise the QApplication on Windows.
 	QApplication a(__argc, __argv);
 #else
+#include <X11/Xlib.h>
+
+namespace {
+
+int handleXError(Display *, XErrorEvent *event)
+{
+	qDebug()
+		<< "X error received: type " << event->type
+		<< ", serial " << event->serial
+		<< ", error_code " << static_cast<int>(event->error_code)
+		<< ", request_code " << static_cast<int>(event->request_code)
+		<< ", minor_code " << static_cast<int>(event->minor_code);
+	return 0;
+}
+
+int handleXIOError(Display *)
+{
+	return 0;
+}
+
+} // namespace
 
 int main(int argc, char *argv[])
 {
 	// Intialise the QApplication on Linux and MacOS
 	QApplication a(argc, argv);
+	
+	// Install xlib error handlers so that the application won't be terminated
+	// on non-fatal errors.
+	XSetErrorHandler(handleXError);
+	XSetIOErrorHandler(handleXIOError);
 #endif
 
 	// Organization and application info must be set. Otherwise one can't access
@@ -37,7 +63,7 @@ int main(int argc, char *argv[])
 
 	// Seed the random function once using the current time in msec as seed.
 	qsrand(static_cast<unsigned int>(QTime::currentTime().msec()));
-
+	
 #ifdef Q_OS_LINUX
 	// On linux the desktop api needs permission to write to /dev/uinput to generate
 	// authentic not ignore input events. On Ubuntu the file is writable (660). On other

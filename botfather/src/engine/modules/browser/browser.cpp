@@ -13,43 +13,10 @@
 
 #if defined(_WIN32) || defined(_WIN64)
 	#include <windows.h>
-#else
-	#include <X11/Xlib.h>
 #endif
-
-namespace {
-
-#ifdef __linux
-int XErrorHandlerImpl(Display* display, XErrorEvent* event)
-{
-	Q_UNUSED(display);
-	qDebug()
-		<< "X error received: type " << event->type
-		<< ", serial " << event->serial
-		<< ", error_code " << static_cast<int>(event->error_code)
-		<< ", request_code " << static_cast<int>(event->request_code)
-		<< ", minor_code " << static_cast<int>(event->minor_code);
-	return 0;
-}
-
-int XIOErrorHandlerImpl(Display* display)
-{
-	Q_UNUSED(display);
-	return 0;
-}
-#endif
-
-} // namespace
 
 void Browser::init(int argc, char **argv)
 {	
-#ifdef __linux
-	// Install xlib error handlers so that the application won't be terminated
-	// on non-fatal errors.
-	XSetErrorHandler(XErrorHandlerImpl);
-	XSetIOErrorHandler(XIOErrorHandlerImpl);
-#endif
-	
 	// We don't use the sandbox thus there is no info.
 	void* sandbox_info = nullptr;
 
