@@ -87,6 +87,10 @@ public:
 	// color or will be turned white depending on keep_color.
 	Q_INVOKABLE QImage isolateColorRange(QColor min, QColor max, bool keep_color = false);
 	
+	// Returns the number of pixels different on two images of the same size.
+	// Compares two same sized images and returns the number pixels they don't have in common.
+	Q_INVOKABLE int countDifferentPixels(QImage other_image) const;
+	
 	Q_INVOKABLE QString toString() const;
 };
 

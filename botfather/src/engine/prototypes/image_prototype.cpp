@@ -147,6 +147,16 @@ QImage ImagePrototype::isolateColorRange(QColor min, QColor max, bool keep_color
 	return Vision::cvMatToQImage(result);
 }
 
+int ImagePrototype::countDifferentPixels(QImage other_image) const
+{
+	if (THIS_IMAGE().isNull() || other_image.isNull()) {
+		context()->throwError(QScriptContext::TypeError, "Both images must not be null.");
+	}
+	cv::Mat image_1 = Vision::qimageToBGRMat(THIS_IMAGE());
+	cv::Mat image_2 = Vision::qimageToBGRMat(other_image);
+	return Vision::countDifferentPixels(image_1, image_2);
+}
+
 QString ImagePrototype::toString() const
 {
 	QImage image = THIS_IMAGE();

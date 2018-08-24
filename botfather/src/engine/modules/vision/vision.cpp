@@ -57,6 +57,21 @@ bool Vision::sameImages(cv::Mat image_1, cv::Mat image_2)
 	return non_zero == 0;
 }
 
+int Vision::countDifferentPixels(cv::Mat image_1, cv::Mat image_2)
+{
+	cv::Mat image_1_gray, image_2_gray, diff;
+	
+	// Make both images grayscale (for better performance)
+	cv::cvtColor(image_1, image_1_gray, CV_BGR2GRAY);
+	cv::cvtColor(image_2, image_2_gray, CV_BGR2GRAY);
+	
+	// CMP_NE: image_1 is unequal to image_2.
+	cv::compare(image_1_gray, image_2_gray, diff, cv::CMP_NE);
+	
+	// signed int: -2,147,483,647 to 2,147,483,647
+	return cv::countNonZero(diff);
+}
+
 double Vision::histogramSimilarity(cv::Mat image_1, cv::Mat image_2)
 {
 	cv::Mat hsv_1, hsv_2;

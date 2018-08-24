@@ -15,6 +15,8 @@ public:
 	static cv::Mat isolateColor(cv::Mat image, cv::Scalar min_hsv, cv::Scalar max_hsv, bool keep_color);
 	static bool sameImages(cv::Mat image_1, cv::Mat image_2);
 	
+	static int countDifferentPixels(cv::Mat image_1, cv::Mat image_2);
+	
 	// https://docs.opencv.org/2.4/doc/tutorials/imgproc/histograms/histogram_calculation/histogram_calculation.html
 	// https://docs.opencv.org/2.4/doc/tutorials/imgproc/histograms/histogram_comparison/histogram_comparison.html
 	static double histogramSimilarity(cv::Mat image_1, cv::Mat image_2);
