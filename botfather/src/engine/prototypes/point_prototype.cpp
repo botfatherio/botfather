@@ -39,6 +39,11 @@ void PointPrototype::setY(int y)
 	THIS_POINT_P()->setY(y);
 }
 
+int PointPrototype::dotProduct(QPoint other_point) const
+{
+	return QPoint::dotProduct(THIS_POINT(), other_point);
+}
+
 int PointPrototype::manhattanLength() const
 {
 	return THIS_POINT().manhattanLength();
