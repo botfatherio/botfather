@@ -39,6 +39,11 @@ void PointPrototype::setY(int y)
 	THIS_POINT_P()->setY(y);
 }
 
+int PointPrototype::manhattanLength() const
+{
+	return THIS_POINT().manhattanLength();
+}
+
 QString PointPrototype::toString() const
 {
 	QPoint point = THIS_POINT();
