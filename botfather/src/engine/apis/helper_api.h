@@ -41,7 +41,7 @@ public:
 	// Helper.log(comma, seperated, QScriptValues, aka, the, message)
 	
 protected:
-	static QScriptValue testlog(QScriptContext *context, QScriptEngine *engine);
+	static QScriptValue log(QScriptContext *context, QScriptEngine *engine);
 	void extendGlobalApiObject(QScriptEngine *engine, QScriptValue &api_object);
 };
 

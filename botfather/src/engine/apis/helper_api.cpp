@@ -86,7 +86,7 @@ void HelperAPI::stopWavSound()
 	emit bot()->stopWavSound();
 }
 
-QScriptValue HelperAPI::testlog(QScriptContext *context, QScriptEngine *engine)
+QScriptValue HelperAPI::log(QScriptContext *context, QScriptEngine *engine)
 {
 	QString message;
 	
@@ -106,7 +106,7 @@ QScriptValue HelperAPI::testlog(QScriptContext *context, QScriptEngine *engine)
 
 void HelperAPI::extendGlobalApiObject(QScriptEngine *engine, QScriptValue &api_object)
 {
-	QScriptValue fun = engine->newFunction(testlog);
+	QScriptValue fun = engine->newFunction(log);
 	fun.setData(engine->newQObject(this));
 	api_object.setProperty("log", fun);
 }
