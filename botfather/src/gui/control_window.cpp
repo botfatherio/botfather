@@ -13,7 +13,7 @@
 #include "browser_window.h"
 #include "android_dialog.h"
 #include "../engine/bot.h"
-#include "../engine/general_settings.h"
+#include "../settings.h"
 
 ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::ControlWindow)
 {

@@ -1,5 +1,5 @@
-#ifndef BFP__SCRIPTING__GENERAL_SETTINGS_H
-#define BFP__SCRIPTING__GENERAL_SETTINGS_H
+#ifndef BFP_SETTINGS_H
+#define BFP_SETTINGS_H
 #include <QString>
 
 // NOTE: One can not name a .ini file group "general", it'S a reserved name.
@@ -14,4 +14,4 @@ namespace general
 	}
 }
 
-#endif // BFP__SCRIPTING__GENERAL_SETTINGS_H
+#endif // BFP_SETTINGS_H

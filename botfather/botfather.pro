@@ -106,7 +106,6 @@ HEADERS += \
     src/engine/apis/helper_api.h \
     src/engine/apis/vision_api.h \
     src/engine/bot.h \
-    src/engine/general_settings.h \
     src/engine/modules/android/adb_device_info.h \
     src/engine/modules/android/adb_wrapper.h \
     src/engine/modules/android/android_settings.h \
@@ -134,6 +133,7 @@ HEADERS += \
     src/gui/status_dialog.h \
     src/updater/update_checker.h \
     src/updater/updater_dialog.h \
+    src/settings.h \
     src/engine/apis/abstract_api.h
 SOURCES += \
     src/auth/license_api_client.cpp \
