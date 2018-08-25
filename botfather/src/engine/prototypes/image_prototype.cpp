@@ -157,6 +157,24 @@ int ImagePrototype::countDifferentPixels(const QImage &other_image) const
 	return Vision::countDifferentPixels(image_1, image_2);
 }
 
+double ImagePrototype::pixelEqualityTo(const QImage &other_image) const
+{
+	if (THIS_IMAGE().isNull() || other_image.isNull()) {
+		context()->throwError(QScriptContext::TypeError, "Both images must not be null.");
+	}
+	if (THIS_IMAGE().size() != other_image.size()) {
+		context()->throwError(QScriptContext::TypeError, "Both images must have the same size.");
+	}
+	
+	cv::Mat image_1 = Vision::qimageToBGRMat(THIS_IMAGE());
+	cv::Mat image_2 = Vision::qimageToBGRMat(other_image);
+	
+	int total_pixels = THIS_IMAGE().width() * THIS_IMAGE().height();
+	int equal_pixels = total_pixels - Vision::countDifferentPixels(image_1, image_2);
+	
+	return static_cast<double>(equal_pixels) / total_pixels;
+}
+
 QString ImagePrototype::toString() const
 {
 	QImage image = THIS_IMAGE();
