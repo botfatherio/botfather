@@ -30,4 +30,44 @@ private:
 	api_instance->enable(ENGINE_P, API_NAME); \
 }
 
+#define MB_ARRAY(object, object_name) \
+{ \
+	if (!matches.isArray()) { \
+		QString message = QString("%1 must be an array.").arg(QString(object_name)); \
+	    return engine()->currentContext()->throwError(QScriptContext::TypeError, message); \
+    } \
+}
+
+#define MB_NOT_NULL(object, object_name) \
+{ \
+	if (object.isNull()) { \
+		QString message = QString("%1 must not be null.").arg(QString(object_name)); \
+		return engine()->currentContext()->throwError(QScriptContext::TypeError, message); \
+	} \
+}
+
+#define MB_SMALLER(image1, image2, image1_name, image2_name) \
+{ \
+	if (image1.height() >= image2.height() || image1.width() >= image2.width()) { \
+		QString message = QString("%1 must be smaller than %2.").arg(QString(image1_name)).arg(QString(image2_name)); \
+		return engine()->currentContext()->throwError(QScriptContext::TypeError, message); \
+	} \
+}
+
+#define MB_SAME_SIZE(image1, image2, image1_name, image2_name) \
+{ \
+	if (image1.height() != image2.height() || image1.width() != image2.width()) { \
+		QString message = QString("%1 and %2 must have the same size.").arg(QString(image1_name)).arg(QString(image2_name)); \
+		return engine()->currentContext()->throwError(QScriptContext::TypeError, message); \
+	} \
+}
+
+#define MB_FOUND(match, match_name) \
+{ \
+	if (!match.found()) { \
+		QString message = QString("%1 must have been found.").arg(QString(match_name)); \
+		return engine()->currentContext()->throwError(QScriptContext::TypeError, message); \
+	} \
+}
+
 #endif // BFP_ENGINE_APIS_ABSTRACT_API_H

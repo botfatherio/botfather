@@ -48,7 +48,7 @@ bool AndroidAPI::sendTap(int x, int y)
 bool AndroidAPI::sendSwipe(int x1, int y1, int x2, int y2, int duration_in_ms)
 {
 	if (duration_in_ms < 0) {
-		engine()->currentContext()->throwError("Duration must be positive.");
+		engine()->currentContext()->throwError(QScriptContext::RangeError, "Duration must be positive.");
 		return false;
 	} 
 	return adb->sendSwipe(serial_number, x1, y1, x2, y2, duration_in_ms);

@@ -9,21 +9,21 @@
 
 void HelperAPI::sleep(int seconds)
 {
-	if (seconds <= 0) {
-		engine()->currentContext()->throwError("Timeout must be at least 1 second.");
+	if (seconds < 1) {
+		engine()->currentContext()->throwError(QScriptContext::RangeError, "seconds must be at least 1 second.");
 		return;
 	}
 	// Not sleeping for at least one ms can cause trouble. Better don't stop sleeping when stop is
 	// requested to prevent bugs. Par example:
-	// Stpping a script having an infinit loop with sleep in it will result in the bot going crazy.
+	// Stopping a script having an infinit loop with sleep in it will result in the bot going crazy.
 	// CPU usage rockets up and one can no longer stop nor kill the script (because it will never sleep).
 	QThread::sleep(static_cast<unsigned int>(seconds));
 }
 
 void HelperAPI::msleep(int milliseconds)
 {
-	if (milliseconds <= 0) {
-		engine()->currentContext()->throwError("Timeout must be at least 1 millisecond.");
+	if (milliseconds < 1) {
+		engine()->currentContext()->throwError(QScriptContext::RangeError, "milliseconds must be at least 1 millisecond.");
 		return;
 	}
 	QThread::msleep(static_cast<unsigned long>(milliseconds));
@@ -52,7 +52,7 @@ QString HelperAPI::getAbsoluteScriptDirPath()
 void HelperAPI::playWavSound(QString path_to_wav_file, bool blocking)
 {
 	if (!bot()->scriptFileExists(path_to_wav_file)) {
-		engine()->currentContext()->throwError("Wav file does not exist.");
+		engine()->currentContext()->throwError(QScriptContext::TypeError, "path_to_wav_file does not exist.");
 		return;
 	}
 	

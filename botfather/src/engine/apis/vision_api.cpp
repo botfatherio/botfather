@@ -5,47 +5,32 @@
 
 QScriptValue VisionAPI::findMaskedMatches(QImage image, QImage tpl, QImage mask, double threshold, int max_matches)
 {
-    if (image.isNull()) {
-	    return engine()->currentContext()->throwError("Invalid or empty image.");
-    }
-    if (tpl.isNull()){
-	    return engine()->currentContext()->throwError("Invalid or empty template.");
-    }
-    if (mask.isNull()) {
-	    return engine()->currentContext()->throwError("Invalid or empty mask.");
-    }
-    if (image.height() <= tpl.height() || image.width() <= tpl.width()) {
-	    return engine()->currentContext()->throwError("The template must be smaller than the image.");
-    }
-    if (tpl.height() != mask.height() || tpl.width() != mask.width()) {
-	    return engine()->currentContext()->throwError("Mask and template must have the same size.");
-    }
-    
+	MB_NOT_NULL(image, "image");
+	MB_NOT_NULL(tpl, "tpl");
+	MB_NOT_NULL(mask, "mask");
+	MB_SMALLER(tpl, image, "tpl", "image");
+	MB_SAME_SIZE(tpl, mask, "tpl", "mask");	
+
     cv::Mat ref_mat = Vision::qimageToBGRMat(image);
     cv::Mat tpl_mat = Vision::qimageToBGRMat(tpl);
     cv::Mat msk_mat = Vision::qimageToBGRMat(mask);
     
     QVector<Match> matches = Vision::findMaskedMatches(ref_mat, tpl_mat, msk_mat, threshold, max_matches);
+	
+	ref_mat.release();
+	tpl_mat.release();
+	msk_mat.release();
+	
     return qScriptValueFromSequence(engine(), matches);
 }
 
 QScriptValue VisionAPI::findMaskedMatch(QImage image, QImage tpl, QImage mask, double threshold)
 {
-    if (image.isNull()) {
-	    return engine()->currentContext()->throwError("Invalid or empty image.");
-    }
-    if (tpl.isNull()) {
-	    return engine()->currentContext()->throwError("Invalid or empty template.");
-    }
-    if (mask.isNull()) {
-	    return engine()->currentContext()->throwError("Invalid or empty mask.");
-    }
-    if (image.height() <= tpl.height() || image.width() <= tpl.width()) {
-	    return engine()->currentContext()->throwError("The template must be smaller than the image.");
-    }
-    if (tpl.height() != mask.height() || tpl.width() != mask.width()) {
-	    return engine()->currentContext()->throwError("Mask and template must have the same size.");
-    }
+	MB_NOT_NULL(image, "image");
+	MB_NOT_NULL(tpl, "tpl");
+	MB_NOT_NULL(mask, "mask");
+	MB_SMALLER(tpl, image, "tpl", "image");
+	MB_SAME_SIZE(tpl, mask, "tpl", "mask");	
     
     cv::Mat image_mat = Vision::qimageToBGRMat(image);
     cv::Mat tpl_mat = Vision::qimageToBGRMat(tpl);
@@ -62,15 +47,9 @@ QScriptValue VisionAPI::findMaskedMatch(QImage image, QImage tpl, QImage mask, d
 
 QScriptValue VisionAPI::findMatches(QImage image, QImage tpl, double threshold, int max_matches)
 {
-    if (image.isNull()) {
-	    return engine()->currentContext()->throwError("Invalid or empty image.");
-    }
-    if (tpl.isNull()) {
-	    return engine()->currentContext()->throwError("Invalid or empty template.");
-    }
-    if (image.height() <= tpl.height() || image.width() <= tpl.width()) {
-	    return engine()->currentContext()->throwError("The template must be smaller than the image.");
-    }
+	MB_NOT_NULL(image, "image");
+	MB_NOT_NULL(tpl, "tpl");
+	MB_SMALLER(tpl, image, "tpl", "image");
     
     cv::Mat image_mat = Vision::qimageToBGRMat(image);
     cv::Mat tpl_mat = Vision::qimageToBGRMat(tpl);
@@ -86,15 +65,9 @@ QScriptValue VisionAPI::findMatches(QImage image, QImage tpl, double threshold, 
 
 QScriptValue VisionAPI::findMatch(QImage image, QImage tpl, double threshold)
 {
-    if (image.isNull()) {
-	    return engine()->currentContext()->throwError("Invalid or empty image.");
-    }
-    if (tpl.isNull()) {
-	    return engine()->currentContext()->throwError("Invalid or empty template.");
-    }
-    if (image.height() <= tpl.height() || image.width() <= tpl.width()) {
-	    return engine()->currentContext()->throwError("The template must be smaller than the image.");
-    }
+	MB_NOT_NULL(image, "image");
+	MB_NOT_NULL(tpl, "tpl");
+	MB_SMALLER(tpl, image, "tpl", "image");
     
     cv::Mat image_mat = Vision::qimageToBGRMat(image);
     cv::Mat tpl_mat = Vision::qimageToBGRMat(tpl);
@@ -147,39 +120,37 @@ QScriptValue VisionAPI::findBlobs(BlobTpl blob_tpl, Image image)
 
 QScriptValue VisionAPI::markMatches(QImage image, QScriptValue matches, QColor color, int thickness)
 {
-    if (image.isNull()) {
-	    return engine()->currentContext()->throwError("The image must not be null.");
-    }
-    if (!matches.isArray()) {
-	    return engine()->currentContext()->throwError("Matches must be an array.");
-    }
+    MB_ARRAY(matches, "matches");
+	MB_NOT_NULL(image, "image");
     
     QVector<Match> native_matches;
     qScriptValueToSequence(matches, native_matches);
     
     cv::Mat image_mat = Vision::qimageToBGRMat(image);
     cv::Scalar cv_color(color.blue(), color.green(), color.red());
-    cv::Mat mat = Vision::markMatches(image_mat, native_matches, cv_color, thickness);
+    cv::Mat result_mat = Vision::markMatches(image_mat, native_matches, cv_color, thickness);
     
-    QImage qimage = Vision::cvMatToQImage(mat);
-    //engine()->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(qimage)));
+    QImage qimage = Vision::cvMatToQImage(result_mat);
+	
+	image_mat.release();
+	result_mat.release();
+	
     return engine()->toScriptValue(qimage);
 }
 
 QScriptValue VisionAPI::markMatch(QImage image, Match match, QColor color, int thickness)
 {
-    if (image.isNull()) {
-	    return engine()->currentContext()->throwError(QScriptContext::TypeError, "The image must not be null.");
-    }
-    if (!match.found()) {
-	    return engine()->currentContext()->throwError(QScriptContext::TypeError, "The match must be found.");
-    }
+    MB_NOT_NULL(image, "image");
+	MB_FOUND(match, "match");
     
     cv::Mat image_mat = Vision::qimageToBGRMat(image);
     cv::Scalar cv_color(color.blue(), color.green(), color.red());
-    cv::Mat result_image = Vision::markMatch(image_mat, match, cv_color, thickness);
+    cv::Mat result_mat = Vision::markMatch(image_mat, match, cv_color, thickness);
     
-    QImage qimage = Vision::cvMatToQImage(result_image);
-    //engine()->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(qimage)));
+    QImage qimage = Vision::cvMatToQImage(result_mat);
+	
+	image_mat.release();
+	result_mat.release();
+	
     return engine()->toScriptValue(qimage);
 }

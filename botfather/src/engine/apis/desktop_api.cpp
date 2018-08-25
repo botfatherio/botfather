@@ -9,7 +9,6 @@
 QScriptValue DesktopAPI::takeScreenshot()
 {
     QImage qimage = desktop->takeScreenshot();
-    //engine()->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(qimage)));
     return engine()->toScriptValue(qimage);
 }
 
@@ -43,7 +42,7 @@ void DesktopAPI::pressKey(QString key) {
     // missing between both methods. UinputFaker has such. One is needed because of uinput events
     // not beeing synchronious.
     if (!desktop->keyExists(key)) {
-	    engine()->currentContext()->throwError("Unknown keycode.");
+	    engine()->currentContext()->throwError(QScriptContext::RangeError, "Unknown keycode.");
 	    return;
     }
     desktop->pressKey(key);
@@ -52,7 +51,7 @@ void DesktopAPI::pressKey(QString key) {
 void DesktopAPI::holdKey(QString key)
 {
     if (!desktop->keyExists(key)) {
-	    engine()->currentContext()->throwError("Unknown keycode.");
+	    engine()->currentContext()->throwError(QScriptContext::RangeError, "Unknown keycode.");
 	    return;
     }
     desktop->holdKey(key);
@@ -61,7 +60,7 @@ void DesktopAPI::holdKey(QString key)
 void DesktopAPI::releaseKey(QString key)
 {
     if (!desktop->keyExists(key)) {
-	    engine()->currentContext()->throwError("Unknown keycode.");
+	    engine()->currentContext()->throwError(QScriptContext::RangeError, "Unknown keycode.");
 	    return;
     }
     desktop->releaseKey(key);
