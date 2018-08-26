@@ -100,19 +100,11 @@ QScriptValue VisionAPI::markMatches(QImage image, QScriptValue matches, QColor c
     MB_ARRAY(matches, "matches");
 	MB_NOT_NULL(image, "image");
     
-    QVector<Match> native_matches;
+    QList<Match> native_matches;
     qScriptValueToSequence(matches, native_matches);
     
-    cv::Mat image_mat = Vision::qimageToBGRMat(image);
-	cv::Scalar cv_color(color.blue(), color.green(), color.red());
-    cv::Mat result_mat = Vision::markMatches(image_mat, native_matches, cv_color, thickness);
-
-    QImage qimage = Vision::cvMatToQImage(result_mat);
-	
-	image_mat.release();
-	result_mat.release();
-	
-    return engine()->toScriptValue(qimage);
+	QImage result = Vision::markMatches(image, native_matches, color, thickness);
+	return engine()->toScriptValue(result);
 }
 
 QScriptValue VisionAPI::markMatch(QImage image, Match match, QColor color, int thickness)
@@ -120,14 +112,6 @@ QScriptValue VisionAPI::markMatch(QImage image, Match match, QColor color, int t
     MB_NOT_NULL(image, "image");
 	MB_FOUND(match, "match");
     
-    cv::Mat image_mat = Vision::qimageToBGRMat(image);
-    cv::Scalar cv_color(color.blue(), color.green(), color.red());
-    cv::Mat result_mat = Vision::markMatch(image_mat, match, cv_color, thickness);
-    
-    QImage qimage = Vision::cvMatToQImage(result_mat);
-	
-	image_mat.release();
-	result_mat.release();
-	
-    return engine()->toScriptValue(qimage);
+	QImage result = Vision::markMatches(image, { match }, color, thickness);
+    return engine()->toScriptValue(result);
 }

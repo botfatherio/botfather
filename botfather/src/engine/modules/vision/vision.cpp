@@ -1,6 +1,7 @@
 #include "vision.h"
 #include <opencv2/highgui.hpp>
 #include <QDebug>
+#include <QPainter>
 #include "../../types/match.h"
 #include "../../types/blob_tpl.h"
 
@@ -216,26 +217,23 @@ QList<Match> Vision::findBlobs(const cv::Mat &image, const cv::SimpleBlobDetecto
 	return matches;
 }
 
-cv::Mat Vision::markMatches(cv::Mat image, QVector<Match> matches, cv::Scalar color, int thickness)
+QImage Vision::markMatches(const QImage &image, const QList<Match> &matches, const QColor &color, int thickness)
 {
+	QImage result = image;
+	
+	QPen pen;
+	pen.setColor(color);
+	pen.setWidth(thickness);
+	
+	QPainter painter(&result);
+	painter.setPen(pen);
+	
 	for (Match match : matches) {
-		image = Vision::markMatch(image, match, color, thickness);
+		painter.drawRect(match);
 	}
-	return image;
-}
-
-cv::Mat Vision::markMatch(cv::Mat image, Match match, cv::Scalar color, int thickness)
-{
-	cv::rectangle(
-		image,
-		cv::Point(match.left(), match.top()),
-		cv::Point(match.right(), match.y() + match.height()),
-		color,
-		thickness,
-		8,
-		0
-	);
-	return image;
+	
+	painter.end();
+	return result;
 }
 
 cv::Mat Vision::qimageToBGRMat(const QImage &qimage)
