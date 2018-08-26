@@ -2,6 +2,7 @@
 #include <opencv2/highgui.hpp>
 #include <QDebug>
 #include "../../types/match.h"
+#include "../../types/blob_tpl.h"
 
 // static
 cv::Mat Vision::isolateColor(cv::Mat image, cv::Scalar min_hsv, cv::Scalar max_hsv, bool keep_color)
@@ -194,26 +195,26 @@ Match Vision::findMatch(cv::Mat image, cv::Mat tpl, double threshold)
 	return Vision::findMaskedMatch(image, tpl, cv::Mat(), threshold);
 }
 
-/*
-QVector<cv::KeyPoint> Vision::findBlobs(BlobTpl *blob_tpl, cv::Mat image)
+QList<Match> Vision::findBlobs(const cv::Mat &image, const cv::SimpleBlobDetector::Params &blob_params)
 {
-	QColor *min_color = blob_tpl->getMinHSV();
-	QColor *max_color = blob_tpl->getMaxHSV();
+	cv::Ptr<cv::SimpleBlobDetector> detector = cv::SimpleBlobDetector::create(blob_params);
+	std::vector<cv::KeyPoint> key_points;
+	detector->detect(image, key_points);
 	
-	cv::Scalar min_hsv(min_color->hslHue(), min_color->hslSaturation(), min_color->value());
-	cv::Scalar max_hsv(max_color->hslHue(), max_color->hslSaturation(), max_color->value());
+	QList<Match> matches;
 	
-	// Make pixels in the color of our intereset white and everything else black.
-	cv::Mat threshold_mat = Vision::isolateColor(image, min_hsv, max_hsv, false);
+	for (cv::KeyPoint kp : key_points)
+	{	
+		int size = static_cast<int>(kp.size);
+		int left = static_cast<int>(kp.pt.x) - size / 2;
+		int top = static_cast<int>(kp.pt.y) - size / 2;
+		
+		Match match(QRect(left, top, size, size), 1);
+		matches.append(match);
+	}
 	
-	// Detect wanted (now white) color blobs as keypoints
-	cv::Ptr<cv::SimpleBlobDetector> detector = cv::SimpleBlobDetector::create(blob_tpl->getBlobParams());
-	std::vector<cv::KeyPoint> keypoints;
-	detector->detect(threshold_mat, keypoints);
-	
-	return QVector<cv::KeyPoint>::fromStdVector(keypoints);
+	return matches;
 }
-*/
 
 cv::Mat Vision::markMatches(cv::Mat image, QVector<Match> matches, cv::Scalar color, int thickness)
 {
@@ -347,4 +348,9 @@ QImage Vision::cvMatToQImage(const cv::Mat &mat)
 	}
  
 	return QImage();
+}
+
+cv::Scalar Vision::qColorToHsvScalar(const QColor &qcolor)
+{
+	return cv::Scalar(qcolor.hslHue(), qcolor.hslSaturation(), qcolor.value());
 }

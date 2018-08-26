@@ -8,8 +8,9 @@
 #include <QImage>
 
 class Match;
+class BlobTpl;
 
-class Vision
+class Vision // TODO: turn into namespace
 {
 public:
 	static cv::Mat isolateColor(cv::Mat image, cv::Scalar min_hsv, cv::Scalar max_hsv, bool keep_color);
@@ -26,7 +27,10 @@ public:
 	static QVector<Match> findMatches(cv::Mat image, cv::Mat tpl, double threshold, int max_matches = 7);
 	static Match findMatch(cv::Mat image, cv::Mat tpl, double threshold);
 	
-	//static QVector<cv::KeyPoint> findBlobs(BlobTpl *blob_tpl, cv::Mat image);
+	// https://docs.opencv.org/2.4/modules/features2d/doc/common_interfaces_of_feature_detectors.html#simpleblobdetector
+	// https://docs.opencv.org/trunk/d8/da7/structcv_1_1SimpleBlobDetector_1_1Params.html
+	static QList<Match> findBlobs(const cv::Mat &image, const cv::SimpleBlobDetector::Params &blob_params);
+	
 	static cv::Mat markMatches(cv::Mat image, QVector<Match> matches, cv::Scalar color = cv::Scalar(0, 0, 255), int thickness = 2);
 	static cv::Mat markMatch(cv::Mat image, Match match, cv::Scalar color = cv::Scalar(0, 0, 255), int thickness = 2);
 	
@@ -34,6 +38,8 @@ public:
 	static cv::Mat qimageToBGRMat(const QImage &qimage);
 								  
 	static QImage cvMatToQImage(const cv::Mat &mat);
+	
+	static cv::Scalar qColorToHsvScalar(const QColor &qcolor);
 };
 
 #endif // BFP_ENGINE_MODULES_VISION_VISION_H

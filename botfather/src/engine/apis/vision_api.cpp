@@ -81,42 +81,19 @@ QScriptValue VisionAPI::findMatch(QImage image, QImage tpl, double threshold)
     return engine()->toScriptValue(match);
 }
 
-/*
-QScriptValue VisionAPI::findBlobs(BlobTpl blob_tpl, Image image)
+QScriptValue VisionAPI::findBlobs(QImage image, BlobTpl blob_tpl, int min_distance, int min_repeatability)
 {
-    if (!image || image->getQImage().isNull()) {
-	    return m_engine_p->currentContext()->throwError("Invalid or empty image.");
-    }
-    if (!blob_tpl) {
-	    return m_engine_p->currentContext()->throwError("Invalid template.");
-    }
+	MB_NOT_NULL(image, "image");
     
-    cv::Mat image_mat = Vision::qimageToBGRMat(image->getQImage());
-    
-    QVector<cv::KeyPoint> keypoints = Vision::findBlobs(blob_tpl, image_mat);
-    
+	blob_tpl.setMinBlobDistance(min_distance);
+	blob_tpl.setMinRepeatability(min_repeatability);
+	
+    cv::Mat image_mat = Vision::qimageToBGRMat(image);
+	QList<Match> matches = Vision::findBlobs(image_mat, blob_tpl.getBlobParams());
+	
     image_mat.release();
-    
-    QScriptValue matches = m_engine_p->newArray();
-    int number_of_matches = 0;
-    
-    // Turn detected cv::KeyPoints into js compatible matches. cv:KeyPoint can't be converted
-    // using qScriptValueFromSequence, unless we make them QObjects which the script engine
-    // can interpret.
-    for (cv::KeyPoint kp : keypoints) {
-	    
-	    int left = static_cast<int>(kp.pt.x + (kp.size / 2));
-	    int top = static_cast<int>(kp.pt.y + (kp.size / 2));
-	    
-	    Match *match = new Match(1, left, top, static_cast<int>(kp.size), static_cast<int>(kp.size));
-	    QScriptValue js_match = m_engine_p->newQObject(match, QScriptEngine::ScriptOwnership);
-	    matches.setProperty(static_cast<quint32>(number_of_matches), js_match);
-	    number_of_matches++;
-    }
-    
-    return matches;
+	return qScriptValueFromSequence(engine(), matches);;
 }
-*/
 
 QScriptValue VisionAPI::markMatches(QImage image, QScriptValue matches, QColor color, int thickness)
 {
@@ -127,9 +104,9 @@ QScriptValue VisionAPI::markMatches(QImage image, QScriptValue matches, QColor c
     qScriptValueToSequence(matches, native_matches);
     
     cv::Mat image_mat = Vision::qimageToBGRMat(image);
-    cv::Scalar cv_color(color.blue(), color.green(), color.red());
+	cv::Scalar cv_color(color.blue(), color.green(), color.red());
     cv::Mat result_mat = Vision::markMatches(image_mat, native_matches, cv_color, thickness);
-    
+
     QImage qimage = Vision::cvMatToQImage(result_mat);
 	
 	image_mat.release();
