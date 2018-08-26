@@ -5,20 +5,6 @@
 #include <QScriptable>
 #include <QScriptEngine>
 
-#define NO_MATCHING_CTOR(cls_name, docs_url) \
-	QString message = QString("No matching constructor for initialization of '%1'. %2").arg(QString(cls_name)).arg(QString(docs_url)); \
-	return context->throwError(QScriptContext::SyntaxError, message);
-
-#define REGISTER_PROTO(ENGINE_PTR, PROTO_CLS, TYPE_CLS, TYPE_CLS_NAME) \
-{ \
-	PROTO_CLS *prototype = new PROTO_CLS(ENGINE_PTR); \
-	QScriptValue js_prototype = ENGINE_PTR->newQObject(prototype); \
-	QScriptValue js_constructor = ENGINE_PTR->newFunction(PROTO_CLS::constructor, js_prototype); \
-	ENGINE_PTR->setDefaultPrototype(qMetaTypeId<TYPE_CLS>(), js_prototype); \
-	ENGINE_PTR->setDefaultPrototype(qMetaTypeId<TYPE_CLS*>(), js_prototype); \
-	ENGINE_PTR->globalObject().setProperty(QString(TYPE_CLS_NAME), js_constructor); \
-}
-
 class AbstractPrototype : public QObject, public QScriptable
 {
 	Q_OBJECT
@@ -46,5 +32,21 @@ public:
 	static QColor toQColor(QScriptValue value);
 	static QSize toQSize(QScriptValue value);
 };
+
+#define REGISTER_PROTO(ENGINE_PTR, PROTO_CLS, TYPE_CLS, TYPE_CLS_NAME) \
+{ \
+	PROTO_CLS *prototype = new PROTO_CLS(ENGINE_PTR); \
+	QScriptValue js_prototype = ENGINE_PTR->newQObject(prototype); \
+	QScriptValue js_constructor = ENGINE_PTR->newFunction(PROTO_CLS::constructor, js_prototype); \
+	ENGINE_PTR->setDefaultPrototype(qMetaTypeId<TYPE_CLS>(), js_prototype); \
+	ENGINE_PTR->setDefaultPrototype(qMetaTypeId<TYPE_CLS*>(), js_prototype); \
+	ENGINE_PTR->globalObject().setProperty(QString(TYPE_CLS_NAME), js_constructor); \
+}
+
+#define NO_MATCHING_CTOR(cls_name, docs_url) \
+	QString message = QString("No matching constructor for initialization of '%1'. %2").arg(QString(cls_name)).arg(QString(docs_url)); \
+	return context->throwError(QScriptContext::SyntaxError, message);
+
+#define RANGE_ERROR(CONTEXT, TEXT) CONTEXT->throwError(QScriptContext::RangeError, QString(TEXT));
 
 #endif // BFP_ENGINE_PROTOTYPES_ABSTRACT_PROTOTYPE_H
