@@ -134,7 +134,9 @@ HEADERS += \
     src/updater/update_checker.h \
     src/updater/updater_dialog.h \
     src/settings.h \
-    src/engine/apis/abstract_api.h
+    src/engine/apis/abstract_api.h \
+    src/engine/types/blob_tpl.h \
+    src/engine/prototypes/blob_tpl_prototype.h
 SOURCES += \
     src/auth/license_api_client.cpp \
     src/auth/rest_api_client.cpp \
@@ -169,7 +171,9 @@ SOURCES += \
     src/main.cpp \
     src/updater/update_checker.cpp \
     src/updater/updater_dialog.cpp \
-    src/engine/apis/abstract_api.cpp
+    src/engine/apis/abstract_api.cpp \
+    src/engine/types/blob_tpl.cpp \
+    src/engine/prototypes/blob_tpl_prototype.cpp
 FORMS += \
     src/gui/android_dialog.ui \
     src/gui/auth_dialog.ui \

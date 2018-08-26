@@ -4,6 +4,7 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include "prototypes/blob_tpl_prototype.h"
 #include "prototypes/point_prototype.h"
 #include "prototypes/image_prototype.h"
 #include "prototypes/color_prototype.h"
@@ -60,6 +61,7 @@ void Bot::runScript()
 	REGISTER_API(script_engine, this, HelperAPI, "Helper");
 	REGISTER_API(script_engine, this, VisionAPI, "Vision");
 	
+	REGISTER_PROTO(script_engine, BlobTplPrototype, BlobTpl, "BlobTpl");
 	REGISTER_PROTO(script_engine, PointPrototype, QPoint, "Point");
 	REGISTER_PROTO(script_engine, ImagePrototype, QImage, "Image");
 	REGISTER_PROTO(script_engine, ColorPrototype, QColor, "Color");
