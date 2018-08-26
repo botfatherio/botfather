@@ -39,7 +39,7 @@ public:
 	
 	// Returns the center point of the rectangle.
 	// https://doc.qt.io/qt-5/qrect.html#center
-	QPoint getCenter() const;
+	 Q_INVOKABLE QPoint getCenter() const;
 	
 	// Returns the position of the rectangle's top-left corner.
 	// https://doc.qt.io/qt-5/qrect.html#topLeft
