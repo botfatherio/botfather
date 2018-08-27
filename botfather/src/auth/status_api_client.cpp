@@ -23,7 +23,7 @@ void StatusApiClient::processJsonResponse(QJsonDocument json)
 	QString latest_stable_version = json.object().value("latest_stable_version").toString();
 	QString hashhex = json.object().value("hash").toString();
 	
-	QList<QString> data_list = {
+	QVector<QString> data_list = {
 		QString::number(curtime),
 		QString::number(static_cast<int>(supported)),
 		QString::number(static_cast<int>(stable)),

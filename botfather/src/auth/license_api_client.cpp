@@ -20,7 +20,7 @@ void LicenseApiClient::processJsonResponse(QJsonDocument json)
 	bool premend = json.object().value("premend").toInt();
 	QString hashhex = json.object().value("hash").toString();
 	
-	QList<QString> data_list = {
+	QVector<QString> data_list = {
 		QString::number(curtime),
 		QString::number(premend)
 	};

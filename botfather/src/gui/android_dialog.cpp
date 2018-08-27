@@ -37,7 +37,7 @@ void AndroidDialog::refreshListOfDevicesAttached()
 	QString adb_binary = settings.value(android::options::ADB_BINARY).toString();
 	AdbWrapper adb(this, adb_binary);
 	
-	QList<AdbDeviceInfo> devices;
+	QVector<AdbDeviceInfo> devices;
 	if (!adb.queryForDevices(devices)) {
 		QString message(
 			"Can't use ADB.\n Botfather was unable to use the Android Debug Bridge.\n"

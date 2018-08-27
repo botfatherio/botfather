@@ -2,7 +2,7 @@
 #define BFP_ENGINE_MODULES_ANDROID_ADB_WRAPPER_H
 
 #include <QObject>
-#include <QList>
+#include <QVector>
 #include <QString>
 #include <QProcess>
 #include <QImage>
@@ -16,8 +16,8 @@ public:
 	
 public:
 	bool startAdbServer();
-	bool queryForDevices(QList<AdbDeviceInfo> &devices);
-	bool listPackages(QString serial_number, QList<QString> &packages);
+	bool queryForDevices(QVector<AdbDeviceInfo> &devices);
+	bool listPackages(QString serial_number, QVector<QString> &packages);
 	bool startApp(QString serial_number, QString package);
 	bool sendTap(QString serial_number, int x, int y);
 	bool sendSwipe(QString serial_number, int x1, int y1, int x2, int y2, int duration_in_ms);

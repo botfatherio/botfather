@@ -16,7 +16,7 @@ bool AdbWrapper::startAdbServer()
 	return evaluateAdbCommand(args);
 }
 
-bool AdbWrapper::queryForDevices(QList<AdbDeviceInfo> &devices)
+bool AdbWrapper::queryForDevices(QVector<AdbDeviceInfo> &devices)
 {
 	QStringList args;
 	args << "devices" << "-l";
@@ -42,7 +42,7 @@ bool AdbWrapper::queryForDevices(QList<AdbDeviceInfo> &devices)
 	return result;
 }
 
-bool AdbWrapper::listPackages(QString serial_number, QList<QString> &packages)
+bool AdbWrapper::listPackages(QString serial_number, QVector<QString> &packages)
 {
 	QStringList args;
 	args << "-s" << serial_number << "shell" << "pm" << "list" << "packages";

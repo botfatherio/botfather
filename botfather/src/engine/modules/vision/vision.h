@@ -29,9 +29,9 @@ public:
 	
 	// https://docs.opencv.org/2.4/modules/features2d/doc/common_interfaces_of_feature_detectors.html#simpleblobdetector
 	// https://docs.opencv.org/trunk/d8/da7/structcv_1_1SimpleBlobDetector_1_1Params.html
-	static QList<Match> findBlobs(const cv::Mat &image, const cv::SimpleBlobDetector::Params &blob_params);
+	static QVector<Match> findBlobs(const cv::Mat &image, const cv::SimpleBlobDetector::Params &blob_params);
 	
-	static QImage markMatches(const QImage &image, const QList<Match> &matches, const QColor &color, int thickness = 2);
+	static QImage markMatches(const QImage &image, const QVector<Match> &matches, const QColor &color, int thickness = 2);
 	
 	// Turns a QImage into a 3 Channel BGR cv::UMat
 	static cv::Mat qimageToBGRMat(const QImage &qimage);

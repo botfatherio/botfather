@@ -89,7 +89,7 @@ QScriptValue VisionAPI::findBlobs(QImage image, BlobTpl blob_tpl, int min_distan
 	blob_tpl.setMinRepeatability(min_repeatability);
 	
     cv::Mat image_mat = Vision::qimageToBGRMat(image);
-	QList<Match> matches = Vision::findBlobs(image_mat, blob_tpl.getBlobParams());
+	QVector<Match> matches = Vision::findBlobs(image_mat, blob_tpl.getBlobParams());
 	
     image_mat.release();
 	return qScriptValueFromSequence(engine(), matches);;
@@ -100,7 +100,7 @@ QScriptValue VisionAPI::markMatches(QImage image, QScriptValue matches, QColor c
     MB_ARRAY(matches, "matches");
 	MB_NOT_NULL(image, "image");
     
-    QList<Match> native_matches;
+    QVector<Match> native_matches;
     qScriptValueToSequence(matches, native_matches);
     
 	QImage result = Vision::markMatches(image, native_matches, color, thickness);

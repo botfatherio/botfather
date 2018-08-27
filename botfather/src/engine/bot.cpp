@@ -119,7 +119,7 @@ QString Bot::replaceQtWithEngineTypeNames(QString text)
 	// https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/String
 	
 	// Note: List "QType*" before "QType" otherwise "QType" will be replaced but the "*" stays.
-	static QList<QPair<QString, QString>> replacements = {
+	static QVector<QPair<QString, QString>> replacements = {
 		{ QMetaType::typeName(qMetaTypeId<QColor*>()), "Color" },
 		{ QMetaType::typeName(qMetaTypeId<QColor>()), "Color" },
 		{ QMetaType::typeName(qMetaTypeId<QImage*>()), "Image" },

@@ -69,7 +69,7 @@ QString RestApiClient::generateMagic() const
 	return random_string;
 }
 
-bool RestApiClient::verifyHash(QString hashhex, QList<QString> data_list) const
+bool RestApiClient::verifyHash(QString hashhex, QVector<QString> data_list) const
 {
 	QCryptographicHash hash(QCryptographicHash::Algorithm::Sha256);
 	hash.addData(software_slug.toUtf8());

@@ -196,13 +196,13 @@ Match Vision::findMatch(cv::Mat image, cv::Mat tpl, double threshold)
 	return Vision::findMaskedMatch(image, tpl, cv::Mat(), threshold);
 }
 
-QList<Match> Vision::findBlobs(const cv::Mat &image, const cv::SimpleBlobDetector::Params &blob_params)
+QVector<Match> Vision::findBlobs(const cv::Mat &image, const cv::SimpleBlobDetector::Params &blob_params)
 {
 	cv::Ptr<cv::SimpleBlobDetector> detector = cv::SimpleBlobDetector::create(blob_params);
 	std::vector<cv::KeyPoint> key_points;
 	detector->detect(image, key_points);
 	
-	QList<Match> matches;
+	QVector<Match> matches;
 	
 	for (cv::KeyPoint kp : key_points)
 	{	
@@ -217,7 +217,7 @@ QList<Match> Vision::findBlobs(const cv::Mat &image, const cv::SimpleBlobDetecto
 	return matches;
 }
 
-QImage Vision::markMatches(const QImage &image, const QList<Match> &matches, const QColor &color, int thickness)
+QImage Vision::markMatches(const QImage &image, const QVector<Match> &matches, const QColor &color, int thickness)
 {
 	QImage result = image;
 	

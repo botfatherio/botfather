@@ -16,7 +16,7 @@ AndroidAPI::AndroidAPI(Bot *bot, QObject *parent) : AbstractAPI(bot, parent)
 
 bool AndroidAPI::connected()
 {
-	QList<AdbDeviceInfo> devices;
+	QVector<AdbDeviceInfo> devices;
 	adb->queryForDevices(devices);
 	for (AdbDeviceInfo device : devices) {
 		if (device.getSerialNumber() == serial_number) {
@@ -28,7 +28,7 @@ bool AndroidAPI::connected()
 
 QScriptValue AndroidAPI::listPackages()
 {
-	QList<QString> packages;
+	QVector<QString> packages;
 	if (!adb->listPackages(serial_number, packages)) {
 		// Listing the packages failed. A empty list will be returned.
 	}

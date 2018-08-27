@@ -1,7 +1,7 @@
 #ifndef BFP_AUTH_REST_API_CLIENT_H
 #define BFP_AUTH_REST_API_CLIENT_H
 
-#include <QList>
+#include <QVector>
 #include <QUrl>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -44,7 +44,7 @@ protected:
 	QString generateMagic() const;
 	
 	// Creates a hash from the data list and compares it with the hash received from the server.
-	bool verifyHash(QString hashhex, QList<QString> data_list) const;
+	bool verifyHash(QString hashhex, QVector<QString> data_list) const;
 	
 private:
 	QString software_slug;
