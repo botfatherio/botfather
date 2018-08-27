@@ -154,10 +154,12 @@ void ControlWindow::on_actionAbout_triggered()
 		this,
 		"About Botfather",
 		"<html><body>"
-		"<p>Botfather.io is framework and engine for creating and running bots playing online games, android apps and more.</p>"
-		"<p>You can bot any game, website or app you want. Just pick the right script or create a new one.</p>"
-		"<p>Visit <a href='https://botfather.io/'>botfather.io</a> for more information.</p>"		
-		"<p>By the way: Those beautiful icons are from <a href='https://icons8.com/'>Icons8</a></p>"
+		"<p><b>Botfather</b> is framework and engine for creating and running bots playing online games, android apps and more.</p>"
+		"<p><a href='https://botfather.io/'>Website</a> | <a href='https://botfather.io/docs/legal/privacy/'>Privacy</a> | <a href='https://botfather.io/docs/legal/tos/'>EULA</a></p>"
+		"<b>Software used by botfather:</b>"
+		"<p>Those beautiful application icons are by <a href='https://icons8.com/'>website</a> | <a href='https://icons8.com/license/'>license</a></p>"
+		"<p>Chromium Embedded Framework. Copyright (c) 2008-2014 Marshall A. Greenblatt. <a href='https://bitbucket.org/chromiumembedded/cef'>website</a> | <a href='https://bitbucket.org/chromiumembedded/cef/src/master/LICENSE.txt'>license</a></p>"
+		"<p>OpenSSL. Copyright © 1998-2018 The OpenSSL Project. <a href='https://www.openssl.org/'>website</a> | <a href='https://www.openssl.org/source/license.html'>license</a></p>"
 		"</body></html>"
 	);
 }
