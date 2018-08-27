@@ -13,16 +13,16 @@ class VisionAPI : public AbstractAPI
 public:
 	using AbstractAPI::AbstractAPI;
 	
-	Q_INVOKABLE QScriptValue findMaskedMatches(QImage image, QImage tpl, QImage mask, double threshold = 0.8, int max_matches = -1);
-	Q_INVOKABLE QScriptValue findMaskedMatch(QImage image, QImage tpl, QImage mask, double threshold = 0.8);
+	Q_INVOKABLE QScriptValue findMaskedMatches(const QImage &image, const QImage &tpl, const QImage &mask, double threshold = 0.8, int max_matches = -1);
+	Q_INVOKABLE QScriptValue findMaskedMatch(const QImage &image, const QImage &tpl, const QImage &mask, double threshold = 0.8);
 	
-	Q_INVOKABLE QScriptValue findMatches(QImage image, QImage tpl, double threshold = 0.8, int max_matches = -1);
-	Q_INVOKABLE QScriptValue findMatch(QImage image, QImage tpl, double threshold = 0.8);
+	Q_INVOKABLE QScriptValue findMatches(const QImage &image, const QImage &tpl, double threshold = 0.8, int max_matches = -1);
+	Q_INVOKABLE QScriptValue findMatch(const QImage &image, const QImage &tpl, double threshold = 0.8);
 
-	Q_INVOKABLE QScriptValue findBlobs(QImage image, BlobTpl blob_tpl, int min_distance = 10, int min_repeatability = 2);
+	Q_INVOKABLE QScriptValue findBlobs(const QImage &image, const BlobTpl &blob_tpl, int min_distance = 10, int min_repeatability = 2);
 	
-	Q_INVOKABLE QScriptValue markMatches(QImage image, QScriptValue matches, QColor color, int thickness = 2);
-	Q_INVOKABLE QScriptValue markMatch(QImage image, Match match, QColor color, int thickness = 2);
+	Q_INVOKABLE QScriptValue markMatches(const QImage &image, const QScriptValue &matches, const QColor &color, int thickness = 2);
+	Q_INVOKABLE QScriptValue markMatch(const QImage &image, const Match &match, const QColor &color, int thickness = 2);
 };
 
 #endif // BFP_ENGINE_APIS_VISION_VISION_API_H

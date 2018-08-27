@@ -37,7 +37,7 @@ void DesktopAPI::rightClick(int x, int y)
     desktop->rightClick(x, y);
 }
 
-void DesktopAPI::pressKey(QString key) {
+void DesktopAPI::pressKey(const QString &key) {
     // Don't call DesktopAPIs holdKey and releaseKey methods instead. Otherwise a timeout might be
     // missing between both methods. UinputFaker has such. One is needed because of uinput events
     // not beeing synchronious.
@@ -48,7 +48,7 @@ void DesktopAPI::pressKey(QString key) {
     desktop->pressKey(key);
 }
 
-void DesktopAPI::holdKey(QString key)
+void DesktopAPI::holdKey(const QString &key)
 {
     if (!desktop->keyExists(key)) {
 	    engine()->currentContext()->throwError(QScriptContext::RangeError, "Unknown keycode.");
@@ -57,7 +57,7 @@ void DesktopAPI::holdKey(QString key)
     desktop->holdKey(key);
 }
 
-void DesktopAPI::releaseKey(QString key)
+void DesktopAPI::releaseKey(const QString &key)
 {
     if (!desktop->keyExists(key)) {
 	    engine()->currentContext()->throwError(QScriptContext::RangeError, "Unknown keycode.");
@@ -81,7 +81,7 @@ QScriptValue DesktopAPI::getCursorPosition()
     return engine()->toScriptValue(QPoint(x, y));
 }
 
-bool DesktopAPI::findAndClick(QImage tpl, double threshold, int button)
+bool DesktopAPI::findAndClick(const QImage &tpl, double threshold, int button)
 {
     QImage screenshot = desktop->takeScreenshot();
     if (screenshot.isNull() || tpl.isNull()) {
@@ -111,7 +111,7 @@ bool DesktopAPI::findAndClick(QImage tpl, double threshold, int button)
     return true;
 }
 
-QScriptValue DesktopAPI::findMatches(QImage tpl, double threshold, int max_matches)
+QScriptValue DesktopAPI::findMatches(const QImage &tpl, double threshold, int max_matches)
 {
     QImage screenshot = desktop->takeScreenshot();
     VisionAPI *vapi = new VisionAPI(bot(), engine());
@@ -120,7 +120,7 @@ QScriptValue DesktopAPI::findMatches(QImage tpl, double threshold, int max_match
 	return matches;
 }
 
-QScriptValue DesktopAPI::findMatch(QImage tpl, double threshold)
+QScriptValue DesktopAPI::findMatch(const QImage &tpl, double threshold)
 {
     QImage screenshot = desktop->takeScreenshot();
     VisionAPI *vapi = new VisionAPI(bot(), engine());

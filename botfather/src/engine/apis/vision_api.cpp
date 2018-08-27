@@ -3,7 +3,7 @@
 #include <QFileInfo>
 #include "../modules/vision/vision.h"
 
-QScriptValue VisionAPI::findMaskedMatches(QImage image, QImage tpl, QImage mask, double threshold, int max_matches)
+QScriptValue VisionAPI::findMaskedMatches(const QImage &image, const QImage &tpl, const QImage &mask, double threshold, int max_matches)
 {
 	MB_NOT_NULL(image, "image");
 	MB_NOT_NULL(tpl, "tpl");
@@ -24,7 +24,7 @@ QScriptValue VisionAPI::findMaskedMatches(QImage image, QImage tpl, QImage mask,
     return qScriptValueFromSequence(engine(), matches);
 }
 
-QScriptValue VisionAPI::findMaskedMatch(QImage image, QImage tpl, QImage mask, double threshold)
+QScriptValue VisionAPI::findMaskedMatch(const QImage &image, const QImage &tpl, const QImage &mask, double threshold)
 {
 	MB_NOT_NULL(image, "image");
 	MB_NOT_NULL(tpl, "tpl");
@@ -45,7 +45,7 @@ QScriptValue VisionAPI::findMaskedMatch(QImage image, QImage tpl, QImage mask, d
     return engine()->toScriptValue(match);
 }
 
-QScriptValue VisionAPI::findMatches(QImage image, QImage tpl, double threshold, int max_matches)
+QScriptValue VisionAPI::findMatches(const QImage &image, const QImage &tpl, double threshold, int max_matches)
 {
 	MB_NOT_NULL(image, "image");
 	MB_NOT_NULL(tpl, "tpl");
@@ -63,7 +63,7 @@ QScriptValue VisionAPI::findMatches(QImage image, QImage tpl, double threshold, 
     return qScriptValueFromSequence(engine(), matches);
 }
 
-QScriptValue VisionAPI::findMatch(QImage image, QImage tpl, double threshold)
+QScriptValue VisionAPI::findMatch(const QImage &image, const QImage &tpl, double threshold)
 {
 	MB_NOT_NULL(image, "image");
 	MB_NOT_NULL(tpl, "tpl");
@@ -81,21 +81,23 @@ QScriptValue VisionAPI::findMatch(QImage image, QImage tpl, double threshold)
     return engine()->toScriptValue(match);
 }
 
-QScriptValue VisionAPI::findBlobs(QImage image, BlobTpl blob_tpl, int min_distance, int min_repeatability)
+QScriptValue VisionAPI::findBlobs(const QImage &image, const BlobTpl &blob_tpl, int min_distance, int min_repeatability)
 {
 	MB_NOT_NULL(image, "image");
     
-	blob_tpl.setMinBlobDistance(min_distance);
-	blob_tpl.setMinRepeatability(min_repeatability);
+	BlobTpl tpl = blob_tpl;
+	
+	tpl.setMinBlobDistance(min_distance);
+	tpl.setMinRepeatability(min_repeatability);
 	
     cv::Mat image_mat = Vision::qimageToBGRMat(image);
-	QVector<Match> matches = Vision::findBlobs(image_mat, blob_tpl.getBlobParams());
+	QVector<Match> matches = Vision::findBlobs(image_mat, tpl.getBlobParams());
 	
     image_mat.release();
 	return qScriptValueFromSequence(engine(), matches);;
 }
 
-QScriptValue VisionAPI::markMatches(QImage image, QScriptValue matches, QColor color, int thickness)
+QScriptValue VisionAPI::markMatches(const QImage &image, const QScriptValue &matches, const QColor &color, int thickness)
 {
     MB_ARRAY(matches, "matches");
 	MB_NOT_NULL(image, "image");
@@ -107,7 +109,7 @@ QScriptValue VisionAPI::markMatches(QImage image, QScriptValue matches, QColor c
 	return engine()->toScriptValue(result);
 }
 
-QScriptValue VisionAPI::markMatch(QImage image, Match match, QColor color, int thickness)
+QScriptValue VisionAPI::markMatch(const QImage &image, const Match &match, const QColor &color, int thickness)
 {
     MB_NOT_NULL(image, "image");
 	MB_FOUND(match, "match");

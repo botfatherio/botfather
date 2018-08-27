@@ -15,17 +15,17 @@ QScriptValue BrowserAPI::takeScreenshot()
 	return engine()->toScriptValue(qimage);
 }
 
-void BrowserAPI::blockResource(QString resource)
+void BrowserAPI::blockResource(const QString &resource)
 {
 	Browser::blockResource(resource);
 }
 
-void BrowserAPI::replaceResource(QString old_resource, QString new_resource)
+void BrowserAPI::replaceResource(const QString &old_resource, const QString &new_resource)
 {
 	Browser::replaceResource(old_resource, new_resource);
 }
 
-void BrowserAPI::unmodifyResource(QString resource)
+void BrowserAPI::unmodifyResource(const QString &resource)
 {
 	Browser::unmodifyResource(resource);
 }
@@ -35,12 +35,12 @@ void BrowserAPI::unmodifyResources()
 	Browser::unmodifyResources();
 }
 
-void BrowserAPI::loadUrl(QString url)
+void BrowserAPI::loadUrl(const QString &url)
 {
 	Browser::loadUrl(url);
 }
 
-void BrowserAPI::beOnUrl(QString url)
+void BrowserAPI::beOnUrl(const QString &url)
 {
 	if (url != Browser::getUrl().toString()) {
 		Browser::loadUrl(url);
@@ -107,7 +107,7 @@ int BrowserAPI::getHeight()
 	return Browser::getHeight();
 }
 
-void BrowserAPI::executeJavascript(QString javascript_code)
+void BrowserAPI::executeJavascript(const QString &javascript_code)
 {
 	Browser::executeJavascript(javascript_code);
 }
@@ -173,7 +173,7 @@ void BrowserAPI::scrollWheel(int x, int y, int delta_x, int delta_y)
 	Browser::scrollWheel(x, y, delta_x, delta_y);
 }
 
-bool BrowserAPI::findAndClick(QImage tpl, double threshold, int button)
+bool BrowserAPI::findAndClick(const QImage &tpl, double threshold, int button)
 {
 	QImage screenshot = Browser::takeScreenshot();
 	
@@ -209,7 +209,7 @@ bool BrowserAPI::findAndClick(QImage tpl, double threshold, int button)
 	return true;
 }
 
-QScriptValue BrowserAPI::findMatches(QImage tpl, double threshold, int max_matches)
+QScriptValue BrowserAPI::findMatches(const QImage &tpl, double threshold, int max_matches)
 {
     QImage screenshot = Browser::takeScreenshot();
     VisionAPI *vapi = new VisionAPI(bot(), engine());
@@ -218,7 +218,7 @@ QScriptValue BrowserAPI::findMatches(QImage tpl, double threshold, int max_match
 	return matches;
 }
 
-QScriptValue BrowserAPI::findMatch(QImage tpl, double threshold)
+QScriptValue BrowserAPI::findMatch(const QImage &tpl, double threshold)
 {
     QImage screenshot = Browser::takeScreenshot();
     VisionAPI *vapi = new VisionAPI(bot(), engine());

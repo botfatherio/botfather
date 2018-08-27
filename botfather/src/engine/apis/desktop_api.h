@@ -27,16 +27,16 @@ public:
 	Q_INVOKABLE void middleClick(int x, int y);
 	Q_INVOKABLE void rightClick(int x, int y);
 	
-	Q_INVOKABLE void pressKey(QString key);
-	Q_INVOKABLE void holdKey(QString key);
-	Q_INVOKABLE void releaseKey(QString key);
+	Q_INVOKABLE void pressKey(const QString &key);
+	Q_INVOKABLE void holdKey(const QString &key);
+	Q_INVOKABLE void releaseKey(const QString &key);
 	
 	Q_INVOKABLE void warpCursor(int x, int y);
 	Q_INVOKABLE QScriptValue getCursorPosition();
 	
-	Q_INVOKABLE bool findAndClick(QImage tpl, double threshold = 0.8, int button = 1);
-	Q_INVOKABLE QScriptValue findMatches(QImage tpl, double threshold = 0.8, int max_matches = -1);
-	Q_INVOKABLE QScriptValue findMatch(QImage tpl, double threshold = 0.8);
+	Q_INVOKABLE bool findAndClick(const QImage &tpl, double threshold = 0.8, int button = 1);
+	Q_INVOKABLE QScriptValue findMatches(const QImage &tpl, double threshold = 0.8, int max_matches = -1);
+	Q_INVOKABLE QScriptValue findMatch(const QImage &tpl, double threshold = 0.8);
 	
 private:
 	Desktop *desktop;

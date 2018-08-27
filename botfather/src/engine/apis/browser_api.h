@@ -14,12 +14,12 @@ public:
 	using AbstractAPI::AbstractAPI;
 	
 	Q_INVOKABLE QScriptValue takeScreenshot();
-	Q_INVOKABLE void blockResource(QString resource_pattern);
-	Q_INVOKABLE void replaceResource(QString old_resource_pattern, QString new_resource);
-	Q_INVOKABLE void unmodifyResource(QString resource_pattern);
+	Q_INVOKABLE void blockResource(const QString &resource_pattern);
+	Q_INVOKABLE void replaceResource(const QString &old_resource_pattern, const QString &new_resource);
+	Q_INVOKABLE void unmodifyResource(const QString &resource_pattern);
 	Q_INVOKABLE void unmodifyResources();
-	Q_INVOKABLE void loadUrl(QString url);
-	Q_INVOKABLE void beOnUrl(QString url);
+	Q_INVOKABLE void loadUrl(const QString &url);
+	Q_INVOKABLE void beOnUrl(const QString &url);
 	Q_INVOKABLE QString getUrl();
 	Q_INVOKABLE void reload();
 	Q_INVOKABLE void reloadIgnoringCache();
@@ -32,7 +32,7 @@ public:
 	Q_INVOKABLE void goBack();
 	Q_INVOKABLE int getWidth();
 	Q_INVOKABLE int getHeight();
-	Q_INVOKABLE void executeJavascript(QString javascript_code);
+	Q_INVOKABLE void executeJavascript(const QString &javascript_code);
 	Q_INVOKABLE void leftClick(int x, int y);
 	Q_INVOKABLE void middleClick(int x, int y);
 	Q_INVOKABLE void rightClick(int x, int y);
@@ -45,9 +45,9 @@ public:
 	Q_INVOKABLE void moveMouseTo(int x, int y);
 	Q_INVOKABLE void scrollWheel(int x, int y, int delta_x, int delta_y);
 	
-	Q_INVOKABLE bool findAndClick(QImage tpl, double threshold = 0.8, int button = 1);
-	Q_INVOKABLE QScriptValue findMatches(QImage tpl, double threshold = 0.8, int max_matches = -1);
-	Q_INVOKABLE QScriptValue findMatch(QImage tpl, double threshold = 0.8);
+	Q_INVOKABLE bool findAndClick(const QImage &tpl, double threshold = 0.8, int button = 1);
+	Q_INVOKABLE QScriptValue findMatches(const QImage &tpl, double threshold = 0.8, int max_matches = -1);
+	Q_INVOKABLE QScriptValue findMatch(const QImage &tpl, double threshold = 0.8);
 };
 
 #endif // BFP_ENGINE_APIS_BROWSER_BROWSER_API_H

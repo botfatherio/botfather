@@ -49,7 +49,7 @@ QString HelperAPI::getAbsoluteScriptDirPath()
 	return bot()->getAbsoluteScriptDirPath();
 }
 
-void HelperAPI::playWavSound(QString path_to_wav_file, bool blocking)
+void HelperAPI::playWavSound(const QString &path_to_wav_file, bool blocking)
 {
 	if (!bot()->scriptFileExists(path_to_wav_file)) {
 		engine()->currentContext()->throwError(QScriptContext::TypeError, "path_to_wav_file does not exist.");

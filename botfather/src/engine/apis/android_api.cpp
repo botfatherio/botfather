@@ -35,7 +35,7 @@ QScriptValue AndroidAPI::listPackages()
 	return qScriptValueFromSequence(engine(), packages);
 }
 
-bool AndroidAPI::startApp(QString package)
+bool AndroidAPI::startApp(const QString &package)
 {
 	return adb->startApp(serial_number, package);
 }
@@ -54,17 +54,17 @@ bool AndroidAPI::sendSwipe(int x1, int y1, int x2, int y2, int duration_in_ms)
 	return adb->sendSwipe(serial_number, x1, y1, x2, y2, duration_in_ms);
 }
 
-bool AndroidAPI::sendEvent(QString device, int type, int code, int value)
+bool AndroidAPI::sendEvent(const QString &device, int type, int code, int value)
 {
 	return adb->sendEvent(serial_number, device, type, code, value);
 }
 
-bool AndroidAPI::sendKeyEvent(QString key_event_code)
+bool AndroidAPI::sendKeyEvent(const QString &key_event_code)
 {
 	return adb->sendKeyEvent(serial_number, key_event_code);
 }
 
-bool AndroidAPI::sendTextInput(QString text)
+bool AndroidAPI::sendTextInput(const QString &text)
 {
 	return adb->sendTextInput(serial_number, text);
 }
@@ -99,7 +99,7 @@ int AndroidAPI::getDeviceHeight()
 	return qimage.height();
 }
 
-bool AndroidAPI::findAndTap(QImage tpl, double threshold)
+bool AndroidAPI::findAndTap(const QImage &tpl, double threshold)
 {
 	QImage qimage;
 	if (!adb->takeScreenshot(serial_number, qimage) || tpl.isNull()) {
@@ -115,7 +115,7 @@ bool AndroidAPI::findAndTap(QImage tpl, double threshold)
 	return true;
 }
 
-QScriptValue AndroidAPI::findMatches(QImage tpl, double threshold, int max_matches)
+QScriptValue AndroidAPI::findMatches(const QImage &tpl, double threshold, int max_matches)
 {
 	QImage screenshot;
 	adb->takeScreenshot(serial_number, screenshot);
@@ -125,7 +125,7 @@ QScriptValue AndroidAPI::findMatches(QImage tpl, double threshold, int max_match
 	return matches;
 }
 
-QScriptValue AndroidAPI::findMatch(QImage tpl, double threshold)
+QScriptValue AndroidAPI::findMatch(const QImage &tpl, double threshold)
 {
 	QImage screenshot;
 	adb->takeScreenshot(serial_number, screenshot);
