@@ -32,10 +32,7 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	stop_hotkey = new QHotkey();
 	connect(stop_hotkey, &QHotkey::activated, this, &ControlWindow::on_actionStop_triggered);
 	updateHotkeys();
-	
-	// Store the original window title so it can be restored eg after the user logged out.
-	original_window_title = windowTitle();
-	
+
 	connect(ui->actionSettings, &QAction::triggered, config_dialog, &ConfigDialog::exec);
 	connect(ui->actionBrowser, &QAction::triggered, browser_window, &BrowserWindow::show);
 	connect(ui->actionAndroid, &QAction::triggered, android_dialog, &AndroidDialog::exec);
@@ -150,18 +147,18 @@ void ControlWindow::on_actionScripts_triggered()
 
 void ControlWindow::on_actionAbout_triggered()
 {
-	QMessageBox::about(
-		this,
-		"About Botfather",
+	QString text = QString(
 		"<html><body>"
 		"<p><b>Botfather</b> is framework and engine for creating and running bots playing online games, android apps and more.</p>"
-		"<p><a href='https://botfather.io/'>Website</a> | <a href='https://botfather.io/docs/legal/privacy/'>Privacy</a> | <a href='https://botfather.io/docs/legal/tos/'>EULA</a></p>"
+		"<p><a href='https://botfather.io/'>Website</a> | <a href='https://botfather.io/docs/legal/privacy/'>Privacy</a> | <a href='https://botfather.io/docs/legal/tos/'>EULA</a> | Version: %1</p>"
 		"<b>Software used by botfather:</b>"
 		"<p>Those beautiful application icons are by <a href='https://icons8.com/'>website</a> | <a href='https://icons8.com/license/'>license</a></p>"
 		"<p>Chromium Embedded Framework. Copyright (c) 2008-2014 Marshall A. Greenblatt. <a href='https://bitbucket.org/chromiumembedded/cef'>website</a> | <a href='https://bitbucket.org/chromiumembedded/cef/src/master/LICENSE.txt'>license</a></p>"
 		"<p>OpenSSL. Copyright © 1998-2018 The OpenSSL Project. <a href='https://www.openssl.org/'>website</a> | <a href='https://www.openssl.org/source/license.html'>license</a></p>"
 		"</body></html>"
-	);
+	).arg(QCoreApplication::applicationVersion());
+
+	QMessageBox::about(this, "About Botfather", text);
 }
 
 void ControlWindow::on_actionAboutQt_triggered()
@@ -222,7 +219,6 @@ void ControlWindow::on_actionLogout_triggered()
 		);
 		return;
 	}
-	setWindowTitle(original_window_title);
 	emit loggedOut();
 }
 

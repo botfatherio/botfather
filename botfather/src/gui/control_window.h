@@ -52,7 +52,6 @@ private:
 	Bot* bot;
 	QThread *bot_thread;
 	bool trial = true;
-	QString original_window_title;
 	QSoundEffect *script_sound_effect;
 	QHotkey *stop_hotkey;
 };
