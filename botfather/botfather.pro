@@ -106,6 +106,7 @@ HEADERS += \
     src/engine/apis/helper_api.h \
     src/engine/apis/vision_api.h \
     src/engine/bot.h \
+    src/engine/modules/algorithms/dijkstra.h \
     src/engine/modules/android/adb_device_info.h \
     src/engine/modules/android/adb_wrapper.h \
     src/engine/modules/android/android_settings.h \
@@ -136,7 +137,8 @@ HEADERS += \
     src/settings.h \
     src/engine/apis/abstract_api.h \
     src/engine/types/blob_tpl.h \
-    src/engine/prototypes/blob_tpl_prototype.h
+    src/engine/prototypes/blob_tpl_prototype.h \
+    src/engine/apis/path_finder_api.h
 SOURCES += \
     src/auth/license_api_client.cpp \
     src/auth/rest_api_client.cpp \
@@ -147,6 +149,7 @@ SOURCES += \
     src/engine/apis/helper_api.cpp \
     src/engine/apis/vision_api.cpp \
     src/engine/bot.cpp \
+    src/engine/modules/algorithms/dijkstra.cpp \
     src/engine/modules/android/adb_device_info.cpp \
     src/engine/modules/android/adb_wrapper.cpp \
     src/engine/modules/browser/browser.cpp \
@@ -173,7 +176,8 @@ SOURCES += \
     src/updater/updater_dialog.cpp \
     src/engine/apis/abstract_api.cpp \
     src/engine/types/blob_tpl.cpp \
-    src/engine/prototypes/blob_tpl_prototype.cpp
+    src/engine/prototypes/blob_tpl_prototype.cpp \
+    src/engine/apis/path_finder_api.cpp
 FORMS += \
     src/gui/android_dialog.ui \
     src/gui/auth_dialog.ui \
