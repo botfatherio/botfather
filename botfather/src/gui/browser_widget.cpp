@@ -47,8 +47,30 @@ void BrowserWidget::wheelEvent(QWheelEvent *event)
 
 void BrowserWidget::keyPressEvent(QKeyEvent *event)
 {
-	Q_UNUSED(event)
-	QMessageBox::information(this, "No Keyboard Support yet!", "Use the rightclick context menu to paste text into fields on the website.");
+	if (event->matches(QKeySequence::Copy))
+	{
+		BrowserClient::instance()->getBrowser()->GetFocusedFrame()->Copy();
+	}
+	else if (event->matches(QKeySequence::Cut))
+	{
+		BrowserClient::instance()->getBrowser()->GetFocusedFrame()->Cut();
+	}
+	else if (event->matches(QKeySequence::Paste))
+	{
+		BrowserClient::instance()->getBrowser()->GetFocusedFrame()->Paste();
+	}
+	else if (event->matches(QKeySequence::Undo))
+	{
+		BrowserClient::instance()->getBrowser()->GetFocusedFrame()->Undo();
+	}
+	else if (event->matches(QKeySequence::Redo))
+	{
+		BrowserClient::instance()->getBrowser()->GetFocusedFrame()->Redo();
+	}
+	else if (event->matches(QKeySequence::SelectAll))
+	{
+		BrowserClient::instance()->getBrowser()->GetFocusedFrame()->SelectAll();
+	}
 }
 
 void BrowserWidget::keyReleaseEvent(QKeyEvent *event)
