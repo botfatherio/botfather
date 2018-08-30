@@ -1,5 +1,5 @@
-#ifndef BFP_ENGINE_APIS_DESKTOP_DESKTOP_API_H
-#define BFP_ENGINE_APIS_DESKTOP_DESKTOP_API_H
+#ifndef BFP_ENGINE_APIS_DESKTOP_API_H
+#define BFP_ENGINE_APIS_DESKTOP_API_H
 
 #include <QObject>
 #include <QScriptEngine>
@@ -42,4 +42,4 @@ private:
 	Desktop *desktop;
 };
 
-#endif // BFP_ENGINE_APIS_DESKTOP_DESKTOP_API_H
+#endif // BFP_ENGINE_APIS_DESKTOP_API_H

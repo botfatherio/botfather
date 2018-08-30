@@ -1,5 +1,5 @@
-#ifndef BFP_ENGINE_APIS_VISION_VISION_API_H
-#define BFP_ENGINE_APIS_VISION_VISION_API_H
+#ifndef BFP_ENGINE_APIS_VISION_API_H
+#define BFP_ENGINE_APIS_VISION_API_H
 
 #include <QImage>
 #include "abstract_api.h"
@@ -25,4 +25,4 @@ public:
 	Q_INVOKABLE QScriptValue markMatch(const QImage &image, const Match &match, const QColor &color, int thickness = 2);
 };
 
-#endif // BFP_ENGINE_APIS_VISION_VISION_API_H
+#endif // BFP_ENGINE_APIS_VISION_API_H

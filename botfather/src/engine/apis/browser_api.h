@@ -1,5 +1,5 @@
-#ifndef BFP_ENGINE_APIS_BROWSER_BROWSER_API_H
-#define BFP_ENGINE_APIS_BROWSER_BROWSER_API_H
+#ifndef BFP_ENGINE_APIS_BROWSER_API_H
+#define BFP_ENGINE_APIS_BROWSER_API_H
 
 #include <QObject>
 #include <QScriptEngine>
@@ -50,4 +50,4 @@ public:
 	Q_INVOKABLE QScriptValue findMatch(const QImage &tpl, double threshold = 0.8);
 };
 
-#endif // BFP_ENGINE_APIS_BROWSER_BROWSER_API_H
+#endif // BFP_ENGINE_APIS_BROWSER_API_H
