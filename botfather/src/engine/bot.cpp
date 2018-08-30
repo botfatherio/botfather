@@ -1,6 +1,7 @@
 #include "bot.h"
 #include <QScriptEngine>
 #include <QTextStream>
+#include <QRegularExpression>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
@@ -119,24 +120,12 @@ QString Bot::replaceQtWithEngineTypeNames(QString text)
 {
 	// https://doc.qt.io/archives/qt-5.10/qtscript-index.html#conversion-between-qt-script-and-c-types
 	// https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/String
-	
-	// Note: List "QType*" before "QType" otherwise "QType" will be replaced but the "*" stays.
-	static QVector<QPair<QString, QString>> replacements = {
-		{ QMetaType::typeName(qMetaTypeId<QColor*>()), "Color" },
-		{ QMetaType::typeName(qMetaTypeId<QColor>()), "Color" },
-		{ QMetaType::typeName(qMetaTypeId<QImage*>()), "Image" },
-		{ QMetaType::typeName(qMetaTypeId<QImage>()), "Image" },
-		{ QMetaType::typeName(qMetaTypeId<QPoint*>()), "Point" },
-		{ QMetaType::typeName(qMetaTypeId<QPoint>()), "Point" },
-		{ QMetaType::typeName(qMetaTypeId<QRect*>()), "Rect" },
-		{ QMetaType::typeName(qMetaTypeId<QRect>()), "Rect" },
-		{ QMetaType::typeName(qMetaTypeId<QSize*>()), "Size" },
-		{ QMetaType::typeName(qMetaTypeId<QSize>()), "Size" },
-		//{ QMetaType::typeName(qMetaTypeId<QString*>()), "String" },
-		{ QMetaType::typeName(qMetaTypeId<QString>()), "String" },
-	};
-	for (QPair<QString, QString> pair : replacements) {
-		text.replace(pair.first, pair.second);
-	}
+	// Note: Replace pointer types before non pointer types. Otherwise the "*" will not be replaced.
+
+	// Detect "QTypeName" and "QTypeName*" and make "TypeName" be in the first capture group.
+	// The first capture group can be refered to with "\\1".
+
+	QRegularExpression qtype_re("Q([A-Z][a-zA-Z])+(\\*?)");
+	text.replace(qtype_re, "\\1");
 	return text;
 }
