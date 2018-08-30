@@ -15,10 +15,20 @@ public:
 	// Inheriting classes must implement a static constructor method with this signature:
 	// static QScriptValue constructor(QScriptContext *context, QScriptEngine *engine)
 	// Some notes about it:
-	// Note: Returning context->thisObject(); when context->isCalledAsConstructor() is true
+	// Note: Returning context->thisObject(); when context->isCalledAsConstructor() is "true"
 	// (as recommended by Qt) leaves us with an qobject that can't be casted to QSize anymore.
 	// Note: Returning a value here allows us to cast the resulting QScriptValue to both QSize values AND pointers!
 	
+	// Note about the static constructor function:
+	// Currently, to obtain a pointer to the bot instance, we cast the script engines parent
+	// to a Bot*. Declaring the constructor as a method doesn't work, as the script engine
+	// newFunction method expects a specific function signature, which methods don't have.
+	// But there is an alternative to casting the engines parent:
+	// We could declare the constructor using std::function and define it's implementation
+	// in the prototypes "real" class constructor. A prototype constructor defined this way
+	// can access the prototypes properties (including the bot instance) why having the
+	// signature expected by the script engines newFunction method.
+
 	// Note about getter and setter methods:
 	// Since the data is not to be modified, it's OK to cast to a value instead of a pointer.
 	
