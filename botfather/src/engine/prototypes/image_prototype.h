@@ -91,7 +91,8 @@ public:
 	// Compares two same sized images and returns the number pixels they don't have in common.
 	Q_INVOKABLE int countDifferentPixels(const QImage &other_image) const;
 	
-	// 
+	// Calculates the percentage of pixels being the same color and on the same position on both images.
+	// Both images must have the same size.
 	Q_INVOKABLE double pixelEqualityTo(const QImage &other_image) const;
 	
 	Q_INVOKABLE QString toString() const;
