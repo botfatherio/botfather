@@ -89,11 +89,7 @@ QVector<Match> Vision::findMaskedMatches(cv::Mat image, cv::Mat tpl, cv::Mat mas
 	bool use_mask = !mask.empty();
 	
 	QVector<Match> matches;
-	
-	//qDebug() << image.type() << tpl.type();
-	//qDebug() << image.dims << tpl.dims;
-	//qDebug() << image.depth() << tpl.depth();
-	
+
 	cv::UMat uimage = image.getUMat(cv::ACCESS_RW);
 	cv::UMat utpl = tpl.getUMat(cv::ACCESS_RW);
 
@@ -106,6 +102,12 @@ QVector<Match> Vision::findMaskedMatches(cv::Mat image, cv::Mat tpl, cv::Mat mas
 	// But result.png is always black, no matter where in this method we tried to save it.
 	cv::UMat uresult(uimage.rows - utpl.rows + 1, uimage.cols - utpl.cols + 1, CV_32FC1);
 	
+	// cv::matchTemplate requires the image to have a depth of 0 or 5, and both the image and the template
+	// to gave the same types. The images dims must be equal or less 2.
+	Q_ASSERT(uimage.depth() == 0 || uimage.depth() == 5);
+	Q_ASSERT(uimage.type() == utpl.type());
+	Q_ASSERT(uimage.dims <= 2);
+
 	// Marks spots on the result mat than lighten than the template matches on the image.
 	// When a mask is used ignore those regions which are black on the mask.
 	if (use_mask && match_method_accepts_mask) {
@@ -250,7 +252,7 @@ cv::Mat Vision::qimageToBGRMat(const QImage &qimage)
 			const_cast<uchar*>(qimage.bits()),
 			static_cast<size_t>(qimage.bytesPerLine())
 		);
-	 
+
 		return mat.clone();
 	}
 	
