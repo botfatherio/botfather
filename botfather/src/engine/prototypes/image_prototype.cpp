@@ -26,7 +26,11 @@ QScriptValue ImagePrototype::constructor(QScriptContext *context, QScriptEngine 
 		QString absolute_path = bot->normalisePath(filepath);
 		
 		QImage image;
-		image.load(absolute_path);
+		if (!image.load(absolute_path))
+		{
+			QString message = QString("can't load image from path %1").arg(absolute_path);
+			return context->throwError(QScriptContext::TypeError, message);
+		}
 		
 		return engine->toScriptValue(image);
 	}
@@ -82,7 +86,12 @@ void ImagePrototype::load(const QString &filepath)
 	Bot *bot = qobject_cast<Bot *>(engine()->parent());
 	Q_ASSERT(bot);
 	QString absolute_path = bot->normalisePath(filepath);
-	THIS_IMAGE_P()->load(absolute_path);
+
+	if (!THIS_IMAGE_P()->load(absolute_path))
+	{
+		QString message = QString("can't load image from path %1").arg(absolute_path);
+		context()->throwError(QScriptContext::TypeError, message);
+	}
 }
 
 void ImagePrototype::save(const QString &filepath)
