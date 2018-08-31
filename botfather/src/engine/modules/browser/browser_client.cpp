@@ -34,7 +34,8 @@ BrowserClient * BrowserClient::instance()
 
 QImage BrowserClient::takeScreenshot()
 {
-	return g_browser_image;
+	// NOTE: Not using copy caused fracments in browser screenshots some times.
+	return g_browser_image.copy();
 }
 
 CefRefPtr<CefBrowser> BrowserClient::getBrowser() const
