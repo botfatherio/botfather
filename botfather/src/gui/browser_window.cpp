@@ -11,6 +11,7 @@
 BrowserWindow::BrowserWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::BrowserWindow)
 {
 	ui->setupUi(this);
+	setWindowModality(Qt::NonModal); // don't block input to other windows while the browser is shown.
 	
 	// Setup a singleshot timer used to resize the browser once the user stopped
 	// resizing the whole window.
