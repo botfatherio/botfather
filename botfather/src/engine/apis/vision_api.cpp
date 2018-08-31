@@ -116,8 +116,7 @@ QScriptValue VisionAPI::markMatches(const QImage &image, const QScriptValue &mat
 
 QScriptValue VisionAPI::markMatch(const QImage &image, const Match &match, const QColor &color, int thickness)
 {
-    MB_NOT_NULL(image, "image");
-	MB_FOUND(match, "match");
+	MB_NOT_NULL(image, "image");
     
 	QImage result = Vision::markMatches(image, { match }, color, thickness);
     return engine()->toScriptValue(result);
