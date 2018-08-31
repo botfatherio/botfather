@@ -3,6 +3,11 @@
 #include <QFileInfo>
 #include "../modules/vision/vision.h"
 
+QImage VisionAPI::withoutAlphaChannel(const QImage &image)
+{
+	return image.convertToFormat(QImage::Format_RGB32);
+}
+
 QScriptValue VisionAPI::findMaskedMatches(const QImage &image, const QImage &tpl, const QImage &mask, double threshold, int max_matches)
 {
 	MB_NOT_NULL(image, "image");
@@ -11,9 +16,9 @@ QScriptValue VisionAPI::findMaskedMatches(const QImage &image, const QImage &tpl
 	MB_SMALLER(tpl, image, "tpl", "image");
 	MB_SAME_SIZE(tpl, mask, "tpl", "mask");	
 
-    cv::Mat ref_mat = Vision::qimageToBGRMat(image);
-    cv::Mat tpl_mat = Vision::qimageToBGRMat(tpl);
-    cv::Mat msk_mat = Vision::qimageToBGRMat(mask);
+	cv::Mat ref_mat = Vision::qimageToBGRMat(withoutAlphaChannel(image));
+	cv::Mat tpl_mat = Vision::qimageToBGRMat(withoutAlphaChannel(tpl));
+	cv::Mat msk_mat = Vision::qimageToBGRMat(withoutAlphaChannel(mask));
     
     QVector<Match> matches = Vision::findMaskedMatches(ref_mat, tpl_mat, msk_mat, threshold, max_matches);
 	
@@ -32,9 +37,9 @@ QScriptValue VisionAPI::findMaskedMatch(const QImage &image, const QImage &tpl, 
 	MB_SMALLER(tpl, image, "tpl", "image");
 	MB_SAME_SIZE(tpl, mask, "tpl", "mask");	
     
-    cv::Mat image_mat = Vision::qimageToBGRMat(image);
-    cv::Mat tpl_mat = Vision::qimageToBGRMat(tpl);
-    cv::Mat mask_mat = Vision::qimageToBGRMat(mask);
+	cv::Mat image_mat = Vision::qimageToBGRMat(withoutAlphaChannel(image));
+	cv::Mat tpl_mat = Vision::qimageToBGRMat(withoutAlphaChannel(tpl));
+	cv::Mat mask_mat = Vision::qimageToBGRMat(withoutAlphaChannel(mask));
     
     Match match = Vision::findMaskedMatch(image_mat, tpl_mat, mask_mat, threshold);
     
@@ -51,8 +56,8 @@ QScriptValue VisionAPI::findMatches(const QImage &image, const QImage &tpl, doub
 	MB_NOT_NULL(tpl, "tpl");
 	MB_SMALLER(tpl, image, "tpl", "image");
     
-    cv::Mat image_mat = Vision::qimageToBGRMat(image);
-    cv::Mat tpl_mat = Vision::qimageToBGRMat(tpl);
+	cv::Mat image_mat = Vision::qimageToBGRMat(withoutAlphaChannel(image));
+	cv::Mat tpl_mat = Vision::qimageToBGRMat(withoutAlphaChannel(tpl));
     
     // NOTE: Dont call findMaskedMatches here instead to save some checks, it requires a non empty mask.
     QVector<Match> matches = Vision::findMatches(image_mat, tpl_mat, threshold, max_matches);
@@ -69,8 +74,8 @@ QScriptValue VisionAPI::findMatch(const QImage &image, const QImage &tpl, double
 	MB_NOT_NULL(tpl, "tpl");
 	MB_SMALLER(tpl, image, "tpl", "image");
     
-    cv::Mat image_mat = Vision::qimageToBGRMat(image);
-    cv::Mat tpl_mat = Vision::qimageToBGRMat(tpl);
+	cv::Mat image_mat = Vision::qimageToBGRMat(withoutAlphaChannel(image));
+	cv::Mat tpl_mat = Vision::qimageToBGRMat(withoutAlphaChannel(tpl));
     
     // NOTE: Dont call findMaskedMatch here instead to save some checks, it requires a non empty mask.
     Match match = Vision::findMatch(image_mat, tpl_mat, threshold);
@@ -90,7 +95,7 @@ QScriptValue VisionAPI::findBlobs(const QImage &image, const BlobTpl &blob_tpl, 
 	tpl.setMinBlobDistance(min_distance);
 	tpl.setMinRepeatability(min_repeatability);
 	
-    cv::Mat image_mat = Vision::qimageToBGRMat(image);
+	cv::Mat image_mat = Vision::qimageToBGRMat(withoutAlphaChannel(image));
 	QVector<Match> matches = Vision::findBlobs(image_mat, tpl.getBlobParams());
 	
     image_mat.release();

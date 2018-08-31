@@ -12,7 +12,10 @@ class VisionAPI : public AbstractAPI
 	
 public:
 	using AbstractAPI::AbstractAPI;
-	
+	static QImage withoutAlphaChannel(const QImage &image);
+
+	// Note: Remember most OpenCV matching methods can only handle images without alpha channel.
+
 	Q_INVOKABLE QScriptValue findMaskedMatches(const QImage &image, const QImage &tpl, const QImage &mask, double threshold = 0.8, int max_matches = -1);
 	Q_INVOKABLE QScriptValue findMaskedMatch(const QImage &image, const QImage &tpl, const QImage &mask, double threshold = 0.8);
 	
