@@ -35,7 +35,7 @@ public:
     }
 };
 
-Desktop::Desktop(QObject *parent) : QObject(parent), d_ptr(new DesktopPrivate)
+Desktop::Desktop(QObject *parent) : QObject(parent), pimpl(new DesktopPrivate)
 {
 
 }
@@ -88,33 +88,33 @@ QImage Desktop::takeScreenshot()
 
 int Desktop::getWidth()
 {
-    return d_ptr->getDesktopSize().width();
+    return pimpl->getDesktopSize().width();
 }
 
 int Desktop::getHeight()
 {
-    return d_ptr->getDesktopSize().height();
+    return pimpl->getDesktopSize().height();
 }
 
 void Desktop::leftClick(int x, int y)
 {
     warpCursor(x, y);
-    d_ptr->sendMouseEvent(MOUSEEVENTF_LEFTDOWN);
-    d_ptr->sendMouseEvent(MOUSEEVENTF_LEFTUP);
+    pimpl->sendMouseEvent(MOUSEEVENTF_LEFTDOWN);
+    pimpl->sendMouseEvent(MOUSEEVENTF_LEFTUP);
 }
 
 void Desktop::middleClick(int x, int y)
 {
     warpCursor(x, y);
-    d_ptr->sendMouseEvent(MOUSEEVENTF_MIDDLEDOWN);
-    d_ptr->sendMouseEvent(MOUSEEVENTF_MIDDLEUP);
+    pimpl->sendMouseEvent(MOUSEEVENTF_MIDDLEDOWN);
+    pimpl->sendMouseEvent(MOUSEEVENTF_MIDDLEUP);
 }
 
 void Desktop::rightClick(int x, int y)
 {
     warpCursor(x, y);
-    d_ptr->sendMouseEvent(MOUSEEVENTF_RIGHTDOWN);
-    d_ptr->sendMouseEvent(MOUSEEVENTF_RIGHTUP);
+    pimpl->sendMouseEvent(MOUSEEVENTF_RIGHTDOWN);
+    pimpl->sendMouseEvent(MOUSEEVENTF_RIGHTUP);
 }
 
 void Desktop::pressKey(QString key)
@@ -125,12 +125,12 @@ void Desktop::pressKey(QString key)
 
 void Desktop::holdKey(QString key)
 {
-    d_ptr->sendKeyboardEvent(KEYMAP[key.toLower()], false);
+    pimpl->sendKeyboardEvent(KEYMAP[key.toLower()], false);
 }
 
 void Desktop::releaseKey(QString key)
 {
-    d_ptr->sendKeyboardEvent(KEYMAP[key.toLower()], true);
+    pimpl->sendKeyboardEvent(KEYMAP[key.toLower()], true);
 }
 
 void Desktop::warpCursor(int x, int y)

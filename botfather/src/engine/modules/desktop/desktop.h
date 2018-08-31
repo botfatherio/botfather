@@ -29,7 +29,7 @@ public:
 	bool keyExists(QString key);
 	
 private:
-	QScopedPointer<DesktopPrivate> const d_ptr;
+	QScopedPointer<DesktopPrivate> const pimpl;
 	Q_DECLARE_PRIVATE(Desktop)
 };
 

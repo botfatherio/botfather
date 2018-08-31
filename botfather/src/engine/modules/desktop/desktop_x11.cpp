@@ -73,145 +73,145 @@ public:
 	}
 };
 
-Desktop::Desktop(QObject *parent) : QObject(parent), d_ptr(new DesktopPrivate)
+Desktop::Desktop(QObject *parent) : QObject(parent), pimpl(new DesktopPrivate)
 {
 	// Uinput is a writable file which contains all mouse and keybord inputs.
 	// They are preocessed by the kernel and then interpreted by the userspace.
-	d_ptr->fd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
+	pimpl->fd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
 	
 	// Enable key and relative events
-	ioctl(d_ptr->fd, UI_SET_EVBIT, EV_KEY);
-	ioctl(d_ptr->fd, UI_SET_EVBIT, EV_REL);
+	ioctl(pimpl->fd, UI_SET_EVBIT, EV_KEY);
+	ioctl(pimpl->fd, UI_SET_EVBIT, EV_REL);
 	
 	// Enable key input events
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_0); // 0
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_1); // 1
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_2); // 2
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_3); // 3
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_4); // 4
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_5); // 5
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_6); // 6
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_7); // 7
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_8); // 8
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_9); // 9
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_0); // 0
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_1); // 1
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_2); // 2
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_3); // 3
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_4); // 4
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_5); // 5
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_6); // 6
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_7); // 7
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_8); // 8
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_9); // 9
 	
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_A); // A
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_B); // B
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_C); // C
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_D); // D
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_E); // E
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F); // F
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_G); // G
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_H); // H
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_I); // I
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_J); // J
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_K); // K
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_L); // L
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_M); // M
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_N); // N
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_O); // O
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_P); // P
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_Q); // Q
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_R); // R
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_S); // S
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_T); // T
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_U); // U
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_V); // V
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_W); // W
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_X); // X
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_Y); // Y
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_Z); // Z
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_A); // A
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_B); // B
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_C); // C
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_D); // D
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_E); // E
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F); // F
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_G); // G
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_H); // H
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_I); // I
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_J); // J
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_K); // K
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_L); // L
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_M); // M
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_N); // N
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_O); // O
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_P); // P
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_Q); // Q
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_R); // R
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_S); // S
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_T); // T
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_U); // U
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_V); // V
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_W); // W
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_X); // X
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_Y); // Y
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_Z); // Z
 	
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F1); // F1
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F2); // F2
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F3); // F3
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F4); // F4
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F5); // F5
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F6); // F6
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F7); // F7
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F8); // F8
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F9); // F9
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F10); // F10
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F11); // F11
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F12); // F12
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F13); // F13
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F14); // F14
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F15); // F15
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F16); // F16
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F17); // F17
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F18); // F18
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F19); // F19
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F20); // F20
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F21); // F21
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F22); // F22
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F23); // F23
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_F24); // F24
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F1); // F1
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F2); // F2
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F3); // F3
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F4); // F4
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F5); // F5
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F6); // F6
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F7); // F7
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F8); // F8
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F9); // F9
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F10); // F10
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F11); // F11
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F12); // F12
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F13); // F13
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F14); // F14
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F15); // F15
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F16); // F16
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F17); // F17
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F18); // F18
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F19); // F19
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F20); // F20
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F21); // F21
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F22); // F22
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F23); // F23
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F24); // F24
 	
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_LEFT); // LEFT
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_RIGHT); // RIGHT
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_UP); // UP
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_DOWN); // DOWN
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_LEFT); // LEFT
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_RIGHT); // RIGHT
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_UP); // UP
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_DOWN); // DOWN
 	
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_LEFTALT); // LEFT ALT
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_RIGHTALT); // RIGHT ALT
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_LEFTSHIFT); // LEFT SHIFT
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_RIGHTSHIFT); // RIGHT SHIFT
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_LEFTCTRL); // LEFT CTRL
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_RIGHTCTRL); // RIGHT CTRL
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_CAPSLOCK); // CAPSLOCK
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_SPACE); // SPACE
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_TAB); // TAB
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_ESC); // ESC
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_BACKSPACE); // BACKSPACE
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_DELETE); // DELETE
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_ENTER); // ENTER
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_VOLUMEUP); // VOLUME UP
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, KEY_VOLUMEDOWN); // VOLUME DOWN
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_LEFTALT); // LEFT ALT
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_RIGHTALT); // RIGHT ALT
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_LEFTSHIFT); // LEFT SHIFT
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_RIGHTSHIFT); // RIGHT SHIFT
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_LEFTCTRL); // LEFT CTRL
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_RIGHTCTRL); // RIGHT CTRL
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_CAPSLOCK); // CAPSLOCK
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_SPACE); // SPACE
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_TAB); // TAB
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_ESC); // ESC
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_BACKSPACE); // BACKSPACE
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_DELETE); // DELETE
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_ENTER); // ENTER
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_VOLUMEUP); // VOLUME UP
+	ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_VOLUMEDOWN); // VOLUME DOWN
 	
 	// Enable mouse movement input
-	ioctl(d_ptr->fd, UI_SET_RELBIT, REL_X);
-	ioctl(d_ptr->fd, UI_SET_RELBIT, REL_Y);
+	ioctl(pimpl->fd, UI_SET_RELBIT, REL_X);
+	ioctl(pimpl->fd, UI_SET_RELBIT, REL_Y);
 	
 	// Mouse button events (they don't require mouse movement to be enabled)
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, BTN_LEFT);
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, BTN_RIGHT);
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, BTN_MIDDLE);
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, BTN_WHEEL);
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, BTN_GEAR_DOWN);
-	ioctl(d_ptr->fd, UI_SET_KEYBIT, BTN_GEAR_UP);
+	ioctl(pimpl->fd, UI_SET_KEYBIT, BTN_LEFT);
+	ioctl(pimpl->fd, UI_SET_KEYBIT, BTN_RIGHT);
+	ioctl(pimpl->fd, UI_SET_KEYBIT, BTN_MIDDLE);
+	ioctl(pimpl->fd, UI_SET_KEYBIT, BTN_WHEEL);
+	ioctl(pimpl->fd, UI_SET_KEYBIT, BTN_GEAR_DOWN);
+	ioctl(pimpl->fd, UI_SET_KEYBIT, BTN_GEAR_UP);
 	
 	// Create a fake input device, which is capable of inputting/faking
 	// mouse and keyboard inputs.
-	memset(&d_ptr->usetup, 0, sizeof(d_ptr->usetup));
-	d_ptr->usetup.id.bustype = BUS_USB;
-	d_ptr->usetup.id.vendor = 0x1234; // Sample vendor
-	d_ptr->usetup.id.product = 0x5678; // Sample product
-	strcpy(d_ptr->usetup.name, "BFP Universal Input Device"); // Device name
+	memset(&pimpl->usetup, 0, sizeof(pimpl->usetup));
+	pimpl->usetup.id.bustype = BUS_USB;
+	pimpl->usetup.id.vendor = 0x1234; // Sample vendor
+	pimpl->usetup.id.product = 0x5678; // Sample product
+	strcpy(pimpl->usetup.name, "BFP Universal Input Device"); // Device name
 	
 	// Enable the fake input device.
-	ioctl(d_ptr->fd, UI_DEV_SETUP, &d_ptr->usetup);
-	ioctl(d_ptr->fd, UI_DEV_CREATE);
+	ioctl(pimpl->fd, UI_DEV_SETUP, &pimpl->usetup);
+	ioctl(pimpl->fd, UI_DEV_CREATE);
 	
-	d_ptr->display = XOpenDisplay(nullptr);
-	d_ptr->root = XDefaultRootWindow(d_ptr->display);
+	pimpl->display = XOpenDisplay(nullptr);
+	pimpl->root = XDefaultRootWindow(pimpl->display);
 }
 
 Desktop::~Desktop()
 {
-	ioctl(d_ptr->fd, UI_DEV_DESTROY);
-	close(d_ptr->fd);
-	XCloseDisplay(d_ptr->display);
+	ioctl(pimpl->fd, UI_DEV_DESTROY);
+	close(pimpl->fd);
+	XCloseDisplay(pimpl->display);
 }
 
 QImage Desktop::takeScreenshot()
 {
 	XWindowAttributes attributes;
-	XGetWindowAttributes(d_ptr->display, d_ptr->root, &attributes);
+	XGetWindowAttributes(pimpl->display, pimpl->root, &attributes);
 	
 	unsigned int width = static_cast<unsigned int>(attributes.width);
 	unsigned int height = static_cast<unsigned int>(attributes.height);
 	
-	XImage *x_image = XGetImage(d_ptr->display, d_ptr->root, 0, 0, width, height, AllPlanes, ZPixmap);
+	XImage *x_image = XGetImage(pimpl->display, pimpl->root, 0, 0, width, height, AllPlanes, ZPixmap);
 	
 	QImage::Format format = x_image->bits_per_pixel > 24 ? QImage::Format_ARGB32 : QImage::Format_RGB888;
 	
@@ -231,30 +231,30 @@ QImage Desktop::takeScreenshot()
 
 int Desktop::getWidth()
 {
-	return d_ptr->getSize().height();
+	return pimpl->getSize().height();
 }
 
 int Desktop::getHeight()
 {
-	return d_ptr->getSize().width();
+	return pimpl->getSize().width();
 }
 
 void Desktop::leftClick(int x, int y)
 {
 	warpCursor(x, y);
-	d_ptr->press(BTN_LEFT);
+	pimpl->press(BTN_LEFT);
 }
 
 void Desktop::middleClick(int x, int y)
 {
 	warpCursor(x, y);
-	d_ptr->press(BTN_MIDDLE);
+	pimpl->press(BTN_MIDDLE);
 }
 
 void Desktop::rightClick(int x, int y)
 {
 	warpCursor(x, y);
-	d_ptr->press(BTN_RIGHT);
+	pimpl->press(BTN_RIGHT);
 }
 
 void Desktop::pressKey(QString key) {
@@ -264,12 +264,12 @@ void Desktop::pressKey(QString key) {
 
 void Desktop::holdKey(QString key)
 {
-	d_ptr->hold(static_cast<unsigned short>(KEYMAP[key.toLower()]));
+	pimpl->hold(static_cast<unsigned short>(KEYMAP[key.toLower()]));
 }
 
 void Desktop::releaseKey(QString key)
 {
-	d_ptr->release(static_cast<unsigned short>(KEYMAP[key.toLower()]));
+	pimpl->release(static_cast<unsigned short>(KEYMAP[key.toLower()]));
 }
 
 void Desktop::warpCursor(int x, int y)
@@ -290,12 +290,12 @@ void Desktop::warpCursor(int x, int y)
 	
 	// If dest_w is None, XWarpPointer moves the pointer by the offsets (dest_x, dest_y)
 	// relative to the current position of the pointer. https://linux.die.net/man/3/xwarppointer
-	XWarpPointer(d_ptr->display, d_ptr->root, d_ptr->root, 0, 0, 0, 0, x, y);
-	XFlush(d_ptr->display);
+	XWarpPointer(pimpl->display, pimpl->root, pimpl->root, 0, 0, 0, 0, x, y);
+	XFlush(pimpl->display);
 	
 	// Shake the mouse using uinput
-	d_ptr->moveCursor(10, 10);
-	d_ptr->moveCursor(-10, -10);
+	pimpl->moveCursor(10, 10);
+	pimpl->moveCursor(-10, -10);
 }
 
 bool Desktop::getCursorPosition(int *x, int *y)
@@ -303,7 +303,7 @@ bool Desktop::getCursorPosition(int *x, int *y)
 	Window returned_window;
 	int win_x, win_y;
 	unsigned int returned_mask;
-	return XQueryPointer(d_ptr->display, d_ptr->root, &returned_window, &returned_window, x, y, &win_x, &win_y, &returned_mask);
+	return XQueryPointer(pimpl->display, pimpl->root, &returned_window, &returned_window, x, y, &win_x, &win_y, &returned_mask);
 }
 
 bool Desktop::keyExists(QString key)
