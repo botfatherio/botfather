@@ -13,7 +13,7 @@ Match::Match(QRect rect, double score)
 
 bool Match::found() const
 {
-	return score < 0;
+	return score > 0;
 }
 
 double Match::getScore() const
