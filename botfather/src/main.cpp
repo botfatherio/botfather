@@ -24,19 +24,31 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmd
 
 namespace {
 
-int handleXError(Display *, XErrorEvent *event)
+int handleXError(Display *display, XErrorEvent *event)
 {
+	char error_code_text_buffer[1024];
+	XGetErrorText(display, event->error_code, error_code_text_buffer, sizeof(error_code_text_buffer));
+
+	// TODO: Test whether using XGetErrorText with request codes is appropriate
+	char request_code_text[1024];
+	XGetErrorText(display, event->error_code, request_code_text, sizeof(request_code_text));
+
+	// TODO: Test whether using XGetErrorText with minor codes is appropriate
+	char minor_code_text[1024];
+	XGetErrorText(display, event->minor_code, minor_code_text, sizeof(request_code_text));
+
 	qDebug()
-		<< "X error received: type " << event->type
-		<< ", serial " << event->serial
-		<< ", error_code " << static_cast<int>(event->error_code)
-		<< ", request_code " << static_cast<int>(event->request_code)
-		<< ", minor_code " << static_cast<int>(event->minor_code);
+		<< "X error received. type: " << event->type
+		<< ", serial: " << event->serial
+		<< ", error: " << QString(error_code_text_buffer)
+		<< ", request: " << QString(request_code_text)
+		<< ", minor: " << QString(minor_code_text);
 	return 0;
 }
 
 int handleXIOError(Display *)
 {
+	qDebug() << "QIOError handled.";
 	return 0;
 }
 
