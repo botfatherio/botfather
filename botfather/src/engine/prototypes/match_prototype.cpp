@@ -25,17 +25,29 @@ QScriptValue MatchPrototype::constructor(QScriptContext *context, QScriptEngine 
 	NO_MATCHING_CTOR("Match", MATCH_PROTOTYPE_DOCS)
 }
 
-Q_INVOKABLE double MatchPrototype::getScore() const
+double MatchPrototype::getScore() const
 {
 	return THIS_MATCH().getScore();
 }
 
-Q_INVOKABLE void MatchPrototype::setScore(double score)
+void MatchPrototype::setScore(double score)
 {
 	THIS_MATCH_P()->setScore(score);
 }
 
-Q_INVOKABLE bool MatchPrototype::found() const
+QRect MatchPrototype::getRect() const
+{
+	return static_cast<QRect>(THIS_MATCH());
+}
+
+void MatchPrototype::setRect(const QRect &rect)
+{
+	Match *match = THIS_MATCH_P();
+	match->setTopLeft(rect.topLeft());
+	match->setBottomRight(rect.bottomRight());
+}
+
+bool MatchPrototype::found() const
 {
 	return THIS_MATCH().found();
 }
