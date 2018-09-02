@@ -1,6 +1,5 @@
 #include "bot.h"
 #include <QScriptEngine>
-#include <QTextStream>
 #include <QRegularExpression>
 #include <QDir>
 #include <QFile>
@@ -90,15 +89,14 @@ void Bot::runScript()
 	}
 	
 	// Get the script files contents.
-	QTextStream stream(&script_file);
-	QString contents = stream.readAll();
+	QByteArray script = script_file.readAll();
 	script_file.close();
 	emit message("Executing bot script " + script_path, true);
 	
 	// Run the script and clean up after doing so.
 	// NOTE: Putting this in a try-catch statement does nothing.
 	// I threw a exception in the browser api and the program crashed.
-	QScriptValue result(script_engine->evaluate(contents, script_path));
+	QScriptValue result(script_engine->evaluate(script, script_path));
 	
 	// Check whether the script ended due to errors. If so print them to the users log.
 	if (result.isError()) {
