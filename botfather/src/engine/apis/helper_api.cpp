@@ -100,7 +100,10 @@ QScriptValue HelperAPI::log(QScriptContext *context, QScriptEngine *engine)
 	QScriptValue callee_data(context->callee().data());
 	HelperAPI *hapi = qobject_cast<HelperAPI*>(callee_data.toQObject());
 	emit hapi->bot()->message(message, false);
-	delete hapi;
+
+	// NOTE: Do not delete HelperAPI pointer here. This would delete the original helperapi instance,
+	// which could no longer be used in the script engine.
+	//delete hapi;
 
     return engine->undefinedValue();
 }
