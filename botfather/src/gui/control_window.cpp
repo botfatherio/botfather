@@ -22,7 +22,6 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	config_dialog = new ConfigDialog(this);
 	browser_window = new BrowserWindow(this);
 	android_dialog = new AndroidDialog(this);
-	file_dialog = new QFileDialog(this);
 	script_sound_effect = new QSoundEffect(this);
 
 	// LOL everything must be inited. When not initializing kill_timer even checking whether it's

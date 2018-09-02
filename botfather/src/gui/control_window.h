@@ -45,7 +45,6 @@ public slots:
 	
 private:
 	Ui::ControlWindow *ui;
-	QFileDialog *file_dialog;
 	ConfigDialog *config_dialog;
 	BrowserWindow *browser_window;
 	AndroidDialog *android_dialog;
