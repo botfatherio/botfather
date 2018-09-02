@@ -16,6 +16,8 @@ QScriptValue ImagePrototype::constructor(QScriptContext *context, QScriptEngine 
 	// new Image();
 	if (context->argumentCount() == 0)
 	{
+		QImage image;
+		engine->reportAdditionalMemoryCost(ImageSizeInBytes(image));
 		return engine->toScriptValue(QImage());
 	}
 	
@@ -31,7 +33,8 @@ QScriptValue ImagePrototype::constructor(QScriptContext *context, QScriptEngine 
 			QString message = QString("can't load image from path %1").arg(absolute_path);
 			return context->throwError(QScriptContext::TypeError, message);
 		}
-		
+
+		engine->reportAdditionalMemoryCost(ImageSizeInBytes(image));
 		return engine->toScriptValue(image);
 	}
 	
@@ -40,6 +43,8 @@ QScriptValue ImagePrototype::constructor(QScriptContext *context, QScriptEngine 
 	{
 		QSize size = qscriptvalue_cast<QSize>(context->argument(0));
 		QImage image(size, QImage::Format_RGB32);
+
+		engine->reportAdditionalMemoryCost(ImageSizeInBytes(image));
 		return engine->toScriptValue(image);
 	}
 	
@@ -50,6 +55,8 @@ QScriptValue ImagePrototype::constructor(QScriptContext *context, QScriptEngine 
 		QColor color = toQColor(context->argument(1));
 		QImage image(size, QImage::Format_RGB32);
 		image.fill(color);
+
+		engine->reportAdditionalMemoryCost(ImageSizeInBytes(image));
 		return engine->toScriptValue(image);
 	}
 	
@@ -119,29 +126,38 @@ void ImagePrototype::setPixelColor(const QPoint &position, const QColor &color)
 
 QImage ImagePrototype::copy(const QRect &sub_area)
 {
-	return THIS_IMAGE().copy(sub_area);
+	QImage copy = THIS_IMAGE().copy(sub_area);
+	engine()->reportAdditionalMemoryCost(ImageSizeInBytes(copy));
+	return copy;
 }
 	
 QImage ImagePrototype::mirrored(bool horizontally, bool vertically)
 {
-	return THIS_IMAGE().mirrored(horizontally, vertically);
+	QImage mirrored = THIS_IMAGE().mirrored(horizontally, vertically);
+	engine()->reportAdditionalMemoryCost(ImageSizeInBytes(mirrored));
+	return mirrored;
 }
 	
 QImage ImagePrototype::grayed()
 {
-	return THIS_IMAGE().convertToFormat(QImage::Format_Grayscale8);
+	QImage grayed = THIS_IMAGE().convertToFormat(QImage::Format_Grayscale8);
+	engine()->reportAdditionalMemoryCost(ImageSizeInBytes(grayed));
+	return grayed;
 }
 	
 QImage ImagePrototype::createMaskFromColor(const QColor &color)
 {
-	return THIS_IMAGE().createMaskFromColor(color.rgb(), Qt::MaskOutColor);
+	QImage mask = THIS_IMAGE().createMaskFromColor(color.rgb(), Qt::MaskOutColor);
+	engine()->reportAdditionalMemoryCost(ImageSizeInBytes(mask));
+	return mask;
 }
 
 QImage ImagePrototype::createMaskFromAlpha()
 {
-	QImage image = THIS_IMAGE().createAlphaMask();
-	image.invertPixels();
-	return image;
+	QImage mask = THIS_IMAGE().createAlphaMask();
+	mask.invertPixels();
+	engine()->reportAdditionalMemoryCost(ImageSizeInBytes(mask));
+	return mask;
 }
 
 QImage ImagePrototype::isolateColorRange(const QColor &min, const QColor &max, bool keep_color)
@@ -149,11 +165,18 @@ QImage ImagePrototype::isolateColorRange(const QColor &min, const QColor &max, b
 	if (THIS_IMAGE().isNull()) {
 		context()->throwError(QScriptContext::TypeError, "The image must not be null.");
 	}
-	cv::Mat image = Vision::qimageToBGRMat(THIS_IMAGE());
+
+	cv::Mat image_mat = Vision::qimageToBGRMat(THIS_IMAGE());
 	cv::Scalar min_hsv(min.hsvHue() / 2, min.hsvSaturation(), min.value());
     cv::Scalar max_hsv(max.hsvHue() / 2, max.hsvSaturation(), max.value());
-	cv::Mat result = Vision::isolateColor(image, min_hsv, max_hsv, keep_color);
-	return Vision::cvMatToQImage(result);
+	cv::Mat result_mat = Vision::isolateColor(image_mat, min_hsv, max_hsv, keep_color);
+
+	QImage result = Vision::cvMatToQImage(result_mat);
+	image_mat.release();
+	result_mat.release();
+
+	engine()->reportAdditionalMemoryCost(ImageSizeInBytes(result));
+	return result;
 }
 
 int ImagePrototype::countDifferentPixels(const QImage &other_image) const
@@ -164,8 +187,13 @@ int ImagePrototype::countDifferentPixels(const QImage &other_image) const
 	if (THIS_IMAGE().size() != other_image.size()) {
 		context()->throwError(QScriptContext::TypeError, "Both images must have the same size.");
 	}
+
 	cv::Mat image_1 = Vision::qimageToBGRMat(THIS_IMAGE());
 	cv::Mat image_2 = Vision::qimageToBGRMat(other_image);
+
+	image_1.release();
+	image_2.release();
+
 	return Vision::countDifferentPixels(image_1, image_2);
 }
 
@@ -183,7 +211,10 @@ double ImagePrototype::pixelEqualityTo(const QImage &other_image) const
 	
 	int total_pixels = THIS_IMAGE().width() * THIS_IMAGE().height();
 	int equal_pixels = total_pixels - Vision::countDifferentPixels(image_1, image_2);
-	
+
+	image_1.release();
+	image_2.release();
+
 	return static_cast<double>(equal_pixels) / total_pixels;
 }
 

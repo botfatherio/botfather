@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QFileInfo>
 #include "../modules/vision/vision.h"
+#include "../prototypes/image_prototype.h"
 
 QImage VisionAPI::withoutAlphaChannel(const QImage &image)
 {
@@ -111,6 +112,8 @@ QScriptValue VisionAPI::markMatches(const QImage &image, const QScriptValue &mat
     qScriptValueToSequence(matches, native_matches);
     
 	QImage result = Vision::markMatches(image, native_matches, color, thickness);
+
+	engine()->reportAdditionalMemoryCost(ImageSizeInBytes(result));
 	return engine()->toScriptValue(result);
 }
 
@@ -119,5 +122,6 @@ QScriptValue VisionAPI::markMatch(const QImage &image, const Match &match, const
 	MB_NOT_NULL(image, "image");
     
 	QImage result = Vision::markMatches(image, { match }, color, thickness);
+	engine()->reportAdditionalMemoryCost(ImageSizeInBytes(result));
     return engine()->toScriptValue(result);
 }
