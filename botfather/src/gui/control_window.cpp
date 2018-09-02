@@ -59,6 +59,8 @@ void ControlWindow::applyRemoteApiInfo(int curtime, int premend, bool stable)
 
 void ControlWindow::on_actionStart_triggered()
 {
+	// Increses memory usage by some bytes caching file icons.
+	// https://bugreports.qt.io/browse/QTBUG-10651
 	QString script_path = QFileDialog::getOpenFileName(
 		this,
 		tr("Run Bot Script"),
@@ -68,20 +70,19 @@ void ControlWindow::on_actionStart_triggered()
 		// Triggering the file dialog more than once using the native dialog made the program get stuck.
 		QFileDialog::DontUseNativeDialog
 	);
-	
+
 	if (script_path.isEmpty()) {
 		// No script selected. Reset ui modifications and tell the user.
-		this->appendMessage("No script selected.", true);
+		appendMessage("No script selected.", true);
 		return;
 	}
 	
 	// Disable start and stop button while we setup the bot.
-	this->ui->actionStart->setEnabled(false);
-	this->ui->actionStop->setEnabled(false);
-	
-	bot_thread = new QThread(this);
-	delete bot;
-	bot = new Bot(script_path);
+	ui->actionStart->setEnabled(false);
+	ui->actionStop->setEnabled(false);
+
+	bot_thread = new QThread(this); // deleted later when QThread::finished has been emitted
+	bot = new Bot(script_path); // deleted in ControlWindow::bot_stopped
 	bot->moveToThread(bot_thread);
 
 	// Make the bot start when the thread starts and delete the thread object when
@@ -100,34 +101,32 @@ void ControlWindow::on_actionStart_triggered()
 	// the desired sound whenever to bot wants us to do so.
 	connect(bot, &Bot::playWavSound, this, &ControlWindow::playWavSound);
 	connect(bot, &Bot::stopWavSound, this, &ControlWindow::stopWavSound);
-	
+
 	// Start the bot thread and thus the bot.
-	this->bot_thread->start();
+	bot_thread->start();
 }
 
 void ControlWindow::bot_started()
 {
-	// The bot started, enable the stop button.
-	this->ui->actionStop->setEnabled(true);
-	
+	ui->actionStop->setEnabled(true);
 	stop_hotkey->setRegistered(true);
 }
 
 void ControlWindow::on_actionStop_triggered()
 {
-	this->ui->actionStart->setEnabled(false);
-	this->ui->actionStop->setEnabled(false);
+	ui->actionStart->setEnabled(false);
+	ui->actionStop->setEnabled(false);
 	bot->stop();
 }
 
 void ControlWindow::bot_stopped(bool without_errors)
 {
+	delete bot; // created in ControlWindow::on_actionStart_triggered
+
 	stop_hotkey->setRegistered(false);
-	
-	this->ui->actionStart->setEnabled(true);
-	this->ui->actionStop->setEnabled(false);
-	
-	// Stop sounds started by the script.
+	ui->actionStart->setEnabled(true);
+	ui->actionStop->setEnabled(false);
+
 	stopWavSound();
 	
 	if (!without_errors) {
