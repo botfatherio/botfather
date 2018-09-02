@@ -171,11 +171,11 @@ void ControlWindow::on_save_button_clicked()
 	QString filename = QFileDialog::getSaveFileName(
 		this,
 		tr("Save Logfile"),
-		"",
+		QDir::homePath(),
 		tr("Text files (*.txt *.log)"),
 		Q_NULLPTR,
 		// Triggering the file dialog more than once using the native dialog made the program get stuck.
-		QFileDialog::DontUseNativeDialog
+		QFileDialog::DontUseNativeDialog | QFileDialog::DontUseCustomDirectoryIcons
 	);
 	
 	if (filename.isEmpty()){
