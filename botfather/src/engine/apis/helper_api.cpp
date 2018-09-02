@@ -100,6 +100,7 @@ QScriptValue HelperAPI::log(QScriptContext *context, QScriptEngine *engine)
 	QScriptValue callee_data(context->callee().data());
 	HelperAPI *hapi = qobject_cast<HelperAPI*>(callee_data.toQObject());
 	emit hapi->bot()->message(message, false);
+	delete hapi;
 
     return engine->undefinedValue();
 }
