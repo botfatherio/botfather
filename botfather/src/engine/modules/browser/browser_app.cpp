@@ -95,6 +95,12 @@ void BrowserApp::OnBeforeCommandLineProcessing(const CefString& process_type, Ce
 	}
 #endif
 
+	// Fix page scrolling. (scrolling ingame worked but not on normal pages)
+	// https://bitbucket.org/chromiumembedded/cef/issues/2214/osr-scroll-is-erratic-after-using-mouse
+	// TODO: eventually remove this "fix" when we use a fixed cef version
+	command_line->AppendSwitch("disable-smooth-scrolling");
+	command_line->AppendSwitchWithValue("disable-features","TouchpadAndWheelScrollLatching,AsyncWheelEvents");
+
 	// Loads system plugins like flash in newer CEF versions.
 	command_line->AppendSwitch("load-extension");
 	
