@@ -3,6 +3,7 @@
 #include <QDebug>
 #include "../modules/desktop/desktop.h"
 #include "../modules/vision/vision.h"
+#include "../prototypes/image_prototype.h"
 #include "../types/match.h"
 #include "vision_api.h"
 
@@ -14,6 +15,7 @@ DesktopAPI::DesktopAPI(Bot *bot, QObject *parent) : AbstractAPI(bot, parent)
 QScriptValue DesktopAPI::takeScreenshot()
 {
     QImage qimage = desktop->takeScreenshot();
+	engine()->reportAdditionalMemoryCost(ImageSizeInBytes(qimage));
     return engine()->toScriptValue(qimage);
 }
 

@@ -3,15 +3,14 @@
 #include <QDebug>
 #include "../modules/browser/browser.h"
 #include "../modules/vision/vision.h"
+#include "../prototypes/image_prototype.h"
 #include "../types/match.h"
 #include "vision_api.h"
 
 QScriptValue BrowserAPI::takeScreenshot()
 {
 	QImage qimage = Browser::takeScreenshot();
-	// NOTE: It's okay to report additional cost before creating the new object.
-	// Because we can expect the new object to not be instantly garbage...
-	//m_engine_p->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(qimage)));
+	engine()->reportAdditionalMemoryCost(ImageSizeInBytes(qimage));
 	return engine()->toScriptValue(qimage);
 }
 

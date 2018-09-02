@@ -2,6 +2,7 @@
 #include "../modules/android/adb_wrapper.h"
 #include "../modules/android/android_settings.h"
 #include "../modules/vision/vision.h"
+#include "../prototypes/image_prototype.h"
 #include "../types/match.h"
 #include "../bot.h"
 #include "vision_api.h"
@@ -72,10 +73,8 @@ bool AndroidAPI::sendTextInput(const QString &text)
 QScriptValue AndroidAPI::takeScreenshot()
 {
 	QImage qimage;
-	if (!adb->takeScreenshot(serial_number, qimage)) {
-		// Taking screenshot failed. TODO: print system debug info in some later version...
-	}
-	//m_engine_p->reportAdditionalMemoryCost(static_cast<int>(ImageSizeInBytes(qimage)));
+	adb->takeScreenshot(serial_number, qimage);
+	engine()->reportAdditionalMemoryCost(ImageSizeInBytes(qimage));
 	return engine()->toScriptValue(qimage);
 }
 
