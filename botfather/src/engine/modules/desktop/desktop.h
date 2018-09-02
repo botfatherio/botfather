@@ -21,12 +21,12 @@ public:
 	void leftClick(int x, int y);
 	void middleClick(int x, int y);
 	void rightClick(int x, int y);
-	void pressKey(QString key);
-	void holdKey(QString key);
-	void releaseKey(QString key);
+	void pressKey(const QString &key);
+	void holdKey(const QString &key);
+	void releaseKey(const QString &key);
 	void warpCursor(int x, int y);
 	bool getCursorPosition(int *x, int *y);
-	bool keyExists(QString key);
+	bool keyExists(const QString &key);
 	
 private:
 	QScopedPointer<DesktopPrivate> const pimpl;

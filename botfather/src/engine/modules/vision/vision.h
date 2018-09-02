@@ -12,19 +12,19 @@ class BlobTpl;
 
 namespace Vision
 {
-	cv::Mat isolateColor(cv::Mat image, cv::Scalar min_hsv, cv::Scalar max_hsv, bool keep_color);
+	cv::Mat isolateColor(const cv::Mat &image, const cv::Scalar &min_hsv, const cv::Scalar &max_hsv, bool keep_color);
 	
-	int countDifferentPixels(cv::Mat image_1, cv::Mat image_2);
+	int countDifferentPixels(const cv::Mat &image_1, const cv::Mat &image_2);
 	
 	// https://docs.opencv.org/2.4/doc/tutorials/imgproc/histograms/histogram_calculation/histogram_calculation.html
 	// https://docs.opencv.org/2.4/doc/tutorials/imgproc/histograms/histogram_comparison/histogram_comparison.html
-	double histogramSimilarity(cv::Mat image_1, cv::Mat image_2);
+	double histogramSimilarity(const cv::Mat &image_1, const cv::Mat &image_2);
 	
-	QVector<Match> findMaskedMatches(cv::Mat image, cv::Mat tpl, cv::Mat mask, double threshold, int max_matches);
-	Match findMaskedMatch(cv::Mat image, cv::Mat tpl, cv::Mat mask, double threshold);
+	QVector<Match> findMaskedMatches(const cv::Mat &image, const cv::Mat &tpl, const cv::Mat &mask, double threshold, int max_matches);
+	Match findMaskedMatch(const cv::Mat &image, const cv::Mat &tpl, const cv::Mat &mask, double threshold);
 	
-	QVector<Match> findMatches(cv::Mat image, cv::Mat tpl, double threshold, int max_matches = 7);
-	Match findMatch(cv::Mat image, cv::Mat tpl, double threshold);
+	QVector<Match> findMatches(const cv::Mat &image, const cv::Mat &tpl, double threshold, int max_matches = 7);
+	Match findMatch(const cv::Mat &image, const cv::Mat &tpl, double threshold);
 	
 	// https://docs.opencv.org/2.4/modules/features2d/doc/common_interfaces_of_feature_detectors.html#simpleblobdetector
 	// https://docs.opencv.org/trunk/d8/da7/structcv_1_1SimpleBlobDetector_1_1Params.html

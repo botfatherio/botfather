@@ -18,7 +18,7 @@ QString AdbDeviceInfo::getSerialNumber() const
 	return serial_number;
 }
 
-void AdbDeviceInfo::setSerialNumber(QString serial_number)
+void AdbDeviceInfo::setSerialNumber(const QString &serial_number)
 {
 	this->serial_number = serial_number;
 }
@@ -28,7 +28,7 @@ QString AdbDeviceInfo::getState() const
 	return state;
 }
 
-void AdbDeviceInfo::setState(QString state)
+void AdbDeviceInfo::setState(const QString &state)
 {
 	this->state = state;
 }
@@ -38,7 +38,7 @@ QString AdbDeviceInfo::getProduct() const
 	return product;
 }
 
-void AdbDeviceInfo::setProduct(QString product)
+void AdbDeviceInfo::setProduct(const QString &product)
 {
 	this->product = product;
 }
@@ -48,7 +48,7 @@ QString AdbDeviceInfo::getModel() const
 	return model;
 }
 
-void AdbDeviceInfo::setModel(QString model)
+void AdbDeviceInfo::setModel(const QString &model)
 {
 	this->model = model;
 }

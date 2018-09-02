@@ -10,16 +10,16 @@ public:
 	AdbDeviceInfo(QString serial_number, QString state, QString product, QString model);
 	
 	QString getSerialNumber() const;
-	void setSerialNumber(QString serial_number);
+	void setSerialNumber(const QString &serial_number);
 	
 	QString getState() const;
-	void setState(QString state);
+	void setState(const QString &state);
 	
 	QString getProduct() const;
-	void setProduct(QString product);
+	void setProduct(const QString &product);
 	
 	QString getModel() const;
-	void setModel(QString model);
+	void setModel(const QString &model);
 	
 	bool connected() const;
 	

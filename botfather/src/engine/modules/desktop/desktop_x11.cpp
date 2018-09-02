@@ -257,17 +257,17 @@ void Desktop::rightClick(int x, int y)
 	pimpl->press(BTN_RIGHT);
 }
 
-void Desktop::pressKey(QString key) {
+void Desktop::pressKey(const QString &key) {
 	holdKey(key);
 	releaseKey(key);
 }
 
-void Desktop::holdKey(QString key)
+void Desktop::holdKey(const QString &key)
 {
 	pimpl->hold(static_cast<unsigned short>(KEYMAP[key.toLower()]));
 }
 
-void Desktop::releaseKey(QString key)
+void Desktop::releaseKey(const QString &key)
 {
 	pimpl->release(static_cast<unsigned short>(KEYMAP[key.toLower()]));
 }
@@ -306,7 +306,7 @@ bool Desktop::getCursorPosition(int *x, int *y)
 	return XQueryPointer(pimpl->display, pimpl->root, &returned_window, &returned_window, x, y, &win_x, &win_y, &returned_mask);
 }
 
-bool Desktop::keyExists(QString key)
+bool Desktop::keyExists(const QString &key)
 {
 	return KEYMAP.contains(key.toLower());
 }

@@ -5,8 +5,7 @@
 #include "../../types/match.h"
 #include "../../types/blob_tpl.h"
 
-// static
-cv::Mat Vision::isolateColor(cv::Mat image, cv::Scalar min_hsv, cv::Scalar max_hsv, bool keep_color)
+cv::Mat Vision::isolateColor(const cv::Mat &image, const cv::Scalar &min_hsv, const cv::Scalar &max_hsv, bool keep_color)
 {
 	cv::Mat hsv_image, bgr_result_image;
 	cv::Mat threshold_image;
@@ -35,7 +34,7 @@ cv::Mat Vision::isolateColor(cv::Mat image, cv::Scalar min_hsv, cv::Scalar max_h
 	return bgr_result_image;
 }
 
-int Vision::countDifferentPixels(cv::Mat image_1, cv::Mat image_2)
+int Vision::countDifferentPixels(const cv::Mat &image_1, const cv::Mat &image_2)
 {
 	cv::Mat image_1_gray, image_2_gray, diff;
 	
@@ -53,7 +52,7 @@ int Vision::countDifferentPixels(cv::Mat image_1, cv::Mat image_2)
 	return cv::countNonZero(diff);
 }
 
-double Vision::histogramSimilarity(cv::Mat image_1, cv::Mat image_2)
+double Vision::histogramSimilarity(const cv::Mat &image_1, const cv::Mat &image_2)
 {
 	cv::Mat hsv_1, hsv_2;
 	cv::cvtColor(image_1, hsv_1, CV_BGR2HSV);
@@ -90,7 +89,7 @@ double Vision::histogramSimilarity(cv::Mat image_1, cv::Mat image_2)
 	return cv::compareHist(hsv_1_hist, hsv_2_hist, CV_COMP_CORREL);
 }
 
-QVector<Match> Vision::findMaskedMatches(cv::Mat image, cv::Mat tpl, cv::Mat mask, double threshold, int max_matches)
+QVector<Match> Vision::findMaskedMatches(const cv::Mat &image, const cv::Mat &tpl, const cv::Mat &mask, double threshold, int max_matches)
 {
 	// Note: Only CV_TM_SQDIFF and CV_TM_CCORR_NORMED accept maskes.
 	static const int match_method = CV_TM_CCORR_NORMED;
@@ -192,7 +191,7 @@ QVector<Match> Vision::findMaskedMatches(cv::Mat image, cv::Mat tpl, cv::Mat mas
 }
 
 
-Match Vision::findMaskedMatch(cv::Mat image, cv::Mat tpl, cv::Mat mask, double threshold)
+Match Vision::findMaskedMatch(const cv::Mat &image, const cv::Mat &tpl, const cv::Mat &mask, double threshold)
 {
 	QVector<Match> matches = Vision::findMaskedMatches(image, tpl, mask, threshold, 1);
 	if (!matches.isEmpty()) {
@@ -201,12 +200,12 @@ Match Vision::findMaskedMatch(cv::Mat image, cv::Mat tpl, cv::Mat mask, double t
 	return Match();
 }
 
-QVector<Match> Vision::findMatches(cv::Mat image, cv::Mat tpl, double threshold, int max_matches)
+QVector<Match> Vision::findMatches(const cv::Mat &image, const cv::Mat &tpl, double threshold, int max_matches)
 {
 	return Vision::findMaskedMatches(image, tpl, cv::Mat(), threshold, max_matches);
 }
 
-Match Vision::findMatch(cv::Mat image, cv::Mat tpl, double threshold)
+Match Vision::findMatch(const cv::Mat &image, const cv::Mat &tpl, double threshold)
 {
 	return Vision::findMaskedMatch(image, tpl, cv::Mat(), threshold);
 }

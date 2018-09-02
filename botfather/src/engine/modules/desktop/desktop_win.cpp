@@ -117,18 +117,18 @@ void Desktop::rightClick(int x, int y)
     pimpl->sendMouseEvent(MOUSEEVENTF_RIGHTUP);
 }
 
-void Desktop::pressKey(QString key)
+void Desktop::pressKey(const QString &key)
 {
     holdKey(key);
     releaseKey(key);
 }
 
-void Desktop::holdKey(QString key)
+void Desktop::holdKey(const QString &key)
 {
     pimpl->sendKeyboardEvent(KEYMAP[key.toLower()], false);
 }
 
-void Desktop::releaseKey(QString key)
+void Desktop::releaseKey(const QString &key)
 {
     pimpl->sendKeyboardEvent(KEYMAP[key.toLower()], true);
 }
@@ -149,7 +149,7 @@ bool Desktop::getCursorPosition(int *x, int *y)
 	return false;
 }
 
-bool Desktop::keyExists(QString key)
+bool Desktop::keyExists(const QString &key)
 {
     return KEYMAP[key.toLower()];
 }
