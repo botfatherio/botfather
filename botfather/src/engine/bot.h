@@ -12,6 +12,7 @@ class Bot : public QObject
 public:
 	// Giving Bot a parent results in: QObject::moveToThread: Cannot move objects with a parent
 	Bot(QString script_path);
+	~Bot();
 	
 	// Considers relative paths relative to the scripts dir and makes them absolute.
 	QString normalisePath(QString path);

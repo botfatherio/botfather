@@ -27,6 +27,14 @@ Bot::Bot(QString script_path) : script_path(script_path)
 	script_engine = new QScriptEngine(this);
 }
 
+Bot::~Bot()
+{
+	// The QJSEngine (not QScriptEngine) docs state that the garbage is not collected
+	// when the engine gets destroyed. The advise to call collectGarbage before deleting it.
+	script_engine->collectGarbage();
+	//delete script_engine; // has bot as parent.
+}
+
 QString Bot::getAbsoluteScriptDirPath()
 {
 	QFileInfo file_info(script_path);
@@ -91,7 +99,6 @@ void Bot::runScript()
 	// NOTE: Putting this in a try-catch statement does nothing.
 	// I threw a exception in the browser api and the program crashed.
 	QScriptValue result = script_engine->evaluate(contents, script_path);
-	script_engine->collectGarbage();
 	
 	// Check whether the script ended due to errors. If so print them to the users log.
 	if (result.isError()) {
@@ -99,7 +106,6 @@ void Bot::runScript()
 		QString debug_msg = QString("<b>Uncaught exception</b> at line %1 : %2").arg(result.property("lineNumber").toString()).arg(error_msg);
 		emit message(debug_msg, true, true);
 	} else {
-		// Script execution/evaluation ended successfully.
 		emit message("Bot script execution finished.", true);
 	}
 	
