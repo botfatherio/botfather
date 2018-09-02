@@ -97,7 +97,7 @@ QScriptValue HelperAPI::log(QScriptContext *context, QScriptEngine *engine)
         message.append(context->argument(i).toString());
     }
 	
-    QScriptValue callee_data = context->callee().data();
+	QScriptValue callee_data(context->callee().data());
 	HelperAPI *hapi = qobject_cast<HelperAPI*>(callee_data.toQObject());
 	emit hapi->bot()->message(message, false);
 
@@ -106,7 +106,7 @@ QScriptValue HelperAPI::log(QScriptContext *context, QScriptEngine *engine)
 
 void HelperAPI::extendGlobalApiObject(QScriptEngine *engine, QScriptValue &api_object)
 {
-	QScriptValue fun = engine->newFunction(log);
+	QScriptValue fun(engine->newFunction(log));
 	fun.setData(engine->newQObject(this));
 	api_object.setProperty("log", fun);
 }

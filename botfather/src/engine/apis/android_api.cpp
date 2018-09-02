@@ -120,7 +120,7 @@ QScriptValue AndroidAPI::findMatches(const QImage &tpl, double threshold, int ma
 	QImage screenshot;
 	adb->takeScreenshot(serial_number, screenshot);
     VisionAPI *vapi = new VisionAPI(bot(), engine());
-    QScriptValue matches = vapi->findMatches(screenshot, tpl, threshold, max_matches);
+	QScriptValue matches(vapi->findMatches(screenshot, tpl, threshold, max_matches));
 	delete vapi;
 	return matches;
 }
@@ -130,7 +130,7 @@ QScriptValue AndroidAPI::findMatch(const QImage &tpl, double threshold)
 	QImage screenshot;
 	adb->takeScreenshot(serial_number, screenshot);
     VisionAPI *vapi = new VisionAPI(bot(), engine());
-	QScriptValue match = vapi->findMatch(screenshot, tpl, threshold);
+	QScriptValue match(vapi->findMatch(screenshot, tpl, threshold));
 	delete vapi;
     return match;
 }

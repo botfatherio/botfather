@@ -120,7 +120,7 @@ QScriptValue DesktopAPI::findMatches(const QImage &tpl, double threshold, int ma
 {
     QImage screenshot = desktop->takeScreenshot();
     VisionAPI *vapi = new VisionAPI(bot(), engine());
-    QScriptValue matches = vapi->findMatches(screenshot, tpl, threshold, max_matches);
+	QScriptValue matches(vapi->findMatches(screenshot, tpl, threshold, max_matches));
 	delete vapi;
 	return matches;
 }
@@ -129,7 +129,7 @@ QScriptValue DesktopAPI::findMatch(const QImage &tpl, double threshold)
 {
     QImage screenshot = desktop->takeScreenshot();
     VisionAPI *vapi = new VisionAPI(bot(), engine());
-	QScriptValue match = vapi->findMatch(screenshot, tpl, threshold);
+	QScriptValue match(vapi->findMatch(screenshot, tpl, threshold));
 	delete vapi;
     return match;
 }

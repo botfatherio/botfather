@@ -98,7 +98,7 @@ void Bot::runScript()
 	// Run the script and clean up after doing so.
 	// NOTE: Putting this in a try-catch statement does nothing.
 	// I threw a exception in the browser api and the program crashed.
-	QScriptValue result = script_engine->evaluate(contents, script_path);
+	QScriptValue result(script_engine->evaluate(contents, script_path));
 	
 	// Check whether the script ended due to errors. If so print them to the users log.
 	if (result.isError()) {
