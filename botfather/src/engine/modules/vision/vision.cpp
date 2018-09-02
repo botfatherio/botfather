@@ -29,6 +29,9 @@ cv::Mat Vision::isolateColor(cv::Mat image, cv::Scalar min_hsv, cv::Scalar max_h
 	// Convert HSV back to BGR, because we use BGR in our application.
 	cv::cvtColor(hsv_image, bgr_result_image, CV_HSV2BGR);
 	
+	hsv_image.release();
+	threshold_image.release();
+
 	return bgr_result_image;
 }
 
@@ -43,6 +46,9 @@ int Vision::countDifferentPixels(cv::Mat image_1, cv::Mat image_2)
 	// CMP_NE: image_1 is unequal to image_2.
 	cv::compare(image_1_gray, image_2_gray, diff, cv::CMP_NE);
 	
+	image_1_gray.release();
+	image_2_gray.release();
+
 	// signed int: -2,147,483,647 to 2,147,483,647
 	return cv::countNonZero(diff);
 }
@@ -78,6 +84,9 @@ double Vision::histogramSimilarity(cv::Mat image_1, cv::Mat image_2)
 	cv::calcHist(&hsv_2, 1, channels, cv::Mat(), hsv_2_hist, dims, hist_size, ranges, true, false);
 	cv::normalize(hsv_2_hist, hsv_2_hist, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());	
 	
+	hsv_1.release();
+	hsv_2.release();
+
 	return cv::compareHist(hsv_1_hist, hsv_2_hist, CV_COMP_CORREL);
 }
 
@@ -175,6 +184,10 @@ QVector<Match> Vision::findMaskedMatches(cv::Mat image, cv::Mat tpl, cv::Mat mas
 		matches.push_back(Match(QRect(match_loc.x, match_loc.y, utpl.cols, utpl.rows), match_val));
 	}
 	
+	uimage.release();
+	utpl.release();
+	uresult.release();
+
 	return matches;
 }
 

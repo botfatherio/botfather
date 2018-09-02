@@ -107,10 +107,16 @@ bool AndroidAPI::findAndTap(const QImage &tpl, double threshold)
 	if (qimage.width() <= tpl.width() || qimage.height() <= tpl.height()) {
 		return false;
 	}
+
 	cv::Mat image_mat = Vision::qimageToBGRMat(qimage);
 	cv::Mat tpl_mat = Vision::qimageToBGRMat(tpl);
+
 	Match match = Vision::findMatch(image_mat, tpl_mat, threshold);
 	sendTap(match.center().x(), match.center().y());
+
+	image_mat.release();
+	tpl_mat.release();
+
 	return true;
 }
 

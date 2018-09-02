@@ -97,10 +97,15 @@ bool DesktopAPI::findAndClick(const QImage &tpl, double threshold, int button)
     if (screenshot.width() <= tpl.width() || screenshot.height() <= tpl.height()) {
 	    return false;
     }
-    cv::Mat tpl_mat = Vision::qimageToBGRMat(tpl);
+
+	cv::Mat tpl_mat = Vision::qimageToBGRMat(tpl);
     cv::Mat screenshot_mat = Vision::qimageToBGRMat(screenshot);
-    Match match = Vision::findMatch(screenshot_mat, tpl_mat, threshold);
+
+	Match match = Vision::findMatch(screenshot_mat, tpl_mat, threshold);
     
+	tpl_mat.release();
+	screenshot_mat.release();
+
     switch (button) {
     case 1:
 	    leftClick(match.center().x(), match.center().y());
