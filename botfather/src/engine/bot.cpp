@@ -124,6 +124,12 @@ void Bot::stop()
 
 QString Bot::replaceQtWithEngineTypeNames(QString text)
 {
+	// Ignore reference errors: "ReferenceError: Can't find variable: QSomethingThatDoesNotExist"
+	if (text.contains("ReferenceError: Can't find variable"))
+	{
+		return text;
+	}
+
 	// https://doc.qt.io/archives/qt-5.10/qtscript-index.html#conversion-between-qt-script-and-c-types
 	// https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/String
 	// Note: Replace pointer types before non pointer types. Otherwise the "*" will not be replaced.
