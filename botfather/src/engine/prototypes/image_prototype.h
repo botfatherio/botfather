@@ -11,7 +11,7 @@ Q_DECLARE_METATYPE(QImage*)
 #if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
 #define ImageSizeInBytes(qimage) qimage.byteCount()
 #else
-#define ImageSizeInBytes(qimage) qimage.sizeInBytes()
+#define ImageSizeInBytes(qimage) static_cast<int>(qimage.sizeInBytes())
 #endif
 
 class ImagePrototype : public AbstractPrototype
