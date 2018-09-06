@@ -46,9 +46,9 @@ void BrowserAPI::beOnUrl(const QString &url)
 	}
 }
 
-QString BrowserAPI::getUrl()
+QUrl BrowserAPI::getUrl()
 {
-	return Browser::getUrl().toString();
+	return Browser::getUrl();
 }
 
 void BrowserAPI::reload()

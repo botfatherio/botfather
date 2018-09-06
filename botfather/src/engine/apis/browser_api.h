@@ -5,6 +5,7 @@
 #include <QScriptEngine>
 #include <QImage>
 #include <QString>
+#include <QUrl>
 #include "abstract_api.h"
 
 class BrowserAPI : public AbstractAPI
@@ -20,7 +21,7 @@ public:
 	Q_INVOKABLE void unmodifyResources();
 	Q_INVOKABLE void loadUrl(const QString &url);
 	Q_INVOKABLE void beOnUrl(const QString &url);
-	Q_INVOKABLE QString getUrl();
+	Q_INVOKABLE QUrl getUrl();
 	Q_INVOKABLE void reload();
 	Q_INVOKABLE void reloadIgnoringCache();
 	Q_INVOKABLE bool loading();

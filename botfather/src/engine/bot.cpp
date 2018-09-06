@@ -12,6 +12,7 @@
 #include "prototypes/match_prototype.h"
 #include "prototypes/size_prototype.h"
 #include "prototypes/rect_prototype.h"
+#include "prototypes/url_prototype.h"
 #include "apis/helper_api.h"
 #include "apis/vision_api.h"
 #include "apis/browser_api.h"
@@ -80,6 +81,7 @@ void Bot::runScript()
 	REGISTER_PROTO(script_engine, MatchPrototype, Match, "Match");
 	REGISTER_PROTO(script_engine, SizePrototype, QSize, "Size");
 	REGISTER_PROTO(script_engine, RectPrototype, QRect, "Rect");
+	REGISTER_PROTO(script_engine, UrlPrototype, QUrl, "Url");
 
 	// Try to open the submitted script file.
 	QFile script_file(script_path);
