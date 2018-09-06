@@ -21,7 +21,7 @@ QScriptValue ImagePrototype::constructor(QScriptContext *context, QScriptEngine 
 		return engine->toScriptValue(QImage());
 	}
 	
-	// new Image(color_name);
+	// new Image(filepath);
 	if (context->argumentCount() == 1 && context->argument(0).isString())
 	{
 		QString filepath = context->argument(0).toString();
