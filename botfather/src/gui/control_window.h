@@ -48,8 +48,8 @@ private:
 	ConfigDialog *config_dialog;
 	BrowserWindow *browser_window;
 	AndroidDialog *android_dialog;
-	Bot* bot;
-	QThread *bot_thread;
+	Bot* bot = nullptr;
+	QThread *bot_thread = nullptr;
 	bool trial = true;
 	QSoundEffect *script_sound_effect;
 	QHotkey *stop_hotkey;

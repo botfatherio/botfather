@@ -23,10 +23,6 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	browser_window = new BrowserWindow(this);
 	android_dialog = new AndroidDialog(this);
 	script_sound_effect = new QSoundEffect(this);
-
-	// LOL everything must be inited. When not initializing kill_timer even checking whether it's
-	// a nullptr can cause the program zu crash.
-	bot = nullptr;
 	
 	stop_hotkey = new QHotkey();
 	connect(stop_hotkey, &QHotkey::activated, this, &ControlWindow::on_actionStop_triggered);
@@ -43,7 +39,6 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 ControlWindow::~ControlWindow()
 {
 	delete ui;
-	delete bot;
 	delete stop_hotkey;
 }
 
@@ -81,28 +76,24 @@ void ControlWindow::on_actionStart_triggered()
 	ui->actionStart->setEnabled(false);
 	ui->actionStop->setEnabled(false);
 
-	bot_thread = new QThread(this); // deleted later when QThread::finished has been emitted
-	bot = new Bot(script_path); // deleted in ControlWindow::bot_stopped
+	bot_thread = new QThread;
+	bot = new Bot(script_path);
 	bot->moveToThread(bot_thread);
 
-	// Make the bot start when the thread starts and delete the thread object when
-	// the thread finished.
-	connect(bot_thread, &QThread::started, bot, &Bot::runScript);
-	connect(bot_thread, &QThread::finished, bot, &QObject::deleteLater);
-	
-	// Make ControlWindow methods be called when the bot started and stopped.
 	connect(bot, &Bot::started, this, &ControlWindow::bot_started);
 	connect(bot, &Bot::stopped, this, &ControlWindow::bot_stopped);
-	
-	// Enable logging visible for the user
 	connect(bot, &Bot::message, this, &ControlWindow::appendMessage);
-	
+
 	// QSound only works in the main thread, thats why we have to the control window to play
 	// the desired sound whenever to bot wants us to do so.
 	connect(bot, &Bot::playWavSound, this, &ControlWindow::playWavSound);
 	connect(bot, &Bot::stopWavSound, this, &ControlWindow::stopWavSound);
 
-	// Start the bot thread and thus the bot.
+	connect(bot_thread, &QThread::started, bot, &Bot::runScript);
+	connect(bot, &Bot::stopped, bot_thread, &QThread::quit);
+	connect(bot, &Bot::stopped, bot, &QObject::deleteLater);
+	connect(bot_thread, &QThread::finished, bot_thread, &QObject::deleteLater);
+
 	bot_thread->start();
 }
 
@@ -121,8 +112,6 @@ void ControlWindow::on_actionStop_triggered()
 
 void ControlWindow::bot_stopped(bool without_errors)
 {
-	delete bot; // created in ControlWindow::on_actionStart_triggered
-
 	stop_hotkey->setRegistered(false);
 	ui->actionStart->setEnabled(true);
 	ui->actionStop->setEnabled(false);
