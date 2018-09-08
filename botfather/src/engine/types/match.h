@@ -10,7 +10,7 @@ public:
 	Match();
 	Match(QRect rect, double score);
 	
-	bool found() const;
+	bool isValid() const;
 	double getScore() const;
 	void setScore(double new_score);
 	

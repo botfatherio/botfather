@@ -64,7 +64,7 @@ private:
 
 #define MB_FOUND(match, match_name) \
 { \
-	if (!match.found()) { \
+	if (!match.isValid()) { \
 		QString message = QString("%1 must have been found.").arg(QString(match_name)); \
 		return engine()->currentContext()->throwError(QScriptContext::TypeError, message); \
 	} \

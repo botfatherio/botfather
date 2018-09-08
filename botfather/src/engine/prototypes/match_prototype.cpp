@@ -30,9 +30,9 @@ double MatchPrototype::getScore() const
 	return THIS_MATCH().getScore();
 }
 
-void MatchPrototype::setScore(double score)
+void MatchPrototype::setScore(double new_score)
 {
-	THIS_MATCH_P()->setScore(score);
+	THIS_MATCH_P()->setScore(new_score);
 }
 
 QRect MatchPrototype::getRect() const
@@ -40,16 +40,16 @@ QRect MatchPrototype::getRect() const
 	return static_cast<QRect>(THIS_MATCH());
 }
 
-void MatchPrototype::setRect(const QRect &rect)
+void MatchPrototype::setRect(const QRect &new_rect)
 {
 	Match *match = THIS_MATCH_P();
-	match->setTopLeft(rect.topLeft());
-	match->setBottomRight(rect.bottomRight());
+	match->setTopLeft(new_rect.topLeft());
+	match->setBottomRight(new_rect.bottomRight());
 }
 
-bool MatchPrototype::found() const
+bool MatchPrototype::isValid() const
 {
-	return THIS_MATCH().found();
+	return THIS_MATCH().isValid();
 }
 
 QString MatchPrototype::toString() const

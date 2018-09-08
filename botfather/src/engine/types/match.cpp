@@ -11,9 +11,9 @@ Match::Match(QRect rect, double score)
 	
 }
 
-bool Match::found() const
+bool Match::isValid() const
 {
-	return score > 0;
+	return score > 0 && score < 1.001;
 }
 
 double Match::getScore() const
