@@ -38,7 +38,7 @@ public:
 	
 	// Returns the sum of the absolute values of x() and y(), traditionally known as the "Manhattan length" of the vector from the origin to the point
 	// http://doc.qt.io/archives/qt-5.10/qpoint.html#manhattanLength
-	Q_INVOKABLE int manhattanLength() const;
+	Q_INVOKABLE int manhattanDistance() const;
 	
 	Q_INVOKABLE QString toString() const;
 };

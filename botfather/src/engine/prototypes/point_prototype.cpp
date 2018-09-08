@@ -44,7 +44,7 @@ int PointPrototype::dotProduct(const QPoint &other_point) const
 	return QPoint::dotProduct(THIS_POINT(), other_point);
 }
 
-int PointPrototype::manhattanLength() const
+int PointPrototype::manhattanDistance() const
 {
 	return THIS_POINT().manhattanLength();
 }
