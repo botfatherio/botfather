@@ -134,9 +134,9 @@ bool UrlPrototype::isParentOf(const QUrl &child_url) const
 	return THIS_URL().isParentOf(child_url);
 }
 
-QUrl UrlPrototype::resolved(const QUrl &relative)
+QUrl UrlPrototype::resolved(const QString &relative)
 {
-	return THIS_URL().resolved(relative);
+	return THIS_URL().resolved(QUrl(relative));
 }
 
 QString UrlPrototype::toString() const

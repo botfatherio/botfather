@@ -122,7 +122,7 @@ public:
 
 	// Returns the result of the merge of this URL with relative. This URL is used as a base to convert relative to an absolute URL.
 	// http://doc.qt.io/qt-5/qurl.html#resolved
-	Q_INVOKABLE QUrl resolved(const QUrl &relative);
+	Q_INVOKABLE QUrl resolved(const QString &relative);
 
 	Q_INVOKABLE QString toString() const;
 };
