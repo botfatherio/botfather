@@ -1,10 +1,8 @@
 #include "helper_api.h"
 #include <QFileInfo>
 #include <QThread>
-#include <QApplication>
 #include <QInputDialog>
 #include <QAudioBuffer>
-#include <QVersionNumber>
 #include <QDebug>
 
 void HelperAPI::sleep(int seconds)
@@ -27,21 +25,6 @@ void HelperAPI::msleep(int milliseconds)
 		return;
 	}
 	QThread::msleep(static_cast<unsigned long>(milliseconds));
-}
-
-int HelperAPI::getMajorVersion()
-{
-	return QVersionNumber::fromString(QApplication::applicationVersion()).majorVersion();
-}
-
-int HelperAPI::getMinorVersion()
-{
-	return QVersionNumber::fromString(QApplication::applicationVersion()).minorVersion();
-}
-
-int HelperAPI::getPatchVersion()
-{
-	return QVersionNumber::fromString(QApplication::applicationVersion()).microVersion();
 }
 
 void HelperAPI::playWavSound(const QString &path_to_wav_file, bool blocking)

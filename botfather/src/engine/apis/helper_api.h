@@ -19,15 +19,6 @@ public:
 	// Makes the bot sleep for x milliseconds.
 	Q_INVOKABLE void msleep(int milliseconds);
 	
-	// Returns the major part of the programs version.
-	Q_INVOKABLE int getMajorVersion();
-	
-	// Returns the minor part of the programs version.
-	Q_INVOKABLE int getMinorVersion();
-	
-	// Returns the path part of the programs version.
-	Q_INVOKABLE int getPatchVersion();
-	
 	// Plays the provided wav sound either blocking or not.
 	Q_INVOKABLE void playWavSound(const QString &path_to_wav_file, bool blocking = true);
 	
