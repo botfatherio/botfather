@@ -51,15 +51,15 @@ public:
 	
 	// Returns the hue color component of this color.
 	// http://doc.qt.io/archives/qt-5.10/qcolor.html#hsvHue
-	Q_INVOKABLE int hue() const;
+	Q_INVOKABLE int getHue() const;
 	
 	// Returns the saturation color component of this color.
 	// http://doc.qt.io/archives/qt-5.10/qcolor.html#hsvSaturation
-	Q_INVOKABLE int saturation() const;
+	Q_INVOKABLE int getSaturation() const;
 	
 	// Returns the value color component of this color.
 	// http://doc.qt.io/archives/qt-5.10/qcolor.html#value
-	Q_INVOKABLE int value() const;
+	Q_INVOKABLE int getValue() const;
 
 	Q_INVOKABLE QString toString() const;
 };

@@ -124,17 +124,17 @@ void ColorPrototype::setHsv(int h, int s, int v)
 	THIS_COLOR_P()->setHsv(h, s, v);
 }
 
-int ColorPrototype::hue() const
+int ColorPrototype::getHue() const
 {
 	return THIS_COLOR().hsvHue();
 }
 
-int ColorPrototype::saturation() const
+int ColorPrototype::getSaturation() const
 {
 	return THIS_COLOR().hsvSaturation();
 }
 
-int ColorPrototype::value() const
+int ColorPrototype::getValue() const
 {
 	return THIS_COLOR().value();
 }
