@@ -22,7 +22,7 @@ public:
 	
 	// Sets the points x value
 	// http://doc.qt.io/archives/qt-5.10/qpoint.html#setX
-	Q_INVOKABLE void setX(int width);
+	Q_INVOKABLE void setX(int x);
 	
 	// Returns the points y value
 	// http://doc.qt.io/archives/qt-5.10/qpoint.html#y
@@ -30,7 +30,7 @@ public:
 	
 	// Sets the points y value
 	// http://doc.qt.io/archives/qt-5.10/qpoint.html#setY
-	Q_INVOKABLE void setY(int height);
+	Q_INVOKABLE void setY(int y);
 	
 	// Returns the dot product of this point and another
 	// http://doc.qt.io/archives/qt-5.10/qpoint.html#dotProduct
