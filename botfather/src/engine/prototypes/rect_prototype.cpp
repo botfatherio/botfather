@@ -114,24 +114,24 @@ QSize RectPrototype::getSize() const
 	return THIS_RECT().size();
 }
 
-void RectPrototype::moveTop(int y)
+void RectPrototype::moveTop(int top)
 {
-	THIS_RECT_P()->moveTop(y);
+	THIS_RECT_P()->moveTop(top);
 }
 
-void RectPrototype::moveLeft(int x)
+void RectPrototype::moveLeft(int left)
 {
-	THIS_RECT_P()->moveTop(x);
+	THIS_RECT_P()->moveTop(left);
 }
 
-void RectPrototype::moveRight(int x)
+void RectPrototype::moveRight(int right)
 {
-	THIS_RECT_P()->moveTop(x);
+	THIS_RECT_P()->moveTop(right);
 }
 
-void RectPrototype::moveBottom(int y)
+void RectPrototype::moveBottom(int bottom)
 {
-	THIS_RECT_P()->moveTop(y);
+	THIS_RECT_P()->moveTop(bottom);
 }
 
 bool RectPrototype::contains(const QPoint &point, bool proper) const

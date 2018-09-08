@@ -79,19 +79,19 @@ public:
 	
 	// Moves the rectangle vertically, leaving the rectangle's top edge at the given y coordinate. The rectangle's size is unchanged.
 	// https://doc.qt.io/qt-5/qrect.html#moveTop
-	Q_INVOKABLE void moveTop(int y);
+	Q_INVOKABLE void moveTop(int top);
 	
 	// Moves the rectangle horizontally, leaving the rectangle's left edge at the given x coordinate. The rectangle's size is unchanged.
 	// https://doc.qt.io/qt-5/qrect.html#moveLeft
-	Q_INVOKABLE void moveLeft(int x);
+	Q_INVOKABLE void moveLeft(int left);
 	
 	// Moves the rectangle horizontally, leaving the rectangle's right edge at the given x coordinate. The rectangle's size is unchanged.
 	// https://doc.qt.io/qt-5/qrect.html#moveRight
-	Q_INVOKABLE void moveRight(int x);
+	Q_INVOKABLE void moveRight(int right);
 	
 	// Moves the rectangle vertically, leaving the rectangle's bottom edge at the given y coordinate. The rectangle's size is unchanged.
 	// https://doc.qt.io/qt-5/qrect.html#moveBottom
-	Q_INVOKABLE void moveBottom(int y);
+	Q_INVOKABLE void moveBottom(int bottom);
 
 	// Returns true if the given point is inside or on the edge of the rectangle, otherwise returns false.
 	// If proper is true, this function only returns true if the given point is inside the rectangle (i.e., not on the edge).
