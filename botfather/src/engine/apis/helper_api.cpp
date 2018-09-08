@@ -44,11 +44,6 @@ int HelperAPI::getPatchVersion()
 	return QVersionNumber::fromString(QApplication::applicationVersion()).microVersion();
 }
 
-QString HelperAPI::getAbsoluteScriptDirPath()
-{
-	return bot()->getAbsoluteScriptDirPath();
-}
-
 void HelperAPI::playWavSound(const QString &path_to_wav_file, bool blocking)
 {
 	if (!bot()->scriptFileExists(path_to_wav_file)) {

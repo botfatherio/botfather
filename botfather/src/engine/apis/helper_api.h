@@ -27,9 +27,6 @@ public:
 	
 	// Returns the path part of the programs version.
 	Q_INVOKABLE int getPatchVersion();
-
-	// Returns a absolute path to the dir of the currently run script.
-	Q_INVOKABLE QString getAbsoluteScriptDirPath();
 	
 	// Plays the provided wav sound either blocking or not.
 	Q_INVOKABLE void playWavSound(const QString &path_to_wav_file, bool blocking = true);
