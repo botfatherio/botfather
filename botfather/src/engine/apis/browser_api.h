@@ -37,6 +37,7 @@ public:
 	Q_INVOKABLE void goBack();
 
 	Q_INVOKABLE QSize getSize();
+	Q_INVOKABLE QRect getRect();
 
 	Q_INVOKABLE void executeJavascript(const QString &javascript_code);
 

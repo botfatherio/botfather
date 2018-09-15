@@ -19,6 +19,7 @@ public:
 	
 	// Returns the size of the users desktop (including multiple screens).
 	Q_INVOKABLE QSize getSize();
+	Q_INVOKABLE QRect getRect();
 	
 	Q_INVOKABLE void leftClick(const QPoint &position);
 	Q_INVOKABLE void middleClick(const QPoint &position);

@@ -101,6 +101,11 @@ QSize BrowserAPI::getSize()
 	return Browser::getSize();
 }
 
+QRect BrowserAPI::getRect()
+{
+	return QRect(QPoint(0, 0), Browser::getSize());
+}
+
 void BrowserAPI::executeJavascript(const QString &javascript_code)
 {
 	Browser::executeJavascript(javascript_code);

@@ -85,6 +85,11 @@ QSize AndroidAPI::getSize()
 	return qimage.size();
 }
 
+QRect AndroidAPI::getRect()
+{
+	return QRect(QPoint(0, 0), getSize());
+}
+
 bool AndroidAPI::findAndTap(const QImage &tpl, double threshold)
 {
 	QImage qimage;

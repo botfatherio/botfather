@@ -31,6 +31,7 @@ public:
 	
 	// Returns the android devices screen size. It's usefull to know the screens size to choose what templates to use.
 	Q_INVOKABLE QSize getSize();
+	Q_INVOKABLE QRect getRect();
 	
 	Q_INVOKABLE bool findAndTap(const QImage &tpl, double threshold = 0.8);
 	Q_INVOKABLE QScriptValue findMatches(const QImage &tpl, double threshold = 0.8, int max_matches = -1);

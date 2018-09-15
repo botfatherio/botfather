@@ -24,6 +24,11 @@ QSize DesktopAPI::getSize()
 	return desktop->getSize();
 }
 
+QRect DesktopAPI::getRect()
+{
+	return QRect(QPoint(0, 0), desktop->getSize());
+}
+
 void DesktopAPI::leftClick(const QPoint &position)
 {
 	desktop->leftClick(position);
