@@ -5,6 +5,7 @@
 #include <QJsonObject>
 #include <QUrlQuery>
 #include <QCryptographicHash>
+#include <QRandomGenerator>
 
 RestApiClient::RestApiClient(QString software_slug, QString software_version, QString version_secret, QObject *parent)
 	: QObject(parent)
@@ -62,7 +63,7 @@ QString RestApiClient::generateMagic() const
 	const QString possibleCharacters("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
 	QString random_string;
 	for (int i = 0; i < MAGIC_LENGTH; ++i) {
-		int index = qrand() % possibleCharacters.length();
+		int index = QRandomGenerator::global()->bounded(possibleCharacters.length());
 		QChar next_char = possibleCharacters.at(index);
 		random_string.append(next_char);
 	}

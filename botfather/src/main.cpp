@@ -74,9 +74,6 @@ int main(int argc, char *argv[])
 	static const QString VERSION_SECRET = "qvbigNsmrNh3Fq32hKzhW3prjKu7HdDt";
 	QSettings::setDefaultFormat(QSettings::IniFormat);
 
-	// Seed the random function once using the current time in msec as seed.
-	qsrand(static_cast<unsigned int>(QTime::currentTime().msec()));
-	
 #ifdef Q_OS_LINUX
 	// On linux the desktop api needs permission to write to /dev/uinput to generate
 	// authentic not ignore input events. On Ubuntu the file is writable (660). On other

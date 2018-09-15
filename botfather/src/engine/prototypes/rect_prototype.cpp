@@ -1,4 +1,5 @@
 #include "rect_prototype.h"
+#include <QRandomGenerator>
 
 #define THIS_RECT() qscriptvalue_cast<QRect>(thisObject())
 #define THIS_RECT_P() qscriptvalue_cast<QRect*>(thisObject())
@@ -156,9 +157,8 @@ QRect RectPrototype::united(const QRect &other_rect) const
 
 QPoint RectPrototype::randomPoint() const
 {
-	// Random number from interval <low, high> = qrand() % ((high + 1) - low) + low;
-	int random_x = qrand() % ((THIS_RECT().right() + 1) - THIS_RECT().left()) + THIS_RECT().left();
-	int random_y = qrand() % ((THIS_RECT().bottom() + 1) - THIS_RECT().top()) + THIS_RECT().top();
+	int random_x = QRandomGenerator::global()->bounded(THIS_RECT().left(), THIS_RECT().right());
+	int random_y = QRandomGenerator::global()->bounded(THIS_RECT().top(), THIS_RECT().bottom());
 	return QPoint(random_x, random_y);
 }
 
