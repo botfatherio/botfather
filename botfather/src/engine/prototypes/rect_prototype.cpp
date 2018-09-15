@@ -154,6 +154,14 @@ QRect RectPrototype::united(const QRect &other_rect) const
 	return THIS_RECT().united(other_rect);
 }
 
+QPoint RectPrototype::randomPoint() const
+{
+	// Random number from interval <low, high> = qrand() % ((high + 1) - low) + low;
+	int random_x = qrand() % ((THIS_RECT().right() + 1) - THIS_RECT().left()) + THIS_RECT().left();
+	int random_y = qrand() % ((THIS_RECT().bottom() + 1) - THIS_RECT().top()) + THIS_RECT().top();
+	return QPoint(random_x, random_y);
+}
+
 QString RectPrototype::toString() const
 {
 	QRect rect = THIS_RECT();

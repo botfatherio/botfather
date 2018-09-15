@@ -109,6 +109,9 @@ public:
 	// Returns the bounding rectangle of this rectangle and the given rectangle.
 	// https://doc.qt.io/qt-5/qrect.html#united
 	Q_INVOKABLE QRect united(const QRect &other_rect) const;
+
+	// Generates and returns a random point within the rectangle.
+	Q_INVOKABLE QPoint randomPoint() const;
 	
 	Q_INVOKABLE QString toString() const;
 };
