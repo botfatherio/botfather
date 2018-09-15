@@ -4,6 +4,7 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QTime>
 #include "prototypes/blob_tpl_prototype.h"
 #include "prototypes/margins_prototype.h"
 #include "prototypes/point_prototype.h"
@@ -25,7 +26,7 @@ Bot::Bot(QString script_path) : script_path(script_path)
 {
 	// The script engines parent MUST BE the bot instance. This way we can obtain a pointer to the bot
 	// instance in static functions (like constructors) by casting the engines parent to a Bot*.
-	script_engine = new QScriptEngine(this);
+    script_engine = new QScriptEngine(this);
 }
 
 Bot::~Bot()
@@ -62,7 +63,11 @@ void Bot::runScript()
 {
 	running = true;
 	emit started();
-	
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
+    qsrand(static_cast<uint>(QTime::currentTime().msec()));
+#endif
+
 	// Reset settings eventually made by a previously run script.
 	Browser::unmodifyResources();
 	

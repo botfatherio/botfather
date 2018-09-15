@@ -5,7 +5,14 @@
 #include <QJsonObject>
 #include <QUrlQuery>
 #include <QCryptographicHash>
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
 #include <QRandomGenerator>
+#define GenerateRandomIntInRange(MIN, MAX) QRandomGenerator::global()->bounded(MIN, MAX);
+#else
+#define ImageSizeInBytes(qimage) static_cast<int>(qimage.sizeInBytes())
+#define GenerateRandomIntInRange(MIN, MAX) qrand() % ((MAX + 1) - MIN) + MIN
+#endif
 
 RestApiClient::RestApiClient(QString software_slug, QString software_version, QString version_secret, QObject *parent)
 	: QObject(parent)
@@ -63,7 +70,7 @@ QString RestApiClient::generateMagic() const
 	const QString possibleCharacters("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
 	QString random_string;
 	for (int i = 0; i < MAGIC_LENGTH; ++i) {
-		int index = QRandomGenerator::global()->bounded(possibleCharacters.length());
+        int index = GenerateRandomIntInRange(0, possibleCharacters.length());
 		QChar next_char = possibleCharacters.at(index);
 		random_string.append(next_char);
 	}

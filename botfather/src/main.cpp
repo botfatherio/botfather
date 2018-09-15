@@ -74,6 +74,11 @@ int main(int argc, char *argv[])
 	static const QString VERSION_SECRET = "qvbigNsmrNh3Fq32hKzhW3prjKu7HdDt";
 	QSettings::setDefaultFormat(QSettings::IniFormat);
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
+    // qrand needs to be seeded once per thread
+    qsrand(static_cast<uint>(QTime::currentTime().msec()));
+#endif
+
 #ifdef Q_OS_LINUX
 	// On linux the desktop api needs permission to write to /dev/uinput to generate
 	// authentic not ignore input events. On Ubuntu the file is writable (660). On other

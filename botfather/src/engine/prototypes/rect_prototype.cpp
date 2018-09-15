@@ -1,5 +1,12 @@
 #include "rect_prototype.h"
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
 #include <QRandomGenerator>
+#define GenerateRandomIntInRange(MIN, MAX) QRandomGenerator::global()->bounded(MIN, MAX);
+#else
+#define ImageSizeInBytes(qimage) static_cast<int>(qimage.sizeInBytes())
+#define GenerateRandomIntInRange(MIN, MAX) qrand() % ((MAX + 1) - MIN) + MIN
+#endif
 
 #define THIS_RECT() qscriptvalue_cast<QRect>(thisObject())
 #define THIS_RECT_P() qscriptvalue_cast<QRect*>(thisObject())
@@ -157,8 +164,8 @@ QRect RectPrototype::united(const QRect &other_rect) const
 
 QPoint RectPrototype::randomPoint() const
 {
-	int random_x = QRandomGenerator::global()->bounded(THIS_RECT().left(), THIS_RECT().right());
-	int random_y = QRandomGenerator::global()->bounded(THIS_RECT().top(), THIS_RECT().bottom());
+    int random_x = GenerateRandomIntInRange(THIS_RECT().left(), THIS_RECT().right());
+    int random_y = GenerateRandomIntInRange(THIS_RECT().top(), THIS_RECT().bottom());
 	return QPoint(random_x, random_y);
 }
 
