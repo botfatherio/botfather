@@ -104,7 +104,7 @@ void Browser::initCefSettings(CefSettings& settings)
 	settings.windowless_rendering_enabled = true;
 }
 
-void Browser::resize(QSize new_size)
+void Browser::resize(const QSize &new_size)
 {
 	Q_ASSERT(BrowserClient::instance());
 	// Resize the browser by first setting it's new size and than calling CerBrowserHost::WasReesized to make the browser
@@ -122,19 +122,19 @@ QImage Browser::takeScreenshot()
 	return BrowserClient::takeScreenshot();
 }
 
-void Browser::blockResource(QString resource)
+void Browser::blockResource(const QString &resource)
 {
 	Q_ASSERT(BrowserClient::instance());
 	BrowserClient::instance()->blockResource(resource);
 }
 
-void Browser::replaceResource(QString old_resource, QString new_resource)
+void Browser::replaceResource(const QString &old_resource, const QString &new_resource)
 {
 	Q_ASSERT(BrowserClient::instance());
 	BrowserClient::instance()->replaceResource(old_resource, new_resource);
 }
 
-void Browser::unmodifyResource(QString resource)
+void Browser::unmodifyResource(const QString &resource)
 {
 	Q_ASSERT(BrowserClient::instance());
 	BrowserClient::instance()->unmodifyResource(resource);
@@ -146,7 +146,7 @@ void Browser::unmodifyResources()
 	BrowserClient::instance()->unmodifyResources();
 }
 
-void Browser::loadUrl(QString url)
+void Browser::loadUrl(const QString &url)
 {
 	Q_ASSERT(BrowserClient::instance());
 	BrowserClient::instance()->setLoading(true);
@@ -201,21 +201,16 @@ bool Browser::canGoForward()
 	return BrowserClient::instance()->getBrowser()->CanGoForward();
 }
 
-int Browser::getWidth()
+QSize Browser::getSize()
 {
-	Q_ASSERT(BrowserClient::instance());
+	// FIXME: This method of getting the browser size can't be good
 	QSettings settings;
-	return settings.value(browser::options::WIDTH, browser::fallback::WIDTH).toInt();
+	int width = settings.value(browser::options::WIDTH, browser::fallback::WIDTH).toInt();
+	int height = settings.value(browser::options::HEIGHT, browser::fallback::HEIGHT).toInt();
+	return QSize(width, height);
 }
 
-int Browser::getHeight()
-{
-	Q_ASSERT(BrowserClient::instance());
-	QSettings settings;
-	return settings.value(browser::options::HEIGHT, browser::fallback::HEIGHT).toInt();
-}
-
-void Browser::executeJavascript(QString javascript_code)
+void Browser::executeJavascript(const QString &javascript_code)
 {
 	Q_ASSERT(BrowserClient::instance());
 	BrowserClient::instance()->getBrowser()->GetMainFrame()->ExecuteJavaScript(
@@ -225,43 +220,44 @@ void Browser::executeJavascript(QString javascript_code)
 	);
 }
 
-void Browser::pressMouse(int button_type, int x, int y)
+void Browser::pressMouse(int button_type, const QPoint &position)
 {
 	Q_ASSERT(BrowserClient::instance());
 	CefBrowserHost::MouseButtonType mbt = CefBrowserHost::MouseButtonType(button_type);
 	CefMouseEvent cms;
-	cms.x = x;
-	cms.y = y;
+	cms.x = position.x();
+	cms.y = position.y();
 	BrowserClient::instance()->getBrowser()->GetHost()->SendMouseClickEvent(cms, mbt, false, 1);
 	BrowserClient::instance()->getBrowser()->GetHost()->SendFocusEvent(true);
 }
 
-void Browser::releaseMouse(int button_type, int x, int y)
+void Browser::releaseMouse(int button_type, const QPoint &position)
 {
 	Q_ASSERT(BrowserClient::instance());
 	CefBrowserHost::MouseButtonType mbt = CefBrowserHost::MouseButtonType(button_type);
 	CefMouseEvent cms;
-	cms.x = x;
-	cms.y = y;
+	cms.x = position.x();
+	cms.y = position.y();
 	BrowserClient::instance()->getBrowser()->GetHost()->SendMouseClickEvent(cms, mbt, true, 1);
 }
 
-void Browser::moveMouse(int x, int y)
+void Browser::moveMouse(const QPoint &position)
 {
 	Q_ASSERT(BrowserClient::instance());
 	CefMouseEvent cme;
-	cme.x = x;
-	cme.y = y;
-	bool mouse_leave = x < 0 || x > Browser::getWidth() || y < 0 || y > Browser::getHeight();
+	cme.x = position.x();
+	cme.y = position.y();
+	QSize size = Browser::getSize();
+	bool mouse_leave = position.x() < 0 || position.x() > size.width() || position.y() < 0 || position.y() > size.height();
 	BrowserClient::instance()->getBrowser()->GetHost()->SendMouseMoveEvent(cme, mouse_leave);
 }
 
-void Browser::scrollWheel(int x, int y, int delta_x, int delta_y)
+void Browser::scrollWheel(const QPoint &position, int delta_x, int delta_y)
 {
 	Q_ASSERT(BrowserClient::instance());
 	CefMouseEvent cme;
-	cme.x = x;
-	cme.y = y;
+	cme.x = position.x();
+	cme.y = position.y();
 	BrowserClient::instance()->getBrowser()->GetHost()->SendMouseWheelEvent(cme, delta_x, delta_y);
 }
 

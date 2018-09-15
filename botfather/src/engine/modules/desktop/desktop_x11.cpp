@@ -229,31 +229,26 @@ QImage Desktop::takeScreenshot()
 	return qimage;
 }
 
-int Desktop::getWidth()
+QSize Desktop::getSize()
 {
-	return pimpl->getSize().height();
+	return pimpl->getSize();
 }
 
-int Desktop::getHeight()
+void Desktop::leftClick(const QPoint &position)
 {
-	return pimpl->getSize().width();
-}
-
-void Desktop::leftClick(int x, int y)
-{
-	warpCursor(x, y);
+	warpCursor(position);
 	pimpl->press(BTN_LEFT);
 }
 
-void Desktop::middleClick(int x, int y)
+void Desktop::middleClick(const QPoint &position)
 {
-	warpCursor(x, y);
+	warpCursor(position);
 	pimpl->press(BTN_MIDDLE);
 }
 
-void Desktop::rightClick(int x, int y)
+void Desktop::rightClick(const QPoint &position)
 {
-	warpCursor(x, y);
+	warpCursor(position);
 	pimpl->press(BTN_RIGHT);
 }
 
@@ -272,7 +267,7 @@ void Desktop::releaseKey(const QString &key)
 	pimpl->release(static_cast<unsigned short>(KEYMAP[key.toLower()]));
 }
 
-void Desktop::warpCursor(int x, int y)
+void Desktop::warpCursor(const QPoint &position)
 {	
 	// Using uinput the cursor can only be moved relative to it's current possition as hardware mouse
 	// input is naturally relative. (One can move it's mouse as far as he wants in one direction
@@ -290,7 +285,7 @@ void Desktop::warpCursor(int x, int y)
 	
 	// If dest_w is None, XWarpPointer moves the pointer by the offsets (dest_x, dest_y)
 	// relative to the current position of the pointer. https://linux.die.net/man/3/xwarppointer
-	XWarpPointer(pimpl->display, pimpl->root, pimpl->root, 0, 0, 0, 0, x, y);
+	XWarpPointer(pimpl->display, pimpl->root, pimpl->root, 0, 0, 0, 0, position.x(), position.y());
 	XFlush(pimpl->display);
 	
 	// Shake the mouse using uinput

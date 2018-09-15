@@ -41,23 +41,23 @@ bool AndroidAPI::startApp(const QString &package)
 	return adb->startApp(serial_number, package);
 }
 
-bool AndroidAPI::sendTap(int x, int y)
+bool AndroidAPI::sendTap(const QPoint &location)
 {
-	return adb->sendTap(serial_number, x, y);
+	return adb->sendTap(serial_number, location.x(), location.y());
 }
 
-bool AndroidAPI::sendSwipe(int x1, int y1, int x2, int y2, int duration_in_ms)
+bool AndroidAPI::sendSwipe(const QPoint &start, const QPoint &end, int duration_in_ms)
 {
 	if (duration_in_ms < 0) {
 		engine()->currentContext()->throwError(QScriptContext::RangeError, "Duration must be positive.");
 		return false;
 	} 
-	return adb->sendSwipe(serial_number, x1, y1, x2, y2, duration_in_ms);
+	return adb->sendSwipe(serial_number, start.x(), start.y(), end.x(), end.y(), duration_in_ms);
 }
 
-bool AndroidAPI::sendEvent(const QString &device, int type, int code, int value)
+bool AndroidAPI::sendEvent(const QString &input_device, int type, int code, int value)
 {
-	return adb->sendEvent(serial_number, device, type, code, value);
+	return adb->sendEvent(serial_number, input_device, type, code, value);
 }
 
 bool AndroidAPI::sendKeyEvent(const QString &key_event_code)
@@ -70,32 +70,19 @@ bool AndroidAPI::sendTextInput(const QString &text)
 	return adb->sendTextInput(serial_number, text);
 }
 
-QScriptValue AndroidAPI::takeScreenshot()
+QImage AndroidAPI::takeScreenshot()
 {
 	QImage qimage;
 	adb->takeScreenshot(serial_number, qimage);
 	engine()->reportAdditionalMemoryCost(ImageSizeInBytes(qimage));
-	return engine()->toScriptValue(qimage);
+	return qimage;
 }
 
-int AndroidAPI::getDeviceWidth()
+QSize AndroidAPI::getSize()
 {
 	QImage qimage;
 	adb->takeScreenshot(serial_number, qimage);
-	if (qimage.isNull()) {
-		return -1;
-	}
-	return qimage.width();
-}
-
-int AndroidAPI::getDeviceHeight()
-{
-	QImage qimage;
-	adb->takeScreenshot(serial_number, qimage);
-	if (qimage.isNull()) {
-		return -1;
-	}
-	return qimage.height();
+	return qimage.size();
 }
 
 bool AndroidAPI::findAndTap(const QImage &tpl, double threshold)
@@ -112,7 +99,7 @@ bool AndroidAPI::findAndTap(const QImage &tpl, double threshold)
 	cv::Mat tpl_mat = Vision::qimageToBGRMat(tpl);
 
 	Match match = Vision::findMatch(image_mat, tpl_mat, threshold);
-	sendTap(match.center().x(), match.center().y());
+	sendTap(match.center());
 
 	image_mat.release();
 	tpl_mat.release();

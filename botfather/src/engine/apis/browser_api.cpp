@@ -7,11 +7,11 @@
 #include "../types/match.h"
 #include "vision_api.h"
 
-QScriptValue BrowserAPI::takeScreenshot()
+QImage BrowserAPI::takeScreenshot()
 {
 	QImage qimage = Browser::takeScreenshot();
 	engine()->reportAdditionalMemoryCost(ImageSizeInBytes(qimage));
-	return engine()->toScriptValue(qimage);
+	return qimage;
 }
 
 void BrowserAPI::blockResource(const QString &resource)
@@ -96,14 +96,9 @@ void BrowserAPI::goForward()
 	Browser::goForward();
 }
 
-int BrowserAPI::getWidth()
+QSize BrowserAPI::getSize()
 {
-	return Browser::getWidth();
-}
-
-int BrowserAPI::getHeight()
-{
-	return Browser::getHeight();
+	return Browser::getSize();
 }
 
 void BrowserAPI::executeJavascript(const QString &javascript_code)
@@ -111,65 +106,65 @@ void BrowserAPI::executeJavascript(const QString &javascript_code)
 	Browser::executeJavascript(javascript_code);
 }
 
-void BrowserAPI::leftClick(int x, int y)
+void BrowserAPI::leftClick(const QPoint &position)
 {
-	Browser::pressMouse(MBT_LEFT, x, y);
+	Browser::pressMouse(MBT_LEFT, position);
 	QThread::msleep(100);
-	Browser::releaseMouse(MBT_LEFT, x, y);
+	Browser::releaseMouse(MBT_LEFT, position);
 }
 
-void BrowserAPI::middleClick(int x, int y)
+void BrowserAPI::middleClick(const QPoint &position)
 {
-	Browser::pressMouse(MBT_MIDDLE, x, y);
+	Browser::pressMouse(MBT_MIDDLE, position);
 	QThread::msleep(100);
-	Browser::releaseMouse(MBT_MIDDLE, x, y);
+	Browser::releaseMouse(MBT_MIDDLE, position);
 }
 
-void BrowserAPI::rightClick(int x, int y)
+void BrowserAPI::rightClick(const QPoint &position)
 {
-	Browser::pressMouse(MBT_RIGHT, x, y);
+	Browser::pressMouse(MBT_RIGHT, position);
 	QThread::msleep(100);
-	Browser::releaseMouse(MBT_RIGHT, x, y);
+	Browser::releaseMouse(MBT_RIGHT, position);
 }
 
-void BrowserAPI::pressLeft(int x, int y)
+void BrowserAPI::pressLeft(const QPoint &position)
 {
-	Browser::pressMouse(MBT_LEFT, x, y);
+	Browser::pressMouse(MBT_LEFT, position);
 }
 
-void BrowserAPI::pressMiddle(int x, int y)
+void BrowserAPI::pressMiddle(const QPoint &position)
 {
-	Browser::pressMouse(MBT_MIDDLE, x, y);
+	Browser::pressMouse(MBT_MIDDLE, position);
 }
 
-void BrowserAPI::pressRight(int x, int y)
+void BrowserAPI::pressRight(const QPoint &position)
 {
-	Browser::pressMouse(MBT_RIGHT, x, y);
+	Browser::pressMouse(MBT_RIGHT, position);
 }
 
-void BrowserAPI::releaseLeft(int x, int y)
+void BrowserAPI::releaseLeft(const QPoint &position)
 {
-	Browser::releaseMouse(MBT_LEFT, x, y);
+	Browser::releaseMouse(MBT_LEFT, position);
 }
 
-void BrowserAPI::releaseMiddle(int x, int y)
+void BrowserAPI::releaseMiddle(const QPoint &position)
 {
-	Browser::releaseMouse(MBT_MIDDLE, x, y);
+	Browser::releaseMouse(MBT_MIDDLE, position);
 }
 
-void BrowserAPI::releaseRight(int x, int y)
+void BrowserAPI::releaseRight(const QPoint &position)
 {
-	Browser::releaseMouse(MBT_RIGHT, x, y);
+	Browser::releaseMouse(MBT_RIGHT, position);
 }
 
-void BrowserAPI::moveMouseTo(int x, int y)
+void BrowserAPI::moveMouseTo(const QPoint &position)
 {
-	Browser::moveMouse(x, y);
+	Browser::moveMouse(position);
 }
 
-void BrowserAPI::scrollWheel(int x, int y, int delta_x, int delta_y)
+void BrowserAPI::scrollWheel(const QPoint &position, int delta_x, int delta_y)
 {
-	Browser::scrollWheel(x, y, delta_x, delta_y);
+	Browser::scrollWheel(position, delta_x, delta_y);
 }
 
 bool BrowserAPI::findAndClick(const QImage &tpl, double threshold, int button)
@@ -193,13 +188,13 @@ bool BrowserAPI::findAndClick(const QImage &tpl, double threshold, int button)
 	
 	switch (button) {
 	case 1:
-		leftClick(match.center().x(), match.center().y());
+		leftClick(match.center());
 		break;
 	case 2:
-		middleClick(match.center().x(), match.center().y());
+		middleClick(match.center());
 		break;
 	case 3:
-		rightClick(match.center().x(), match.center().y());
+		rightClick(match.center());
 		break;
 	default:
 		engine()->currentContext()->throwError("Unknown button code.");

@@ -16,16 +16,19 @@ public:
 	~Desktop();
 	
 	QImage takeScreenshot();
-	int getWidth();
-	int getHeight();
-	void leftClick(int x, int y);
-	void middleClick(int x, int y);
-	void rightClick(int x, int y);
+	QSize getSize();
+
+	void leftClick(const QPoint &position);
+	void middleClick(const QPoint &position);
+	void rightClick(const QPoint &position);
+
 	void pressKey(const QString &key);
 	void holdKey(const QString &key);
 	void releaseKey(const QString &key);
-	void warpCursor(int x, int y);
+
+	void warpCursor(const QPoint &position);
 	bool getCursorPosition(int *x, int *y);
+
 	bool keyExists(const QString &key);
 	
 private:

@@ -15,24 +15,21 @@ public:
 	DesktopAPI(Bot *bot, QObject *parent = nullptr);
 	
 	// Returns a Image showing a screenshot of the desktop.
-	Q_INVOKABLE QScriptValue takeScreenshot();
+	Q_INVOKABLE QImage takeScreenshot();
 	
-	// Returns the width of the users screen.
-	Q_INVOKABLE int getWidth();
+	// Returns the size of the users desktop (including multiple screens).
+	Q_INVOKABLE QSize getSize();
 	
-	// Returns the height of the users screen.
-	Q_INVOKABLE int getHeight();
-	
-	Q_INVOKABLE void leftClick(int x, int y);
-	Q_INVOKABLE void middleClick(int x, int y);
-	Q_INVOKABLE void rightClick(int x, int y);
+	Q_INVOKABLE void leftClick(const QPoint &position);
+	Q_INVOKABLE void middleClick(const QPoint &position);
+	Q_INVOKABLE void rightClick(const QPoint &position);
 	
 	Q_INVOKABLE void pressKey(const QString &key);
 	Q_INVOKABLE void holdKey(const QString &key);
 	Q_INVOKABLE void releaseKey(const QString &key);
 	
-	Q_INVOKABLE void warpCursor(int x, int y);
-	Q_INVOKABLE QScriptValue getCursorPosition();
+	Q_INVOKABLE void warpCursor(const QPoint &position);
+	Q_INVOKABLE QPoint getCursorPosition();
 	
 	Q_INVOKABLE bool findAndClick(const QImage &tpl, double threshold = 0.8, int button = 1);
 	Q_INVOKABLE QScriptValue findMatches(const QImage &tpl, double threshold = 0.8, int max_matches = -1);

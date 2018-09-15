@@ -23,7 +23,7 @@ void BrowserWidget::mousePressEvent(QMouseEvent *event)
 	if (cef_button_code == -1) {
 		return;
 	}
-	Browser::pressMouse(cef_button_code, event->x(), event->y());
+	Browser::pressMouse(cef_button_code, event->pos());
 }
 
 void BrowserWidget::mouseReleaseEvent(QMouseEvent *event)
@@ -32,17 +32,17 @@ void BrowserWidget::mouseReleaseEvent(QMouseEvent *event)
 	if (cef_button_code == -1) {
 		return;
 	}
-	Browser::releaseMouse(cef_button_code, event->x(), event->y());
+	Browser::releaseMouse(cef_button_code, event->pos());
 }
 
 void BrowserWidget::mouseMoveEvent(QMouseEvent *event)
 {
-	Browser::moveMouse(event->x(), event->y());
+	Browser::moveMouse(event->pos());
 }
 
 void BrowserWidget::wheelEvent(QWheelEvent *event)
 {
-	Browser::scrollWheel(event->x(), event->y(), event->angleDelta().x(), event->angleDelta().y());
+	Browser::scrollWheel(event->pos(), event->angleDelta().x(), event->angleDelta().y());
 }
 
 void BrowserWidget::keyPressEvent(QKeyEvent *event)

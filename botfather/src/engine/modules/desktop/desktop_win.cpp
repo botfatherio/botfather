@@ -86,33 +86,28 @@ QImage Desktop::takeScreenshot()
     return image;
 }
 
-int Desktop::getWidth()
+QSize Desktop::getSize()
 {
-    return pimpl->getDesktopSize().width();
+	return pimpl->getDesktopSize();
 }
 
-int Desktop::getHeight()
+void Desktop::leftClick(const QPoint &position)
 {
-    return pimpl->getDesktopSize().height();
-}
-
-void Desktop::leftClick(int x, int y)
-{
-    warpCursor(x, y);
+	warpCursor(position);
     pimpl->sendMouseEvent(MOUSEEVENTF_LEFTDOWN);
     pimpl->sendMouseEvent(MOUSEEVENTF_LEFTUP);
 }
 
-void Desktop::middleClick(int x, int y)
+void Desktop::middleClick(const QPoint &position)
 {
-    warpCursor(x, y);
+	warpCursor(position);
     pimpl->sendMouseEvent(MOUSEEVENTF_MIDDLEDOWN);
     pimpl->sendMouseEvent(MOUSEEVENTF_MIDDLEUP);
 }
 
-void Desktop::rightClick(int x, int y)
+void Desktop::rightClick(const QPoint &position)
 {
-    warpCursor(x, y);
+	warpCursor(position);
     pimpl->sendMouseEvent(MOUSEEVENTF_RIGHTDOWN);
     pimpl->sendMouseEvent(MOUSEEVENTF_RIGHTUP);
 }
@@ -133,9 +128,9 @@ void Desktop::releaseKey(const QString &key)
     pimpl->sendKeyboardEvent(KEYMAP[key.toLower()], true);
 }
 
-void Desktop::warpCursor(int x, int y)
+void Desktop::warpCursor(const QPoint &position)
 {
-    SetCursorPos(x, y);
+	SetCursorPos(position.x(), position.y());
 }
 
 bool Desktop::getCursorPosition(int *x, int *y)

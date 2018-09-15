@@ -12,36 +12,31 @@ DesktopAPI::DesktopAPI(Bot *bot, QObject *parent) : AbstractAPI(bot, parent)
 	desktop = new Desktop(this);
 }
 
-QScriptValue DesktopAPI::takeScreenshot()
+QImage DesktopAPI::takeScreenshot()
 {
     QImage qimage = desktop->takeScreenshot();
 	engine()->reportAdditionalMemoryCost(ImageSizeInBytes(qimage));
-    return engine()->toScriptValue(qimage);
+	return qimage;
 }
 
-int DesktopAPI::getWidth()
+QSize DesktopAPI::getSize()
 {
-    return desktop->getWidth();
+	return desktop->getSize();
 }
 
-int DesktopAPI::getHeight()
+void DesktopAPI::leftClick(const QPoint &position)
 {
-    return desktop->getHeight();
+	desktop->leftClick(position);
 }
 
-void DesktopAPI::leftClick(int x, int y)
+void DesktopAPI::middleClick(const QPoint &position)
 {
-    desktop->leftClick(x, y);
+	desktop->middleClick(position);
 }
 
-void DesktopAPI::middleClick(int x, int y)
+void DesktopAPI::rightClick(const QPoint &position)
 {
-    desktop->middleClick(x, y);
-}
-
-void DesktopAPI::rightClick(int x, int y)
-{
-    desktop->rightClick(x, y);
+	desktop->rightClick(position);
 }
 
 void DesktopAPI::pressKey(const QString &key) {
@@ -73,19 +68,19 @@ void DesktopAPI::releaseKey(const QString &key)
     desktop->releaseKey(key);
 }
 
-void DesktopAPI::warpCursor(int x, int y)
+void DesktopAPI::warpCursor(const QPoint &position)
 {
-    desktop->warpCursor(x, y);
+	desktop->warpCursor(position);
 }
 
-QScriptValue DesktopAPI::getCursorPosition()
+QPoint DesktopAPI::getCursorPosition()
 {
     int x = -1;
     int y = -1;
     if (!desktop->getCursorPosition(&x, &y)) {
 	    // Getting the cursor position failed.
     }
-    return engine()->toScriptValue(QPoint(x, y));
+	return QPoint(x, y);
 }
 
 bool DesktopAPI::findAndClick(const QImage &tpl, double threshold, int button)
@@ -108,13 +103,13 @@ bool DesktopAPI::findAndClick(const QImage &tpl, double threshold, int button)
 
     switch (button) {
     case 1:
-	    leftClick(match.center().x(), match.center().y());
+		leftClick(match.center());
 	    break;
     case 2:
-	    middleClick(match.center().x(), match.center().y());
+		middleClick(match.center());
 	    break;
     case 3:
-	    rightClick(match.center().x(), match.center().y());
+		rightClick(match.center());
 	    break;
     default:
 	    engine()->currentContext()->throwError("Unknown button code.");
