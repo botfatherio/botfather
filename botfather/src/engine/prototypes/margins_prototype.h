@@ -52,6 +52,14 @@ public:
 	// http://doc.qt.io/qt-5/qmargins.html#setBottom
 	Q_INVOKABLE void setBottom(int bottom);
 
+	// Returns a QMargins object that is the sum of other_margins and this margins object; each component is added separately.
+	// http://doc.qt.io/qt-5/qmargins.html#operator-2b
+	Q_INVOKABLE QMargins marginsAdded(const QMargins &other_margins) const;
+
+	// Returns a QMargins object that is formed by subtracting other_margins from this margins object; each component is subtracted separately.
+	// http://doc.qt.io/qt-5/qmargins.html#operator-
+	Q_INVOKABLE QMargins marginsSubtracted(const QMargins &other_margins) const;
+
 	Q_INVOKABLE QString toString() const;
 };
 

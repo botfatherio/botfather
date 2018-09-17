@@ -68,6 +68,16 @@ void MarginsPrototype::setBottom(int bottom)
 	THIS_MARGINS_P()->setBottom(bottom);
 }
 
+QMargins MarginsPrototype::marginsAdded(const QMargins &other_margins) const
+{
+	return THIS_MARGINS() + other_margins;
+}
+
+QMargins MarginsPrototype::marginsSubtracted(const QMargins &other_margins) const
+{
+	return THIS_MARGINS() - other_margins;
+}
+
 QString MarginsPrototype::toString() const
 {
 	QMargins margins = THIS_MARGINS();
