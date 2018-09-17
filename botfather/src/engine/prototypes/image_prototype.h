@@ -93,7 +93,7 @@ public:
 	
 	// Calculates the percentage of pixels being the same color and on the same position on both images.
 	// Both images must have the same size.
-	Q_INVOKABLE double pixelEqualityTo(const QImage &other_image) const;
+	Q_INVOKABLE double pixelEquality(const QImage &other_image) const;
 	
 	Q_INVOKABLE QString toString() const;
 };

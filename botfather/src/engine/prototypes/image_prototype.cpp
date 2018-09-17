@@ -197,7 +197,7 @@ int ImagePrototype::countDifferentPixels(const QImage &other_image) const
 	return Vision::countDifferentPixels(image_1, image_2);
 }
 
-double ImagePrototype::pixelEqualityTo(const QImage &other_image) const
+double ImagePrototype::pixelEquality(const QImage &other_image) const
 {
 	if (THIS_IMAGE().isNull() || other_image.isNull()) {
 		context()->throwError(QScriptContext::TypeError, "Both images must not be null.");
