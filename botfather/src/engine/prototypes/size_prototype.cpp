@@ -21,6 +21,11 @@ QScriptValue SizePrototype::constructor(QScriptContext *context, QScriptEngine *
 	NO_MATCHING_CTOR("Size", SIZE_PROTOTYPE_DOCS)
 }
 
+bool SizePrototype::isEmpty() const
+{
+	return THIS_SIZE().isEmpty();
+}
+
 int SizePrototype::getWidth() const
 {
 	return THIS_SIZE().width();
@@ -51,9 +56,14 @@ QSize SizePrototype::expandedTo(const QSize &other_size) const
 	return THIS_SIZE().expandedTo(other_size);
 }
 
-bool SizePrototype::isEmpty() const
+QSize SizePrototype::sizeAdded(const QSize &other_size) const
 {
-	return THIS_SIZE().isEmpty();
+	return THIS_SIZE() + other_size;
+}
+
+QSize SizePrototype::sizeSubtracted(const QSize &other_size) const
+{
+	return THIS_SIZE() - other_size;
 }
 
 void SizePrototype::transpose()
