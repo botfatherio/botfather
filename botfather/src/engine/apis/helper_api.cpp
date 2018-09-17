@@ -27,36 +27,13 @@ void HelperAPI::msleep(int milliseconds)
 	QThread::msleep(static_cast<unsigned long>(milliseconds));
 }
 
-void HelperAPI::playWavSound(const QString &path_to_wav_file, bool blocking)
+void HelperAPI::playWavSound(const QString &path_to_wav_file)
 {
 	if (!bot()->scriptFileExists(path_to_wav_file)) {
 		engine()->currentContext()->throwError(QScriptContext::TypeError, "path_to_wav_file does not exist.");
 		return;
 	}
-	
 	emit bot()->playWavSound(bot()->normalisePath(path_to_wav_file));
-	
-	if (blocking) {
-		QFile wav_file(bot()->normalisePath(path_to_wav_file));
-		if(!wav_file.open(QIODevice::ReadOnly)) {
-			// Reading the wav file failed.
-			return;
-		}
-		
-		// Common wav file header (checked this using VLC player).
-		QAudioFormat format;
-		format.setSampleSize(16);
-		format.setSampleRate(44100);
-		format.setChannelCount(2);
-		format.setCodec("audio/pcm");
-		format.setByteOrder(QAudioFormat::LittleEndian);
-		format.setSampleType(QAudioFormat::UnSignedInt);
-		
-		QAudioBuffer buffer(wav_file.readAll(), format);
-		//qDebug() << "DURATION:" << buffer.duration() / 1000 / 1000 << "seconds";
-		//QThread::usleep(buffer.duration());
-		QThread::sleep(static_cast<unsigned long>(buffer.duration() / 1000 / 1000));
-	}
 }
 
 void HelperAPI::stopWavSound()

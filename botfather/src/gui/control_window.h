@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QFileDialog>
-#include <QSoundEffect>
+#include <QMediaPlayer>
 #include <QHotkey>
 
 class Bot;
@@ -51,7 +51,7 @@ private:
 	Bot* bot = nullptr;
 	QThread *bot_thread = nullptr;
 	bool trial = true;
-	QSoundEffect *script_sound_effect;
+	QMediaPlayer *media_player;
 	QHotkey *stop_hotkey;
 };
 

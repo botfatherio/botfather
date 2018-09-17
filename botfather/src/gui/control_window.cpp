@@ -22,7 +22,7 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	config_dialog = new ConfigDialog(this);
 	browser_window = new BrowserWindow(this);
 	android_dialog = new AndroidDialog(this);
-	script_sound_effect = new QSoundEffect(this);
+	media_player = new QMediaPlayer(this);
 	
 	stop_hotkey = new QHotkey();
 	connect(stop_hotkey, &QHotkey::activated, this, &ControlWindow::on_actionStop_triggered);
@@ -215,19 +215,14 @@ void ControlWindow::playWavSound(QString path_to_wav_file)
 	// sure controlwindow will always be in the main thread. but this is not
 	// obvious, nor does a method like this, not used by the gui, but in a
 	// gui class look ugly.
-	// TODO: this sound will not stop playing when the scripts stops. We could
-	// make QAudio a single instance. everytime this slot is called we stop the audio,
-	// set a new source and play it again. when the bot stops (bot_stopped received)
-	// we also stop the audio from playing. Disatvantage: only one audio file can be
-	// played at the time.
 	stopWavSound();
-	script_sound_effect->setSource(QUrl::fromLocalFile(path_to_wav_file));
-	script_sound_effect->play();
+	media_player->setMedia(QUrl::fromLocalFile(path_to_wav_file));
+	media_player->play();
 }
 
 void ControlWindow::stopWavSound()
 {
-	script_sound_effect->stop();
+	media_player->stop();
 }
 
 void ControlWindow::updateHotkeys()

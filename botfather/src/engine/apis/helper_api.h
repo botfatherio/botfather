@@ -20,7 +20,7 @@ public:
 	Q_INVOKABLE void msleep(int milliseconds);
 	
 	// Plays the provided wav sound either blocking or not.
-	Q_INVOKABLE void playWavSound(const QString &path_to_wav_file, bool blocking = true);
+	Q_INVOKABLE void playWavSound(const QString &path_to_wav_file);
 	
 	// Stops any started wav sounds started by the bot from playing.
 	Q_INVOKABLE void stopWavSound();
