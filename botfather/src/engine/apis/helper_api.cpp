@@ -9,7 +9,7 @@ void HelperAPI::sleep(int seconds)
 {
 	if (seconds < 1) {
 		engine()->currentContext()->throwError(QScriptContext::RangeError, "seconds must be at least 1 second.");
-		return;
+		return void();
 	}
 	// Not sleeping for at least one ms can cause trouble. Better don't stop sleeping when stop is
 	// requested to prevent bugs. Par example:
@@ -22,7 +22,7 @@ void HelperAPI::msleep(int milliseconds)
 {
 	if (milliseconds < 1) {
 		engine()->currentContext()->throwError(QScriptContext::RangeError, "milliseconds must be at least 1 millisecond.");
-		return;
+		return void();
 	}
 	QThread::msleep(static_cast<unsigned long>(milliseconds));
 }
@@ -31,7 +31,7 @@ void HelperAPI::playWavSound(const QString &path_to_wav_file)
 {
 	if (!bot()->scriptFileExists(path_to_wav_file)) {
 		engine()->currentContext()->throwError(QScriptContext::TypeError, "path_to_wav_file does not exist.");
-		return;
+		return void();
 	}
 	emit bot()->playWavSound(bot()->normalisePath(path_to_wav_file));
 }

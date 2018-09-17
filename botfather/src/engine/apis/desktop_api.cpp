@@ -50,7 +50,7 @@ void DesktopAPI::pressKey(const QString &key) {
     // not beeing synchronious.
     if (!desktop->keyExists(key)) {
 	    engine()->currentContext()->throwError(QScriptContext::RangeError, "Unknown keycode.");
-	    return;
+		return void();
     }
     desktop->pressKey(key);
 }
@@ -59,7 +59,7 @@ void DesktopAPI::holdKey(const QString &key)
 {
     if (!desktop->keyExists(key)) {
 	    engine()->currentContext()->throwError(QScriptContext::RangeError, "Unknown keycode.");
-	    return;
+		return void();
     }
     desktop->holdKey(key);
 }
@@ -68,7 +68,7 @@ void DesktopAPI::releaseKey(const QString &key)
 {
     if (!desktop->keyExists(key)) {
 	    engine()->currentContext()->throwError(QScriptContext::RangeError, "Unknown keycode.");
-	    return;
+		return void();
     }
     desktop->releaseKey(key);
 }

@@ -119,7 +119,7 @@ void ColorPrototype::setHsv(int h, int s, int v)
 	if (h < 0 || s < 0 || v < 0 || h > 359 || s > 255 || v > 255)
 	{
 		context()->throwError(QScriptContext::RangeError, "Values must be in the following ranges: h 0-359, s and v 0-255");
-		return;
+		return void();
 	}
 	THIS_COLOR_P()->setHsv(h, s, v);
 }

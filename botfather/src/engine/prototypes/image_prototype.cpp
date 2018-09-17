@@ -98,6 +98,7 @@ void ImagePrototype::load(const QString &filepath)
 	{
 		QString message = QString("can't load image from path %1").arg(absolute_path);
 		context()->throwError(QScriptContext::TypeError, message);
+		return void();
 	}
 }
 
@@ -164,6 +165,7 @@ QImage ImagePrototype::isolateColorRange(const QColor &min, const QColor &max, b
 {
 	if (THIS_IMAGE().isNull()) {
 		context()->throwError(QScriptContext::TypeError, "The image must not be null.");
+		return QImage();
 	}
 
 	cv::Mat image_mat = Vision::qimageToBGRMat(THIS_IMAGE());
@@ -183,9 +185,11 @@ int ImagePrototype::countDifferentPixels(const QImage &other_image) const
 {
 	if (THIS_IMAGE().isNull() || other_image.isNull()) {
 		context()->throwError(QScriptContext::TypeError, "Both images must not be null.");
+		return int();
 	}
 	if (THIS_IMAGE().size() != other_image.size()) {
 		context()->throwError(QScriptContext::TypeError, "Both images must have the same size.");
+		return int();
 	}
 
 	cv::Mat image_1 = Vision::qimageToBGRMat(THIS_IMAGE());
@@ -201,14 +205,16 @@ double ImagePrototype::pixelEquality(const QImage &other_image) const
 {
 	if (THIS_IMAGE().isNull() || other_image.isNull()) {
 		context()->throwError(QScriptContext::TypeError, "Both images must not be null.");
+		return double();
 	}
 	if (THIS_IMAGE().size() != other_image.size()) {
 		context()->throwError(QScriptContext::TypeError, "Both images must have the same size.");
+		return double();
 	}
-	
+
 	cv::Mat image_1 = Vision::qimageToBGRMat(THIS_IMAGE());
 	cv::Mat image_2 = Vision::qimageToBGRMat(other_image);
-	
+
 	int total_pixels = THIS_IMAGE().width() * THIS_IMAGE().height();
 	int equal_pixels = total_pixels - Vision::countDifferentPixels(image_1, image_2);
 
