@@ -93,6 +93,14 @@ public:
 	// https://doc.qt.io/qt-5/qrect.html#moveBottom
 	Q_INVOKABLE void moveBottom(int bottom);
 
+	// Returns a rectangle grown by the margins.
+	// https://doc.qt.io/qt-5/qrect.html#marginsAdded
+	Q_INVOKABLE QRect marginsAdded(const QMargins &margins) const;
+
+	// Removes the margins from the rectangle, shrinking it.
+	// https://doc.qt.io/qt-5/qrect.html#marginsRemoved
+	Q_INVOKABLE QRect marginsSubtracted(const QMargins &margins) const;
+
 	// Returns true if the given point is inside or on the edge of the rectangle, otherwise returns false.
 	// If proper is true, this function only returns true if the given point is inside the rectangle (i.e., not on the edge).
 	// https://doc.qt.io/qt-5/qrect.html#contains

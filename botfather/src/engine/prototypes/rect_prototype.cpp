@@ -142,6 +142,16 @@ void RectPrototype::moveBottom(int bottom)
 	THIS_RECT_P()->moveTop(bottom);
 }
 
+QRect RectPrototype::marginsAdded(const QMargins &margins) const
+{
+	return THIS_RECT().marginsAdded(margins);
+}
+
+QRect RectPrototype::marginsSubtracted(const QMargins &margins) const
+{
+	return THIS_RECT().marginsRemoved(margins);
+}
+
 bool RectPrototype::contains(const QPoint &point, bool proper) const
 {
 	return THIS_RECT().contains(point, proper);
