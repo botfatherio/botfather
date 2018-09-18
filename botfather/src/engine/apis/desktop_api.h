@@ -32,10 +32,6 @@ public:
 	Q_INVOKABLE void warpCursor(const QPoint &position);
 	Q_INVOKABLE QPoint getCursorPosition();
 	
-	Q_INVOKABLE bool findAndClick(const QImage &tpl, double threshold = 0.8, int button = 1);
-	Q_INVOKABLE QScriptValue findMatches(const QImage &tpl, double threshold = 0.8, int max_matches = -1);
-	Q_INVOKABLE QScriptValue findMatch(const QImage &tpl, double threshold = 0.8);
-	
 private:
 	Desktop *desktop;
 };

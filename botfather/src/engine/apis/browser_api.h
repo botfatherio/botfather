@@ -55,10 +55,6 @@ public:
 
 	Q_INVOKABLE void moveMouseTo(const QPoint &position);
 	Q_INVOKABLE void scrollWheel(const QPoint &position, int delta_x, int delta_y);
-	
-	Q_INVOKABLE bool findAndClick(const QImage &tpl, double threshold = 0.8, int button = 1);
-	Q_INVOKABLE QScriptValue findMatches(const QImage &tpl, double threshold = 0.8, int max_matches = -1);
-	Q_INVOKABLE QScriptValue findMatch(const QImage &tpl, double threshold = 0.8);
 };
 
 #endif // BFP_ENGINE_APIS_BROWSER_API_H
