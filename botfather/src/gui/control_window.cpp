@@ -20,7 +20,7 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	ui->setupUi(this);
 
 	config_dialog = new ConfigDialog(this);
-	browser_window = new BrowserWindow(this);
+    browser_window = new BrowserWindow(); // Don't give it a parent, otherwise it's blocking the control window on microsoft windows
 	android_dialog = new AndroidDialog(this);
 	media_player = new QMediaPlayer(this);
 	
@@ -29,9 +29,9 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	updateHotkeys();
 
 	connect(ui->actionSettings, &QAction::triggered, config_dialog, &ConfigDialog::exec);
-	connect(ui->actionBrowser, &QAction::triggered, browser_window, &BrowserWindow::show);
 	connect(ui->actionAndroid, &QAction::triggered, android_dialog, &AndroidDialog::exec);
-	
+    connect(ui->actionBrowser, &QAction::triggered, browser_window, &BrowserWindow::show);
+
 	connect(config_dialog, &ConfigDialog::configLoaded, this, &ControlWindow::updateHotkeys);
 	connect(config_dialog, &ConfigDialog::configSaved, this, &ControlWindow::updateHotkeys);
 }
@@ -40,6 +40,7 @@ ControlWindow::~ControlWindow()
 {
 	delete ui;
 	delete stop_hotkey;
+    delete browser_window; // Has no parent
 }
 
 void ControlWindow::applyRemoteApiInfo(int curtime, int premend, bool stable)
@@ -235,4 +236,9 @@ void ControlWindow::updateHotkeys()
 	// Those shortcuts are not registered yet. We only enable them when they are legal to trigger.
 	// eg. kill shall only be triggered when there is something to kill, otherwise the program
 	// will crash. Same goes for stop.
+}
+
+void ControlWindow::closeEvent(QCloseEvent* event)
+{
+    browser_window->close();
 }

@@ -42,6 +42,9 @@ public slots:
 	void playWavSound(QString path_to_wav_file);
 	void stopWavSound();
 	void updateHotkeys();
+
+protected:
+    void closeEvent(QCloseEvent* event);
 	
 private:
 	Ui::ControlWindow *ui;
