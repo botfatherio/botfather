@@ -2,7 +2,8 @@
 #include "ui_browser_window.h"
 #include <QDebug>
 #include <QAction>
-#include <QDesktopWidget>
+#include <QStyle>
+#include <QScreen>
 #include "browser_widget.h"
 #include "browser_address_bar.h"
 #include "../engine/modules/browser/browser_settings.h"
@@ -63,7 +64,7 @@ void BrowserWindow::show()
     if (first_show)
     {
         first_show = false;
-        setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), qApp->desktop()->availableGeometry()));
+		setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), qGuiApp->primaryScreen()->availableGeometry()));
     }
     QMainWindow::show();
 }
