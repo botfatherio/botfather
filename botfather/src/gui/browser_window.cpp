@@ -2,6 +2,7 @@
 #include "ui_browser_window.h"
 #include <QDebug>
 #include <QAction>
+#include <QDesktopWidget>
 #include "browser_widget.h"
 #include "browser_address_bar.h"
 #include "../engine/modules/browser/browser_settings.h"
@@ -53,6 +54,18 @@ BrowserWindow::~BrowserWindow()
 	delete pixmap_placeholder;
 	delete address_bar;
 	delete addressbar;
+}
+
+void BrowserWindow::show()
+{
+    // Center the browser window. On windows 10 the top bar won't be visible initialy otherwise
+    static bool first_show = true;
+    if (first_show)
+    {
+        first_show = false;
+        setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), qApp->desktop()->availableGeometry()));
+    }
+    QMainWindow::show();
 }
 
 void BrowserWindow::applyResizing()

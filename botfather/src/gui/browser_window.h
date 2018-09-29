@@ -22,6 +22,7 @@ public:
 	~BrowserWindow();
 	
 public slots:
+    void show();
 	void applyResizing();
 	void filterOldSize(QImage browser_image);
 	void paintSlot(QImage browser_image);
