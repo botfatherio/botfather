@@ -34,11 +34,11 @@ public:
 	
 	// Returns a QPoint object that is the sum of this point and other_point; each component is added separately.
 	// http://doc.qt.io/archives/qt-5.10/qpoint.html#operator-2b
-	QPoint pointAdded(const QPoint &other_point) const;
+	Q_INVOKABLE QPoint pointAdded(const QPoint &other_point) const;
 
 	// Returns a QPoint object that is formed by subtracting other_point from this point; each component is subtracted separately.
 	// http://doc.qt.io/archives/qt-5.10/qpoint.html#operator-
-	QPoint pointSubtracted(const QPoint &other_point) const;
+	Q_INVOKABLE QPoint pointSubtracted(const QPoint &other_point) const;
 
 	// Returns the dot product of this point and another
 	// http://doc.qt.io/archives/qt-5.10/qpoint.html#dotProduct

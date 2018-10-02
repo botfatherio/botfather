@@ -14,43 +14,43 @@ public:
 	using AbstractPrototype::AbstractPrototype;
 	
 	// 0 <= min <= max
-	void setMinArea(int new_min_area);
-	int getMinArea() const;
+	Q_INVOKABLE void setMinArea(int new_min_area);
+	Q_INVOKABLE int getMinArea() const;
 	
-	void setMaxArea(int new_max_area);
-	int getMaxArea() const;
+	Q_INVOKABLE void setMaxArea(int new_max_area);
+	Q_INVOKABLE int getMaxArea() const;
 	
 	// 0 <= min <= max <= 1.0f
-	void setMinCircularity(double new_min_circularity);
-	double getMinCircularity() const;
+	Q_INVOKABLE void setMinCircularity(double new_min_circularity);
+	Q_INVOKABLE double getMinCircularity() const;
 
-	void setMaxCircularity(double new_max_circularity);
-	double getMaxCircularity() const;
+	Q_INVOKABLE void setMaxCircularity(double new_max_circularity);
+	Q_INVOKABLE double getMaxCircularity() const;
 	
 	// 0 <= min <= max <= 1.0f
-	void setMinConvexity(double new_min_convexity);
-	double getMinConvexity() const;
+	Q_INVOKABLE void setMinConvexity(double new_min_convexity);
+	Q_INVOKABLE double getMinConvexity() const;
 	
-	void setMaxConvexity(double new_max_convexity);
-	double getMaxConvexity() const;
+	Q_INVOKABLE void setMaxConvexity(double new_max_convexity);
+	Q_INVOKABLE double getMaxConvexity() const;
 	
 	// 0 <= min <= max <= 1.0f
-	void setMinInertia(double new_min_inertia_ratio);
-	double getMinInertia() const;
+	Q_INVOKABLE void setMinInertia(double new_min_inertia_ratio);
+	Q_INVOKABLE double getMinInertia() const;
 	
-	void setMaxInertia(double new_max_inertia_ratio);
-	double getMaxInertia() const;
+	Q_INVOKABLE void setMaxInertia(double new_max_inertia_ratio);
+	Q_INVOKABLE double getMaxInertia() const;
 	
 	// 0 <= min <= max <= 255
-	void setMinThreshold(int new_min_threshold);
-	int getMinThreshold() const;
+	Q_INVOKABLE void setMinThreshold(int new_min_threshold);
+	Q_INVOKABLE int getMinThreshold() const;
 	
-	void setMaxThreshold(int new_max_threshold);
-	int getMaxThreshold() const;
+	Q_INVOKABLE void setMaxThreshold(int new_max_threshold);
+	Q_INVOKABLE int getMaxThreshold() const;
 	
 	// 1 <= new_threshold_step <= max threshold - min threshold
-	void setThresholdStep(int new_threshold_step);
-	int getThresholdStep() const;
+	Q_INVOKABLE void setThresholdStep(int new_threshold_step);
+	Q_INVOKABLE int getThresholdStep() const;
 
 	Q_INVOKABLE QString toString() const;
 };
