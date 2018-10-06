@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
 	QCoreApplication::setOrganizationName("BotFatherProject");
 	QCoreApplication::setOrganizationDomain("botfather.io");
 	QCoreApplication::setApplicationName("Botfather");
-    QCoreApplication::setApplicationVersion("4.2.1");
+	QCoreApplication::setApplicationVersion("4.2.2");
 	static const QString VERSION_SECRET = "qvbigNsmrNh3Fq32hKzhW3prjKu7HdDt";
 	QSettings::setDefaultFormat(QSettings::IniFormat);
 
