@@ -7,31 +7,35 @@
 
 cv::Mat Vision::isolateColor(const cv::Mat &image, const cv::Scalar &min_hsv, const cv::Scalar &max_hsv, bool keep_color)
 {
-	cv::Mat hsv_image, bgr_result_image;
-	cv::Mat threshold_image;
-	
+	cv::UMat hsv_umat, bgr_result_umat;
+	cv::UMat threshold_umat, inverted_threshold;
+
 	// Convert from BGR to HSV, because cv::inRange only works with HSV mats.
-	cv::cvtColor(image, hsv_image, CV_BGR2HSV);
-	
+	cv::cvtColor(image, hsv_umat, CV_BGR2HSV);
+
 	// inRange produces a single channel binary matrix, i.e. a CV_8UC1 matrix
 	// with values either 0 or 255. Note: Gimp2 shows you hsv in %.
-	cv::inRange(hsv_image, min_hsv, max_hsv, threshold_image);
-	
+	cv::inRange(hsv_umat, min_hsv, max_hsv, threshold_umat);
+
+	// Inverts the threshold
+	cv::bitwise_not(threshold_umat, inverted_threshold);
+
 	// Set everything below the threshold color to black.
-	hsv_image.setTo(cv::Scalar(0, 0, 0), ~threshold_image);
-	
+	hsv_umat.setTo(cv::Scalar(0, 0, 0), inverted_threshold);
+
 	if (!keep_color) {
 		// Set everything which fits the threshold color to white.
-		hsv_image.setTo(cv::Scalar(0, 0, 255), threshold_image);
+		hsv_umat.setTo(cv::Scalar(0, 0, 255), threshold_umat);
 	}
-	
-	// Convert HSV back to BGR, because we use BGR in our application.
-	cv::cvtColor(hsv_image, bgr_result_image, CV_HSV2BGR);
-	
-	hsv_image.release();
-	threshold_image.release();
 
-	return bgr_result_image;
+	// Convert HSV back to BGR, because we use BGR in our application.
+	cv::cvtColor(hsv_umat, bgr_result_umat, CV_HSV2BGR);
+
+	hsv_umat.release();
+	threshold_umat.release();
+	inverted_threshold.release();
+
+	return bgr_result_umat.getMat(cv::ACCESS_READ).clone();
 }
 
 int Vision::countDifferentPixels(const cv::Mat &image_1, const cv::Mat &image_2)
