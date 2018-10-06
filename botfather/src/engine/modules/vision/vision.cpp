@@ -216,9 +216,12 @@ Match Vision::findMatch(const cv::Mat &image, const cv::Mat &tpl, double thresho
 
 QVector<Match> Vision::findBlobs(const cv::Mat &image, const cv::SimpleBlobDetector::Params &blob_params)
 {
+	cv::UMat image_umat;
+	image.copyTo(image_umat);
+
 	cv::Ptr<cv::SimpleBlobDetector> detector = cv::SimpleBlobDetector::create(blob_params);
 	std::vector<cv::KeyPoint> key_points;
-	detector->detect(image, key_points);
+	detector->detect(image_umat, key_points);
 	
 	QVector<Match> matches;
 	
@@ -232,6 +235,7 @@ QVector<Match> Vision::findBlobs(const cv::Mat &image, const cv::SimpleBlobDetec
 		matches.append(match);
 	}
 	
+	image_umat.release();
 	return matches;
 }
 
