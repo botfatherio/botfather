@@ -4,7 +4,7 @@
 #include <QHash>
 
 #ifdef Q_OS_LINUX
-	#include <linux/input-event-codes.h>
+    #include "linux/input-event-codes.h"
 	#include <X11/Xlib.h>
 	#define KEY_TYPE KeySym
 	#define KEY_CODE(windows_key, uinput_key) (uinput_key)

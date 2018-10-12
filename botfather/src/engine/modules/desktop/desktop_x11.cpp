@@ -7,7 +7,7 @@
 #include <string.h> // memset, strcpy
 #include <fcntl.h> // open
 #include <ctime> // time
-#include <linux/uinput.h>
+#include "linux/uinput.h"
 #include <X11/Xlib.h> // Import X11 stuff always last. Otherwise compilation fails.
 #include <X11/Xutil.h>
 

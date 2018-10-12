@@ -53,6 +53,9 @@ unix {
     #else:CONFIG(debug, debug|release):QMAKE_POST_LINK += ../botfather/tools/collect_deps.sh $${DESTDIR} Debug $${LINUX_CEF_DIR}
 
     SOURCES += src/engine/modules/desktop/desktop_x11.cpp
+    HEADRES += \
+        src/engine/modules/desktop/linux/input-event-codes.h \
+        src/engine/modules/desktop/linux/uinput.h
 }
 
 win32 {
