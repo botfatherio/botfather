@@ -45,12 +45,12 @@ unix {
     LIBS += -lX11
     LIBS += -L/usr/lib -lopencv_features2d -lopencv_flann -lopencv_imgcodecs -lopencv_imgproc -lopencv_core -lopencv_highgui
 
+    # Copy CEF resources and dependencies into the DESTDIR after building
+    CONFIG(release, debug|release):QMAKE_POST_LINK += ../tools/copy_cef_deps.sh $${DESTDIR} Release $${LINUX_CEF_DIR}
+    else:CONFIG(debug, debug|release):QMAKE_POST_LINK += ../tools/copy_cef_deps.sh $${DESTDIR} Debug $${LINUX_CEF_DIR}
+
     # Dramatically reduces shared libary file size after linking
     CONFIG(release, debug|release):QMAKE_POST_LINK += ../tools/strip_all_so_files.sh $${DESTDIR}
-
-    # Example of copying files after linking
-    #CONFIG(release, debug|release):QMAKE_POST_LINK += ../botfather/tools/collect_deps.sh $${DESTDIR} Release $${LINUX_CEF_DIR}
-    #else:CONFIG(debug, debug|release):QMAKE_POST_LINK += ../botfather/tools/collect_deps.sh $${DESTDIR} Debug $${LINUX_CEF_DIR}
 
     SOURCES += src/engine/modules/desktop/desktop_x11.cpp
     HEADRES += \
