@@ -55,7 +55,7 @@ unix {
     QMAKE_POST_LINK += $$QMAKE_DEL_FILE $${DESTDIR}/chrome-sandbox$$escape_expand(\\n\\t)
 
     # Dramatically reduces shared libary file size after linking
-    CONFIG(release, debug|release):QMAKE_POST_LINK += ../tools/strip_all_so_files.sh $${DESTDIR}
+    CONFIG(release, debug|release):QMAKE_POST_LINK += find $${DESTDIR} -type f -name \*.so | xargs strip --strip-all
 
     SOURCES += ./engine/modules/desktop/desktop_x11.cpp
     HEADRES += \
