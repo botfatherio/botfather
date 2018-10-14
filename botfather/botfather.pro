@@ -58,7 +58,7 @@ unix {
     CONFIG(release, debug|release):QMAKE_POST_LINK += find $${DESTDIR} -type f -name \*.so | xargs strip --strip-all
 
     SOURCES += ./engine/modules/desktop/desktop_x11.cpp
-    HEADRES += \
+    HEADERS += \
         ./engine/modules/desktop/linux/input-event-codes.h \
         ./engine/modules/desktop/linux/uinput.h
 }
