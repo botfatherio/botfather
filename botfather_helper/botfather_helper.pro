@@ -6,7 +6,7 @@ CONFIG -= qt
 TARGET = botfather_helper
 DESTDIR = ./BuildOutput
 OBJECTS_DIR += ./CompiledObjects
-SOURCES += ./src/main.cpp
+SOURCES += ./main.cpp
 
 CEF_VERSION = 3.3325.1758
 
@@ -26,7 +26,7 @@ win32 {
     else: CONFIG(debug, debug|release):LIBS += -L$${WIN_CEF_DIR}\Debug -llibcef
 
     # Use the compatibility manifest required by CEF
-    WINRT_MANIFEST = ./src/compatibility.manifest
+    WINRT_MANIFEST = ./compatibility.manifest
 }
 
 unix {
