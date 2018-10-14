@@ -52,10 +52,10 @@ unix {
     # Dramatically reduces shared libary file size after linking
     CONFIG(release, debug|release):QMAKE_POST_LINK += ../tools/strip_all_so_files.sh $${DESTDIR}
 
-    SOURCES += src/engine/modules/desktop/desktop_x11.cpp
+    SOURCES += ./engine/modules/desktop/desktop_x11.cpp
     HEADRES += \
-        src/engine/modules/desktop/linux/input-event-codes.h \
-        src/engine/modules/desktop/linux/uinput.h
+        ./engine/modules/desktop/linux/input-event-codes.h \
+        ./engine/modules/desktop/linux/uinput.h
 }
 
 win32 {
@@ -83,115 +83,115 @@ win32 {
     LIBS += -lUser32 -lGdi32
 
     # Make the app icon be compiled into the bianary on windows
-    HEADERS += ./src/res/resource.h
-    RC_FILE = ./src/res/botfather.rc
+    HEADERS += ./res/resource.h
+    RC_FILE = ./res/botfather.rc
 
     # Use the compatibility manifest required by CEF
-    WINRT_MANIFEST = ./src/res/compatibility.manifest
+    WINRT_MANIFEST = ./res/compatibility.manifest
 
     # Copy required dlls and CEF ressources
     CONFIG(release, debug|release):CEF_EXTRA_DIR = $${CEF_DIR}/Release/*
     else:CONFIG(debug, debug|release):CEF_EXTRA_DIR = $${CEF_DIR}/Debug/*
 
-    SOURCES += src/engine/modules/desktop/desktop_win.cpp
+    SOURCES += ./engine/modules/desktop/desktop_win.cpp
 }
 
-include(src/3rdparty/qhotkey.pri)
+include(./3rdparty/qhotkey.pri)
 
 HEADERS += \
-    src/auth/auth_settings.h \
-    src/auth/license_api_client.h \
-    src/auth/rest_api_client.h \
-    src/auth/status_api_client.h \
-    src/engine/apis/android_api.h \
-    src/engine/apis/browser_api.h \
-    src/engine/apis/desktop_api.h \
-    src/engine/apis/helper_api.h \
-    src/engine/apis/vision_api.h \
-    src/engine/bot.h \
-    src/engine/modules/algorithms/dijkstra.h \
-    src/engine/modules/android/adb_device_info.h \
-    src/engine/modules/android/adb_wrapper.h \
-    src/engine/modules/android/android_settings.h \
-    src/engine/modules/browser/browser.h \
-    src/engine/modules/browser/browser_app.h \
-    src/engine/modules/browser/browser_client.h \
-    src/engine/modules/browser/browser_settings.h \
-    src/engine/modules/desktop/desktop.h \
-    src/engine/modules/desktop/keymap.h \
-    src/engine/modules/vision/vision.h \
-    src/engine/prototypes/abstract_prototype.h \
-    src/engine/prototypes/color_prototype.h \
-    src/engine/prototypes/image_prototype.h \
-    src/engine/prototypes/match_prototype.h \
-    src/engine/prototypes/point_prototype.h \
-    src/engine/prototypes/rect_prototype.h \
-    src/engine/prototypes/size_prototype.h \
-    src/engine/types/match.h \
-    src/gui/android_dialog.h \
-    src/gui/browser_address_bar.h \
-    src/gui/browser_widget.h \
-    src/gui/browser_window.h \
-    src/gui/config_dialog.h \
-    src/gui/control_window.h \
-    src/gui/status_dialog.h \
-    src/updater/update_checker.h \
-    src/updater/updater_dialog.h \
-    src/settings.h \
-    src/engine/apis/abstract_api.h \
-    src/engine/types/blob_tpl.h \
-    src/engine/prototypes/blob_tpl_prototype.h \
-    src/engine/apis/path_finder_api.h \
-    src/engine/prototypes/margins_prototype.h \
-    src/engine/prototypes/url_prototype.h
+    ./auth/auth_settings.h \
+    ./auth/license_api_client.h \
+    ./auth/rest_api_client.h \
+    ./auth/status_api_client.h \
+    ./engine/apis/android_api.h \
+    ./engine/apis/browser_api.h \
+    ./engine/apis/desktop_api.h \
+    ./engine/apis/helper_api.h \
+    ./engine/apis/vision_api.h \
+    ./engine/bot.h \
+    ./engine/modules/algorithms/dijkstra.h \
+    ./engine/modules/android/adb_device_info.h \
+    ./engine/modules/android/adb_wrapper.h \
+    ./engine/modules/android/android_settings.h \
+    ./engine/modules/browser/browser.h \
+    ./engine/modules/browser/browser_app.h \
+    ./engine/modules/browser/browser_client.h \
+    ./engine/modules/browser/browser_settings.h \
+    ./engine/modules/desktop/desktop.h \
+    ./engine/modules/desktop/keymap.h \
+    ./engine/modules/vision/vision.h \
+    ./engine/prototypes/abstract_prototype.h \
+    ./engine/prototypes/color_prototype.h \
+    ./engine/prototypes/image_prototype.h \
+    ./engine/prototypes/match_prototype.h \
+    ./engine/prototypes/point_prototype.h \
+    ./engine/prototypes/rect_prototype.h \
+    ./engine/prototypes/size_prototype.h \
+    ./engine/types/match.h \
+    ./gui/android_dialog.h \
+    ./gui/browser_address_bar.h \
+    ./gui/browser_widget.h \
+    ./gui/browser_window.h \
+    ./gui/config_dialog.h \
+    ./gui/control_window.h \
+    ./gui/status_dialog.h \
+    ./updater/update_checker.h \
+    ./updater/updater_dialog.h \
+    ./settings.h \
+    ./engine/apis/abstract_api.h \
+    ./engine/types/blob_tpl.h \
+    ./engine/prototypes/blob_tpl_prototype.h \
+    ./engine/apis/path_finder_api.h \
+    ./engine/prototypes/margins_prototype.h \
+    ./engine/prototypes/url_prototype.h
 SOURCES += \
-    src/auth/license_api_client.cpp \
-    src/auth/rest_api_client.cpp \
-    src/auth/status_api_client.cpp \
-    src/engine/apis/android_api.cpp \
-    src/engine/apis/browser_api.cpp \
-    src/engine/apis/desktop_api.cpp \
-    src/engine/apis/helper_api.cpp \
-    src/engine/apis/vision_api.cpp \
-    src/engine/bot.cpp \
-    src/engine/modules/algorithms/dijkstra.cpp \
-    src/engine/modules/android/adb_device_info.cpp \
-    src/engine/modules/android/adb_wrapper.cpp \
-    src/engine/modules/browser/browser.cpp \
-    src/engine/modules/browser/browser_app.cpp \
-    src/engine/modules/browser/browser_client.cpp \
-    src/engine/modules/vision/vision.cpp \
-    src/engine/prototypes/abstract_prototype.cpp \
-    src/engine/prototypes/color_prototype.cpp \
-    src/engine/prototypes/image_prototype.cpp \
-    src/engine/prototypes/match_prototype.cpp \
-    src/engine/prototypes/point_prototype.cpp \
-    src/engine/prototypes/rect_prototype.cpp \
-    src/engine/prototypes/size_prototype.cpp \
-    src/engine/types/match.cpp \
-    src/gui/android_dialog.cpp \
-    src/gui/browser_address_bar.cpp \
-    src/gui/browser_widget.cpp \
-    src/gui/browser_window.cpp \
-    src/gui/config_dialog.cpp \
-    src/gui/control_window.cpp \
-    src/gui/status_dialog.cpp \
-    src/main.cpp \
-    src/updater/update_checker.cpp \
-    src/updater/updater_dialog.cpp \
-    src/engine/apis/abstract_api.cpp \
-    src/engine/types/blob_tpl.cpp \
-    src/engine/prototypes/blob_tpl_prototype.cpp \
-    src/engine/apis/path_finder_api.cpp \
-    src/engine/prototypes/margins_prototype.cpp \
-    src/engine/prototypes/url_prototype.cpp
+    ./auth/license_api_client.cpp \
+    ./auth/rest_api_client.cpp \
+    ./auth/status_api_client.cpp \
+    ./engine/apis/android_api.cpp \
+    ./engine/apis/browser_api.cpp \
+    ./engine/apis/desktop_api.cpp \
+    ./engine/apis/helper_api.cpp \
+    ./engine/apis/vision_api.cpp \
+    ./engine/bot.cpp \
+    ./engine/modules/algorithms/dijkstra.cpp \
+    ./engine/modules/android/adb_device_info.cpp \
+    ./engine/modules/android/adb_wrapper.cpp \
+    ./engine/modules/browser/browser.cpp \
+    ./engine/modules/browser/browser_app.cpp \
+    ./engine/modules/browser/browser_client.cpp \
+    ./engine/modules/vision/vision.cpp \
+    ./engine/prototypes/abstract_prototype.cpp \
+    ./engine/prototypes/color_prototype.cpp \
+    ./engine/prototypes/image_prototype.cpp \
+    ./engine/prototypes/match_prototype.cpp \
+    ./engine/prototypes/point_prototype.cpp \
+    ./engine/prototypes/rect_prototype.cpp \
+    ./engine/prototypes/size_prototype.cpp \
+    ./engine/types/match.cpp \
+    ./gui/android_dialog.cpp \
+    ./gui/browser_address_bar.cpp \
+    ./gui/browser_widget.cpp \
+    ./gui/browser_window.cpp \
+    ./gui/config_dialog.cpp \
+    ./gui/control_window.cpp \
+    ./gui/status_dialog.cpp \
+    ./main.cpp \
+    ./updater/update_checker.cpp \
+    ./updater/updater_dialog.cpp \
+    ./engine/apis/abstract_api.cpp \
+    ./engine/types/blob_tpl.cpp \
+    ./engine/prototypes/blob_tpl_prototype.cpp \
+    ./engine/apis/path_finder_api.cpp \
+    ./engine/prototypes/margins_prototype.cpp \
+    ./engine/prototypes/url_prototype.cpp
 FORMS += \
-    src/gui/android_dialog.ui \
-    src/gui/auth_dialog.ui \
-    src/gui/browser_window.ui \
-    src/gui/config_dialog.ui \
-    src/gui/control_window.ui \
-    src/gui/status_dialog.ui \
-    src/updater/updater_dialog.ui
+    ./gui/android_dialog.ui \
+    ./gui/auth_dialog.ui \
+    ./gui/browser_window.ui \
+    ./gui/config_dialog.ui \
+    ./gui/control_window.ui \
+    ./gui/status_dialog.ui \
+    ./updater/updater_dialog.ui
 RESOURCES += \
-    src/res/gui.qrc
+    ./res/gui.qrc
