@@ -13,4 +13,3 @@ headers.files = $$PUBLIC_HEADERS
 headers.path = $$[QT_INSTALL_HEADERS]
 target.path = $$[QT_INSTALL_LIBS]
 INSTALLS += target headers
-

@@ -17,16 +17,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # Disable output from qDebug() like mecros in release builds.
 CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 
-CEF_VERSION = 3.3325.1758
+include(../3rdparty/QHotkey/qhotkey.pri)
+include(../3rdparty/CEF/CEF.pri)
+include(../3rdparty/OpenCV/OpenCV.pri)
 
 unix {
-    LINUX_CEF_DIR = /opt/cef/$${CEF_VERSION}
-
     # Disables unused warnings
     QMAKE_CXXFLAGS_WARN_OFF -= -Wunused-parameter
     QMAKE_CFLAGS = -Wno-unused-parameter
     QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
-    
+
     # Newer distros set GCC default link flag -pie, which marks e_type as ET_DYN on the binary file.
     # Consequently, the Operating System recognizes them as Shared Library.
     # Using -no-pie our project will be a executable, not a shared libary.
@@ -36,23 +36,7 @@ unix {
     # That way libcef.so and other shared objects can be loaded which otherwise couldn't be found.
     QMAKE_RPATHDIR += ./
 
-    INCLUDEPATH += $${LINUX_CEF_DIR}
-    LIBS += -L$${LINUX_CEF_DIR}/libcef_dll_wrapper/ -lcef_dll_wrapper
-
-    CONFIG(release, debug|release):LIBS += -L$${LINUX_CEF_DIR}/Release -lcef
-    else: CONFIG(debug, debug|release):LIBS += -L$${LINUX_CEF_DIR}/Debug -lcef
-
     LIBS += -lX11
-    LIBS += -L/usr/lib -lopencv_features2d -lopencv_flann -lopencv_imgcodecs -lopencv_imgproc -lopencv_core -lopencv_highgui
-
-    # Copy CEF resources and dependencies into the DESTDIR after building
-    CONFIG(release, debug|release):QMAKE_POST_LINK += $$QMAKE_COPY_DIR $${LINUX_CEF_DIR}/Release/* $${DESTDIR}$$escape_expand(\\n\\t)
-    CONFIG(debug, debug|release):QMAKE_POST_LINK += $$QMAKE_COPY_DIR $${LINUX_CEF_DIR}/Release/* $${DESTDIR}$$escape_expand(\\n\\t)
-    QMAKE_POST_LINK += $$QMAKE_COPY_DIR $${LINUX_CEF_DIR}/Resources/* $${DESTDIR}$$escape_expand(\\n\\t)
-
-    # Delete 'libwidevinecdmadapter.so' and 'chrome-sandbox'
-    QMAKE_POST_LINK += $$QMAKE_DEL_FILE $${DESTDIR}/libwidevinecdmadapter.so$$escape_expand(\\n\\t)
-    QMAKE_POST_LINK += $$QMAKE_DEL_FILE $${DESTDIR}/chrome-sandbox$$escape_expand(\\n\\t)
 
     # Dramatically reduces shared libary file size after linking
     CONFIG(release, debug|release):QMAKE_POST_LINK += find $${DESTDIR} -type f -name \*.so | xargs strip --strip-all
@@ -67,41 +51,16 @@ win32 {
     QT += winextras
     DEFINES += _UNICODE WIN64 QT_DLL QT_WIDGETS_LIB QT_QML_LIB QT_NETWORK_LIB
 
-    # Disables "unreferenced formal parameter" warning on windows
+    # Disable "unreferenced formal parameter" warning on windows
     QMAKE_CXXFLAGS_WARN_ON -= -w34100
-
-    # The seconds \ is required cause qts syntac sucks
-    WIN_CEF_DIR =  C:\CEF\\$${CEF_VERSION}
-
-    INCLUDEPATH += C:\OPENCV\3.4.0\build\include
-    INCLUDEPATH += $$WIN_CEF_DIR
-
-    CONFIG(release, debug|release):LIBS += -L$$WIN_CEF_DIR\libcef_dll_wrapper\Release -llibcef_dll_wrapper
-    else:CONFIG(debug, debug|release):LIBS += -L$$WIN_CEF_DIR\libcef_dll_wrapper\Debug -llibcef_dll_wrapper
-
-    CONFIG(release, debug|release):LIBS += -L$$WIN_CEF_DIR\Release -llibcef
-    else: CONFIG(debug, debug|release):LIBS += -L$$WIN_CEF_DIR\Debug -llibcef
-
-    CONFIG(release, debug|release):LIBS += -LC:\OPENCV\3.4.0\build\lib\Release -lopencv_world340
-    else:CONFIG(debug, debug|release):LIBS += -LC:\OPENCV\3.4.0\build\lib\Debug -lopencv_world340d
 
     LIBS += -lUser32 -lGdi32
 
-    # Make the app icon be compiled into the bianary on windows
+    WINRT_MANIFEST = ./res/compatibility.manifest # Use the compatibility manifest required by CEF
+    RC_FILE = ./res/botfather.rc # Make the app icon be compiled into the bianary on windows
     HEADERS += ./res/resource.h
-    RC_FILE = ./res/botfather.rc
-
-    # Use the compatibility manifest required by CEF
-    WINRT_MANIFEST = ./res/compatibility.manifest
-
-    # Copy required dlls and CEF ressources
-    CONFIG(release, debug|release):CEF_EXTRA_DIR = $${CEF_DIR}/Release/*
-    else:CONFIG(debug, debug|release):CEF_EXTRA_DIR = $${CEF_DIR}/Debug/*
-
     SOURCES += ./engine/modules/desktop/desktop_win.cpp
 }
-
-include(../3rdparty/qhotkey.pri)
 
 HEADERS += \
     ./auth/auth_settings.h \

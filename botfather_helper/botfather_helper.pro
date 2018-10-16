@@ -8,35 +8,12 @@ DESTDIR = ./BuildOutput
 OBJECTS_DIR += ./CompiledObjects
 SOURCES += ./main.cpp
 
-CEF_VERSION = 3.3325.1758
-
-win32 {
-    DEFINES += _UNICODE WIN64 QT_DLL QT_WIDGETS_LIB QT_QML_LIB QT_NETWORK_LIB
-
-    # Disables "unreferenced formal parameter" warning on windows
-    QMAKE_CXXFLAGS_WARN_ON -= -w34100
-
-    WIN_CEF_DIR =  C:\CEF\\$${CEF_VERSION}
-    INCLUDEPATH += $${WIN_CEF_DIR}
-
-    CONFIG(release, debug|release):LIBS += -L$${WIN_CEF_DIR}\libcef_dll_wrapper\Release -llibcef_dll_wrapper
-    else:CONFIG(debug, debug|release):LIBS += -L$${WIN_CEF_DIR}\libcef_dll_wrapper\Debug -llibcef_dll_wrapper
-
-    CONFIG(release, debug|release):LIBS += -L$${WIN_CEF_DIR}\Release -llibcef
-    else: CONFIG(debug, debug|release):LIBS += -L$${WIN_CEF_DIR}\Debug -llibcef
-
-    # Use the compatibility manifest required by CEF
-    WINRT_MANIFEST = ./compatibility.manifest
-}
-
 unix {
-    LINUX_CEF_DIR = /opt/cef/$${CEF_VERSION}
+    INCLUDEPATH += $$(CEF_ROOT)
+    LIBS += -L$$(CEF_ROOT)/libcef_dll_wrapper/ -lcef_dll_wrapper
 
-    INCLUDEPATH += $${LINUX_CEF_DIR}
-    LIBS += -L$${LINUX_CEF_DIR}/libcef_dll_wrapper/ -lcef_dll_wrapper
-
-    CONFIG(release, debug|release):LIBS += -L$${LINUX_CEF_DIR}/Release -lcef
-    else: CONFIG(debug, debug|release):LIBS += -L$${LINUX_CEF_DIR}/Debug -lcef
+    CONFIG(release, debug|release):LIBS += -L$$(CEF_ROOT)/Release -lcef
+    else: CONFIG(debug, debug|release):LIBS += -L$$(CEF_ROOT)/Debug -lcef
 
     # Disables unused parameter warnings
     QMAKE_CXXFLAGS_WARN_OFF -= -Wunused-parameter
@@ -50,4 +27,22 @@ unix {
     # Consequently, the Operating System recognizes them as Shared Library.
     # Using -no-pie our project will be a executable, not a shared libary.
     #QMAKE_LFLAGS += -no-pie
+}
+
+win32 {
+    DEFINES += _UNICODE WIN64 QT_DLL QT_WIDGETS_LIB QT_QML_LIB QT_NETWORK_LIB
+
+    # Disables "unreferenced formal parameter" warning on windows
+    QMAKE_CXXFLAGS_WARN_ON -= -w34100
+
+    INCLUDEPATH += $$(CEF_ROOT)
+
+    CONFIG(release, debug|release):LIBS += -L$$(CEF_ROOT)\libcef_dll_wrapper\Release -llibcef_dll_wrapper
+    else:CONFIG(debug, debug|release):LIBS += -L$$(CEF_ROOT)\libcef_dll_wrapper\Debug -llibcef_dll_wrapper
+
+    CONFIG(release, debug|release):LIBS += -L$$(CEF_ROOT)\Release -llibcef
+    else: CONFIG(debug, debug|release):LIBS += -L$$(CEF_ROOT)\Debug -llibcef
+
+    # Use the compatibility manifest required by CEF
+    WINRT_MANIFEST = ./compatibility.manifest
 }

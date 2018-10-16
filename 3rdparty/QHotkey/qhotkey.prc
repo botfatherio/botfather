@@ -4,3 +4,4 @@ else:unix {
 	QT += x11extras
 	LIBS += -lX11
 }
+ 
