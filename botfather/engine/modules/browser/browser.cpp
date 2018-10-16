@@ -73,7 +73,7 @@ void Browser::initCefSettings(CefSettings& settings)
 	// Defines a cache dir WHICH IS ABSOLUTELY REQUIRED because some site might not work otherwise.
 	// IMPORTANT: Requires an absolute path (there is an debug check) in certain situations. Otherwise
 	// the program will crash, even thouh relative paths work somethimes.
-	QString absolute_cache_path = QCoreApplication::applicationDirPath() + "/cache";
+	QString absolute_cache_path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
 	CefString(&settings.cache_path) = CefString(absolute_cache_path.toStdString());
 
 	// Disable extern commandline arguments.
@@ -203,7 +203,7 @@ bool Browser::canGoForward()
 
 QSize Browser::getSize()
 {
-	// FIXME: This method of getting the browser size can't be good
+	// TODO: This method of getting the browser size can't be good
 	QSettings settings;
 	int width = settings.value(browser::options::WIDTH, browser::fallback::WIDTH).toInt();
 	int height = settings.value(browser::options::HEIGHT, browser::fallback::HEIGHT).toInt();
