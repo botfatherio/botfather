@@ -101,7 +101,7 @@ win32 {
     SOURCES += ./engine/modules/desktop/desktop_win.cpp
 }
 
-include(./3rdparty/qhotkey.pri)
+include(../3rdparty/qhotkey.pri)
 
 HEADERS += \
     ./auth/auth_settings.h \
