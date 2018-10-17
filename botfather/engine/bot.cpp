@@ -11,6 +11,7 @@
 #include "prototypes/image_prototype.h"
 #include "prototypes/color_prototype.h"
 #include "prototypes/match_prototype.h"
+#include "prototypes/timer_prototype.h"
 #include "prototypes/size_prototype.h"
 #include "prototypes/rect_prototype.h"
 #include "prototypes/url_prototype.h"
@@ -78,6 +79,7 @@ void Bot::runScript()
 	REGISTER_API(script_engine, this, VisionAPI, "Vision");
 	REGISTER_API(script_engine, this, PathFinderApi, "PathFinder");
 	
+	REGISTER_PROTO(script_engine, TimerPrototype, QElapsedTimer, "Timer");
 	REGISTER_PROTO(script_engine, BlobTplPrototype, BlobTpl, "BlobTpl");
 	REGISTER_PROTO(script_engine, MarginsPrototype, QMargins, "Margins");
 	REGISTER_PROTO(script_engine, PointPrototype, QPoint, "Point");

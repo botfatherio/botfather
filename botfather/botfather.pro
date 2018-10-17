@@ -107,7 +107,8 @@ HEADERS += \
     ./engine/prototypes/blob_tpl_prototype.h \
     ./engine/apis/path_finder_api.h \
     ./engine/prototypes/margins_prototype.h \
-    ./engine/prototypes/url_prototype.h
+    ./engine/prototypes/url_prototype.h \
+    engine/prototypes/timer_prototype.h
 SOURCES += \
     ./auth/license_api_client.cpp \
     ./auth/rest_api_client.cpp \
@@ -148,7 +149,8 @@ SOURCES += \
     ./engine/prototypes/blob_tpl_prototype.cpp \
     ./engine/apis/path_finder_api.cpp \
     ./engine/prototypes/margins_prototype.cpp \
-    ./engine/prototypes/url_prototype.cpp
+    ./engine/prototypes/url_prototype.cpp \
+    engine/prototypes/timer_prototype.cpp
 FORMS += \
     ./gui/android_dialog.ui \
     ./gui/auth_dialog.ui \
