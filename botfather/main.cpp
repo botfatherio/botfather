@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
 
 	// Organization and application info must be set. Otherwise one can't access
 	// QSettings from all over the app. Change this to match the bots credentials.
-	QCoreApplication::setOrganizationName("BotFatherProject");
+	QCoreApplication::setOrganizationName("botfather.io");
 	QCoreApplication::setOrganizationDomain("botfather.io");
 	QCoreApplication::setApplicationName("Botfather");
 	QCoreApplication::setApplicationVersion("4.2.2");
