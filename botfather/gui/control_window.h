@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <QMediaPlayer>
 #include <QHotkey>
+#include <QTimer>
 
 class Bot;
 class ConfigDialog;
@@ -53,7 +54,6 @@ private:
 	AndroidDialog *android_dialog;
 	Bot* bot = nullptr;
 	QThread *bot_thread = nullptr;
-	bool trial = true;
 	QMediaPlayer *media_player;
 	QHotkey *stop_hotkey;
 };

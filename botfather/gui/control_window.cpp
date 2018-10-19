@@ -15,6 +15,14 @@
 #include "../engine/bot.h"
 #include "../settings.h"
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+#include <QRandomGenerator>
+#define GenerateRandomIntInRange(MIN, MAX) QRandomGenerator::global()->bounded(MIN, MAX);
+#else
+#define ImageSizeInBytes(qimage) static_cast<int>(qimage.sizeInBytes())
+#define GenerateRandomIntInRange(MIN, MAX) qrand() % ((MAX + 1) - MIN) + MIN
+#endif
+
 ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::ControlWindow)
 {
 	ui->setupUi(this);
@@ -45,12 +53,7 @@ ControlWindow::~ControlWindow()
 
 void ControlWindow::applyRemoteApiInfo(int curtime, int premend, bool stable)
 {	
-	Q_UNUSED(stable)
-	
-	trial = curtime > premend;
-	// No longer alter the title. Just leave it be Botfather.
-	// This method is still usefull though to make scripts stop when premium finished.
-	//this->setWindowTitle(original_window_title + (stable ? " - Stable" : "") + (trial ? " - Trial" : " - Premium"));
+	// TODO: remove stable parameter
 }
 
 void ControlWindow::on_actionStart_triggered()
@@ -102,6 +105,10 @@ void ControlWindow::bot_started()
 {
 	ui->actionStop->setEnabled(true);
 	stop_hotkey->setRegistered(true);
+
+	// Stop the bot after a certain time for non premium accounts.
+	int about_90_minutes_in_ms = GenerateRandomIntInRange(1000 * 60 * 89, 1000 * 60 * 91);
+	QTimer::singleShot(about_90_minutes_in_ms, this, &ControlWindow::on_actionStop_triggered);
 }
 
 void ControlWindow::on_actionStop_triggered()
