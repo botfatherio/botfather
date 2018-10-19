@@ -31,6 +31,8 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
     browser_window = new BrowserWindow(); // Don't give it a parent, otherwise it's blocking the control window on microsoft windows
 	android_dialog = new AndroidDialog(this);
 	media_player = new QMediaPlayer(this);
+
+	runtimer = new QTimer(true); // TODO: eventually not use a pointer here
 	
 	stop_hotkey = new QHotkey();
 	connect(stop_hotkey, &QHotkey::activated, this, &ControlWindow::stopBot);
@@ -106,13 +108,25 @@ void ControlWindow::botStarted()
 
 	// Stop the bot after a certain time for non premium accounts.
 	int about_90_minutes_in_ms = GenerateRandomIntInRange(1000 * 60 * 89, 1000 * 60 * 91);
-	QTimer::singleShot(about_90_minutes_in_ms, this, &ControlWindow::stopBot);
+
+	// NOTE: Having the runtimer introduces a non dead-locking race condition.
+	// When the user hits stop when the runtimer just timed out, stopBot and
+	// thus botStopped will be called twice.
+	runtimer = new QTimer(this);
+	connect(runtimer, &QTimer::timeout, this, &ControlWindow::stopBot);
+
+	runtimer->setSingleShot(true);
+	runtimer->start(about_90_minutes_in_ms);
 }
 
 void ControlWindow::stopBot()
 {
 	ui->actionStart->setEnabled(false);
 	ui->actionStop->setEnabled(false);
+
+	Q_ASSERT(runtimer);
+
+	runtimer->stop();
 	bot->stop();
 }
 

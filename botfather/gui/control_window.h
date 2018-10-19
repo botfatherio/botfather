@@ -54,6 +54,7 @@ private:
 	QThread *bot_thread = nullptr;
 	QMediaPlayer *media_player;
 	QHotkey *stop_hotkey;
+	QTimer *runtimer;
 };
 
 #endif // BFP__GUI__CONTROL_WINDOW_H
