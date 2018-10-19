@@ -54,11 +54,6 @@ ControlWindow::~ControlWindow()
     delete browser_window; // Has no parent
 }
 
-void ControlWindow::applyRemoteApiInfo(int curtime, int premend, bool stable)
-{	
-	// TODO: remove stable parameter
-}
-
 void ControlWindow::startBot()
 {
 	// Increses memory usage by some bytes caching file icons.
@@ -199,12 +194,6 @@ void ControlWindow::on_actionAbout_triggered()
 void ControlWindow::on_actionAboutQt_triggered()
 {
 	QMessageBox::aboutQt(this);
-}
-
-void ControlWindow::on_actionPremiumPlans_triggered()
-{
-	// TODO: delete this action
-	QDesktopServices::openUrl(QUrl("https://botfather.io/plans/"));
 }
 
 void ControlWindow::on_actionLogout_triggered()
