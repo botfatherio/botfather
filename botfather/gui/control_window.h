@@ -29,13 +29,13 @@ signals:
 	
 public slots:
 	void applyRemoteApiInfo(int curtime, int premend, bool stable);
-	void on_actionStart_triggered();
-	void bot_started();
-	void on_actionStop_triggered();
-	void bot_stopped(bool without_errors);
-	void on_actionScripts_triggered();
-	void on_save_button_clicked();
+	void startBot();
+	void botStarted();
+	void stopBot();
+	void botStopped(bool without_errors);
 	void appendMessage(QString message, bool from_botfather, bool error = false);
+	void on_save_button_clicked();
+	void on_actionScripts_triggered();
 	void on_actionAbout_triggered();
 	void on_actionAboutQt_triggered();
 	void on_actionPremiumPlans_triggered();

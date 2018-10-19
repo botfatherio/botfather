@@ -33,7 +33,7 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	media_player = new QMediaPlayer(this);
 	
 	stop_hotkey = new QHotkey();
-	connect(stop_hotkey, &QHotkey::activated, this, &ControlWindow::on_actionStop_triggered);
+	connect(stop_hotkey, &QHotkey::activated, this, &ControlWindow::stopBot);
 	updateHotkeys();
 
 	connect(ui->actionSettings, &QAction::triggered, config_dialog, &ConfigDialog::exec);
@@ -42,6 +42,9 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 
 	connect(config_dialog, &ConfigDialog::configLoaded, this, &ControlWindow::updateHotkeys);
 	connect(config_dialog, &ConfigDialog::configSaved, this, &ControlWindow::updateHotkeys);
+
+	connect(ui->actionStart, &QAction::triggered, this, &ControlWindow::startBot);
+	connect(ui->actionStop, &QAction::triggered, this, &ControlWindow::stopBot);
 }
 
 ControlWindow::~ControlWindow()
@@ -56,7 +59,7 @@ void ControlWindow::applyRemoteApiInfo(int curtime, int premend, bool stable)
 	// TODO: remove stable parameter
 }
 
-void ControlWindow::on_actionStart_triggered()
+void ControlWindow::startBot()
 {
 	// Increses memory usage by some bytes caching file icons.
 	// https://bugreports.qt.io/browse/QTBUG-10651
@@ -84,8 +87,8 @@ void ControlWindow::on_actionStart_triggered()
 	bot = new Bot(script_path);
 	bot->moveToThread(bot_thread);
 
-	connect(bot, &Bot::started, this, &ControlWindow::bot_started);
-	connect(bot, &Bot::stopped, this, &ControlWindow::bot_stopped);
+	connect(bot, &Bot::started, this, &ControlWindow::botStarted);
+	connect(bot, &Bot::stopped, this, &ControlWindow::botStopped);
 	connect(bot, &Bot::message, this, &ControlWindow::appendMessage);
 
 	// QSound only works in the main thread, thats why we have to the control window to play
@@ -101,24 +104,24 @@ void ControlWindow::on_actionStart_triggered()
 	bot_thread->start();
 }
 
-void ControlWindow::bot_started()
+void ControlWindow::botStarted()
 {
 	ui->actionStop->setEnabled(true);
 	stop_hotkey->setRegistered(true);
 
 	// Stop the bot after a certain time for non premium accounts.
 	int about_90_minutes_in_ms = GenerateRandomIntInRange(1000 * 60 * 89, 1000 * 60 * 91);
-	QTimer::singleShot(about_90_minutes_in_ms, this, &ControlWindow::on_actionStop_triggered);
+	QTimer::singleShot(about_90_minutes_in_ms, this, &ControlWindow::stopBot);
 }
 
-void ControlWindow::on_actionStop_triggered()
+void ControlWindow::stopBot()
 {
 	ui->actionStart->setEnabled(false);
 	ui->actionStop->setEnabled(false);
 	bot->stop();
 }
 
-void ControlWindow::bot_stopped(bool without_errors)
+void ControlWindow::botStopped(bool without_errors)
 {
 	stop_hotkey->setRegistered(false);
 	ui->actionStart->setEnabled(true);
@@ -133,6 +136,43 @@ void ControlWindow::bot_stopped(bool without_errors)
 			"Script execution wasn't successful. Errors occurrred. Please check the log."
 		);
 	}
+}
+
+void ControlWindow::appendMessage(QString message, bool from_botfather, bool error)
+{
+	QString color(error ? "#ff3860" : (from_botfather ? "#209cee" : "#4a4a4a"));
+	QString time(QDateTime::currentDateTime().toString("HH:mm:ss"));
+	QString user(from_botfather ? "system" : "script");
+	QString text = QString("<span style='color:%1'>%2 | %3 &gt; %4</span>").arg(color).arg(time).arg(user).arg(message);
+	ui->log_text->append(text);
+}
+
+void ControlWindow::on_save_button_clicked()
+{
+	QString log = this->ui->log_text->toPlainText();
+
+	QString filename = QFileDialog::getSaveFileName(
+		this,
+		tr("Save Logfile"),
+		QDir::homePath(),
+		tr("Text files (*.txt *.log)"),
+		Q_NULLPTR,
+		// Triggering the file dialog more than once using the native dialog made the program get stuck.
+		QFileDialog::DontUseNativeDialog | QFileDialog::DontUseCustomDirectoryIcons
+	);
+
+	if (filename.isEmpty()){
+		qDebug() << "No file selected.";
+		return;
+	}
+
+	QFile file(filename);
+	if (!file.open(QIODevice::WriteOnly)) {
+		qDebug() << "Can't open logfile" << filename;
+		return;
+	}
+	file.write(log.toUtf8());
+	file.close();
 }
 
 void ControlWindow::on_actionScripts_triggered()
@@ -161,50 +201,14 @@ void ControlWindow::on_actionAboutQt_triggered()
 	QMessageBox::aboutQt(this);
 }
 
-void ControlWindow::on_save_button_clicked()
-{
-	QString log = this->ui->log_text->toPlainText();
-	
-	QString filename = QFileDialog::getSaveFileName(
-		this,
-		tr("Save Logfile"),
-		QDir::homePath(),
-		tr("Text files (*.txt *.log)"),
-		Q_NULLPTR,
-		// Triggering the file dialog more than once using the native dialog made the program get stuck.
-		QFileDialog::DontUseNativeDialog | QFileDialog::DontUseCustomDirectoryIcons
-	);
-	
-	if (filename.isEmpty()){
-		qDebug() << "No file selected.";
-		return;
-	}
-	
-	QFile file(filename);
-	if (!file.open(QIODevice::WriteOnly)) {
-		qDebug() << "Can't open logfile" << filename;
-		return;
-	}
-	file.write(log.toUtf8());
-	file.close();
-}
-
-void ControlWindow::appendMessage(QString message, bool from_botfather, bool error)
-{
-	QString color(error ? "#ff3860" : (from_botfather ? "#209cee" : "#4a4a4a"));
-	QString time(QDateTime::currentDateTime().toString("HH:mm:ss"));
-	QString user(from_botfather ? "system" : "script");
-	QString text = QString("<span style='color:%1'>%2 | %3 &gt; %4</span>").arg(color).arg(time).arg(user).arg(message);
-	ui->log_text->append(text);
-}
-
 void ControlWindow::on_actionPremiumPlans_triggered()
 {
+	// TODO: delete this action
 	QDesktopServices::openUrl(QUrl("https://botfather.io/plans/"));
 }
 
 void ControlWindow::on_actionLogout_triggered()
-{	
+{
 	if (bot && bot->isRunning()) {
 		QMessageBox::warning(
 			this,
