@@ -1,8 +1,3 @@
-# Copy CEF resources and dependencies into the DESTDIR after building
-CONFIG(release, debug|release):QMAKE_POST_LINK += $$QMAKE_COPY_DIR $$(CEF_ROOT)/Release/* $${DESTDIR}$$escape_expand(\\n\\t)
-CONFIG(debug, debug|release):QMAKE_POST_LINK += $$QMAKE_COPY_DIR $$(CEF_ROOT)/Debug/* $${DESTDIR}$$escape_expand(\\n\\t)
-QMAKE_POST_LINK += $$QMAKE_COPY_DIR $$(CEF_ROOT)/Resources/* $${DESTDIR}$$escape_expand(\\n\\t)
-
 linux {
     INCLUDEPATH += $$(CEF_ROOT)
     LIBS += -L$$(CEF_ROOT)/libcef_dll_wrapper/ -lcef_dll_wrapper
@@ -13,6 +8,11 @@ linux {
     # Delete 'libwidevinecdmadapter.so' and 'chrome-sandbox'
     QMAKE_POST_LINK += $$QMAKE_DEL_FILE $${DESTDIR}/libwidevinecdmadapter.so$$escape_expand(\\n\\t)
     QMAKE_POST_LINK += $$QMAKE_DEL_FILE $${DESTDIR}/chrome-sandbox$$escape_expand(\\n\\t)
+
+    # Copy CEF resources and dependencies into the DESTDIR after building
+    CONFIG(release, debug|release):QMAKE_POST_LINK += cp -Ru $$(CEF_ROOT)/Release/* $${DESTDIR}$$escape_expand(\\n\\t)
+    CONFIG(debug, debug|release):QMAKE_POST_LINK += cp -Ru $$(CEF_ROOT)/Debug/* $${DESTDIR}$$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += $$QMAKE_COPY_DIR $$(CEF_ROOT)/Resources/* $${DESTDIR}$$escape_expand(\\n\\t)
 }
 
 win32 {
@@ -27,4 +27,9 @@ win32 {
     # Delete 'libwidevinecdmadapter.dll' and 'chrome-sandbox'
     QMAKE_POST_LINK += $$QMAKE_DEL_FILE $${DESTDIR}/libwidevinecdmadapter.so$$escape_expand(\\n\\t)
     QMAKE_POST_LINK += $$QMAKE_DEL_FILE $${DESTDIR}/chrome-sandbox$$escape_expand(\\n\\t)
+
+    # Copy CEF resources and dependencies into the DESTDIR after building
+    CONFIG(release, debug|release):QMAKE_POST_LINK += $$QMAKE_COPY_DIR $$(CEF_ROOT)/Release/* $${DESTDIR}$$escape_expand(\\n\\t)
+    CONFIG(debug, debug|release):QMAKE_POST_LINK += $$QMAKE_COPY_DIR $$(CEF_ROOT)/Debug/* $${DESTDIR}$$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += $$QMAKE_COPY_DIR $$(CEF_ROOT)/Resources/* $${DESTDIR}$$escape_expand(\\n\\t)
 }
