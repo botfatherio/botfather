@@ -5,7 +5,6 @@
 #include <QDebug>
 #include <QDesktopServices>
 #include <QCloseEvent>
-#include <QHBoxLayout>
 #include <QSettings>
 #include <QThread>
 #include <QDateTime>
@@ -14,6 +13,7 @@
 #include "android_dialog.h"
 #include "../engine/bot.h"
 #include "../settings.h"
+#include "../tools/mtoolwrapper.h"
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
 #include <QRandomGenerator>
@@ -48,6 +48,14 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 
 	// TODO: Disconnect this, if the user has an premium account
 	connect(&runtimer, &QTimer::timeout, this, &ControlWindow::stopBot);
+
+	// File Menu Actions
+	MtoolWrapper* mtool = new MtoolWrapper(this);
+	connect(ui->menuFile, &QMenu::aboutToShow, mtool, &MtoolWrapper::findExecutable);
+	connect(mtool, &MtoolWrapper::executableFound, ui->actionCheckForUpdates, &QAction::setEnabled);
+	connect(ui->actionCheckForUpdates, &QAction::triggered, mtool, &MtoolWrapper::startDetachedUpdater);
+	connect(mtool, &MtoolWrapper::startedDetached, this, &ControlWindow::close);
+	connect(ui->actionExit, &QAction::triggered, this, &ControlWindow::close);
 }
 
 ControlWindow::~ControlWindow()
@@ -248,7 +256,7 @@ void ControlWindow::updateHotkeys()
 	// will crash. Same goes for stop.
 }
 
-void ControlWindow::closeEvent(QCloseEvent* event)
+void ControlWindow::closeEvent(QCloseEvent*)
 {
     browser_window->close();
 }

@@ -99,8 +99,6 @@ HEADERS += \
     ./gui/config_dialog.h \
     ./gui/control_window.h \
     ./gui/status_dialog.h \
-    ./updater/update_checker.h \
-    ./updater/updater_dialog.h \
     ./settings.h \
     ./engine/apis/abstract_api.h \
     ./engine/types/blob_tpl.h \
@@ -108,7 +106,8 @@ HEADERS += \
     ./engine/apis/path_finder_api.h \
     ./engine/prototypes/margins_prototype.h \
     ./engine/prototypes/url_prototype.h \
-    engine/prototypes/timer_prototype.h
+    engine/prototypes/timer_prototype.h \
+    tools/mtoolwrapper.h
 SOURCES += \
     ./auth/license_api_client.cpp \
     ./auth/rest_api_client.cpp \
@@ -142,22 +141,20 @@ SOURCES += \
     ./gui/control_window.cpp \
     ./gui/status_dialog.cpp \
     ./main.cpp \
-    ./updater/update_checker.cpp \
-    ./updater/updater_dialog.cpp \
     ./engine/apis/abstract_api.cpp \
     ./engine/types/blob_tpl.cpp \
     ./engine/prototypes/blob_tpl_prototype.cpp \
     ./engine/apis/path_finder_api.cpp \
     ./engine/prototypes/margins_prototype.cpp \
     ./engine/prototypes/url_prototype.cpp \
-    engine/prototypes/timer_prototype.cpp
+    engine/prototypes/timer_prototype.cpp \
+    tools/mtoolwrapper.cpp
 FORMS += \
     ./gui/android_dialog.ui \
     ./gui/auth_dialog.ui \
     ./gui/browser_window.ui \
     ./gui/config_dialog.ui \
     ./gui/control_window.ui \
-    ./gui/status_dialog.ui \
-    ./updater/updater_dialog.ui
+    ./gui/status_dialog.ui
 RESOURCES += \
     ./res/gui.qrc
