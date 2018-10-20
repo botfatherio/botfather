@@ -170,7 +170,7 @@ void ControlWindow::appendMessage(const QString &message, const Bot::LogSource &
 		source_name = "script";
 		break;
 	case Bot::LogSource::Debug:
-		color = "#ffdd57";
+		color = "#85732d"; // #ffdd57
 		source_name = "debug";
 		break;
 	}

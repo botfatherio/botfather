@@ -26,10 +26,13 @@ public:
 	Q_INVOKABLE void stopWavSound();
 	
 	// Methods added via extendGlobalApiObject():
-	// Helper.log(comma, seperated, QScriptValues, aka, the, message)
+	// Helper.log(comma, separated, QScriptValues, aka, messages);
+	// Helper.debug(comma, separated, QScriptValues, aka, messages);
 	
 protected:
+	static QScriptValue genericLog(QScriptContext *context, QScriptEngine *engine, Bot::LogSource source);
 	static QScriptValue log(QScriptContext *context, QScriptEngine *engine);
+	static QScriptValue debug(QScriptContext *context, QScriptEngine *engine);
 	void extendGlobalApiObject(QScriptEngine *engine, QScriptValue &api_object);
 };
 
