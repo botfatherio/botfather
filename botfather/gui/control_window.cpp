@@ -28,7 +28,7 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	ui->setupUi(this);
 
 	config_dialog = new ConfigDialog(this);
-    browser_window = new BrowserWindow(); // Don't give it a parent, otherwise it's blocking the control window on microsoft windows
+	browser_window = new BrowserWindow(); // Don't give it a parent, otherwise it's blocking the control window on microsoft windows
 	android_dialog = new AndroidDialog(this);
 	media_player = new QMediaPlayer(this);
 
@@ -256,7 +256,9 @@ void ControlWindow::updateHotkeys()
 	// will crash. Same goes for stop.
 }
 
-void ControlWindow::closeEvent(QCloseEvent*)
+void ControlWindow::closeEvent(QCloseEvent* event)
 {
+	// NOTE: Nope, there is no 'aboutToClose' signal
     browser_window->close();
+	QMainWindow::closeEvent(event);
 }
