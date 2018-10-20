@@ -172,10 +172,16 @@
    <property name="toolTip">
     <string>Open the settings dialog</string>
    </property>
+   <property name="menuRole">
+    <enum>QAction::PreferencesRole</enum>
+   </property>
   </action>
   <action name="actionAbout">
    <property name="text">
     <string>About Botfather</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::AboutRole</enum>
    </property>
   </action>
   <action name="actionScripts">
@@ -189,7 +195,10 @@
   </action>
   <action name="actionAboutQt">
    <property name="text">
-    <string>About &amp;Qt</string>
+    <string>About Qt</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::AboutQtRole</enum>
    </property>
   </action>
   <action name="actionBrowser">
@@ -228,7 +237,7 @@
   </action>
   <action name="actionExit">
    <property name="text">
-    <string>Exit</string>
+    <string>E&amp;xit</string>
    </property>
    <property name="menuRole">
     <enum>QAction::QuitRole</enum>
@@ -239,7 +248,7 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Exit and check for updates</string>
+    <string>&amp;Exit and check for updates</string>
    </property>
   </action>
  </widget>
