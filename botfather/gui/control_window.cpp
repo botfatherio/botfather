@@ -32,8 +32,6 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	android_dialog = new AndroidDialog(this);
 	media_player = new QMediaPlayer(this);
 
-	runtimer = new QTimer(true); // TODO: eventually not use a pointer here
-	
 	stop_hotkey = new QHotkey();
 	connect(stop_hotkey, &QHotkey::activated, this, &ControlWindow::stopBot);
 	updateHotkeys();
@@ -47,6 +45,9 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 
 	connect(ui->actionStart, &QAction::triggered, this, &ControlWindow::startBot);
 	connect(ui->actionStop, &QAction::triggered, this, &ControlWindow::stopBot);
+
+	// TODO: Disconnect this, if the user has an premium account
+	connect(&runtimer, &QTimer::timeout, this, &ControlWindow::stopBot);
 }
 
 ControlWindow::~ControlWindow()
@@ -109,14 +110,11 @@ void ControlWindow::botStarted()
 	// Stop the bot after a certain time for non premium accounts.
 	int about_90_minutes_in_ms = GenerateRandomIntInRange(1000 * 60 * 89, 1000 * 60 * 91);
 
-	// NOTE: Having the runtimer introduces a non dead-locking race condition.
-	// When the user hits stop when the runtimer just timed out, stopBot and
-	// thus botStopped will be called twice.
-	runtimer = new QTimer(this);
-	connect(runtimer, &QTimer::timeout, this, &ControlWindow::stopBot);
-
-	runtimer->setSingleShot(true);
-	runtimer->start(about_90_minutes_in_ms);
+	// NOTE: The following edge cases have the same effect:
+	// A. Stopping the bot in the same moment the timer times out
+	// B. Hitting the stop button twice in the same moment
+	// => The runtimer doesn't introduce a new "bug".
+	runtimer.start(about_90_minutes_in_ms);
 }
 
 void ControlWindow::stopBot()
@@ -124,9 +122,7 @@ void ControlWindow::stopBot()
 	ui->actionStart->setEnabled(false);
 	ui->actionStop->setEnabled(false);
 
-	Q_ASSERT(runtimer);
-
-	runtimer->stop();
+	runtimer.stop();
 	bot->stop();
 }
 
