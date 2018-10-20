@@ -4,6 +4,7 @@
 #include <QInputDialog>
 #include <QAudioBuffer>
 #include <QDebug>
+#include <QScriptValueIterator>
 
 void HelperAPI::sleep(int seconds)
 {
@@ -41,15 +42,47 @@ void HelperAPI::stopWavSound()
 	emit bot()->stopWavSound();
 }
 
+QStringList HelperAPI::qScriptValueToStringList(const QScriptValue& value, bool quote_strings)
+{
+	QStringList strings;
+
+	if (value.isArray())
+	{
+		QScriptValueIterator value_it(value);
+		QStringList array_strings;
+
+		while (value_it.hasNext())
+		{
+			value_it.next();
+			array_strings << qScriptValueToStringList(value_it.value(), true);
+		}
+
+		strings << "[" + array_strings.join(", ") + "]";
+	}
+
+	else if (value.isObject())
+	{
+		strings << "[object]";
+	}
+
+	else if (value.isString() && quote_strings)
+	{
+		strings << "\"" + value.toString() + "\"";
+	}
+
+	else{
+		strings << value.toString();
+	}
+
+	return strings;
+}
+
 QScriptValue HelperAPI::genericLog(QScriptContext *context, QScriptEngine *engine, Bot::LogSource source)
 {
-	QString message;
+	QStringList strings;
 
 	for (int i = 0; i < context->argumentCount(); ++i) {
-		if (i > 0) {
-			message.append(" ");
-		}
-		message.append(context->argument(i).toString());
+		strings << qScriptValueToStringList(context->argument(i));
 	}
 
 	// We added a pointer to the HelperAPI instance when registering the log and debug
@@ -58,7 +91,7 @@ QScriptValue HelperAPI::genericLog(QScriptContext *context, QScriptEngine *engin
 
 	QScriptValue callee_data(context->callee().data());
 	HelperAPI *hapi = qobject_cast<HelperAPI*>(callee_data.toQObject());
-	emit hapi->bot()->log(message, source);
+	emit hapi->bot()->log(strings.join(" "), source);
 
 	// NOTE: Do not delete HelperAPI pointer here. This would delete the original helperapi instance,
 	// which could no longer be used by the script engine.

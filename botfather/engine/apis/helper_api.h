@@ -30,6 +30,7 @@ public:
 	// Helper.debug(comma, separated, QScriptValues, aka, messages);
 	
 protected:
+	static QStringList qScriptValueToStringList(const QScriptValue& value, bool quote_strings = false);
 	static QScriptValue genericLog(QScriptContext *context, QScriptEngine *engine, Bot::LogSource source);
 	static QScriptValue log(QScriptContext *context, QScriptEngine *engine);
 	static QScriptValue debug(QScriptContext *context, QScriptEngine *engine);
