@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QScriptEngine>
+#include <QMetaType>
 
 class Bot : public QObject
 {
@@ -13,6 +14,13 @@ public:
 	// Giving Bot a parent results in: QObject::moveToThread: Cannot move objects with a parent
 	Bot(QString script_path);
 	~Bot();
+
+	enum LogSource{
+		System,
+		Error,
+		Script,
+		Debug
+	};
 	
 	// Considers relative paths relative to the scripts dir and makes them absolute.
 	QString normalisePath(QString path);
@@ -28,7 +36,7 @@ public slots:
 signals:
 	void started();
 	void stopped(bool without_errors);
-	void message(QString log_message, bool from_client, bool error = false);
+	void log(const QString &message, const Bot::LogSource &source);
 	
 	// Start/stop a wav sound in the main thread.
 	void playWavSound(QString path_to_wav_file);

@@ -11,7 +11,6 @@
 #include "config_dialog.h"
 #include "browser_window.h"
 #include "android_dialog.h"
-#include "../engine/bot.h"
 #include "../settings.h"
 #include "../tools/mtoolwrapper.h"
 
@@ -81,7 +80,7 @@ void ControlWindow::startBot()
 
 	if (script_path.isEmpty()) {
 		// No script selected. Reset ui modifications and tell the user.
-		appendMessage("No script selected.", true);
+		appendMessage("No script selected.", Bot::LogSource::System);
 		return;
 	}
 	
@@ -95,7 +94,7 @@ void ControlWindow::startBot()
 
 	connect(bot, &Bot::started, this, &ControlWindow::botStarted);
 	connect(bot, &Bot::stopped, this, &ControlWindow::botStopped);
-	connect(bot, &Bot::message, this, &ControlWindow::appendMessage);
+	connect(bot, &Bot::log, this, &ControlWindow::appendMessage);
 
 	// QSound only works in the main thread, thats why we have to the control window to play
 	// the desired sound whenever to bot wants us to do so.
@@ -151,12 +150,32 @@ void ControlWindow::botStopped(bool without_errors)
 	}
 }
 
-void ControlWindow::appendMessage(QString message, bool from_botfather, bool error)
+void ControlWindow::appendMessage(const QString &message, const Bot::LogSource &source)
 {
-	QString color(error ? "#ff3860" : (from_botfather ? "#209cee" : "#4a4a4a"));
 	QString time(QDateTime::currentDateTime().toString("HH:mm:ss"));
-	QString user(from_botfather ? "system" : "script");
-	QString text = QString("<span style='color:%1'>%2 | %3 &gt; %4</span>").arg(color).arg(time).arg(user).arg(message);
+	QString color, source_name;
+
+	switch (source)
+	{
+	case Bot::LogSource::System:
+		color = "#209cee";
+		source_name = "system";
+		break;
+	case Bot::LogSource::Error:
+		color = "#ff3860";
+		source_name = "error";
+		break;
+	case Bot::LogSource::Script:
+		color = "#4a4a4a";
+		source_name = "script";
+		break;
+	case Bot::LogSource::Debug:
+		color = "#ffdd57";
+		source_name = "debug";
+		break;
+	}
+
+	QString text = QString("<span style='color:%1'>%2 | %3 &gt; %4</span>").arg(color).arg(time).arg(source_name).arg(message);
 	ui->log_text->append(text);
 }
 

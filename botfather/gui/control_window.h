@@ -7,7 +7,8 @@
 #include <QHotkey>
 #include <QTimer>
 
-class Bot;
+#include "../engine/bot.h"
+
 class ConfigDialog;
 class BrowserWindow;
 class AndroidDialog;
@@ -32,7 +33,7 @@ public slots:
 	void botStarted();
 	void stopBot();
 	void botStopped(bool without_errors);
-	void appendMessage(QString message, bool from_botfather, bool error = false);
+	void appendMessage(const QString &message, const Bot::LogSource &source);
 	void on_save_button_clicked();
 	void on_actionScripts_triggered();
 	void on_actionAbout_triggered();

@@ -25,6 +25,9 @@
 
 Bot::Bot(QString script_path) : script_path(script_path)
 {
+	// Otherwise Bot::LogSource can't be used with slots
+	qRegisterMetaType<Bot::LogSource>("Bot::LogSource");
+
 	// The script engines parent MUST BE the bot instance. This way we can obtain a pointer to the bot
 	// instance in static functions (like constructors) by casting the engines parent to a Bot*.
     script_engine = new QScriptEngine(this);
@@ -94,7 +97,7 @@ void Bot::runScript()
 	QFile script_file(script_path);
 	if (!script_file.open(QIODevice::ReadOnly)) {
 		QString debug_msg("Can't read the contents from " + script_path + ". Please check the files permissions.");
-		emit message(debug_msg, true);
+		emit log(debug_msg, LogSource::System);
 		emit stopped(false);
 		return;
 	}
@@ -102,7 +105,7 @@ void Bot::runScript()
 	// Get the script files contents.
 	QByteArray script = script_file.readAll();
 	script_file.close();
-	emit message("Executing bot script " + script_path, true);
+	emit log("Executing bot script " + script_path, LogSource::System);
 	
 	// Run the script and clean up after doing so.
 	// NOTE: Putting this in a try-catch statement does nothing.
@@ -113,9 +116,9 @@ void Bot::runScript()
 	if (result.isError()) {
 		QString error_msg = replaceQtWithEngineTypeNames(result.toString());
 		QString debug_msg = QString("<b>Uncaught exception</b> at line %1 : %2").arg(result.property("lineNumber").toString()).arg(error_msg);
-		emit message(debug_msg, true, true);
+		emit log(debug_msg, LogSource::Error);
 	} else {
-		emit message("Bot script execution finished.", true);
+		emit log("Bot script execution finished.", LogSource::System);
 	}
 	
 	running = false;
