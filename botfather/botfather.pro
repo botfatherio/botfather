@@ -66,7 +66,6 @@ HEADERS += \
     ./auth/auth_settings.h \
     ./auth/license_api_client.h \
     ./auth/rest_api_client.h \
-    ./auth/status_api_client.h \
     ./engine/apis/android_api.h \
     ./engine/apis/browser_api.h \
     ./engine/apis/desktop_api.h \
@@ -98,7 +97,6 @@ HEADERS += \
     ./gui/browser_window.h \
     ./gui/config_dialog.h \
     ./gui/control_window.h \
-    ./gui/status_dialog.h \
     ./settings.h \
     ./engine/apis/abstract_api.h \
     ./engine/types/blob_tpl.h \
@@ -111,7 +109,6 @@ HEADERS += \
 SOURCES += \
     ./auth/license_api_client.cpp \
     ./auth/rest_api_client.cpp \
-    ./auth/status_api_client.cpp \
     ./engine/apis/android_api.cpp \
     ./engine/apis/browser_api.cpp \
     ./engine/apis/desktop_api.cpp \
@@ -139,7 +136,6 @@ SOURCES += \
     ./gui/browser_window.cpp \
     ./gui/config_dialog.cpp \
     ./gui/control_window.cpp \
-    ./gui/status_dialog.cpp \
     ./main.cpp \
     ./engine/apis/abstract_api.cpp \
     ./engine/types/blob_tpl.cpp \
@@ -154,7 +150,6 @@ FORMS += \
     ./gui/auth_dialog.ui \
     ./gui/browser_window.ui \
     ./gui/config_dialog.ui \
-    ./gui/control_window.ui \
-    ./gui/status_dialog.ui
+    ./gui/control_window.ui
 RESOURCES += \
     ./res/gui.qrc
