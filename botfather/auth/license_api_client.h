@@ -11,13 +11,15 @@ public:
 	using RestApiClient::RestApiClient;
 	
 public slots:
-	void requestStatus();
+	void requestLicense(const QString &software, const QString &username, const QString &password);
 	
 signals:
-	void licenseReceived(int premend);
-	
+	void licenseReceived(int curtime, int premend);
+	void errorsReceived(QJsonArray error_codes);
+
 protected:
 	QUrl getApiEndpoint();
+	QString certificateChecksum(QCryptographicHash::Algorithm algorithm);
 	void processJsonResponse(QJsonDocument json);
 };
 
