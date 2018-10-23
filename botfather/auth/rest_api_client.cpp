@@ -6,32 +6,10 @@
 #include <QUrlQuery>
 #include <QCryptographicHash>
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-#include <QRandomGenerator>
-#define GenerateRandomIntInRange(MIN, MAX) QRandomGenerator::global()->bounded(MIN, MAX);
-#else
-#define ImageSizeInBytes(qimage) static_cast<int>(qimage.sizeInBytes())
-#define GenerateRandomIntInRange(MIN, MAX) qrand() % ((MAX + 1) - MIN) + MIN
-#endif
-
-RestApiClient::RestApiClient(QString software_slug, QString software_version, QString version_secret, QObject *parent)
-	: QObject(parent)
-	, software_slug(software_slug)
-	, software_version(software_version)
-	, version_secret(version_secret)
-	, magic(generateMagic())
+RestApiClient::RestApiClient(QObject *parent) : QObject(parent)
 {
 	network_manager = new QNetworkAccessManager(this);
-	connect(network_manager, SIGNAL(finished(QNetworkReply*)), SLOT(networkReplyReceived(QNetworkReply*)));
-}
-
-QUrlQuery RestApiClient::preparePostData()
-{
-	QUrlQuery post_data;
-	post_data.addQueryItem("software", software_slug);
-	post_data.addQueryItem("version", software_version);
-	post_data.addQueryItem("magic", magic);
-	return post_data;
+	connect(network_manager, &QNetworkAccessManager::finished, this, &RestApiClient::replyReceived);
 }
 
 void RestApiClient::sendPostData(QUrlQuery post_data)
@@ -41,51 +19,63 @@ void RestApiClient::sendPostData(QUrlQuery post_data)
 	network_manager->post(network_request, post_data.toString(QUrl::FullyEncoded).toUtf8());
 }
 
-void RestApiClient::networkReplyReceived(QNetworkReply *reply)
+void RestApiClient::replyReceived(QNetworkReply* reply)
 {
-	// Check for network errors
 	if (reply->error() != QNetworkReply::NoError){
 		emit networkError(reply->error());
 		reply->deleteLater();
 		return;
-	}	
-	
-	// Turn the replys plain text into json and free it's ressources.
+	}
+
+	if (!verifyReply(reply)) {
+		emit networkError(QNetworkReply::SslHandshakeFailedError);
+		reply->deleteLater();
+		return;
+	}
+
 	QByteArray response_data = reply->readAll();
 	QJsonDocument json = QJsonDocument::fromJson(response_data);
 	reply->deleteLater();
-	
-	QJsonArray errors = json.object().value("errors").toArray();
-	if (!errors.isEmpty()){
-		// => There are api related errors.
-		emit restApiError(errors);
-		return;
-	}
-	
+
 	processJsonResponse(json);
 }
 
-QString RestApiClient::generateMagic() const
+bool RestApiClient::verifyReply(QNetworkReply* reply)
 {
-	const QString possibleCharacters("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
-	QString random_string;
-	for (int i = 0; i < MAGIC_LENGTH; ++i) {
-        int index = GenerateRandomIntInRange(0, possibleCharacters.length());
-		QChar next_char = possibleCharacters.at(index);
-		random_string.append(next_char);
-	}
-	return random_string;
-}
+	QByteArray pem_cert = reply->sslConfiguration().peerCertificate().toPem();
 
-bool RestApiClient::verifyHash(QString hashhex, QVector<QString> data_list) const
-{
-	QCryptographicHash hash(QCryptographicHash::Algorithm::Sha256);
-	hash.addData(software_slug.toUtf8());
-	hash.addData(software_version.toUtf8());
-	hash.addData(version_secret.toUtf8());
-	hash.addData(magic.toUtf8());
-	for (QString data : data_list) {
-		hash.addData(data.toUtf8());
+	static const QVector<QCryptographicHash::Algorithm> algorithms = {
+		QCryptographicHash::Md4,
+		QCryptographicHash::Md5,
+		QCryptographicHash::Sha1,
+		QCryptographicHash::Sha224,
+		QCryptographicHash::Sha256,
+		QCryptographicHash::Sha384,
+		QCryptographicHash::Sha512,
+		QCryptographicHash::Sha3_224,
+		QCryptographicHash::Sha3_256,
+		QCryptographicHash::Sha3_384,
+		QCryptographicHash::Sha3_512,
+		QCryptographicHash::Keccak_224,
+		QCryptographicHash::Keccak_256,
+		QCryptographicHash::Keccak_384,
+		QCryptographicHash::Keccak_512,
+	};
+
+	for (const QCryptographicHash::Algorithm &algorithm : algorithms)
+	{
+		QString checksum = certificateChecksum(algorithm);
+		if (checksum.isEmpty())
+		{
+			continue;
+		}
+
+		QString hash = QCryptographicHash::hash(pem_cert, algorithm).toHex();
+		if (hash != checksum)
+		{
+			return false;
+		}
 	}
-	return hash.result().toHex() == hashhex;
+
+	return true;
 }
