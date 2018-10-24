@@ -36,13 +36,17 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	connect(stop_hotkey, &QHotkey::activated, this, &ControlWindow::stopBot);
 	updateHotkeys();
 
-	connect(ui->actionShowLogin, &QAction::triggered, [&]() {
-		AuthDialog auth_dialog;
-		connect(&auth_dialog, &AuthDialog::license, this, &ControlWindow::adjustLimitations);
-		auth_dialog.exec();
-	});
+	adjustLimitations(false);
 
-	// TODO: Trigger auto login trial. On result enable the account menu
+	AuthDialog* auth_dialog = new AuthDialog(this);
+	connect(auth_dialog, &AuthDialog::authenticated, this, &ControlWindow::onLoggedIn);
+	connect(auth_dialog, &AuthDialog::triedAutoLogin, [&]() {
+		ui->menuAccount->setEnabled(true); // Was initialy disabled in the .ui file
+	});
+	QTimer::singleShot(0, auth_dialog, &AuthDialog::tryAutoLogin); // do not block the constructor
+
+	connect(ui->actionShowLogin, &QAction::triggered, auth_dialog, &AuthDialog::exec);
+	connect(ui->actionLogout, &QAction::triggered, this, &ControlWindow::onLogout);
 
 	connect(ui->actionSettings, &QAction::triggered, config_dialog, &ConfigDialog::exec);
 	connect(ui->actionAndroid, &QAction::triggered, android_dialog, &AndroidDialog::exec);
@@ -53,9 +57,6 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 
 	connect(ui->actionStart, &QAction::triggered, this, &ControlWindow::startBot);
 	connect(ui->actionStop, &QAction::triggered, this, &ControlWindow::stopBot);
-
-	// TODO: Disconnect this, if the user has an premium account
-	connect(&runtimer, &QTimer::timeout, this, &ControlWindow::stopBot);
 
 	// File Menu Actions
 	MtoolWrapper* mtool = new MtoolWrapper(this);
@@ -73,10 +74,32 @@ ControlWindow::~ControlWindow()
     delete browser_window; // Has no parent
 }
 
-void ControlWindow::adjustLimitations(int curtime, int premend)
+void ControlWindow::adjustLimitations(bool is_premium)
 {
-	// TODO: actually adjust the limitations
-	qDebug() << curtime << premend;
+	if (is_premium)
+	{
+		ui->actionStatus->setText("Status: 1 bot, no time limit");
+		disconnect(&runtimer, &QTimer::timeout, this, &ControlWindow::stopBot);
+	}
+	else
+	{
+		ui->actionStatus->setText("Status: 1 bot, stops after 90 minutes");
+		connect(&runtimer, &QTimer::timeout, this, &ControlWindow::stopBot);
+	}
+}
+
+void ControlWindow::onLoggedIn(int curtime, int premend)
+{
+	adjustLimitations(premend > curtime);
+	ui->actionLogout->setVisible(true);
+	ui->actionShowLogin->setVisible(false);
+}
+
+void ControlWindow::onLogout()
+{
+	adjustLimitations(false);
+	ui->actionShowLogin->setVisible(true);
+	ui->actionLogout->setVisible(false);
 }
 
 void ControlWindow::startBot()
@@ -98,10 +121,10 @@ void ControlWindow::startBot()
 		appendMessage("No script selected.", Bot::LogSource::System);
 		return;
 	}
-	
-	// Disable start and stop button while we setup the bot.
+
 	ui->actionStart->setEnabled(false);
 	ui->actionStop->setEnabled(false);
+	ui->actionLogout->setEnabled(false);
 
 	bot_thread = new QThread;
 	bot = new Bot(script_path);
@@ -153,6 +176,7 @@ void ControlWindow::botStopped(bool without_errors)
 	stop_hotkey->setRegistered(false);
 	ui->actionStart->setEnabled(true);
 	ui->actionStop->setEnabled(false);
+	ui->actionLogout->setEnabled(true);
 
 	stopWavSound();
 	
@@ -246,20 +270,6 @@ void ControlWindow::on_actionAbout_triggered()
 void ControlWindow::on_actionAboutQt_triggered()
 {
 	QMessageBox::aboutQt(this);
-}
-
-void ControlWindow::on_actionLogout_triggered()
-{
-	if (bot && bot->isRunning()) {
-		QMessageBox::warning(
-			this,
-			"Can't logout while a script is running",
-			"Please stop the running script before logging out. \n"
-			"One can't logout while a script is running. Thanks."
-		);
-		return;
-	}
-	emit loggedOut();
 }
 
 void ControlWindow::playWavSound(QString path_to_wav_file)

@@ -25,11 +25,10 @@ public:
 	explicit ControlWindow(QWidget *parent = nullptr);
 	~ControlWindow();
 	
-signals:
-	void loggedOut();
-	
 public slots:
-	void adjustLimitations(int curtime, int premend);
+	void adjustLimitations(bool is_premium);
+	void onLoggedIn(int curtime, int premend);
+	void onLogout();
 	void startBot();
 	void botStarted();
 	void stopBot();
@@ -39,7 +38,6 @@ public slots:
 	void on_actionScripts_triggered();
 	void on_actionAbout_triggered();
 	void on_actionAboutQt_triggered();
-	void on_actionLogout_triggered();
 	void playWavSound(QString path_to_wav_file);
 	void stopWavSound();
 	void updateHotkeys();

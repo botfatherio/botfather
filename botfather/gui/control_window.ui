@@ -92,10 +92,15 @@
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuAccount">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="title">
      <string>Acco&amp;unt</string>
     </property>
+    <addaction name="actionStatus"/>
     <addaction name="actionShowLogin"/>
+    <addaction name="actionLogout"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuAccount"/>
@@ -234,12 +239,10 @@
   </action>
   <action name="actionLogout">
    <property name="text">
-    <string>Logout</string>
+    <string>L&amp;ogout</string>
    </property>
-  </action>
-  <action name="actionPremiumPlans">
-   <property name="text">
-    <string>Premium Plans</string>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionExit">
@@ -259,8 +262,22 @@
    </property>
   </action>
   <action name="actionShowLogin">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>&amp;Login</string>
+   </property>
+  </action>
+  <action name="actionStatus">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Status</string>
+   </property>
+   <property name="toolTip">
+    <string>Status</string>
    </property>
   </action>
  </widget>

@@ -20,7 +20,8 @@ public:
 	~AuthDialog();
 	
 signals:
-	void license(int curtime, int premend);
+	void authenticated(int curtime, int premend);
+	void triedAutoLogin();
 	
 public slots:
 	void allowInput(bool input_allowed);
