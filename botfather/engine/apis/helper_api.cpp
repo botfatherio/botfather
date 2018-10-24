@@ -54,7 +54,10 @@ QStringList HelperAPI::qScriptValueToStringList(const QScriptValue& value, bool 
 		while (value_it.hasNext())
 		{
 			value_it.next();
-			array_strings << qScriptValueToStringList(value_it.value(), true);
+			if (value_it.hasNext()) // Prevent printing of the last array item, which is its size
+			{
+				array_strings << qScriptValueToStringList(value_it.value(), true);
+			}
 		}
 
 		strings << "[" + array_strings.join(", ") + "]";
