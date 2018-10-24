@@ -29,6 +29,7 @@ signals:
 	void loggedOut();
 	
 public slots:
+	void adjustLimitations(int curtime, int premend);
 	void startBot();
 	void botStarted();
 	void stopBot();

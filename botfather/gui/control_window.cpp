@@ -11,6 +11,7 @@
 #include "config_dialog.h"
 #include "browser_window.h"
 #include "android_dialog.h"
+#include "auth_dialog.h"
 #include "../settings.h"
 #include "../tools/mtoolwrapper.h"
 
@@ -34,6 +35,14 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	stop_hotkey = new QHotkey();
 	connect(stop_hotkey, &QHotkey::activated, this, &ControlWindow::stopBot);
 	updateHotkeys();
+
+	connect(ui->actionShowLogin, &QAction::triggered, [&]() {
+		AuthDialog auth_dialog;
+		connect(&auth_dialog, &AuthDialog::license, this, &ControlWindow::adjustLimitations);
+		auth_dialog.exec();
+	});
+
+	// TODO: Trigger auto login trial. On result enable the account menu
 
 	connect(ui->actionSettings, &QAction::triggered, config_dialog, &ConfigDialog::exec);
 	connect(ui->actionAndroid, &QAction::triggered, android_dialog, &AndroidDialog::exec);
@@ -62,6 +71,12 @@ ControlWindow::~ControlWindow()
 	delete ui;
 	delete stop_hotkey;
     delete browser_window; // Has no parent
+}
+
+void ControlWindow::adjustLimitations(int curtime, int premend)
+{
+	// TODO: actually adjust the limitations
+	qDebug() << curtime << premend;
 }
 
 void ControlWindow::startBot()

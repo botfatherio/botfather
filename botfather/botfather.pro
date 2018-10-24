@@ -97,6 +97,7 @@ HEADERS += \
     ./gui/browser_window.h \
     ./gui/config_dialog.h \
     ./gui/control_window.h \
+    ./gui/auth_dialog.h \
     ./settings.h \
     ./engine/apis/abstract_api.h \
     ./engine/types/blob_tpl.h \
@@ -136,6 +137,7 @@ SOURCES += \
     ./gui/browser_window.cpp \
     ./gui/config_dialog.cpp \
     ./gui/control_window.cpp \
+    ./gui/auth_dialog.cpp \
     ./main.cpp \
     ./engine/apis/abstract_api.cpp \
     ./engine/types/blob_tpl.cpp \

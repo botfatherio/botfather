@@ -1,43 +1,42 @@
-#ifndef BFP__GUI__AUTH_DIALOG_H
-#define BFP__GUI__AUTH_DIALOG_H
+#ifndef BFP_GUI_AUTH_DIALOG_H
+#define BFP_GUI_AUTH_DIALOG_H
 
 #include <QDialog>
 #include <QNetworkReply>
 #include <QJsonArray>
 
-namespace Ui {
-class AuthDialog;
-}
+class LicenseApiClient;
 
-class Authenticator;
+namespace Ui {
+	class AuthDialog;
+}
 
 class AuthDialog : public QDialog
 {
 	Q_OBJECT
 	
 public:
-	explicit AuthDialog(QString software_slug, QString version_string, QString version_secret, QWidget *parent = 0);
+	explicit AuthDialog(QWidget *parent = nullptr);
 	~AuthDialog();
 	
 signals:
-	void authenticated(int curtime, int premend, bool stable);
+	void license(int curtime, int premend);
 	
 public slots:
 	void allowInput(bool input_allowed);
 	
 	void tryAutoLogin();
-	void on_login_pressed();
-	void on_remember_me_toggled(bool checked);
-	void closeEvent(QCloseEvent *event);
-	
+	void login();
+	void rememberMe(bool checked);
+
 	void onNetworkError(QNetworkReply::NetworkError network_error);
-	void onRemoteApiError(QJsonArray error_codes);
-	void onIntegrityError();
-	void onAuthenticated(int curtime, int premend, bool stable);
-		
+	void onErrorsReceived(QJsonArray error_codes);
+	void onLicenseReceived(int curtime, int premend);
+
 private:
-	Ui::AuthDialog *ui;
-	Authenticator *authenticator;
+	Ui::AuthDialog* ui;
+	LicenseApiClient* license_api;
+	QString software = "botfather";
 };
 
-#endif // BFP__GUI__AUTH_DIALOG_H
+#endif // BFP_GUI_AUTH_DIALOG_H
