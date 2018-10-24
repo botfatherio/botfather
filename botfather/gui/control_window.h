@@ -9,9 +9,7 @@
 
 #include "../engine/bot.h"
 
-class ConfigDialog;
 class BrowserWindow;
-class AndroidDialog;
 
 namespace Ui {
 	class ControlWindow;
@@ -47,9 +45,7 @@ protected:
 	
 private:
 	Ui::ControlWindow *ui;
-	ConfigDialog *config_dialog;
 	BrowserWindow *browser_window;
-	AndroidDialog *android_dialog;
 	Bot* bot = nullptr;
 	QThread *bot_thread = nullptr;
 	QMediaPlayer *media_player;
