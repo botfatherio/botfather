@@ -25,9 +25,25 @@
      </property>
      <widget class="QWidget" name="tab_3">
       <attribute name="title">
-       <string>Shortcuts</string>
+       <string>General</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_8">
+       <item>
+        <widget class="QGroupBox" name="groupBox_4">
+         <property name="title">
+          <string>Developer options</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_9">
+          <item>
+           <widget class="QCheckBox" name="devmode">
+            <property name="text">
+             <string>Wizard mode</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
        <item>
         <widget class="QGroupBox" name="groupBox">
          <property name="title">

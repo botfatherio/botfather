@@ -13,7 +13,7 @@ ConfigDialog::ConfigDialog(QWidget *parent) :
 	ui(new Ui::ConfigDialog)
 {
 	ui->setupUi(this);
-	this->loadConfig();
+	loadConfig();
 
 	QSettings settings;
 	QString flash_so = settings.value(browser::options::FLASH_SO).toString();
@@ -21,12 +21,12 @@ ConfigDialog::ConfigDialog(QWidget *parent) :
 
 	QFileInfo flash_so_info(flash_so);
 	if (!flash_so_info.exists() || !flash_so_info.isFile()) {
-		
+		// TODO: eventually show an error message or get rid of it entirely
 	}
 	
 	QFileInfo flash_manifest_info(flash_manifest);
 	if (!flash_manifest_info.exists() || !flash_manifest_info.isFile()) {
-		
+		// TODO: eventually show an error message or get rid of it entirely
 	}
 	
 #ifdef Q_OS_LINUX
@@ -48,26 +48,28 @@ ConfigDialog::~ConfigDialog()
 void ConfigDialog::saveConfig()
 {
 	QSettings s;
-	s.setValue(browser::options::WIDTH, this->ui->browser_width->value());
-	s.setValue(browser::options::HEIGHT, this->ui->browser_height->value());
-	s.setValue(browser::options::FLASH_SO, this->ui->flash_so->text());
-	s.setValue(browser::options::FLASH_MANIFEST, this->ui->flash_manifest->text());
-	s.setValue(browser::options::USE_SYSTEM_FLASH, this->ui->use_system_flash->isChecked());
-	s.setValue(android::options::ADB_BINARY, this->ui->adb_binary->text());
+	s.setValue(browser::options::WIDTH, ui->browser_width->value());
+	s.setValue(browser::options::HEIGHT, ui->browser_height->value());
+	s.setValue(browser::options::FLASH_SO, ui->flash_so->text());
+	s.setValue(browser::options::FLASH_MANIFEST, ui->flash_manifest->text());
+	s.setValue(browser::options::USE_SYSTEM_FLASH, ui->use_system_flash->isChecked());
+	s.setValue(android::options::ADB_BINARY, ui->adb_binary->text());
 	s.setValue(general::options::STOP_SHORTCUT, ui->stop_shortcut->keySequence().toString());
+	s.setValue(general::options::DEVMODE, ui->devmode->isChecked());
 	emit configSaved();
 }
 
 void ConfigDialog::loadConfig()
 {
 	QSettings s;
-	this->ui->browser_width->setValue(s.value(browser::options::WIDTH, browser::fallback::WIDTH).toInt());
-	this->ui->browser_height->setValue(s.value(browser::options::HEIGHT, browser::fallback::HEIGHT).toInt());
-	this->ui->flash_so->setText(s.value(browser::options::FLASH_SO).toString());
-	this->ui->flash_manifest->setText(s.value(browser::options::FLASH_MANIFEST).toString());
-	this->ui->use_system_flash->setChecked(s.value(browser::options::USE_SYSTEM_FLASH, browser::fallback::USE_SYSTEM_FLASH).toBool());
-	this->ui->adb_binary->setText(s.value(android::options::ADB_BINARY).toString());
+	ui->browser_width->setValue(s.value(browser::options::WIDTH, browser::fallback::WIDTH).toInt());
+	ui->browser_height->setValue(s.value(browser::options::HEIGHT, browser::fallback::HEIGHT).toInt());
+	ui->flash_so->setText(s.value(browser::options::FLASH_SO).toString());
+	ui->flash_manifest->setText(s.value(browser::options::FLASH_MANIFEST).toString());
+	ui->use_system_flash->setChecked(s.value(browser::options::USE_SYSTEM_FLASH, browser::fallback::USE_SYSTEM_FLASH).toBool());
+	ui->adb_binary->setText(s.value(android::options::ADB_BINARY).toString());
 	ui->stop_shortcut->setKeySequence(QKeySequence::fromString(s.value(general::options::STOP_SHORTCUT).toString()));
+	ui->devmode->setChecked(s.value(general::options::DEVMODE, general::fallback::DEVMODE).toBool());
 	emit configLoaded();
 }
 

@@ -8,9 +8,11 @@ namespace general
 {
 	namespace options {
 		static const QString STOP_SHORTCUT = "shortcuts/stop_shortcut";
+		static const QString DEVMODE = "development/devmode";
 	}
 	namespace fallback
 	{
+		static const bool DEVMODE = false;
 	}
 }
 
