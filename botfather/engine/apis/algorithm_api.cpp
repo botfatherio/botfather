@@ -1,9 +1,10 @@
-#include "path_finder_api.h"
+#include "algorithm_api.h"
 #include <QScriptValueIterator>
 #include <QMapIterator>
 #include <QDebug>
+#include "../modules/algorithm/dijkstra.h"
 
-QScriptValue PathFinderApi::findShortestPath(const QScriptValue &graph_object, const QString &start, const QString &dest)
+QScriptValue AlgorithmApi::dijkstra(const QScriptValue &graph_object, const QString &start, const QString &dest)
 {
 	// The script value must be an object. The objects properties are the names of the graphs nodes.
 	// The properties/nodes values are the nodes edges. Those must be objects aswell.

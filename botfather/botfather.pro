@@ -72,7 +72,7 @@ HEADERS += \
     ./engine/apis/helper_api.h \
     ./engine/apis/vision_api.h \
     ./engine/bot.h \
-    ./engine/modules/algorithms/dijkstra.h \
+    ./engine/modules/algorithm/dijkstra.h \
     ./engine/modules/android/adb_device_info.h \
     ./engine/modules/android/adb_wrapper.h \
     ./engine/modules/android/android_settings.h \
@@ -102,7 +102,7 @@ HEADERS += \
     ./engine/apis/abstract_api.h \
     ./engine/types/blob_tpl.h \
     ./engine/prototypes/blob_tpl_prototype.h \
-    ./engine/apis/path_finder_api.h \
+    ./engine/apis/algorithm_api.h \
     ./engine/prototypes/margins_prototype.h \
     ./engine/prototypes/url_prototype.h \
     engine/prototypes/timer_prototype.h \
@@ -116,7 +116,7 @@ SOURCES += \
     ./engine/apis/helper_api.cpp \
     ./engine/apis/vision_api.cpp \
     ./engine/bot.cpp \
-    ./engine/modules/algorithms/dijkstra.cpp \
+    ./engine/modules/algorithm/dijkstra.cpp \
     ./engine/modules/android/adb_device_info.cpp \
     ./engine/modules/android/adb_wrapper.cpp \
     ./engine/modules/browser/browser.cpp \
@@ -142,7 +142,7 @@ SOURCES += \
     ./engine/apis/abstract_api.cpp \
     ./engine/types/blob_tpl.cpp \
     ./engine/prototypes/blob_tpl_prototype.cpp \
-    ./engine/apis/path_finder_api.cpp \
+    ./engine/apis/algorithm_api.cpp \
     ./engine/prototypes/margins_prototype.cpp \
     ./engine/prototypes/url_prototype.cpp \
     engine/prototypes/timer_prototype.cpp \

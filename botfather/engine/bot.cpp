@@ -20,7 +20,7 @@
 #include "apis/browser_api.h"
 #include "apis/android_api.h"
 #include "apis/desktop_api.h"
-#include "apis/path_finder_api.h"
+#include "apis/algorithm_api.h"
 #include "modules/browser/browser.h"
 
 Bot::Bot(QString script_path) : script_path(script_path)
@@ -80,7 +80,7 @@ void Bot::runScript()
 	REGISTER_API(script_engine, this, DesktopAPI, "Desktop");
 	REGISTER_API(script_engine, this, HelperAPI, "Helper");
 	REGISTER_API(script_engine, this, VisionAPI, "Vision");
-	REGISTER_API(script_engine, this, PathFinderApi, "PathFinder");
+	REGISTER_API(script_engine, this, AlgorithmApi, "Algorithm");
 	
 	REGISTER_PROTO(script_engine, TimerPrototype, QElapsedTimer, "Timer");
 	REGISTER_PROTO(script_engine, BlobTplPrototype, BlobTpl, "BlobTpl");
