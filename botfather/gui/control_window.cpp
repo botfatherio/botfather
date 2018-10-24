@@ -202,6 +202,13 @@ void ControlWindow::appendMessage(const QString &message, const Bot::LogSource &
 	QString time(QDateTime::currentDateTime().toString("HH:mm:ss"));
 	QString color, source_name;
 
+	QSettings settings;
+	if (source == Bot::LogSource::Debug && !settings.value(general::options::DEVMODE, general::fallback::DEVMODE).toBool())
+	{
+		// Do not show debug message when not in debug mode
+		return;
+	}
+
 	switch (source)
 	{
 	case Bot::LogSource::System:
