@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 	QCoreApplication::setOrganizationName("botfather.io");
 	QCoreApplication::setOrganizationDomain("botfather.io");
 	QCoreApplication::setApplicationName("Botfather");
-	QCoreApplication::setApplicationVersion("4.3.0");
+	QCoreApplication::setApplicationVersion("4.3.1");
 	QSettings::setDefaultFormat(QSettings::IniFormat);
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
