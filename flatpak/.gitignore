@@ -1,3 +1,4 @@
 # Flatpak
-build-dir
+build-*
+repo-*
 .flatpak-builder
