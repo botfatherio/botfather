@@ -2,7 +2,7 @@
 Type=Application
 Name=Botfather Nightly
 Comment=Create and run Android, Browser and Desktop bots
-Exec=io.botfather.Nightly
+Exec=botfather
 Icon=io.botfather.Nightly
-Categories=Utility;Development;Education;
+Categories=Development;
 Keywords=botfather;android;browser;desktop;bot;framework;
