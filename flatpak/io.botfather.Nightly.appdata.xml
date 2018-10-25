@@ -1,30 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<application>
-	<id type="desktop">io.botfather.Nightly</id>
-	<name>Botfather Nightly</name>
-	<developer_name>Botfather</developer_name>
-	<summary>Universal automation framework</summary>
+<!-- Copyright 2018 The Botfather Developers -->
+<component type="desktop-application">
+	<id>io.botfather.Nightly.desktop</id>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>LicenseRef-proprietary=https://botfather.io/docs/legal/tos/</project_license>
 	<url type="homepage">https://botfather.io</url>
+	<name>Botfather Nightly</name>
+	<summary>Universal automation framework</summary>
+	
+	<categories>
+    	<category>Development</category>
+    	<category>Utility</category>
+	</categories>
+
 	<description>
 		<p>With botfather you can create and run automation bots with ease.
 		Automate your favorite Android, Browser and Desktio applications using bot scripts.
 		Find scripts online our create your own using Botfathers convenient APIs.
 		Botfather has image recognition, custom types and many more already inbuild.</p>
 	</description>
+
 	<screenshots>
-		<screenshot>
-			<image type="source">https://botfather.io/static/metadata/flatpak/main-window.png</image>
+		<screenshot type="default">
+			<caption>The Botfather main window</caption>
+			<image>https://botfather.io/static/metadata/flatpak/main-window.png</image>
 		</screenshot>
 		<screenshot>
-			<image type="source">https://botfather.io/static/metadata/flatpak/android-window.png</image>
+			<caption>Android devices dialog</caption>
+			<image>https://botfather.io/static/metadata/flatpak/android-window.png</image>
 		</screenshot>
 		<screenshot>
-			<image type="source">https://botfather.io/static/metadata/flatpak/browser-window.png</image>
+			<caption>Window showing the integrated browser</caption>
+			<image>https://botfather.io/static/metadata/flatpak/browser-window.png</image>
 		</screenshot>
 	</screenshots>
+
 	<releases>
-		<release date="2018-10-16" version="4.3.0"/>
+		<release date="2018-10-16" version="4.3.0"></release>
 	</releases>
-</application>
+</component>
