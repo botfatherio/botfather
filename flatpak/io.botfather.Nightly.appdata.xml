@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application>
-	<id type="desktop">io.botfather.Botfather</id>
-	<name>Botfather</name>
+	<id type="desktop">io.botfather.Nightly</id>
+	<name>Botfather Nightly</name>
 	<developer_name>Botfather</developer_name>
 	<summary>Universal automation framework</summary>
 	<metadata_license>CC0-1.0</metadata_license>

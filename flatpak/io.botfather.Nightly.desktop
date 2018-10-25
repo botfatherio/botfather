@@ -1,8 +1,8 @@
 [Desktop Entry]
 Type=Application
-Name=Botfather
+Name=Botfather Nightly
 Comment=Create and run Android, Browser and Desktop bots
-Exec=io.botfather.Botfather
-Icon=io.botfather.Botfather
+Exec=io.botfather.Nightly
+Icon=io.botfather.Nightly
 Categories=Utility;Development;Education;
 Keywords=botfather;android;browser;desktop;bot;framework;

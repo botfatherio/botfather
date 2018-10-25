@@ -1,4 +1,4 @@
-app-id: io.botfather.Botfather
+app-id: io.botfather.Nightly
 runtime: org.kde.Platform
 runtime-version: '5.11'
 sdk: org.kde.Sdk
@@ -48,16 +48,16 @@ modules:
   - name: appdata
     buildsystem: simple
     build-commands:
-      - install -Dm644 io.botfather.Botfather-64.png /app/share/icons/hicolor/64x64/apps/io.botfather.Botfather.png
-      - install -Dm644 io.botfather.Botfather-128.png /app/share/icons/hicolor/128x128/apps/io.botfather.Botfather.png
-      - install -Dm644 io.botfather.Botfather.appdata.xml /app/share/appdata/io.botfather.Botfather.appdata.xml
-      - install -Dm644 io.botfather.Botfather.desktop /app/share/applications/io.botfather.Botfather.desktop
+      - install -Dm644 io.botfather.Nightly-64.png /app/share/icons/hicolor/64x64/apps/io.botfather.Nightly.png
+      - install -Dm644 io.botfather.Nightly-128.png /app/share/icons/hicolor/128x128/apps/io.botfather.Nightly.png
+      - install -Dm644 io.botfather.Nightly.appdata.xml /app/share/appdata/io.botfather.Nightly.appdata.xml
+      - install -Dm644 io.botfather.Nightly.desktop /app/share/applications/io.botfather.Nightly.desktop
     sources:
       - type: file
-        path: io.botfather.Botfather-64.png
+        path: io.botfather.Nightly-64.png
       - type: file
-        path: io.botfather.Botfather-128.png
+        path: io.botfather.Nightly-128.png
       - type: file
-        path: io.botfather.Botfather.appdata.xml
+        path: io.botfather.Nightly.appdata.xml
       - type: file
-        path: io.botfather.Botfather.desktop
+        path: io.botfather.Nightly.desktop
