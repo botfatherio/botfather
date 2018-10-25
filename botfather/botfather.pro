@@ -154,4 +154,5 @@ FORMS += \
     ./gui/config_dialog.ui \
     ./gui/control_window.ui
 RESOURCES += \
-    ./res/gui.qrc
+    ./res/gui.qrc \
+    res/botfather.qrc

@@ -22,7 +22,7 @@ signals:
 	void networkError(QNetworkReply::NetworkError network_error);
 
 protected:
-	virtual QUrl getApiEndpoint() = 0;
+	virtual void prepareRequest(QNetworkRequest &network_request) = 0;
 	void sendPostData(QUrlQuery post_data);
 	virtual QString certificateChecksum(QCryptographicHash::Algorithm) = 0;
 	bool verifyReply(QNetworkReply* reply);

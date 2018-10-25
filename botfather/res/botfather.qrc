@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/botfather">
+        <file>certs/fullchain3.pem</file>
+        <file>certs/letsencryptauthorityx3.pem</file>
+        <file>certs/letsencryptauthorityx4.pem</file>
+        <file>certs/isrgrootx1.pem</file>
+    </qresource>
+</RCC>

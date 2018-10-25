@@ -2,6 +2,7 @@
 #include <QUrlQuery>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QFile>
 
 void LicenseApiClient::requestLicense(const QString &software, const QString &username, const QString &password)
 {
@@ -12,9 +13,33 @@ void LicenseApiClient::requestLicense(const QString &software, const QString &us
 	sendPostData(post_data);
 }
 
-QUrl LicenseApiClient::getApiEndpoint()
+void LicenseApiClient::prepareRequest(QNetworkRequest &network_request)
 {
-	return QUrl("https://botfather.io/api/v7/license/");
+	static const QStringList cert_file_paths({
+		":/botfather/certs/fullchain3.pem",
+		":/botfather/certs/letsencryptauthorityx3.pem",
+		":/botfather/certs/letsencryptauthorityx4.pem",
+		":/botfather/certs/isrgrootx1.pem",
+	});
+
+	// Only use certs we trust during the ssl handshake. This includes our own api fullchain cert
+	// and lets encrypts self signed certs. https://letsencrypt.org/certificates/
+
+	QList<QSslCertificate> trusted_cas;
+
+	for (const QString &path : cert_file_paths)
+	{
+		QFile cert_file(path);
+		cert_file.open(QIODevice::ReadOnly);
+		QSslCertificate cert(&cert_file);
+		trusted_cas << cert;
+	}
+
+	QSslConfiguration ssl_config = QSslConfiguration::defaultConfiguration();
+	ssl_config.setCaCertificates(trusted_cas);
+
+	network_request.setSslConfiguration(ssl_config);
+	network_request.setUrl(QUrl("https://botfather.io/api/v7/license/"));
 }
 
 QString LicenseApiClient::certificateChecksum(QCryptographicHash::Algorithm algorithm)

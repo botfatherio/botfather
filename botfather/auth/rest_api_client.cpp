@@ -10,11 +10,14 @@ RestApiClient::RestApiClient(QObject *parent) : QObject(parent)
 {
 	network_manager = new QNetworkAccessManager(this);
 	connect(network_manager, &QNetworkAccessManager::finished, this, &RestApiClient::replyReceived);
+
+
 }
 
 void RestApiClient::sendPostData(QUrlQuery post_data)
 {
-	QNetworkRequest network_request(getApiEndpoint());
+	QNetworkRequest network_request;
+	prepareRequest(network_request);
 	network_request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 	network_manager->post(network_request, post_data.toString(QUrl::FullyEncoded).toUtf8());
 }

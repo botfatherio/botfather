@@ -18,7 +18,7 @@ signals:
 	void errorsReceived(QJsonArray error_codes);
 
 protected:
-	QUrl getApiEndpoint();
+	void prepareRequest(QNetworkRequest &network_request);
 	QString certificateChecksum(QCryptographicHash::Algorithm algorithm);
 	void processJsonResponse(QJsonDocument json);
 };
