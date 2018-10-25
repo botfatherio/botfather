@@ -35,6 +35,10 @@
 		</screenshot>
 	</screenshots>
 
+	<content_rating type="oars-1.0">
+		<content_attribute id="money-purchasing">mild</content_attribute>
+	</content_rating>
+
 	<releases>
 		<release date="2018-10-16" version="4.3.0"></release>
 	</releases>
