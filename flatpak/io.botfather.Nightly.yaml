@@ -6,6 +6,7 @@ command: botfather
 tags:
   - proprietary
 finish-args:
+  - "--filesystem=home:rw" # let user use their scripts properly
   - "--require-version=0.11.4" # fixes kde file saving
   - "--socket=x11" # show windows using X11
   - "--share=ipc" # share IPC namespace with the host (necessary for X11)
