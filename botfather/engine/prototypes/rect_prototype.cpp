@@ -61,7 +61,10 @@ int RectPrototype::getLeft() const
 
 int RectPrototype::getRight() const
 {
-	return THIS_RECT().right();
+	// Note that for historical reasons this function returns left() + width() - 1;
+	// use x() + width() to retrieve the true x-coordinate.
+	QRect rect = THIS_RECT();
+	return rect.left() + rect.width();
 }
 
 int RectPrototype::getBottom() const
