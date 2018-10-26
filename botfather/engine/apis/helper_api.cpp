@@ -63,8 +63,9 @@ QStringList HelperAPI::qScriptValueToStringList(const QScriptValue& value, bool 
 		strings << "[" + array_strings.join(", ") + "]";
 	}
 
-	else if (value.isObject())
+	else if (value.isObject() && !value.property("toString").isFunction())
 	{
+		// Print [object] if the object has no toString method to represent it otherwise
 		strings << "[object]";
 	}
 
