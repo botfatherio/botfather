@@ -182,5 +182,5 @@ QPoint RectPrototype::randomPoint() const
 QString RectPrototype::toString() const
 {
 	QRect rect = THIS_RECT();
-	return QString("Rect(left: %1, right: %2, width: %3, height: %4)").arg(rect.left()).arg(rect.top()).arg(rect.width()).arg(rect.height());
+	return QString("Rect(left: %1, top: %2, width: %3, height: %4)").arg(rect.left()).arg(rect.top()).arg(rect.width()).arg(rect.height());
 }
