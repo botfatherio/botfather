@@ -1,9 +1,6 @@
 #include <QApplication>
 #include <QSettings>
 #include <QTime>
-#include <QStandardPaths>
-#include <QProcess>
-#include <QFileInfo>
 #include <QMessageBox>
 #include "gui/control_window.h"
 #include "engine/modules/browser/browser.h"
@@ -75,52 +72,6 @@ int main(int argc, char *argv[])
 #if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
     // qrand needs to be seeded once per thread
     qsrand(static_cast<uint>(QTime::currentTime().msec()));
-#endif
-
-#ifdef Q_OS_LINUX
-	// On linux the desktop api needs permission to write to /dev/uinput to generate
-	// authentic not ignore input events. On Ubuntu the file is writable (660). On other
-	// systems it might not be, so we must check that.	
-	
-	QFileInfo fi("/dev/uinput");
-	if (!fi.isWritable()) {
-		QString pkexec_path = QStandardPaths::findExecutable("pkexec", {"/usr/bin/"});
-		
-		QMessageBox *box = new QMessageBox;
-		box->setWindowTitle("Permissions required");
-		box->setWindowIcon(QIcon(":/gui/logo_v2.png"));
-		box->setIcon(QMessageBox::Information);
-		box->setStandardButtons(QMessageBox::Ignore | QMessageBox::Ok);
-		box->setDefaultButton(QMessageBox::Ok);
-		
-		box->setDetailedText(
-			"Botfathers Desktop API uses the uinput linux kernel module to generate keyboard and mouse input events. "
-			"Thus botfather requires write permission on the '/dev/uinput' file.\n"
-			"On some distributions that file is writable by default. On your machine it's currently not writable. "
-			"The command 'chmod 662 /dev/uinput' makes it writable.\n"
-			"When 'pkexec' is installed on your system botfather can execute the command for you. "
-			"Otherwise you have to execute it manually from a command line.\n"
-			"If you don't want to run scripts controlling your desktop anyway, you don't have to make that file writable."
-		);
-		
-		if (pkexec_path.isEmpty()) {
-			box->setText(
-				"Botfather requires write permissions on '/dev/uinput' to fake keyboard and mouse input events.\n"
-				"Please run 'sudo chmod 662 /dev/uinput' to grant the required permissions."
-			);
-		} else {
-			box->setText(
-				"Botfather requires write permissions on '/dev/uinput' to fake keyboard and mouse input events.\n"
-				"Click 'Ok' to grant the required permissions."
-			);
-		}
-		
-		if (box->exec() == QMessageBox::Ok && !pkexec_path.isEmpty()) {
-			QProcess *p = new QProcess;
-			p->start(pkexec_path, {"chmod", "662", "/dev/uinput"});
-			p->waitForFinished();
-		}
-	}
 #endif
 
 	#if defined(_WIN32) || defined(_WIN64)

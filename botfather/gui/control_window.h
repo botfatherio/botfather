@@ -27,7 +27,8 @@ public slots:
 	void adjustLimitations(bool is_premium);
 	void onLoggedIn(int curtime, int premend);
 	void onLogout();
-	void startBot();
+	void onStartClicked();
+	void startBot(const QString &script_path);
 	void botStarted();
 	void stopBot();
 	void botStopped(bool without_errors);
