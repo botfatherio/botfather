@@ -374,6 +374,11 @@ void ControlWindow::updateHotkeys()
 void ControlWindow::closeEvent(QCloseEvent* event)
 {
 	// NOTE: Nope, there is no 'aboutToClose' signal
-    browser_window->close();
+	browser_window->close();
+
+	// NOTE: Sometimes after atleast using the script file chooser dialog the application didn't quit after
+	// closing the main window. Calling QCoreApplication::quit fixes this issue. Consider this a workaround(?)
+	QCoreApplication::quit();
+
 	QMainWindow::closeEvent(event);
 }
