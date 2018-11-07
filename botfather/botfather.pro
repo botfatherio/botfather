@@ -108,9 +108,9 @@ HEADERS += \
     engine/prototypes/timer_prototype.h \
     tools/mtoolwrapper.h \
     gui/scriptmanager/gitdialog.h \
-    gui/scriptmanager/gitprogress.h \
     gui/scriptmanager/scriptlistmodel.h \
-    gui/scriptmanager/scriptmanagerdialog.h
+    gui/scriptmanager/scriptmanagerdialog.h \
+    gui/scriptmanager/gitworker.h
 SOURCES += \
     ./auth/license_api_client.cpp \
     ./auth/rest_api_client.cpp \
@@ -152,9 +152,9 @@ SOURCES += \
     engine/prototypes/timer_prototype.cpp \
     tools/mtoolwrapper.cpp \
     gui/scriptmanager/gitdialog.cpp \
-    gui/scriptmanager/gitprogress.cpp \
     gui/scriptmanager/scriptlistmodel.cpp \
-    gui/scriptmanager/scriptmanagerdialog.cpp
+    gui/scriptmanager/scriptmanagerdialog.cpp \
+    gui/scriptmanager/gitworker.cpp
 FORMS += \
     ./gui/android_dialog.ui \
     ./gui/auth_dialog.ui \

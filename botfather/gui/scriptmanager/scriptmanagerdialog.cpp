@@ -32,10 +32,10 @@ ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 
 	ui->search_input->setFocus();
 
-
-
-
+	// FIXME: get script data from the website instead
 	QVector<RemoteScript> testscripts = {
+		RemoteScript("Elisa Music Player", "KDE", "https://anongit.kde.org/elisa.git", "Elisa is a music player developed by the KDE community that strives to be simple and nice to use."),
+		RemoteScript("Clementine", "Clementine Team", "https://github.com/clementine-player/Clementine.git", "Clementine is a multiplatform music player."),
 	};
 	for (RemoteScript ts : testscripts)
 	{

@@ -9,7 +9,6 @@ class GitDialog : public QProgressDialog
 
 public:
 	explicit GitDialog(QWidget *parent = nullptr);
-	~GitDialog();
 
 public slots:
 	void clone(const QString &repo_url, const QString &dir_path);
