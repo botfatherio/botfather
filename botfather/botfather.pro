@@ -36,7 +36,7 @@ unix {
     # That way libcef.so and other shared objects can be loaded which otherwise couldn't be found.
     QMAKE_RPATHDIR += ./
 
-    LIBS += -lX11
+    LIBS += -lX11 -lgit2
 
     # Dramatically reduces shared libary file size after linking
     CONFIG(release, debug|release):QMAKE_POST_LINK += find $${DESTDIR} -type f -name \*.so | xargs strip --strip-all
@@ -106,7 +106,11 @@ HEADERS += \
     ./engine/prototypes/margins_prototype.h \
     ./engine/prototypes/url_prototype.h \
     engine/prototypes/timer_prototype.h \
-    tools/mtoolwrapper.h
+    tools/mtoolwrapper.h \
+    gui/scriptmanager/gitdialog.h \
+    gui/scriptmanager/gitprogress.h \
+    gui/scriptmanager/scriptlistmodel.h \
+    gui/scriptmanager/scriptmanagerdialog.h
 SOURCES += \
     ./auth/license_api_client.cpp \
     ./auth/rest_api_client.cpp \
@@ -146,13 +150,18 @@ SOURCES += \
     ./engine/prototypes/margins_prototype.cpp \
     ./engine/prototypes/url_prototype.cpp \
     engine/prototypes/timer_prototype.cpp \
-    tools/mtoolwrapper.cpp
+    tools/mtoolwrapper.cpp \
+    gui/scriptmanager/gitdialog.cpp \
+    gui/scriptmanager/gitprogress.cpp \
+    gui/scriptmanager/scriptlistmodel.cpp \
+    gui/scriptmanager/scriptmanagerdialog.cpp
 FORMS += \
     ./gui/android_dialog.ui \
     ./gui/auth_dialog.ui \
     ./gui/browser_window.ui \
     ./gui/config_dialog.ui \
-    ./gui/control_window.ui
+    ./gui/control_window.ui \
+    gui/scriptmanager/scriptmanagerdialog.ui
 RESOURCES += \
     ./res/gui.qrc \
     res/botfather.qrc
