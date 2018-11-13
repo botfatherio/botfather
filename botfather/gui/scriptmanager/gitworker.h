@@ -18,6 +18,24 @@ public:
 
 	bool isCanceled() const;
 
+	uint totalObjects() const;
+	void setTotalObjects(uint objects);
+
+	uint receivedObjects() const;
+	void setReceivedObjects(uint objects);
+
+	ulong receivedBytes() const;
+	void setReceivedBytes(ulong bytes);
+
+	ulong completedSteps() const;
+	void setCompletedSteps(ulong steps);
+
+	ulong totalSteps() const;
+	void setTotalSteps(ulong steps);
+
+	QString checkoutPath() const;
+	void setCheckoutPath(const QString &path);
+
 public slots:
 	void cancel();
 	void process();
@@ -37,6 +55,16 @@ private:
 	bool m_is_canceled = false;
 	QString m_repo_url;
 	QString m_dir_path;
+
+	// Transfer // TODO: maybe move this into a dedicated GitTransferProgress class
+	uint m_total_objects = 0;
+	uint m_received_objects = 0;
+	ulong m_received_bytes = 0;
+
+	// Checkout // TODO: maybe move this into a dedicated GitCheckoutProgress class
+	ulong m_completed_steps = 0;
+	ulong m_total_steps = 0;
+	QString m_checkout_path;
 };
 
 #endif // GITWORKER_H

@@ -21,7 +21,7 @@ ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 	ui->tableView->setModel(proxy_model);
 
 	local_scripts_model = new ScriptListModel(this);
-	local_scripts_model->load("local_scripts.dat");
+	local_scripts_model->load("local_scripts.dat"); // FIXME: store the local_scripts.dat at a standard location
 	QSortFilterProxyModel *local_scripts_proxy_model = new QSortFilterProxyModel(this);
 	local_scripts_proxy_model->setSourceModel(local_scripts_model);
 	ui->local_scripts_table_view->setModel(local_scripts_proxy_model);
@@ -90,11 +90,9 @@ void ScriptManagerDialog::itemDoubleClicked(const QModelIndex &index)
 	}
 
 	RemoteScript remote_script = qvariant_cast<RemoteScript>(proxy_model->data(index, ScriptListModel::NativeDataRole));
-	qDebug() << "double clicked:" << remote_script.display_name << remote_script.developer;
 
-	GitDialog git(this);
-	git.setWindowModality(Qt::WindowModal);
-	git.clone(remote_script.repository, repo_dir_path);
+	GitDialog *dialog = new GitDialog(this);
+	dialog->clone(remote_script.repository, repo_dir_path);
 
 	// TODO: show message box to inform the user. (use the git clone return code)
 	// Why? Cloning can be so fast that the user won't see the progress dialog a all
