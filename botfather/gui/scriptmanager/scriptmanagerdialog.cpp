@@ -5,6 +5,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QDebug>
+#include <QMessageBox>
 #include "gitdialog.h"
 
 ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
@@ -92,13 +93,17 @@ void ScriptManagerDialog::itemDoubleClicked(const QModelIndex &index)
 	RemoteScript remote_script = qvariant_cast<RemoteScript>(proxy_model->data(index, ScriptListModel::NativeDataRole));
 
 	GitDialog *dialog = new GitDialog(this);
+
+	/*
+	// TODO: List the downloaded script on success
+	// NOTE: it doesn't work with the lambda due to thread vodoo?
+	// NOTE: if we use a slot for it, we dont know what has been cloned. we might want to pass the RemoteScript to the GitCloneDialog
+	connect(dialog, &GitDialog::accepted, [&]() {
+		RemoteScript local_script = remote_script;
+		local_script.repository = repo_dir_path;
+		local_scripts_model->addRemoteScript(local_script);
+	});
+	*/
+
 	dialog->clone(remote_script.repository, repo_dir_path);
-
-	// TODO: show message box to inform the user. (use the git clone return code)
-	// Why? Cloning can be so fast that the user won't see the progress dialog a all
-	// TODO: Save the script location on clone success, so that it can be managed
-
-	RemoteScript local_script = remote_script;
-	local_script.repository = repo_dir_path;
-	local_scripts_model->addRemoteScript(local_script);
 }

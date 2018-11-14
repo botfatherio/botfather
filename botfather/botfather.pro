@@ -107,10 +107,10 @@ HEADERS += \
     ./engine/prototypes/url_prototype.h \
     engine/prototypes/timer_prototype.h \
     tools/mtoolwrapper.h \
-    gui/scriptmanager/gitdialog.h \
     gui/scriptmanager/scriptlistmodel.h \
     gui/scriptmanager/scriptmanagerdialog.h \
-    gui/scriptmanager/gitworker.h
+    gui/scriptmanager/gitworker.h \
+    gui/scriptmanager/gitdialog.h
 SOURCES += \
     ./auth/license_api_client.cpp \
     ./auth/rest_api_client.cpp \
@@ -151,17 +151,18 @@ SOURCES += \
     ./engine/prototypes/url_prototype.cpp \
     engine/prototypes/timer_prototype.cpp \
     tools/mtoolwrapper.cpp \
-    gui/scriptmanager/gitdialog.cpp \
     gui/scriptmanager/scriptlistmodel.cpp \
     gui/scriptmanager/scriptmanagerdialog.cpp \
-    gui/scriptmanager/gitworker.cpp
+    gui/scriptmanager/gitworker.cpp \
+    gui/scriptmanager/gitdialog.cpp
 FORMS += \
     ./gui/android_dialog.ui \
     ./gui/auth_dialog.ui \
     ./gui/browser_window.ui \
     ./gui/config_dialog.ui \
     ./gui/control_window.ui \
-    gui/scriptmanager/scriptmanagerdialog.ui
+    gui/scriptmanager/scriptmanagerdialog.ui \
+    gui/scriptmanager/gitdialog.ui
 RESOURCES += \
     ./res/gui.qrc \
     res/botfather.qrc

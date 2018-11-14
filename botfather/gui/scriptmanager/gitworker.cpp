@@ -151,14 +151,18 @@ void GitWorker::process()
 	clone_opts.checkout_opts.progress_cb = GitWorker::checkoutProgressCallback;
 	clone_opts.checkout_opts.progress_payload = this;
 
-	int code = git_clone(&repo, m_repo_url.toUtf8(), m_dir_path.toUtf8(), &clone_opts);
-	qDebug() << "Git clone code:" << code << (code == 0 ? "" : giterr_last()->message);
+	int exit_code = git_clone(&repo, m_repo_url.toUtf8(), m_dir_path.toUtf8(), &clone_opts);
+	git_repository_free(repo);
 
-	if (code != 0)
+	if (exit_code == 0)
 	{
-		emit error(code);
+		emit success();
+	}
+	else
+	{
+		emit failure();
 	}
 
-	git_repository_free(repo);
+	qDebug() << "Git clone exit code:" << exit_code;
 	emit finished();
 }

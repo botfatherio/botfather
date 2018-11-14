@@ -41,7 +41,8 @@ public slots:
 	void process();
 
 signals:
-	void error(int error_code);
+	void success();
+	void failure();
 	void finished();
 
 	void totalObjectsChanged(uint total);
