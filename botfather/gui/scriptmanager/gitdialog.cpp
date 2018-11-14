@@ -65,7 +65,7 @@ void GitDialog::clone(const QString &repo_url, const QString &dir_path)
 void GitDialog::transferProgressChanged(uint received, uint total, uint bytes)
 {
 	Q_UNUSED(bytes)
-	QString label_text = QString("Downloading objects: %1/%2 done.").arg(received).arg(total); // TODO: show bytes downloaded
+	QString label_text = QString("Downloading objects: %1/%2 done, %3 KiB").arg(received).arg(total).arg(bytes / 1024);
 	setLabelText(label_text);
 }
 
