@@ -78,10 +78,12 @@ void GitDialog::checkoutProgressChanged(ulong current, ulong total, const QStrin
 
 void GitDialog::cloneSuccess()
 {
-	setLabelText("Script downloaded");
-	ui->buttonBox->clear();
+	setWindowTitle("Script download finished!");
+	setLabelText("Script download finished!");
 
+	ui->buttonBox->clear();
 	QPushButton *btn = ui->buttonBox->addButton(QDialogButtonBox::Ok);
+
 	if (!btn) return;
 
 	// The buttons role doesn't matter, we decide what signal is triggered.
@@ -90,10 +92,12 @@ void GitDialog::cloneSuccess()
 
 void GitDialog::cloneFailure()
 {
-	setLabelText("Script download failed");
-	ui->buttonBox->clear();
+	setWindowTitle("Script download failed!");
+	setLabelText("Script download failed!");
 
+	ui->buttonBox->clear();
 	QPushButton *btn = ui->buttonBox->addButton(QDialogButtonBox::Close);
+
 	if (!btn) return;
 
 	// The buttons role doesn't matter, we decide what signal is triggered.
