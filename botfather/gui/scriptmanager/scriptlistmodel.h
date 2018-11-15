@@ -2,35 +2,7 @@
 #define SCRIPTLISTMODEL_H
 
 #include <QAbstractListModel>
-
-struct RemoteScript // TODO: rename and move to seperate file
-{
-	QString display_name;
-	QString developer;
-	QString description;
-	QString repository;
-
-	RemoteScript() {}
-	RemoteScript(QString dn, QString dv, QString rp, QString ds)
-	{
-		display_name = dn;
-		developer = dv;
-		description = ds;
-		repository = rp;
-	}
-};
-
-Q_DECLARE_METATYPE(RemoteScript)
-
-inline QDataStream &operator<<(QDataStream &stream, const RemoteScript &script)
-{
-	return stream << script.display_name << script.developer << script.description << script.repository;
-}
-
-inline QDataStream &operator>>(QDataStream &stream, RemoteScript &script)
-{
-	return stream >> script.display_name >> script.developer >> script.description >> script.repository;
-}
+#include "scriptrepository.h"
 
 class ScriptListModel : public QAbstractListModel
 {
@@ -54,14 +26,14 @@ public:
 	/*bool setData(const QModelIndex &index, const QVariant &value, int role) override;*/
 	void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
 
-	RemoteScript remoteScript(const QModelIndex &index) const;
-	void addRemoteScript(const RemoteScript &script);
+	ScriptRepository remoteScript(const QModelIndex &index) const;
+	void addRemoteScript(const ScriptRepository &script);
 
 	void load(const QString &filename);
 	void save(const QString &filename);
 
 private:
-	QVector<RemoteScript> remote_scripts;
+	QVector<ScriptRepository> remote_scripts;
 };
 
 #endif // SCRIPTLISTMODEL_H

@@ -27,17 +27,17 @@ QVariant ScriptListModel::data(const QModelIndex &index, int role) const
 		return QVariant();
 	}
 
-	RemoteScript remote_script = remote_scripts.at(index.row());
+	ScriptRepository script = remote_scripts.at(index.row());
 
 	if (role == NativeDataRole)
 	{
-		return QVariant::fromValue(remote_script);
+		return QVariant::fromValue(script);
 	}
 
 	if (role == KeywordsRole)
 	{
 		QStringList keyword_parts;
-		keyword_parts << remote_script.display_name << remote_script.developer << remote_script.description;
+		keyword_parts << script.name() << script.developer() << script.description();
 		return keyword_parts.join(" ");
 	}
 
@@ -45,9 +45,9 @@ QVariant ScriptListModel::data(const QModelIndex &index, int role) const
 	{
 		switch (index.column())
 		{
-		case 0: return remote_script.display_name;
-		case 1: return remote_script.developer;
-		case 2: return remote_script.description;
+		case 0: return script.name();
+		case 1: return script.developer();
+		case 2: return script.description();
 		}
 	}
 
@@ -75,7 +75,7 @@ bool ScriptListModel::insertRows(int position, int rows, const QModelIndex &pare
 
 	for (int row = 0; row < rows; ++row)
 	{
-		remote_scripts.insert(position, RemoteScript());
+		remote_scripts.insert(position, ScriptRepository());
 	}
 
 	endInsertRows();
@@ -127,24 +127,24 @@ bool ScriptListModel::setData(const QModelIndex &index, const QVariant &value, i
 }
 */
 
-static bool remoteScriptNameLess(const RemoteScript& rs1, const RemoteScript& rs2)
+static bool remoteScriptNameLess(const ScriptRepository& rs1, const ScriptRepository& rs2)
 {
-	return rs1.display_name < rs2.display_name;
+	return rs1.name() < rs2.name();
 }
 
-static bool remoteScriptDevlLess(const RemoteScript& rs1, const RemoteScript& rs2)
+static bool remoteScriptDevlLess(const ScriptRepository& rs1, const ScriptRepository& rs2)
 {
-	return rs1.developer < rs2.developer;
+	return rs1.developer() < rs2.developer();
 }
 
-static bool remoteScriptDescLess(const RemoteScript& rs1, const RemoteScript& rs2)
+static bool remoteScriptDescLess(const ScriptRepository& rs1, const ScriptRepository& rs2)
 {
-	return rs1.description < rs2.description;
+	return rs1.description() < rs2.description();
 }
 
 void ScriptListModel::sort(int column, Qt::SortOrder order)
 {
-	std::function<bool(const RemoteScript &, const RemoteScript &)> comparator_function;
+	std::function<bool(const ScriptRepository &, const ScriptRepository &)> comparator_function;
 
 	if (column == 0) comparator_function = remoteScriptNameLess;
 	if (column == 1) comparator_function = remoteScriptDevlLess;
@@ -160,16 +160,16 @@ void ScriptListModel::sort(int column, Qt::SortOrder order)
 	emit dataChanged(QModelIndex(), QModelIndex());
 }
 
-RemoteScript ScriptListModel::remoteScript(const QModelIndex &index) const
+ScriptRepository ScriptListModel::remoteScript(const QModelIndex &index) const
 {
 	if (!index.isValid())
 	{
-		return RemoteScript();
+		return ScriptRepository();
 	}
 	return remote_scripts.at(index.row());
 }
 
-void ScriptListModel::addRemoteScript(const RemoteScript &script)
+void ScriptListModel::addRemoteScript(const ScriptRepository &script)
 {
 	remote_scripts.append(script);
 	emit dataChanged(index(remote_scripts.size()), index(remote_scripts.size()));

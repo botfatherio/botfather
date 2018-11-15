@@ -38,7 +38,7 @@ ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 		RemoteScript("Elisa Music Player", "KDE", "https://anongit.kde.org/elisa.git", "Elisa is a music player developed by the KDE community that strives to be simple and nice to use."),
 		RemoteScript("Clementine", "Clementine Team", "https://github.com/clementine-player/Clementine.git", "Clementine is a multiplatform music player."),
 	};
-	for (RemoteScript ts : testscripts)
+	for (ScriptRepository ts : testscripts)
 	{
 		script_list_model->addRemoteScript(ts);
 	}
@@ -90,7 +90,7 @@ void ScriptManagerDialog::itemDoubleClicked(const QModelIndex &index)
 		return;
 	}
 
-	RemoteScript remote_script = qvariant_cast<RemoteScript>(proxy_model->data(index, ScriptListModel::NativeDataRole));
+	ScriptRepository remote_script = qvariant_cast<ScriptRepository>(proxy_model->data(index, ScriptListModel::NativeDataRole));
 
 	GitDialog *dialog = new GitDialog(this);
 
@@ -105,5 +105,5 @@ void ScriptManagerDialog::itemDoubleClicked(const QModelIndex &index)
 	});
 	*/
 
-	dialog->clone(remote_script.repository, repo_dir_path);
+	dialog->clone(remote_script.repository(), repo_dir_path);
 }
