@@ -18,14 +18,16 @@ public:
 	~ScriptManagerDialog();
 
 public slots:
-	void search();
+	void searchOnline(const QString &query);
+	void searchLocal(const QString &query);
 	void itemDoubleClicked(const QModelIndex &index);
 
 private:
 	Ui::ScriptManagerDialog *ui;
-	ScriptListModel *script_list_model;
-	QSortFilterProxyModel *proxy_model;
+	ScriptListModel *online_scripts_model;
 	ScriptListModel *local_scripts_model;
+	QSortFilterProxyModel *online_scripts_proxy;
+	QSortFilterProxyModel *local_scripts_proxy;
 };
 
 #endif // SCRIPTBROWSERDIALOG_H
