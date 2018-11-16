@@ -25,7 +25,6 @@ private:
 	Ui::ScriptManagerDialog *ui;
 	ScriptListModel *script_list_model;
 	QSortFilterProxyModel *proxy_model;
-
 	ScriptListModel *local_scripts_model;
 };
 

@@ -32,14 +32,30 @@ void GitDialog::setValue(int value)
 	ui->progressBar->setValue(value);
 }
 
-void GitDialog::clone(const QString &repo_url, const QString &dir_path)
+void GitDialog::transferProgressChanged(uint received, uint total, uint bytes)
 {
+	Q_UNUSED(bytes)
+	QString label_text = QString("Downloading objects: %1/%2 done, %3 KiB").arg(received).arg(total).arg(bytes / 1024);
+	setLabelText(label_text);
+}
+
+void GitDialog::checkoutProgressChanged(ulong current, ulong total, const QString &path)
+{
+	Q_UNUSED(path)
+	QString label_text = QString("Checking out files: %1/%2 done.").arg(current).arg(total);
+	setLabelText(label_text);
+}
+
+void GitDialog::clone(const ScriptRepository &repository, const QString &local_path)
+{
+	m_repository = repository;
+
 	setWindowTitle("Cloning script repository...");
 	setLabelText("Cloning script repository...");
 	show();
 
 	QThread *thread = new QThread;
-	GitWorker *worker = new GitWorker(repo_url, dir_path);
+	GitWorker *worker = new GitWorker(repository.repository(), local_path);
 	worker->moveToThread(thread);
 
 	connect(thread, &QThread::started, worker, &GitWorker::process);
@@ -62,20 +78,6 @@ void GitDialog::clone(const QString &repo_url, const QString &dir_path)
 	thread->start();
 }
 
-void GitDialog::transferProgressChanged(uint received, uint total, uint bytes)
-{
-	Q_UNUSED(bytes)
-	QString label_text = QString("Downloading objects: %1/%2 done, %3 KiB").arg(received).arg(total).arg(bytes / 1024);
-	setLabelText(label_text);
-}
-
-void GitDialog::checkoutProgressChanged(ulong current, ulong total, const QString &path)
-{
-	Q_UNUSED(path)
-	QString label_text = QString("Checking out files: %1/%2 done.").arg(current).arg(total);
-	setLabelText(label_text);
-}
-
 void GitDialog::cloneSuccess()
 {
 	setWindowTitle("Script download finished!");
@@ -84,10 +86,10 @@ void GitDialog::cloneSuccess()
 	ui->buttonBox->clear();
 	QPushButton *btn = ui->buttonBox->addButton(QDialogButtonBox::Ok);
 
-	if (!btn) return;
-
-	// The buttons role doesn't matter, we decide what signal is triggered.
+	Q_ASSERT(btn);
 	connect(btn, &QPushButton::clicked, this, &GitDialog::accept);
+
+	emit cloned(m_repository);
 }
 
 void GitDialog::cloneFailure()
@@ -98,8 +100,6 @@ void GitDialog::cloneFailure()
 	ui->buttonBox->clear();
 	QPushButton *btn = ui->buttonBox->addButton(QDialogButtonBox::Close);
 
-	if (!btn) return;
-
-	// The buttons role doesn't matter, we decide what signal is triggered.
+	Q_ASSERT(btn);
 	connect(btn, &QPushButton::clicked, this, &GitDialog::reject);
 }

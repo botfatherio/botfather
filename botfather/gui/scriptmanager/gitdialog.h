@@ -2,6 +2,7 @@
 #define GITDIALOG_H
 
 #include <QDialog>
+#include "scriptrepository.h"
 
 namespace Ui {
 class GitDialog;
@@ -19,15 +20,19 @@ public slots:
 	void setLabelText(const QString &text);
 	void setMaximum(int maximum);
 	void setValue(int value);
-	void clone(const QString &repo_url, const QString &dir_path);
+
 	void transferProgressChanged(uint received, uint total, uint bytes);
 	void checkoutProgressChanged(ulong current, ulong total, const QString &path);
-
+	void clone(const ScriptRepository &repository, const QString &local_path);
 	void cloneSuccess();
 	void cloneFailure();
 
+signals:
+	void cloned(const ScriptRepository &repository);
+
 private:
 	Ui::GitDialog *ui;
+	ScriptRepository m_repository;
 };
 
 #endif // GITDIALOG_H

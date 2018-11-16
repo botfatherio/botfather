@@ -5,7 +5,7 @@
 
 ScriptListModel::ScriptListModel(QObject *parent) : QAbstractListModel(parent)
 {
-	// FIXME: Use | seperated options to decide which data to display
+	// TODO: Use | seperated options to decide which data to display
 }
 
 int ScriptListModel::rowCount(const QModelIndex &parent) const
@@ -95,37 +95,24 @@ bool ScriptListModel::removeRows(int position, int rows, const QModelIndex &pare
 	return true;
 }
 
-/*
 bool ScriptListModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-	if (index.isValid() && role == Qt::EditRole) {
-		int row = index.row();
+	if (!index.isValid())
+	{
+		return false;
+	}
 
-		RemoteScript remote_script = remote_scripts.value(row);
+	if (role == NativeDataRole)
+	{
+		ScriptRepository script = qvariant_cast<ScriptRepository>(value);
+		remote_scripts.replace(index.row(), script);
 
-		switch (index.column()) {
-		case 0:
-			remote_script.display_name = value.toString();
-			break;
-		case 1:
-			remote_script.developer = value.toString();
-			break;
-		case 2:
-			remote_script.description = value.toString();
-			break;
-		default:
-			return false;
-		}
-
-		remote_scripts.replace(row, remote_script);
 		emit(dataChanged(index, index));
-
 		return true;
 	}
 
 	return false;
 }
-*/
 
 static bool remoteScriptNameLess(const ScriptRepository& rs1, const ScriptRepository& rs2)
 {
@@ -160,21 +147,6 @@ void ScriptListModel::sort(int column, Qt::SortOrder order)
 	emit dataChanged(QModelIndex(), QModelIndex());
 }
 
-ScriptRepository ScriptListModel::remoteScript(const QModelIndex &index) const
-{
-	if (!index.isValid())
-	{
-		return ScriptRepository();
-	}
-	return remote_scripts.at(index.row());
-}
-
-void ScriptListModel::addRemoteScript(const ScriptRepository &script)
-{
-	remote_scripts.append(script);
-	emit dataChanged(index(remote_scripts.size()), index(remote_scripts.size()));
-}
-
 void ScriptListModel::load(const QString &filename)
 {
 	QFile file(filename);
@@ -201,4 +173,11 @@ void ScriptListModel::save(const QString &filename)
 
 	QDataStream out(&file);
 	out << remote_scripts;
+}
+
+void ScriptListModel::addEntry(const ScriptRepository &script)
+{
+	insertRows(rowCount(), 1, QModelIndex());
+	QModelIndex row_index = index(rowCount() -1, 0, QModelIndex());
+	setData(row_index, QVariant::fromValue(script), NativeDataRole);
 }

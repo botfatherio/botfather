@@ -40,7 +40,7 @@ ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 	};
 	for (ScriptRepository ts : testscripts)
 	{
-		script_list_model->addRemoteScript(ts);
+		script_list_model->addEntry(ts);
 	}
 
 	proxy_model->setSourceModel(script_list_model);
@@ -90,20 +90,9 @@ void ScriptManagerDialog::itemDoubleClicked(const QModelIndex &index)
 		return;
 	}
 
-	ScriptRepository remote_script = qvariant_cast<ScriptRepository>(proxy_model->data(index, ScriptListModel::NativeDataRole));
-
 	GitDialog *dialog = new GitDialog(this);
+	connect(dialog, &GitDialog::cloned, local_scripts_model, &ScriptListModel::addEntry);
 
-	/*
-	// TODO: List the downloaded script on success
-	// NOTE: it doesn't work with the lambda due to thread vodoo?
-	// NOTE: if we use a slot for it, we dont know what has been cloned. we might want to pass the RemoteScript to the GitCloneDialog
-	connect(dialog, &GitDialog::accepted, [&]() {
-		RemoteScript local_script = remote_script;
-		local_script.repository = repo_dir_path;
-		local_scripts_model->addRemoteScript(local_script);
-	});
-	*/
-
-	dialog->clone(remote_script.repository(), repo_dir_path);
+	ScriptRepository repository = qvariant_cast<ScriptRepository>(proxy_model->data(index, ScriptListModel::NativeDataRole));
+	dialog->clone(repository, repo_dir_path);
 }
