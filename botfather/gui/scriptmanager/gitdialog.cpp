@@ -49,6 +49,7 @@ void GitDialog::checkoutProgressChanged(ulong current, ulong total, const QStrin
 void GitDialog::clone(const ScriptRepository &repository, const QString &local_path)
 {
 	m_repository = repository;
+	m_repository.setRepository(local_path);
 
 	setWindowTitle("Cloning script repository...");
 	setLabelText("Cloning script repository...");
