@@ -76,18 +76,21 @@ void ScriptManagerDialog::itemDoubleClicked(const QModelIndex &index)
 		return;
 	}
 
-	QString repo_dir_path = QFileDialog::getExistingDirectory(
+	QDir dir;
+	dir.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+
+	QFileDialog file_dialog(
 		this,
-		tr("Open Directory"),
-		QStandardPaths::writableLocation(QStandardPaths::HomeLocation),
-		QFileDialog::ShowDirsOnly|QFileDialog::DontUseNativeDialog
+		tr("Where to store the script?"),
+		QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)
 	);
 
-	if (repo_dir_path.isEmpty())
-	{
-		qDebug() << "selected path empty";
-		return;
-	}
+	file_dialog.setOptions(QFileDialog::ShowDirsOnly/*|QFileDialog::DontUseNativeDialog*/);
+	file_dialog.setFileMode(QFileDialog::Directory);
+	file_dialog.setViewMode(QFileDialog::Detail);
+
+	if (!file_dialog.exec()) return;
+	QString repo_dir_path = file_dialog.selectedFiles().first();
 
 	QDir repo_dir(repo_dir_path);
 	if (!repo_dir.isEmpty(QDir::AllEntries|QDir::NoDotAndDotDot))
