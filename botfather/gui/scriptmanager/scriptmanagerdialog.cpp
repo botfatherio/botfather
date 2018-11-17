@@ -95,10 +95,8 @@ void ScriptManagerDialog::itemDoubleClicked(const QModelIndex &index)
 	QDir repo_dir(repo_dir_path);
 	if (!repo_dir.isEmpty(QDir::AllEntries|QDir::NoDotAndDotDot))
 	{
-		// The choosen directory must be empty. Otherwise git_clone will fail.
-		// FIXME: show qmessagebox to inform the user
-		qDebug() << "dir not empty";
-		return;
+		QMessageBox::information(this, "Directory not empty", "The selected directory must be empty.");
+		return; // Otherwise git_clone will fail.
 	}
 
 	GitDialog *dialog = new GitDialog(this);
