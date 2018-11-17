@@ -18,6 +18,7 @@ public:
 	~ScriptManagerDialog();
 
 public slots:
+	void loadModelData();
 	void itemDoubleClicked(const QModelIndex &index);
 
 private:

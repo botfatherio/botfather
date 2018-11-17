@@ -26,10 +26,9 @@ public:
 	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 	void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
 
+public slots:
 	void load(const QString &filename);
 	void save(const QString &filename);
-
-public slots:
 	void addEntry(const ScriptRepository &script);
 
 private:

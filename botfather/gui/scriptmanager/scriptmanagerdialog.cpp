@@ -6,6 +6,7 @@
 #include <QFileInfo>
 #include <QDebug>
 #include <QMessageBox>
+#include <QTimer>
 #include "gitdialog.h"
 
 ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
@@ -30,16 +31,6 @@ ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 	connect(ui->online_filter, &QLineEdit::textChanged, online_scripts_proxy, &QSortFilterProxyModel::setFilterWildcard);
 	connect(ui->online_view, &QTableView::doubleClicked, this, &ScriptManagerDialog::itemDoubleClicked);
 
-	// FIXME: get script data from the website instead
-	QVector<RemoteScript> testscripts = {
-		RemoteScript("Elisa Music Player", "KDE", "https://anongit.kde.org/elisa.git", "Elisa is a music player developed by the KDE community that strives to be simple and nice to use."),
-		RemoteScript("Clementine", "Clementine Team", "https://github.com/clementine-player/Clementine.git", "Clementine is a multiplatform music player."),
-	};
-	for (ScriptRepository ts : testscripts)
-	{
-		online_scripts_model->addEntry(ts);
-	}
-
 	// Set up the manage tab and the local scripts model
 
 	local_scripts_model = new ScriptListModel(this);
@@ -53,14 +44,29 @@ ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 	ui->local_view->setModel(local_scripts_proxy);
 	connect(ui->local_filter, &QLineEdit::textChanged, local_scripts_proxy, &QSortFilterProxyModel::setFilterWildcard);
 
-	// TODO: dont block the constructor
-	local_scripts_model->load("local_scripts.dat"); // FIXME: store the local_scripts.dat at a standard location
+	// Don't block the constructor while loading model data
+	QTimer::singleShot(1, this, &ScriptManagerDialog::loadModelData);
 }
 
 ScriptManagerDialog::~ScriptManagerDialog()
 {
 	local_scripts_model->save("local_scripts.dat");
 	delete ui;
+}
+
+void ScriptManagerDialog::loadModelData()
+{
+	local_scripts_model->load("local_scripts.dat"); // FIXME: store the local_scripts.dat at a standard location
+
+	// FIXME: get script data from the website instead
+	QVector<RemoteScript> testscripts = {
+		RemoteScript("Elisa Music Player", "KDE", "https://anongit.kde.org/elisa.git", "Elisa is a music player developed by the KDE community that strives to be simple and nice to use."),
+		RemoteScript("Clementine", "Clementine Team", "https://github.com/clementine-player/Clementine.git", "Clementine is a multiplatform music player."),
+	};
+	for (ScriptRepository ts : testscripts)
+	{
+		online_scripts_model->addEntry(ts);
+	}
 }
 
 void ScriptManagerDialog::itemDoubleClicked(const QModelIndex &index)
