@@ -2,6 +2,7 @@
 #include "ui_scriptmanagerdialog.h"
 #include <QFileDialog>
 #include <QStandardPaths>
+#include <QDesktopServices>
 #include <QDir>
 #include <QFileInfo>
 #include <QDebug>
@@ -43,6 +44,10 @@ ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 
 	ui->local_view->setModel(local_scripts_proxy);
 	connect(ui->local_filter, &QLineEdit::textChanged, local_scripts_proxy, &QSortFilterProxyModel::setFilterWildcard);
+	connect(ui->local_view->selectionModel(), &QItemSelectionModel::currentChanged, this, &ScriptManagerDialog::changeLocalButtonTarget);
+	connect(ui->update_button, &QPushButton::clicked, this, &ScriptManagerDialog::updateSelectedLocalRepository);
+	connect(ui->inspect_button, &QPushButton::clicked, this, &ScriptManagerDialog::inspectSelectedLocalRepository);
+	connect(ui->delete_button, &QPushButton::clicked, this, &ScriptManagerDialog::deleteSelectedLocalRepository);
 
 	// Don't block the constructor while loading model data
 	QTimer::singleShot(1, this, &ScriptManagerDialog::loadModelData);
@@ -66,6 +71,50 @@ void ScriptManagerDialog::loadModelData()
 	for (ScriptRepository ts : testscripts)
 	{
 		online_scripts_model->addEntry(ts);
+	}
+}
+
+void ScriptManagerDialog::changeLocalButtonTarget(const QModelIndex &current, const QModelIndex &previous)
+{
+	ui->update_button->setEnabled(current.isValid());
+	ui->inspect_button->setEnabled(current.isValid());
+	ui->delete_button->setEnabled(current.isValid());
+}
+
+void ScriptManagerDialog::updateSelectedLocalRepository()
+{
+	QModelIndex current = ui->local_view->selectionModel()->currentIndex();
+	if (!current.isValid()) return;
+
+	ScriptRepository repository = qvariant_cast<ScriptRepository>(local_scripts_model->data(current, ScriptListModel::NativeDataRole));
+	qDebug() << "Lets update" << repository.repository();
+
+	// TODO: Actually update the script
+}
+
+void ScriptManagerDialog::inspectSelectedLocalRepository()
+{
+	QModelIndex current = ui->local_view->selectionModel()->currentIndex();
+	if (!current.isValid()) return;
+
+	ScriptRepository repository = qvariant_cast<ScriptRepository>(local_scripts_model->data(current, ScriptListModel::NativeDataRole));
+	qDebug() << "Opening" << repository.repository();
+
+	QDesktopServices::openUrl(QUrl::fromLocalFile(repository.repository()));
+}
+
+void ScriptManagerDialog::deleteSelectedLocalRepository()
+{
+	QModelIndex current = ui->local_view->selectionModel()->currentIndex();
+	if (!current.isValid()) return;
+
+	ScriptRepository repository = qvariant_cast<ScriptRepository>(local_scripts_model->data(current, ScriptListModel::NativeDataRole));
+	qDebug() << "Deleting" << repository.repository();
+
+	QDir repo_dir(repository.repository());
+	if (repo_dir.removeRecursively())
+	{
+		local_scripts_model->removeRows(current.row(), 1);
 	}
 }
 

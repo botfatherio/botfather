@@ -210,12 +210,12 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="edit_button">
+          <widget class="QPushButton" name="inspect_button">
            <property name="enabled">
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>Edit</string>
+            <string>Inspect</string>
            </property>
           </widget>
          </item>
