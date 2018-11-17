@@ -150,22 +150,24 @@ void ScriptListModel::sort(int column, Qt::SortOrder order)
 void ScriptListModel::load(const QString &filename)
 {
 	QFile file(filename);
-
 	if (!file.open(QIODevice::ReadOnly))
 	{
 		return;
 	}
 
+	QVector<ScriptRepository> repositories;
 	QDataStream in(&file);
-	in >> remote_scripts;
+	in >> repositories;
 
-	emit dataChanged(QModelIndex(), QModelIndex());
+	for (ScriptRepository repo : repositories)
+	{
+		addEntry(repo);
+	}
 }
 
 void ScriptListModel::save(const QString &filename)
 {
 	QFile file(filename);
-
 	if (!file.open(QIODevice::WriteOnly))
 	{
 		return;
@@ -178,6 +180,6 @@ void ScriptListModel::save(const QString &filename)
 void ScriptListModel::addEntry(const ScriptRepository &script)
 {
 	insertRows(rowCount(), 1, QModelIndex());
-	QModelIndex row_index = index(rowCount() -1, 0, QModelIndex());
+	QModelIndex row_index = index(rowCount() - 1, 0, QModelIndex());
 	setData(row_index, QVariant::fromValue(script), NativeDataRole);
 }
