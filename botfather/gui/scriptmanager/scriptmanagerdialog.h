@@ -18,7 +18,8 @@ public:
 	~ScriptManagerDialog();
 
 public slots:
-	void loadModelData();
+	void loadLocalModelData();
+	void loadOnlineModelData();
 	void changeLocalButtonTarget(const QModelIndex &current, const QModelIndex &previous);
 	void updateSelectedLocalRepository();
 	void inspectSelectedLocalRepository();
@@ -31,6 +32,7 @@ private:
 	ScriptListModel *local_scripts_model;
 	QSortFilterProxyModel *online_scripts_proxy;
 	QSortFilterProxyModel *local_scripts_proxy;
+	QString m_scripts_dat_filepath;
 };
 
 #endif // SCRIPTBROWSERDIALOG_H

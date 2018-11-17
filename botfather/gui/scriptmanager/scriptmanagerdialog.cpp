@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QTimer>
+#include <git2.h>
 #include "gitdialog.h"
 
 ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
@@ -17,6 +18,11 @@ ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 	ui->setupUi(this);
 	connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
 	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+
+	// Keep track of installed scripts in a "scriptrepos.dat" file
+	QDir app_config_dir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+	app_config_dir.mkpath(app_config_dir.path());
+	m_scripts_dat_filepath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/scriptrepos.dat";
 
 	// Set up the install tab and online scripts model
 
@@ -50,19 +56,45 @@ ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 	connect(ui->delete_button, &QPushButton::clicked, this, &ScriptManagerDialog::deleteSelectedLocalRepository);
 
 	// Don't block the constructor while loading model data
-	QTimer::singleShot(1, this, &ScriptManagerDialog::loadModelData);
+	QTimer::singleShot(1, this, &ScriptManagerDialog::loadLocalModelData);
+	QTimer::singleShot(1, this, &ScriptManagerDialog::loadOnlineModelData);
 }
 
 ScriptManagerDialog::~ScriptManagerDialog()
 {
-	local_scripts_model->save("local_scripts.dat");
+	local_scripts_model->save(m_scripts_dat_filepath);
 	delete ui;
 }
 
-void ScriptManagerDialog::loadModelData()
+void ScriptManagerDialog::loadLocalModelData()
 {
-	local_scripts_model->load("local_scripts.dat"); // FIXME: store the local_scripts.dat at a standard location
+	QFile file(m_scripts_dat_filepath);
+	if (!file.open(QIODevice::ReadOnly))
+	{
+		return;
+	}
 
+	QVector<ScriptRepository> repositories;
+	QDataStream in(&file);
+	in >> repositories;
+
+	git_libgit2_init();
+
+	for (ScriptRepository repo : repositories)
+	{
+		// Pass nullptr for the output parameter to check for but not open the repo
+		if (git_repository_open_ext(nullptr, repo.repository().toUtf8(), GIT_REPOSITORY_OPEN_NO_SEARCH, nullptr) == 0)
+		{
+			qDebug() << "Adding repository to local model:" << repo.repository();
+			local_scripts_model->addEntry(repo);
+		}
+	}
+
+	git_libgit2_shutdown();
+}
+
+void ScriptManagerDialog::loadOnlineModelData()
+{
 	// FIXME: get script data from the website instead
 	QVector<RemoteScript> testscripts = {
 		RemoteScript("Elisa Music Player", "KDE", "https://anongit.kde.org/elisa.git", "Elisa is a music player developed by the KDE community that strives to be simple and nice to use."),
