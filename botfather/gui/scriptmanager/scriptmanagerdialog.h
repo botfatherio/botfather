@@ -18,8 +18,6 @@ public:
 	~ScriptManagerDialog();
 
 public slots:
-	void searchOnline(const QString &query);
-	void searchLocal(const QString &query);
 	void itemDoubleClicked(const QModelIndex &index);
 
 private:

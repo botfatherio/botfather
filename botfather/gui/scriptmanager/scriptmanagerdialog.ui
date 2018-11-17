@@ -200,7 +200,7 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="update_button">
            <property name="enabled">
             <bool>false</bool>
            </property>
@@ -210,7 +210,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_2">
+          <widget class="QPushButton" name="edit_button">
            <property name="enabled">
             <bool>false</bool>
            </property>
@@ -220,7 +220,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_3">
+          <widget class="QPushButton" name="delete_button">
            <property name="enabled">
             <bool>false</bool>
            </property>
