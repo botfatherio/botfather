@@ -74,23 +74,24 @@ void ScriptManagerDialog::loadLocalModelData()
 		return;
 	}
 
-	QVector<ScriptRepository> repositories;
+	QVector<ScriptRepository::Data> repo_data;
 	QDataStream in(&file);
-	in >> repositories;
+	in >> repo_data;
 
 	git_libgit2_init();
 
-	for (ScriptRepository repo : repositories)
+	for (ScriptRepository::Data repo_date : repo_data)
 	{
 		// Pass nullptr for the output parameter to check for but not open the repo
-		if (git_repository_open_ext(nullptr, repo.repository().toUtf8(), GIT_REPOSITORY_OPEN_NO_SEARCH, nullptr) == 0)
+		if (git_repository_open_ext(nullptr, repo_date.repository.toUtf8(), GIT_REPOSITORY_OPEN_NO_SEARCH, nullptr) == 0)
 		{
-			qDebug() << "Adding repository to local model:" << repo.repository();
-			local_scripts_model->addEntry(repo);
+			qDebug() << "Adding repository to local model:" << repo_date.repository;
+			local_scripts_model->addEntry(new ScriptRepository(repo_date));
 		}
 	}
 
 	git_libgit2_shutdown();
+	file.close();
 }
 
 void ScriptManagerDialog::loadOnlineModelData()
@@ -100,7 +101,7 @@ void ScriptManagerDialog::loadOnlineModelData()
 		RemoteScript("Elisa Music Player", "KDE", "https://anongit.kde.org/elisa.git", "Elisa is a music player developed by the KDE community that strives to be simple and nice to use."),
 		RemoteScript("Clementine", "Clementine Team", "https://github.com/clementine-player/Clementine.git", "Clementine is a multiplatform music player."),
 	};
-	for (ScriptRepository ts : testscripts)
+	for (ScriptRepository *ts : testscripts)
 	{
 		online_scripts_model->addEntry(ts);
 	}
@@ -118,10 +119,10 @@ void ScriptManagerDialog::updateSelectedLocalRepository()
 	QModelIndex current = ui->local_view->selectionModel()->currentIndex();
 	if (!current.isValid()) return;
 
-	ScriptRepository repository = qvariant_cast<ScriptRepository>(local_scripts_model->data(current, ScriptListModel::NativeDataRole));
-	qDebug() << "Lets update" << repository.repository();
+	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(local_scripts_model->data(current, ScriptListModel::NativeDataRole));
+	qDebug() << "Lets update" << repository->repository();
 
-	// TODO: Actually update the script
+	// TODO: fix script update mechanism (reset --hard, fetch, merge)
 }
 
 void ScriptManagerDialog::inspectSelectedLocalRepository()
@@ -129,10 +130,10 @@ void ScriptManagerDialog::inspectSelectedLocalRepository()
 	QModelIndex current = ui->local_view->selectionModel()->currentIndex();
 	if (!current.isValid()) return;
 
-	ScriptRepository repository = qvariant_cast<ScriptRepository>(local_scripts_model->data(current, ScriptListModel::NativeDataRole));
-	qDebug() << "Opening" << repository.repository();
+	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(local_scripts_model->data(current, ScriptListModel::NativeDataRole));
+	qDebug() << "Opening" << repository->repository();
 
-	QDesktopServices::openUrl(QUrl::fromLocalFile(repository.repository()));
+	QDesktopServices::openUrl(QUrl::fromLocalFile(repository->repository()));
 }
 
 void ScriptManagerDialog::deleteSelectedLocalRepository()
@@ -140,10 +141,10 @@ void ScriptManagerDialog::deleteSelectedLocalRepository()
 	QModelIndex current = ui->local_view->selectionModel()->currentIndex();
 	if (!current.isValid()) return;
 
-	ScriptRepository repository = qvariant_cast<ScriptRepository>(local_scripts_model->data(current, ScriptListModel::NativeDataRole));
-	qDebug() << "Deleting" << repository.repository();
+	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(local_scripts_model->data(current, ScriptListModel::NativeDataRole));
+	qDebug() << "Deleting" << repository->repository();
 
-	QDir repo_dir(repository.repository());
+	QDir repo_dir(repository->repository());
 	if (repo_dir.removeRecursively())
 	{
 		local_scripts_model->removeRows(current.row(), 1);
@@ -183,6 +184,6 @@ void ScriptManagerDialog::itemDoubleClicked(const QModelIndex &index)
 	GitDialog *dialog = new GitDialog(this);
 	connect(dialog, &GitDialog::cloned, local_scripts_model, &ScriptListModel::addEntry);
 
-	ScriptRepository repository = qvariant_cast<ScriptRepository>(online_scripts_model->data(index, ScriptListModel::NativeDataRole));
+	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(online_scripts_model->data(index, ScriptListModel::NativeDataRole));
 	dialog->clone(repository, repo_dir_path);
 }

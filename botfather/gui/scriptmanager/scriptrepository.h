@@ -1,19 +1,50 @@
 #ifndef SCRIPTREPOSITORY_H
 #define SCRIPTREPOSITORY_H
 
+#include <QObject>
 #include <QString>
 #include <QMetaType>
 #include <QDataStream>
 
-class ScriptRepository
+class ScriptRepository : public QObject
 {
+	Q_OBJECT
+
 public:
-	ScriptRepository();
-	ScriptRepository(const QString name, const QString developer, const QString description, const QString repository);
+	struct Data
+	{
+		QString name;
+		QString developer;
+		QString description;
+		QString repository;
+
+		Data(){}
+		Data(const QString &name, const QString &developer, const QString &description, const QString &repository)
+		{
+			this->name = name;
+			this->developer = developer;
+			this->description = description;
+			this->repository = repository;
+		}
+	};
+
+	explicit ScriptRepository(QObject *parent = nullptr);
+	explicit ScriptRepository(ScriptRepository::Data data, QObject *parent = nullptr);
+	explicit ScriptRepository(const QString name, const QString developer, const QString description, const QString repository, QObject *parent = nullptr);
+
+	enum class Status
+	{
+		Unavailabe,
+		UpToDate,
+		Outdated,
+	};
 
 	bool isValid() const;
 	bool isLocal() const;
 	bool isRemote() const;
+
+	Status status() const;
+	Data data() const;
 
 	QString name() const;
 	void setName(const QString &name);
@@ -28,28 +59,19 @@ public:
 	void setRepository(const QString &repository);
 
 private:
-	QString m_name;
-	QString m_developer;
-	QString m_description;
-	QString m_repository;
+	Data m_data;
 };
 
-Q_DECLARE_METATYPE(ScriptRepository)
+Q_DECLARE_METATYPE(ScriptRepository*)
 
-inline QDataStream &operator<<(QDataStream &stream, const ScriptRepository &script)
+inline QDataStream &operator<<(QDataStream &stream, const ScriptRepository::Data &data)
 {
-	return stream << script.name() << script.developer() << script.description() << script.repository();
+	return stream << data.name << data.developer << data.description << data.repository;
 }
 
-inline QDataStream &operator>>(QDataStream &stream, ScriptRepository &script)
+inline QDataStream &operator>>(QDataStream &stream, ScriptRepository::Data &data)
 {
-	QString name, developer, description, repository;
-	stream >> name >> developer >> description >> repository;
-	script.setName(name);
-	script.setDeveloper(developer);
-	script.setDescription(description);
-	script.setRepository(repository);
-	return stream;
+	return stream >> data.name >> data.developer >> data.description >> data.repository;
 }
 
 #endif // SCRIPTREPOSITORY_H

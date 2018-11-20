@@ -27,12 +27,12 @@ public:
 	void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
 
 public slots:
-	void load(const QString &filename);
+	//void load(const QString &filename);
 	void save(const QString &filename);
-	void addEntry(const ScriptRepository &script);
+	void addEntry(ScriptRepository *script);
 
 private:
-	QVector<ScriptRepository> remote_scripts;
+	QVector<ScriptRepository*> remote_scripts; // TODO: rename
 };
 
 #endif // SCRIPTLISTMODEL_H

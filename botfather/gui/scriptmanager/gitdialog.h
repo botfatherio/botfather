@@ -23,16 +23,16 @@ public slots:
 
 	void transferProgressChanged(uint received, uint total, uint bytes);
 	void checkoutProgressChanged(ulong current, ulong total, const QString &path);
-	void clone(const ScriptRepository &repository, const QString &local_path);
+	void clone(ScriptRepository *repository, const QString &local_path);
 	void cloneSuccess();
 	void cloneFailure();
 
 signals:
-	void cloned(const ScriptRepository &repository);
+	void cloned(ScriptRepository *repository);
 
 private:
 	Ui::GitDialog *ui;
-	ScriptRepository m_repository;
+	ScriptRepository *dest_repo;
 };
 
 #endif // GITDIALOG_H

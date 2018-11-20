@@ -46,17 +46,17 @@ void GitDialog::checkoutProgressChanged(ulong current, ulong total, const QStrin
 	setLabelText(label_text);
 }
 
-void GitDialog::clone(const ScriptRepository &repository, const QString &local_path)
+void GitDialog::clone(ScriptRepository *repository, const QString &local_path)
 {
-	m_repository = repository;
-	m_repository.setRepository(local_path);
+	dest_repo = new ScriptRepository(repository->data());
+	dest_repo->setRepository(local_path);
 
 	setWindowTitle("Cloning script repository...");
 	setLabelText("Cloning script repository...");
 	show();
 
 	QThread *thread = new QThread;
-	GitWorker *worker = new GitWorker(repository.repository(), local_path);
+	GitWorker *worker = new GitWorker(repository->repository(), local_path);
 	worker->moveToThread(thread);
 
 	connect(thread, &QThread::started, worker, &GitWorker::process);
@@ -90,7 +90,7 @@ void GitDialog::cloneSuccess()
 	Q_ASSERT(btn);
 	connect(btn, &QPushButton::clicked, this, &GitDialog::accept);
 
-	emit cloned(m_repository);
+	emit cloned(dest_repo);
 }
 
 void GitDialog::cloneFailure()
