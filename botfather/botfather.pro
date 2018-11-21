@@ -111,7 +111,9 @@ HEADERS += \
     gui/scriptmanager/scriptmanagerdialog.h \
     gui/scriptmanager/gitworker.h \
     gui/scriptmanager/gitdialog.h \
-    gui/scriptmanager/scriptrepository.h
+    gui/scriptmanager/scriptrepository.h \
+    git/gitfetchoperation.h \
+    git/abstractgitoperation.h
 SOURCES += \
     ./auth/license_api_client.cpp \
     ./auth/rest_api_client.cpp \
@@ -156,7 +158,9 @@ SOURCES += \
     gui/scriptmanager/scriptmanagerdialog.cpp \
     gui/scriptmanager/gitworker.cpp \
     gui/scriptmanager/gitdialog.cpp \
-    gui/scriptmanager/scriptrepository.cpp
+    gui/scriptmanager/scriptrepository.cpp \
+    git/gitfetchoperation.cpp \
+    git/abstractgitoperation.cpp
 FORMS += \
     ./gui/android_dialog.ui \
     ./gui/auth_dialog.ui \
