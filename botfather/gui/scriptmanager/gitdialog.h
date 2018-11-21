@@ -8,7 +8,7 @@ namespace Ui {
 class GitDialog;
 }
 
-class GitDialog : public QDialog
+class GitDialog : public QDialog // TODO: rename to GitProgressDialog
 {
 	Q_OBJECT
 

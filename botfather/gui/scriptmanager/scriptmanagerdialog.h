@@ -9,7 +9,7 @@ namespace Ui {
 class ScriptManagerDialog;
 }
 
-class ScriptManagerDialog : public QDialog
+class ScriptManagerDialog : public QDialog // TODO: make this a widget/window. Dialogs have unwished defaults (enter closes dialog)
 {
 	Q_OBJECT
 

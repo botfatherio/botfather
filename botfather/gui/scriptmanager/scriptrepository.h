@@ -58,8 +58,16 @@ public:
 	QString repository() const;
 	void setRepository(const QString &repository);
 
+public slots:
+	void checkStatus();
+	void noteDifferencesToRemote(int differences_to_remote);
+
+signals:
+	void statusChanged(const Status &status);
+
 private:
 	Data m_data;
+	Status m_status = Status::Unavailabe;
 };
 
 Q_DECLARE_METATYPE(ScriptRepository*)

@@ -109,7 +109,7 @@ void ScriptManagerDialog::loadOnlineModelData()
 
 void ScriptManagerDialog::changeLocalButtonTarget(const QModelIndex &current, const QModelIndex &previous)
 {
-	ui->update_button->setEnabled(current.isValid());
+	ui->update_button->setEnabled(current.isValid()); // TODO: enable the update button only when the script is outdated
 	ui->inspect_button->setEnabled(current.isValid());
 	ui->delete_button->setEnabled(current.isValid());
 }

@@ -1,9 +1,10 @@
 #include "scriptrepository.h"
 #include <QFileInfo>
 #include <QUrl>
-
 #include <QDebug>
-#include <git2.h> // TODO: move git functionality somewhere else
+#include <QThread>
+#include "../../git/gitfetchoperation.h"
+#include "../../git/gitbehindoperation.h"
 
 ScriptRepository::ScriptRepository(QObject *parent)
 	: QObject(parent)
@@ -42,7 +43,7 @@ bool ScriptRepository::isRemote() const
 
 ScriptRepository::Status ScriptRepository::status() const
 {
-	return Status::Unavailabe;
+	return m_status;
 }
 
 ScriptRepository::Data ScriptRepository::data() const
@@ -88,4 +89,37 @@ QString ScriptRepository::repository() const
 void ScriptRepository::setRepository(const QString &repository)
 {
 	m_data.repository = repository;
+}
+
+void ScriptRepository::checkStatus()
+{
+	// To check whether the script is outdated we first have to fetch from the remote.
+	// After doing so we can calculate the differences to the remote.
+
+	GitFetchOperation *fetch_op = new GitFetchOperation(repository());
+	QThread *fetch_thread = new QThread(this);
+	fetch_op->moveToThread(fetch_thread);
+
+	connect(fetch_thread, &QThread::started, fetch_op, &GitFetchOperation::process);
+	connect(fetch_op, &GitFetchOperation::finished, fetch_thread, &QThread::quit);
+	connect(fetch_op, &GitFetchOperation::finished, fetch_op, &GitFetchOperation::deleteLater);
+	connect(fetch_thread, &QThread::finished, fetch_thread, &QThread::deleteLater);
+
+	GitBehindOperation *behind_op = new GitBehindOperation(repository());
+	QThread *behind_thread = new QThread(this);
+
+	connect(behind_thread, &QThread::started, behind_op, &GitBehindOperation::process);
+	connect(behind_op, &GitBehindOperation::finished, behind_thread, &QThread::quit);
+	connect(behind_op, &GitBehindOperation::finished, behind_op, &GitBehindOperation::deleteLater);
+	connect(behind_thread, &QThread::finished, behind_thread, &QThread::deleteLater);
+
+	connect(behind_op, &GitBehindOperation::differencesToRemote, this, &ScriptRepository::noteDifferencesToRemote);
+	connect(fetch_op, SIGNAL(finished()), behind_thread, SLOT(start()));
+
+	fetch_thread->start();
+}
+
+void ScriptRepository::noteDifferencesToRemote(int differences)
+{
+	m_status = differences > 0 ? Status::Outdated : Status::UpToDate;
 }
