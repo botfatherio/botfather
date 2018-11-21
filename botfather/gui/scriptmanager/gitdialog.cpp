@@ -3,7 +3,7 @@
 #include <QThread>
 #include <QPushButton>
 #include <QDebug>
-#include "gitworker.h"
+#include "../../git/gitcloneoperation.h"
 
 GitDialog::GitDialog(QWidget *parent) :
 	QDialog(parent),
@@ -56,25 +56,25 @@ void GitDialog::clone(ScriptRepository *repository, const QString &local_path)
 	show();
 
 	QThread *thread = new QThread;
-	GitWorker *worker = new GitWorker(repository->repository(), local_path);
-	worker->moveToThread(thread);
+	GitCloneOperation *operation = new GitCloneOperation(repository->repository(), local_path);
+	operation->moveToThread(thread);
 
-	connect(thread, &QThread::started, worker, &GitWorker::process);
-	connect(worker, &GitWorker::finished, thread, &QThread::quit);
-	connect(worker, &GitWorker::finished, worker, &GitWorker::deleteLater);
+	connect(thread, &QThread::started, operation, &GitCloneOperation::process);
+	connect(operation, &GitCloneOperation::finished, thread, &QThread::quit);
+	connect(operation, &GitCloneOperation::finished, operation, &GitCloneOperation::deleteLater);
 	connect(thread, &QThread::finished, thread, &QThread::deleteLater);
 
-	connect(ui->buttonBox, &QDialogButtonBox::rejected, worker, &GitWorker::cancel);
+	connect(ui->buttonBox, &QDialogButtonBox::rejected, operation, &GitCloneOperation::cancel);
 	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &GitDialog::reject);
-	connect(worker, &GitWorker::success, this, &GitDialog::cloneSuccess);
-	connect(worker, &GitWorker::failure, this, &GitDialog::cloneFailure);
+	connect(operation, &GitCloneOperation::success, this, &GitDialog::cloneSuccess);
+	connect(operation, &GitCloneOperation::failure, this, &GitDialog::cloneFailure);
 
-	connect(worker, &GitWorker::totalObjectsChanged, this, &GitDialog::setMaximum);
-	connect(worker, &GitWorker::receivedObjectsChanged, this, &GitDialog::setValue);
-	connect(worker, &GitWorker::checkoutTotalChanged, this, &GitDialog::setMaximum);
-	connect(worker, &GitWorker::checkoutCurrentChanged, this, &GitDialog::setValue);
-	connect(worker, &GitWorker::transferProgressChanged, this, &GitDialog::transferProgressChanged);
-	connect(worker, &GitWorker::checkoutProgressChanged, this, &GitDialog::checkoutProgressChanged);
+	connect(operation, &GitCloneOperation::totalObjectsChanged, this, &GitDialog::setMaximum);
+	connect(operation, &GitCloneOperation::receivedObjectsChanged, this, &GitDialog::setValue);
+	connect(operation, &GitCloneOperation::checkoutTotalChanged, this, &GitDialog::setMaximum);
+	connect(operation, &GitCloneOperation::checkoutCurrentChanged, this, &GitDialog::setValue);
+	connect(operation, &GitCloneOperation::transferProgressChanged, this, &GitDialog::transferProgressChanged);
+	connect(operation, &GitCloneOperation::checkoutProgressChanged, this, &GitDialog::checkoutProgressChanged);
 
 	thread->start();
 }

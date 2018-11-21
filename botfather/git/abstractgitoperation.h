@@ -9,8 +9,8 @@ class AbstractGitOperation : public QObject
 	Q_OBJECT
 
 public:
-	AbstractGitOperation();
-	~AbstractGitOperation();
+	AbstractGitOperation(); // Operations are intended to be used in seperate threads. In such situation won't give it a parent.
+	virtual ~AbstractGitOperation();
 
 	static const int CANCELED_CODE = 42;
 
@@ -44,7 +44,7 @@ public:
 	static int transferProgressCallback(const git_transfer_progress *stats, void *abstract_git_operation_p);
 
 	// Optional callback to notify the consumer of checkout progress.
-	static int checkoutProgressCallback(const char *path, size_t completed_steps, size_t total_steps, void *abstract_git_operation_p);
+	static void checkoutProgressCallback(const char *path, size_t completed_steps, size_t total_steps, void *abstract_git_operation_p);
 
 public slots:
 	void cancel();

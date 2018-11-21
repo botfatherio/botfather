@@ -1,9 +1,14 @@
 #include "abstractgitoperation.h"
 #include <QCoreApplication>
+#include <QDebug>
 
 AbstractGitOperation::AbstractGitOperation()
 {
 	git_libgit2_init();
+
+	// Emit ::finished whenever ::failure or ::success are emitted
+	connect(this, &AbstractGitOperation::failure, this, &AbstractGitOperation::finished);
+	connect(this, &AbstractGitOperation::success, this, &AbstractGitOperation::finished);
 }
 
 AbstractGitOperation::~AbstractGitOperation()
@@ -112,7 +117,7 @@ int AbstractGitOperation::transferProgressCallback(const git_transfer_progress *
 	return 0;
 }
 
-int AbstractGitOperation::checkoutProgressCallback(const char *path, size_t completed_steps, size_t total_steps, void *abstract_git_operation_p)
+void AbstractGitOperation::checkoutProgressCallback(const char *path, size_t completed_steps, size_t total_steps, void *abstract_git_operation_p)
 {
 	AbstractGitOperation *operation = qobject_cast<AbstractGitOperation*>(static_cast<QObject*>(abstract_git_operation_p));
 	QCoreApplication::processEvents(); // Without it the operation will miss cancel requests

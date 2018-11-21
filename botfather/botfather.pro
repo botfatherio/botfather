@@ -109,11 +109,12 @@ HEADERS += \
     tools/mtoolwrapper.h \
     gui/scriptmanager/scriptlistmodel.h \
     gui/scriptmanager/scriptmanagerdialog.h \
-    gui/scriptmanager/gitworker.h \
     gui/scriptmanager/gitdialog.h \
     gui/scriptmanager/scriptrepository.h \
     git/gitfetchoperation.h \
-    git/abstractgitoperation.h
+    git/abstractgitoperation.h \
+    git/gitcloneoperation.h \
+    git/gitbehindoperation.h
 SOURCES += \
     ./auth/license_api_client.cpp \
     ./auth/rest_api_client.cpp \
@@ -156,11 +157,12 @@ SOURCES += \
     tools/mtoolwrapper.cpp \
     gui/scriptmanager/scriptlistmodel.cpp \
     gui/scriptmanager/scriptmanagerdialog.cpp \
-    gui/scriptmanager/gitworker.cpp \
     gui/scriptmanager/gitdialog.cpp \
     gui/scriptmanager/scriptrepository.cpp \
     git/gitfetchoperation.cpp \
-    git/abstractgitoperation.cpp
+    git/abstractgitoperation.cpp \
+    git/gitcloneoperation.cpp \
+    git/gitbehindoperation.cpp
 FORMS += \
     ./gui/android_dialog.ui \
     ./gui/auth_dialog.ui \
