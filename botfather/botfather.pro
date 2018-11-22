@@ -114,7 +114,8 @@ HEADERS += \
     git/gitfetchoperation.h \
     git/abstractgitoperation.h \
     git/gitcloneoperation.h \
-    git/gitbehindoperation.h
+    git/gitbehindoperation.h \
+    git/gitrecloneoperation.h
 SOURCES += \
     ./auth/license_api_client.cpp \
     ./auth/rest_api_client.cpp \
@@ -162,7 +163,8 @@ SOURCES += \
     git/gitfetchoperation.cpp \
     git/abstractgitoperation.cpp \
     git/gitcloneoperation.cpp \
-    git/gitbehindoperation.cpp
+    git/gitbehindoperation.cpp \
+    git/gitrecloneoperation.cpp
 FORMS += \
     ./gui/android_dialog.ui \
     ./gui/auth_dialog.ui \

@@ -52,7 +52,7 @@ public slots:
 
 signals:
 	void success();
-	void failure(int error_code);
+	void failure(int error_code = 0);
 	void finished();
 
 	void totalObjectsChanged(uint total);
