@@ -2,7 +2,7 @@
 #define GITRECLONEOPERATION_H
 
 #include <QObject>
-#include <QDir>
+#include <QTemporaryDir>
 #include "abstractgitoperation.h"
 
 class GitRecloneOperation : public AbstractGitOperation
@@ -22,7 +22,7 @@ signals:
 private:
 	QString m_remote_url;
 	QString m_local_path;
-	QDir m_tmp_clone_dir;
+	QTemporaryDir m_tmp_clone_dir;
 };
 
 #endif // GITRECLONEOPERATION_H
