@@ -82,10 +82,12 @@ void ScriptManagerDialog::loadLocalModelData()
 
 	for (ScriptRepository::Data repo_date : repo_data)
 	{
+		// TODO: move this check and use of libgit into the ScriptRepository::isValid method
+
 		// Pass nullptr for the output parameter to check for but not open the repo
-		if (git_repository_open_ext(nullptr, repo_date.repository.toUtf8(), GIT_REPOSITORY_OPEN_NO_SEARCH, nullptr) == 0)
+		if (git_repository_open_ext(nullptr, repo_date.local_path.toUtf8(), GIT_REPOSITORY_OPEN_NO_SEARCH, nullptr) == 0)
 		{
-			qDebug() << "Adding repository to local model:" << repo_date.repository;
+			qDebug() << "Adding repository to local model:" << repo_date.local_path;
 			local_scripts_model->addEntry(new ScriptRepository(repo_date));
 		}
 	}
@@ -120,7 +122,7 @@ void ScriptManagerDialog::updateSelectedLocalRepository()
 	if (!current.isValid()) return;
 
 	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(local_scripts_model->data(current, ScriptListModel::NativeDataRole));
-	qDebug() << "Lets update" << repository->repository();
+	qDebug() << "Lets update" << repository->localPath();
 
 	// TODO: fix script update mechanism (reset --hard, fetch, merge)
 }
@@ -131,9 +133,9 @@ void ScriptManagerDialog::inspectSelectedLocalRepository()
 	if (!current.isValid()) return;
 
 	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(local_scripts_model->data(current, ScriptListModel::NativeDataRole));
-	qDebug() << "Opening" << repository->repository();
+	qDebug() << "Opening" << repository->localPath();
 
-	QDesktopServices::openUrl(QUrl::fromLocalFile(repository->repository()));
+	QDesktopServices::openUrl(QUrl::fromLocalFile(repository->localPath()));
 }
 
 void ScriptManagerDialog::deleteSelectedLocalRepository()
@@ -142,9 +144,9 @@ void ScriptManagerDialog::deleteSelectedLocalRepository()
 	if (!current.isValid()) return;
 
 	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(local_scripts_model->data(current, ScriptListModel::NativeDataRole));
-	qDebug() << "Deleting" << repository->repository();
+	qDebug() << "Deleting" << repository->localPath();
 
-	QDir repo_dir(repository->repository());
+	QDir repo_dir(repository->localPath());
 	if (repo_dir.removeRecursively())
 	{
 		local_scripts_model->removeRows(current.row(), 1);

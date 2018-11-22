@@ -19,26 +19,9 @@ ScriptRepository::ScriptRepository(ScriptRepository::Data data, QObject *parent)
 
 }
 
-ScriptRepository::ScriptRepository(const QString name, const QString developer, const QString description, const QString repository, QObject *parent)
-	: QObject(parent)
-	, m_data(name, developer, description, repository)
-{
-
-}
-
 bool ScriptRepository::isValid() const
 {
-	return isLocal() || isRemote();
-}
-
-bool ScriptRepository::isLocal() const
-{
-	return !repository().isEmpty() && QFileInfo(repository()).isFile();
-}
-
-bool ScriptRepository::isRemote() const
-{
-	return !repository().isEmpty() && QUrl(repository()).isValid();
+	return !localPath().isEmpty() || !remoteUrl().isEmpty();
 }
 
 ScriptRepository::Status ScriptRepository::status() const
@@ -81,14 +64,24 @@ void ScriptRepository::setDescription(const QString &description)
 	m_data.description = description;
 }
 
-QString ScriptRepository::repository() const
+QString ScriptRepository::localPath() const
 {
-	return m_data.repository;
+	return m_data.local_path;
 }
 
-void ScriptRepository::setRepository(const QString &repository)
+void ScriptRepository::setLocalPath(const QString &path)
 {
-	m_data.repository = repository;
+	m_data.local_path = path;
+}
+
+QString ScriptRepository::remoteUrl() const
+{
+	return m_data.remote_url;
+}
+
+void ScriptRepository::setRemoteUrl(const QString &url)
+{
+	m_data.remote_url = url;
 }
 
 void ScriptRepository::checkStatus()
@@ -96,7 +89,7 @@ void ScriptRepository::checkStatus()
 	// To check whether the script is outdated we first have to fetch from the remote.
 	// After doing so we can calculate the differences to the remote.
 
-	GitFetchOperation *fetch_op = new GitFetchOperation(repository());
+	GitFetchOperation *fetch_op = new GitFetchOperation(localPath());
 	QThread *fetch_thread = new QThread(this);
 	fetch_op->moveToThread(fetch_thread);
 
@@ -105,7 +98,7 @@ void ScriptRepository::checkStatus()
 	connect(fetch_op, &GitFetchOperation::finished, fetch_op, &GitFetchOperation::deleteLater);
 	connect(fetch_thread, &QThread::finished, fetch_thread, &QThread::deleteLater);
 
-	GitBehindOperation *behind_op = new GitBehindOperation(repository());
+	GitBehindOperation *behind_op = new GitBehindOperation(localPath());
 	QThread *behind_thread = new QThread(this);
 
 	connect(behind_thread, &QThread::started, behind_op, &GitBehindOperation::process);

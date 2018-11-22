@@ -17,7 +17,7 @@ int ScriptListModel::rowCount(const QModelIndex &parent) const
 int ScriptListModel::columnCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
-	return 5;
+	return 6;
 }
 
 QVariant ScriptListModel::data(const QModelIndex &index, int role) const
@@ -55,7 +55,8 @@ QVariant ScriptListModel::data(const QModelIndex &index, int role) const
 		}
 		case 2: return script->developer();
 		case 3: return script->description();
-		case 4: return script->repository();
+		case 4: return script->localPath();
+		case 5: return script->remoteUrl();
 		}
 	}
 
@@ -74,7 +75,8 @@ QVariant ScriptListModel::headerData(int section, Qt::Orientation orientation, i
 	case 1: return "Status";
 	case 2: return "Developer";
 	case 3: return "Description";
-	case 4: return "Path";
+	case 4: return "Local path";
+	case 5: return "Remote url";
 	default: return QVariant();
 	}
 }
@@ -204,7 +206,7 @@ void ScriptListModel::addEntry(ScriptRepository *script)
 	setData(row_index, QVariant::fromValue(script), NativeDataRole);
 
 	// Only the status of local scripts can be checked
-	if (script->isLocal())
+	if (!script->localPath().isEmpty())
 	{
 		script->checkStatus();
 	}
