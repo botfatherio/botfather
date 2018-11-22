@@ -111,7 +111,8 @@ void ScriptManagerDialog::loadOnlineModelData()
 
 void ScriptManagerDialog::changeLocalButtonTarget(const QModelIndex &current, const QModelIndex &previous)
 {
-	ui->update_button->setEnabled(current.isValid()); // TODO: enable the update button only when the script is outdated
+	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(local_scripts_model->data(current, ScriptListModel::NativeDataRole));
+	ui->update_button->setEnabled(current.isValid() && repository->status() == ScriptRepository::Status::Outdated);
 	ui->inspect_button->setEnabled(current.isValid());
 	ui->delete_button->setEnabled(current.isValid());
 }
@@ -131,7 +132,21 @@ void ScriptManagerDialog::updateSelectedLocalRepository()
 	}
 
 	GitProgressDialog *dialog = new GitProgressDialog(this);
+	connect(dialog, SIGNAL(accepted()), this, SLOT(localRepositoryUpdated()));
 	dialog->reclone(repository);
+}
+
+void ScriptManagerDialog::localRepositoryUpdated()
+{
+	QModelIndex current = this->ui->local_view->selectionModel()->currentIndex();
+	if (!current.isValid()) return;
+
+	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(local_scripts_model->data(current, ScriptListModel::NativeDataRole));
+	connect(repository, &ScriptRepository::statusChanged, [this, current](){
+		changeLocalButtonTarget(current, current);
+	});
+
+	repository->checkStatus();
 }
 
 void ScriptManagerDialog::inspectSelectedLocalRepository()

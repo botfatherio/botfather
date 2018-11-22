@@ -22,6 +22,7 @@ public slots:
 	void loadOnlineModelData();
 	void changeLocalButtonTarget(const QModelIndex &current, const QModelIndex &previous);
 	void updateSelectedLocalRepository();
+	void localRepositoryUpdated();
 	void inspectSelectedLocalRepository();
 	void deleteSelectedLocalRepository();
 	void itemDoubleClicked(const QModelIndex &index);
