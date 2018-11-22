@@ -1,20 +1,20 @@
-#ifndef GITDIALOG_H
-#define GITDIALOG_H
+#ifndef GITPROGRESSDIALOG_H
+#define GITPROGRESSDIALOG_H
 
 #include <QDialog>
 #include "scriptrepository.h"
 
 namespace Ui {
-class GitDialog;
+class GitProgressDialog;
 }
 
-class GitDialog : public QDialog // TODO: rename to GitProgressDialog
+class GitProgressDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit GitDialog(QWidget *parent = nullptr);
-	~GitDialog();
+	explicit GitProgressDialog(QWidget *parent = nullptr);
+	~GitProgressDialog();
 
 public slots:
 	void setLabelText(const QString &text);
@@ -31,8 +31,8 @@ signals:
 	void cloned(ScriptRepository *repository);
 
 private:
-	Ui::GitDialog *ui;
+	Ui::GitProgressDialog *ui;
 	ScriptRepository *dest_repo;
 };
 
-#endif // GITDIALOG_H
+#endif // GITPROGRESSDIALOG_H

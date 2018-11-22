@@ -109,13 +109,13 @@ HEADERS += \
     tools/mtoolwrapper.h \
     gui/scriptmanager/scriptlistmodel.h \
     gui/scriptmanager/scriptmanagerdialog.h \
-    gui/scriptmanager/gitdialog.h \
     gui/scriptmanager/scriptrepository.h \
     git/gitfetchoperation.h \
     git/abstractgitoperation.h \
     git/gitcloneoperation.h \
     git/gitbehindoperation.h \
-    git/gitrecloneoperation.h
+    git/gitrecloneoperation.h \
+    gui/scriptmanager/gitprogressdialog.h
 SOURCES += \
     ./auth/license_api_client.cpp \
     ./auth/rest_api_client.cpp \
@@ -158,13 +158,13 @@ SOURCES += \
     tools/mtoolwrapper.cpp \
     gui/scriptmanager/scriptlistmodel.cpp \
     gui/scriptmanager/scriptmanagerdialog.cpp \
-    gui/scriptmanager/gitdialog.cpp \
     gui/scriptmanager/scriptrepository.cpp \
     git/gitfetchoperation.cpp \
     git/abstractgitoperation.cpp \
     git/gitcloneoperation.cpp \
     git/gitbehindoperation.cpp \
-    git/gitrecloneoperation.cpp
+    git/gitrecloneoperation.cpp \
+    gui/scriptmanager/gitprogressdialog.cpp
 FORMS += \
     ./gui/android_dialog.ui \
     ./gui/auth_dialog.ui \
@@ -172,7 +172,7 @@ FORMS += \
     ./gui/config_dialog.ui \
     ./gui/control_window.ui \
     gui/scriptmanager/scriptmanagerdialog.ui \
-    gui/scriptmanager/gitdialog.ui
+    gui/scriptmanager/gitprogressdialog.ui
 RESOURCES += \
     ./res/gui.qrc \
     res/botfather.qrc

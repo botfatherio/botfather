@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>GitDialog</class>
- <widget class="QDialog" name="GitDialog">
+ <class>GitProgressDialog</class>
+ <widget class="QDialog" name="GitProgressDialog">
   <property name="geometry">
    <rect>
     <x>0</x>

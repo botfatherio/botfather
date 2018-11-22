@@ -9,7 +9,7 @@
 #include <QMessageBox>
 #include <QTimer>
 #include <git2.h>
-#include "gitdialog.h"
+#include "gitprogressdialog.h"
 
 ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 	QDialog(parent),
@@ -183,8 +183,8 @@ void ScriptManagerDialog::itemDoubleClicked(const QModelIndex &index)
 		return; // Otherwise git_clone will fail.
 	}
 
-	GitDialog *dialog = new GitDialog(this);
-	connect(dialog, &GitDialog::cloned, local_scripts_model, &ScriptListModel::addEntry);
+	GitProgressDialog *dialog = new GitProgressDialog(this);
+	connect(dialog, &GitProgressDialog::cloned, local_scripts_model, &ScriptListModel::addEntry);
 
 	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(online_scripts_model->data(index, ScriptListModel::NativeDataRole));
 	dialog->clone(repository, repo_dir_path);
