@@ -4,6 +4,7 @@
 #include <QPushButton>
 #include <QDebug>
 #include "../../git/gitcloneoperation.h"
+#include "../../git/gitrecloneoperation.h"
 
 GitProgressDialog::GitProgressDialog(QWidget *parent) :
 	QDialog(parent),
@@ -44,6 +45,40 @@ void GitProgressDialog::checkoutProgressChanged(ulong current, ulong total, cons
 	Q_UNUSED(path)
 	QString label_text = QString("Checking out files: %1/%2 done.").arg(current).arg(total);
 	setLabelText(label_text);
+}
+
+void GitProgressDialog::reclone(ScriptRepository *repository)
+{
+	setWindowTitle("Script repository update");
+	setLabelText("Updating script repository");
+	show();
+
+	QThread *thread = new QThread;
+	GitRecloneOperation *operation = new GitRecloneOperation(repository->remoteUrl(), repository->localPath());
+	operation->moveToThread(thread);
+
+	connect(thread, &QThread::started, operation, &GitRecloneOperation::process);
+	connect(operation, &GitRecloneOperation::finished, thread, &QThread::quit);
+	connect(operation, &GitRecloneOperation::finished, operation, &GitRecloneOperation::deleteLater);
+	connect(thread, &QThread::finished, thread, &QThread::deleteLater);
+
+	connect(ui->buttonBox, &QDialogButtonBox::rejected, operation, &GitRecloneOperation::cancel);
+	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &GitProgressDialog::reject);
+	connect(operation, &GitRecloneOperation::success, this, &GitProgressDialog::cloneSuccess);
+	connect(operation, &GitRecloneOperation::failure, this, &GitProgressDialog::cloneFailure);
+
+	connect(operation, &GitRecloneOperation::totalObjectsChanged, this, &GitProgressDialog::setMaximum);
+	connect(operation, &GitRecloneOperation::receivedObjectsChanged, this, &GitProgressDialog::setValue);
+	connect(operation, &GitRecloneOperation::checkoutTotalChanged, this, &GitProgressDialog::setMaximum);
+	connect(operation, &GitRecloneOperation::checkoutCurrentChanged, this, &GitProgressDialog::setValue);
+	connect(operation, &GitRecloneOperation::transferProgressChanged, this, &GitProgressDialog::transferProgressChanged);
+	connect(operation, &GitRecloneOperation::checkoutProgressChanged, this, &GitProgressDialog::checkoutProgressChanged);
+
+	connect(operation, &GitRecloneOperation::replacingRepo, [this](){
+		this->setLabelText("Almost done updating...");
+	});
+
+	thread->start();
 }
 
 void GitProgressDialog::clone(ScriptRepository *repository, const QString &local_path)

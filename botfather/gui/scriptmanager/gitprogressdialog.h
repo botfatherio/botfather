@@ -23,6 +23,8 @@ public slots:
 
 	void transferProgressChanged(uint received, uint total, uint bytes);
 	void checkoutProgressChanged(ulong current, ulong total, const QString &path);
+
+	void reclone(ScriptRepository *repository);
 	void clone(ScriptRepository *repository, const QString &local_path);
 	void cloneSuccess();
 	void cloneFailure();

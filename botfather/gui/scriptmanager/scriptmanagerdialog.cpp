@@ -124,7 +124,14 @@ void ScriptManagerDialog::updateSelectedLocalRepository()
 	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(local_scripts_model->data(current, ScriptListModel::NativeDataRole));
 	qDebug() << "Lets update" << repository->localPath();
 
-	// TODO: fix script update mechanism (reset --hard, fetch, merge)
+	if (repository->status() != ScriptRepository::Status::Outdated)
+	{
+		// Only outdated repositories can be updated
+		return;
+	}
+
+	GitProgressDialog *dialog = new GitProgressDialog(this);
+	dialog->reclone(repository);
 }
 
 void ScriptManagerDialog::inspectSelectedLocalRepository()
