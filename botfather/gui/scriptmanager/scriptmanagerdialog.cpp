@@ -1,27 +1,27 @@
 #include "scriptmanagerdialog.h"
 #include "ui_scriptmanagerdialog.h"
-#include "scriptinstallwidget.h"
-#include "scriptmanagewidget.h"
+#include "repodownloadwidget.h"
+#include "repomaintainwidget.h"
 #include <QDebug>
 
 ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 	QDialog(parent),
-	ui(new Ui::ScriptManagerDialog)
+	m_ui(new Ui::ScriptManagerDialog)
 {
-	ui->setupUi(this);
-	connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
-	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+	m_ui->setupUi(this);
+	connect(m_ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+	connect(m_ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
-	ScriptInstallWidget *install_widget = new ScriptInstallWidget(this);
-	ScriptManageWidget *manage_widget = new ScriptManageWidget(this);
+	RepoDownloadWidget *install_widget = new RepoDownloadWidget(this);
+	RepoMaintainWidget *manage_widget = new RepoMaintainWidget(this);
 
-	ui->install_tab->layout()->addWidget(install_widget);
-	ui->manage_tab->layout()->addWidget(manage_widget);
+	m_ui->install_tab->layout()->addWidget(install_widget);
+	m_ui->manage_tab->layout()->addWidget(manage_widget);
 
-	connect(install_widget, &ScriptInstallWidget::scriptInstalled, manage_widget, &ScriptManageWidget::addScriptRepository);
+	connect(install_widget, &RepoDownloadWidget::scriptInstalled, manage_widget, &RepoMaintainWidget::addScriptRepository);
 }
 
 ScriptManagerDialog::~ScriptManagerDialog()
 {
-	delete ui;
+	delete m_ui;
 }

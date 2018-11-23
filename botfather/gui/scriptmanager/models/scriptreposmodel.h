@@ -1,15 +1,15 @@
-#ifndef SCRIPTLISTMODEL_H
-#define SCRIPTLISTMODEL_H
+#ifndef SCRIPTREPOSMODEL_H
+#define SCRIPTREPOSMODEL_H
 
 #include <QAbstractListModel>
 #include "scriptrepository.h"
 
-class ScriptListModel : public QAbstractListModel
+class ScriptReposModel : public QAbstractListModel
 {
 	Q_OBJECT
 
 public:
-	ScriptListModel(QObject *parent = nullptr);
+	ScriptReposModel(QObject *parent = nullptr);
 
 	static const int NativeDataRole = Qt::UserRole + 1;
 	static const int KeywordsRole = Qt::UserRole + 2;
@@ -29,10 +29,10 @@ public:
 public slots:
 	//void load(const QString &filename);
 	void save(const QString &filename);
-	void addEntry(ScriptRepository *script);
+	void addEntry(ScriptRepository *repository);
 
 private:
-	QVector<ScriptRepository*> remote_scripts; // TODO: rename
+	QVector<ScriptRepository*> repositories;
 };
 
-#endif // SCRIPTLISTMODEL_H
+#endif // SCRIPTREPOSMODEL_H

@@ -1,9 +1,9 @@
-#ifndef SCRIPTBROWSERDIALOG_H
-#define SCRIPTBROWSERDIALOG_H
+#ifndef SCRIPTMANAGERDIALOG_H
+#define SCRIPTMANAGERDIALOG_H
 
 #include <QDialog>
 #include <QSortFilterProxyModel>
-#include "scriptlistmodel.h"
+#include "models/scriptreposmodel.h"
 
 namespace Ui {
 class ScriptManagerDialog;
@@ -18,7 +18,7 @@ public:
 	~ScriptManagerDialog();
 
 private:
-	Ui::ScriptManagerDialog *ui;
+	Ui::ScriptManagerDialog *m_ui;
 };
 
-#endif // SCRIPTBROWSERDIALOG_H
+#endif // SCRIPTMANAGERDIALOG_H

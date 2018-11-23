@@ -8,29 +8,29 @@
 
 GitProgressDialog::GitProgressDialog(QWidget *parent) :
 	QDialog(parent),
-	ui(new Ui::GitProgressDialog)
+	m_ui(new Ui::GitProgressDialog)
 {
-	ui->setupUi(this);
+	m_ui->setupUi(this);
 }
 
 GitProgressDialog::~GitProgressDialog()
 {
-	delete ui;
+	delete m_ui;
 }
 
 void GitProgressDialog::setLabelText(const QString &text)
 {
-	ui->label->setText(text);
+	m_ui->label->setText(text);
 }
 
 void GitProgressDialog::setMaximum(int maximum)
 {
-	ui->progressBar->setMaximum(maximum);
+	m_ui->progressBar->setMaximum(maximum);
 }
 
 void GitProgressDialog::setValue(int value)
 {
-	ui->progressBar->setValue(value);
+	m_ui->progressBar->setValue(value);
 }
 
 void GitProgressDialog::transferProgressChanged(uint received, uint total, uint bytes)
@@ -62,8 +62,8 @@ void GitProgressDialog::reclone(ScriptRepository *repository)
 	connect(operation, &GitRecloneOperation::finished, operation, &GitRecloneOperation::deleteLater);
 	connect(thread, &QThread::finished, thread, &QThread::deleteLater);
 
-	connect(ui->buttonBox, &QDialogButtonBox::rejected, operation, &GitRecloneOperation::cancel);
-	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &GitProgressDialog::reject);
+	connect(m_ui->buttonBox, &QDialogButtonBox::rejected, operation, &GitRecloneOperation::cancel);
+	connect(m_ui->buttonBox, &QDialogButtonBox::rejected, this, &GitProgressDialog::reject);
 	connect(operation, &GitRecloneOperation::success, this, &GitProgressDialog::cloneSuccess);
 	connect(operation, &GitRecloneOperation::failure, this, &GitProgressDialog::cloneFailure);
 
@@ -83,8 +83,8 @@ void GitProgressDialog::reclone(ScriptRepository *repository)
 
 void GitProgressDialog::clone(ScriptRepository *repository, const QString &local_path)
 {
-	dest_repo = new ScriptRepository(repository->data());
-	dest_repo->setLocalPath(local_path);
+	m_dest_repo = new ScriptRepository(repository->data());
+	m_dest_repo->setLocalPath(local_path);
 
 	setWindowTitle("Cloning script repository...");
 	setLabelText("Cloning script repository...");
@@ -99,8 +99,8 @@ void GitProgressDialog::clone(ScriptRepository *repository, const QString &local
 	connect(operation, &GitCloneOperation::finished, operation, &GitCloneOperation::deleteLater);
 	connect(thread, &QThread::finished, thread, &QThread::deleteLater);
 
-	connect(ui->buttonBox, &QDialogButtonBox::rejected, operation, &GitCloneOperation::cancel);
-	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &GitProgressDialog::reject);
+	connect(m_ui->buttonBox, &QDialogButtonBox::rejected, operation, &GitCloneOperation::cancel);
+	connect(m_ui->buttonBox, &QDialogButtonBox::rejected, this, &GitProgressDialog::reject);
 	connect(operation, &GitCloneOperation::success, this, &GitProgressDialog::cloneSuccess);
 	connect(operation, &GitCloneOperation::failure, this, &GitProgressDialog::cloneFailure);
 
@@ -119,13 +119,13 @@ void GitProgressDialog::cloneSuccess()
 	setWindowTitle("Script download finished!");
 	setLabelText("Script download finished!");
 
-	ui->buttonBox->clear();
-	QPushButton *btn = ui->buttonBox->addButton(QDialogButtonBox::Ok);
+	m_ui->buttonBox->clear();
+	QPushButton *btn = m_ui->buttonBox->addButton(QDialogButtonBox::Ok);
 
 	Q_ASSERT(btn);
 	connect(btn, &QPushButton::clicked, this, &GitProgressDialog::accept);
 
-	emit cloned(dest_repo);
+	emit cloned(m_dest_repo);
 }
 
 void GitProgressDialog::cloneFailure()
@@ -133,8 +133,8 @@ void GitProgressDialog::cloneFailure()
 	setWindowTitle("Script download failed!");
 	setLabelText("Script download failed!");
 
-	ui->buttonBox->clear();
-	QPushButton *btn = ui->buttonBox->addButton(QDialogButtonBox::Close);
+	m_ui->buttonBox->clear();
+	QPushButton *btn = m_ui->buttonBox->addButton(QDialogButtonBox::Close);
 
 	Q_ASSERT(btn);
 	connect(btn, &QPushButton::clicked, this, &GitProgressDialog::reject);

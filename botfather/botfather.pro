@@ -107,17 +107,17 @@ HEADERS += \
     ./engine/prototypes/url_prototype.h \
     engine/prototypes/timer_prototype.h \
     tools/mtoolwrapper.h \
-    gui/scriptmanager/scriptlistmodel.h \
     gui/scriptmanager/scriptmanagerdialog.h \
-    gui/scriptmanager/scriptrepository.h \
+    gui/scriptmanager/models/scriptrepository.h \
     git/gitfetchoperation.h \
     git/abstractgitoperation.h \
     git/gitcloneoperation.h \
     git/gitbehindoperation.h \
     git/gitrecloneoperation.h \
     gui/scriptmanager/gitprogressdialog.h \
-    gui/scriptmanager/scriptinstallwidget.h \
-    gui/scriptmanager/scriptmanagewidget.h
+    gui/scriptmanager/models/scriptreposmodel.h \
+    gui/scriptmanager/repodownloadwidget.h \
+    gui/scriptmanager/repomaintainwidget.h
 SOURCES += \
     ./auth/license_api_client.cpp \
     ./auth/rest_api_client.cpp \
@@ -158,17 +158,17 @@ SOURCES += \
     ./engine/prototypes/url_prototype.cpp \
     engine/prototypes/timer_prototype.cpp \
     tools/mtoolwrapper.cpp \
-    gui/scriptmanager/scriptlistmodel.cpp \
     gui/scriptmanager/scriptmanagerdialog.cpp \
-    gui/scriptmanager/scriptrepository.cpp \
+    gui/scriptmanager/models/scriptrepository.cpp \
     git/gitfetchoperation.cpp \
     git/abstractgitoperation.cpp \
     git/gitcloneoperation.cpp \
     git/gitbehindoperation.cpp \
     git/gitrecloneoperation.cpp \
     gui/scriptmanager/gitprogressdialog.cpp \
-    gui/scriptmanager/scriptinstallwidget.cpp \
-    gui/scriptmanager/scriptmanagewidget.cpp
+    gui/scriptmanager/models/scriptreposmodel.cpp \
+    gui/scriptmanager/repodownloadwidget.cpp \
+    gui/scriptmanager/repomaintainwidget.cpp
 FORMS += \
     ./gui/android_dialog.ui \
     ./gui/auth_dialog.ui \
@@ -177,7 +177,7 @@ FORMS += \
     ./gui/control_window.ui \
     gui/scriptmanager/scriptmanagerdialog.ui \
     gui/scriptmanager/gitprogressdialog.ui \
-    gui/scriptmanager/scriptlistwidget.ui
+    gui/scriptmanager/repolistwidget.ui
 RESOURCES += \
     ./res/gui.qrc \
     res/botfather.qrc

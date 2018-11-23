@@ -1,5 +1,5 @@
-#include "scriptinstallwidget.h"
-#include "ui_scriptlistwidget.h"
+#include "repodownloadwidget.h"
+#include "ui_repolistwidget.h"
 #include <QMessageBox>
 #include <QTimer>
 #include <QStandardPaths>
@@ -8,24 +8,24 @@
 #include <QDebug>
 #include "gitprogressdialog.h"
 
-ScriptInstallWidget::ScriptInstallWidget(QWidget *parent)
+RepoDownloadWidget::RepoDownloadWidget(QWidget *parent)
 	: QWidget(parent)
-	, m_ui(new Ui::ScriptListWidget)
+	, m_ui(new Ui::RepoListWidget)
 {
 	m_ui->setupUi(this);
 	m_ui->label->setText("<p style='font-size: 14px'>Download and install Scripts</p>");
 
-	m_scripts_model = new ScriptListModel(this);
-	m_scripts_proxy= new QSortFilterProxyModel(this);
-	m_scripts_proxy->setSourceModel(m_scripts_model);
+	m_repos_model = new ScriptReposModel(this);
+	m_repos_proxy= new QSortFilterProxyModel(this);
+	m_repos_proxy->setSourceModel(m_repos_model);
 
-	m_scripts_proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
-	m_scripts_proxy->setFilterRole(ScriptListModel::KeywordsRole);
-	m_scripts_proxy->setFilterKeyColumn(0);
+	m_repos_proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
+	m_repos_proxy->setFilterRole(ScriptReposModel::KeywordsRole);
+	m_repos_proxy->setFilterKeyColumn(0);
 
-	m_ui->view->setModel(m_scripts_proxy);
-	connect(m_ui->filter, &QLineEdit::textChanged, m_scripts_proxy, &QSortFilterProxyModel::setFilterWildcard);
-	connect(m_ui->view, &QTableView::doubleClicked, this, &ScriptInstallWidget::itemDoubleClicked);
+	m_ui->view->setModel(m_repos_proxy);
+	connect(m_ui->filter, &QLineEdit::textChanged, m_repos_proxy, &QSortFilterProxyModel::setFilterWildcard);
+	connect(m_ui->view, &QTableView::doubleClicked, this, &RepoDownloadWidget::itemDoubleClicked);
 
 	// Hide some columns after setting the model
 	m_ui->view->hideColumn(1); // Status
@@ -33,15 +33,15 @@ ScriptInstallWidget::ScriptInstallWidget(QWidget *parent)
 	m_ui->view->hideColumn(5); // Remote Url
 
 	// Don't block the constructor while loading model data
-	QTimer::singleShot(1, this, &ScriptInstallWidget::loadModelData);
+	QTimer::singleShot(1, this, &RepoDownloadWidget::loadModelData);
 }
 
-ScriptInstallWidget::~ScriptInstallWidget()
+RepoDownloadWidget::~RepoDownloadWidget()
 {
 	delete m_ui;
 }
 
-void ScriptInstallWidget::loadModelData()
+void RepoDownloadWidget::loadModelData()
 {
 	// TODO: get script data from the website instead
 	QVector<ScriptRepository*> testscripts = {
@@ -51,11 +51,11 @@ void ScriptInstallWidget::loadModelData()
 	};
 	for (ScriptRepository *ts : testscripts)
 	{
-		m_scripts_model->addEntry(ts);
+		m_repos_model->addEntry(ts);
 	}
 }
 
-void ScriptInstallWidget::itemDoubleClicked(const QModelIndex &index)
+void RepoDownloadWidget::itemDoubleClicked(const QModelIndex &index)
 {
 	if (!index.isValid()) return;
 
@@ -83,8 +83,8 @@ void ScriptInstallWidget::itemDoubleClicked(const QModelIndex &index)
 	}
 
 	GitProgressDialog *dialog = new GitProgressDialog(this);
-	connect(dialog, &GitProgressDialog::cloned, this, &ScriptInstallWidget::scriptInstalled);
+	connect(dialog, &GitProgressDialog::cloned, this, &RepoDownloadWidget::scriptInstalled);
 
-	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(m_scripts_model->data(index, ScriptListModel::NativeDataRole));
+	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(m_repos_model->data(index, ScriptReposModel::NativeDataRole));
 	dialog->clone(repository, repo_dir_path);
 }

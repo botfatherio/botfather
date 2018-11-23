@@ -1,5 +1,5 @@
-#include "scriptmanagewidget.h"
-#include "ui_scriptlistwidget.h"
+#include "repomaintainwidget.h"
+#include "ui_repolistwidget.h"
 #include <QFileDialog>
 #include <QStandardPaths>
 #include <QDesktopServices>
@@ -10,9 +10,9 @@
 #include <git2.h>
 #include "gitprogressdialog.h"
 
-ScriptManageWidget::ScriptManageWidget(QWidget *parent)
+RepoMaintainWidget::RepoMaintainWidget(QWidget *parent)
 	: QWidget(parent)
-	, m_ui(new Ui::ScriptListWidget)
+	, m_ui(new Ui::RepoListWidget)
 {
 	m_ui->setupUi(this);
 	m_ui->label->setText("<p style='font-size: 14px'>Update and run local Scripts</p>");
@@ -22,17 +22,17 @@ ScriptManageWidget::ScriptManageWidget(QWidget *parent)
 	app_config_dir.mkpath(app_config_dir.path());
 	m_scripts_dat_filepath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/scriptrepos.dat";
 
-	m_scripts_model = new ScriptListModel(this);
-	m_scripts_proxy = new QSortFilterProxyModel(this);
-	m_scripts_proxy->setSourceModel(m_scripts_model);
+	m_repos_model = new ScriptReposModel(this);
+	m_repos_proxy = new QSortFilterProxyModel(this);
+	m_repos_proxy->setSourceModel(m_repos_model);
 
-	m_scripts_proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
-	m_scripts_proxy->setFilterRole(ScriptListModel::KeywordsRole);
-	m_scripts_proxy->setFilterKeyColumn(0);
+	m_repos_proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
+	m_repos_proxy->setFilterRole(ScriptReposModel::KeywordsRole);
+	m_repos_proxy->setFilterKeyColumn(0);
 
-	m_ui->view->setModel(m_scripts_proxy);
-	connect(m_ui->filter, &QLineEdit::textChanged, m_scripts_proxy, &QSortFilterProxyModel::setFilterWildcard);
-	connect(m_ui->view->selectionModel(), &QItemSelectionModel::currentChanged, this, &ScriptManageWidget::changeLocalButtonTarget);
+	m_ui->view->setModel(m_repos_proxy);
+	connect(m_ui->filter, &QLineEdit::textChanged, m_repos_proxy, &QSortFilterProxyModel::setFilterWildcard);
+	connect(m_ui->view->selectionModel(), &QItemSelectionModel::currentChanged, this, &RepoMaintainWidget::updateButtonStatuses);
 
 	m_update_button = new QPushButton("Update", this);
 	m_inspect_button = new QPushButton("Inspect", this);
@@ -45,22 +45,23 @@ ScriptManageWidget::ScriptManageWidget(QWidget *parent)
 	m_ui->buttons->addWidget(m_update_button);
 	m_ui->buttons->addWidget(m_inspect_button);
 	m_ui->buttons->addWidget(m_delete_button);
+	m_ui->buttons->addStretch();
 
-	connect(m_update_button, &QPushButton::clicked, this, &ScriptManageWidget::updateSelectedLocalRepository);
-	connect(m_inspect_button, &QPushButton::clicked, this, &ScriptManageWidget::inspectSelectedLocalRepository);
-	connect(m_delete_button, &QPushButton::clicked, this, &ScriptManageWidget::deleteSelectedLocalRepository);
+	connect(m_update_button, &QPushButton::clicked, this, &RepoMaintainWidget::updateSelectedRepository);
+	connect(m_inspect_button, &QPushButton::clicked, this, &RepoMaintainWidget::inspectSelectedRepository);
+	connect(m_delete_button, &QPushButton::clicked, this, &RepoMaintainWidget::deleteSelectedRepository);
 
 	// Don't block the constructor while loading model data
-	QTimer::singleShot(1, this, &ScriptManageWidget::loadLocalModelData);
+	QTimer::singleShot(1, this, &RepoMaintainWidget::loadModelData);
 }
 
-ScriptManageWidget::~ScriptManageWidget()
+RepoMaintainWidget::~RepoMaintainWidget()
 {
-	m_scripts_model->save(m_scripts_dat_filepath);
+	m_repos_model->save(m_scripts_dat_filepath);
 	delete m_ui;
 }
 
-void ScriptManageWidget::loadLocalModelData()
+void RepoMaintainWidget::loadModelData()
 {
 	QFile file(m_scripts_dat_filepath);
 	if (!file.open(QIODevice::ReadOnly))
@@ -77,12 +78,13 @@ void ScriptManageWidget::loadLocalModelData()
 	for (ScriptRepository::Data repo_date : repo_data)
 	{
 		// TODO: move this check and use of libgit into the ScriptRepository::isValid method
+		// NOTE: after doing so move this back into the model
 
 		// Pass nullptr for the output parameter to check for but not open the repo
 		if (git_repository_open_ext(nullptr, repo_date.local_path.toUtf8(), GIT_REPOSITORY_OPEN_NO_SEARCH, nullptr) == 0)
 		{
 			qDebug() << "Adding repository to local model:" << repo_date.local_path;
-			m_scripts_model->addEntry(new ScriptRepository(repo_date));
+			m_repos_model->addEntry(new ScriptRepository(repo_date));
 		}
 	}
 
@@ -90,20 +92,21 @@ void ScriptManageWidget::loadLocalModelData()
 	file.close();
 }
 
-void ScriptManageWidget::changeLocalButtonTarget(const QModelIndex &current, const QModelIndex &previous)
+void RepoMaintainWidget::updateButtonStatuses(const QModelIndex &current, const QModelIndex &previous)
 {
-	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(m_scripts_model->data(current, ScriptListModel::NativeDataRole));
+	Q_UNUSED(previous);
+	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(m_repos_model->data(current, ScriptReposModel::NativeDataRole));
 	m_update_button->setEnabled(current.isValid() && repository->status() == ScriptRepository::Status::Outdated);
 	m_inspect_button->setEnabled(current.isValid());
 	m_delete_button->setEnabled(current.isValid());
 }
 
-void ScriptManageWidget::updateSelectedLocalRepository()
+void RepoMaintainWidget::updateSelectedRepository()
 {
 	QModelIndex current = m_ui->view->selectionModel()->currentIndex();
 	if (!current.isValid()) return;
 
-	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(m_scripts_model->data(current, ScriptListModel::NativeDataRole));
+	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(m_repos_model->data(current, ScriptReposModel::NativeDataRole));
 	qDebug() << "Lets update" << repository->localPath();
 
 	if (repository->status() != ScriptRepository::Status::Outdated)
@@ -113,50 +116,50 @@ void ScriptManageWidget::updateSelectedLocalRepository()
 	}
 
 	GitProgressDialog *dialog = new GitProgressDialog(this);
-	connect(dialog, SIGNAL(accepted()), this, SLOT(localRepositoryUpdated()));
+	connect(dialog, SIGNAL(accepted()), this, SLOT(repositoryUpdated()));
 	dialog->reclone(repository);
 }
 
-void ScriptManageWidget::localRepositoryUpdated()
+void RepoMaintainWidget::repositoryUpdated()
 {
 	QModelIndex current = m_ui->view->selectionModel()->currentIndex();
 	if (!current.isValid()) return;
 
-	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(m_scripts_model->data(current, ScriptListModel::NativeDataRole));
+	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(m_repos_model->data(current, ScriptReposModel::NativeDataRole));
 	connect(repository, &ScriptRepository::statusChanged, [this, current](){
-		changeLocalButtonTarget(current, current);
+		updateButtonStatuses(current, current);
 	});
 
 	repository->checkStatus();
 }
 
-void ScriptManageWidget::inspectSelectedLocalRepository()
+void RepoMaintainWidget::inspectSelectedRepository()
 {
 	QModelIndex current = m_ui->view->selectionModel()->currentIndex();
 	if (!current.isValid()) return;
 
-	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(m_scripts_model->data(current, ScriptListModel::NativeDataRole));
+	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(m_repos_model->data(current, ScriptReposModel::NativeDataRole));
 	qDebug() << "Opening" << repository->localPath();
 
 	QDesktopServices::openUrl(QUrl::fromLocalFile(repository->localPath()));
 }
 
-void ScriptManageWidget::deleteSelectedLocalRepository()
+void RepoMaintainWidget::deleteSelectedRepository()
 {
 	QModelIndex current = m_ui->view->selectionModel()->currentIndex();
 	if (!current.isValid()) return;
 
-	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(m_scripts_model->data(current, ScriptListModel::NativeDataRole));
+	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(m_repos_model->data(current, ScriptReposModel::NativeDataRole));
 	qDebug() << "Deleting" << repository->localPath();
 
 	QDir repo_dir(repository->localPath());
 	if (repo_dir.removeRecursively())
 	{
-		m_scripts_model->removeRows(current.row(), 1);
+		m_repos_model->removeRows(current.row(), 1);
 	}
 }
 
-void ScriptManageWidget::addScriptRepository(ScriptRepository *repository)
+void RepoMaintainWidget::addScriptRepository(ScriptRepository *repository)
 {
-	m_scripts_model->addEntry(repository);
+	m_repos_model->addEntry(repository);
 }

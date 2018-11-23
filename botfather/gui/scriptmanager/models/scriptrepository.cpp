@@ -3,8 +3,8 @@
 #include <QUrl>
 #include <QDebug>
 #include <QThread>
-#include "../../git/gitfetchoperation.h"
-#include "../../git/gitbehindoperation.h"
+#include "../../../git/gitfetchoperation.h"
+#include "../../../git/gitbehindoperation.h"
 
 ScriptRepository::ScriptRepository(QObject *parent)
 	: QObject(parent)

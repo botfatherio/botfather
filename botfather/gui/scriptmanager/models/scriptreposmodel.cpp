@@ -1,33 +1,33 @@
-#include "scriptlistmodel.h"
+#include "scriptreposmodel.h"
 #include <QDataStream>
 #include <QFile>
 #include <QDebug>
 
-ScriptListModel::ScriptListModel(QObject *parent) : QAbstractListModel(parent)
+ScriptReposModel::ScriptReposModel(QObject *parent) : QAbstractListModel(parent)
 {
 
 }
 
-int ScriptListModel::rowCount(const QModelIndex &parent) const
+int ScriptReposModel::rowCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
-	return remote_scripts.size();
+	return repositories.size();
 }
 
-int ScriptListModel::columnCount(const QModelIndex &parent) const
+int ScriptReposModel::columnCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
 	return 6;
 }
 
-QVariant ScriptListModel::data(const QModelIndex &index, int role) const
+QVariant ScriptReposModel::data(const QModelIndex &index, int role) const
 {
 	if (!index.isValid() || index.row() > rowCount() || index.row() < 0)
 	{
 		return QVariant();
 	}
 
-	ScriptRepository *script = remote_scripts.at(index.row());
+	ScriptRepository *script = repositories.at(index.row());
 
 	if (role == NativeDataRole)
 	{
@@ -63,7 +63,7 @@ QVariant ScriptListModel::data(const QModelIndex &index, int role) const
 	return QVariant();
 }
 
-QVariant ScriptListModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant ScriptReposModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	if (role != Qt::DisplayRole || orientation != Qt::Horizontal)
 	{
@@ -81,33 +81,33 @@ QVariant ScriptListModel::headerData(int section, Qt::Orientation orientation, i
 	}
 }
 
-bool ScriptListModel::insertRows(int position, int rows, const QModelIndex &parent)
+bool ScriptReposModel::insertRows(int position, int rows, const QModelIndex &parent)
 {
 	beginInsertRows(parent, position, position + rows - 1);
 
 	for (int row = 0; row < rows; ++row)
 	{
-		remote_scripts.insert(position, new ScriptRepository());
+		repositories.insert(position, new ScriptRepository());
 	}
 
 	endInsertRows();
 	return true;
 }
 
-bool ScriptListModel::removeRows(int position, int rows, const QModelIndex &parent)
+bool ScriptReposModel::removeRows(int position, int rows, const QModelIndex &parent)
 {
 	beginRemoveRows(parent, position, position + rows - 1);
 
 	for (int row = 0; row < rows; ++row)
 	{
-		remote_scripts.removeAt(position);
+		repositories.removeAt(position);
 	}
 
 	endRemoveRows();
 	return true;
 }
 
-bool ScriptListModel::setData(const QModelIndex &index, const QVariant &value, int role)
+bool ScriptReposModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
 	if (!index.isValid())
 	{
@@ -117,7 +117,7 @@ bool ScriptListModel::setData(const QModelIndex &index, const QVariant &value, i
 	if (role == NativeDataRole)
 	{
 		ScriptRepository *script = qvariant_cast<ScriptRepository*>(value);
-		remote_scripts.replace(index.row(), script);
+		repositories.replace(index.row(), script);
 
 		emit(dataChanged(index, index));
 		return true;
@@ -141,7 +141,7 @@ static bool remoteScriptDescLess(const ScriptRepository *rs1, const ScriptReposi
 	return rs1->description() < rs2->description();
 }
 
-void ScriptListModel::sort(int column, Qt::SortOrder order)
+void ScriptReposModel::sort(int column, Qt::SortOrder order)
 {
 	std::function<bool(const ScriptRepository *, const ScriptRepository *)> comparator_function;
 
@@ -149,11 +149,11 @@ void ScriptListModel::sort(int column, Qt::SortOrder order)
 	if (column == 1) comparator_function = remoteScriptDevlLess;
 	if (column == 2) comparator_function = remoteScriptDescLess;
 
-	std::sort(remote_scripts.begin(), remote_scripts.end(), comparator_function);
+	std::sort(repositories.begin(), repositories.end(), comparator_function);
 
 	if (order == Qt::AscendingOrder)
 	{
-		std::reverse(remote_scripts.begin(), remote_scripts.end());
+		std::reverse(repositories.begin(), repositories.end());
 	}
 
 	emit dataChanged(QModelIndex(), QModelIndex());
@@ -179,7 +179,7 @@ void ScriptListModel::load(const QString &filename)
 }
 */
 
-void ScriptListModel::save(const QString &filename)
+void ScriptReposModel::save(const QString &filename)
 {
 	QFile file(filename);
 	if (!file.open(QIODevice::WriteOnly))
@@ -189,7 +189,7 @@ void ScriptListModel::save(const QString &filename)
 
 	// Data has to be stored the same way it's loaded, meaning we have to have it in an QVector.
 	QVector<ScriptRepository::Data> data_list;
-	for (ScriptRepository *repo : remote_scripts)
+	for (ScriptRepository *repo : repositories)
 	{
 		data_list << repo->data();
 	}
@@ -199,7 +199,7 @@ void ScriptListModel::save(const QString &filename)
 	file.close();
 }
 
-void ScriptListModel::addEntry(ScriptRepository *script)
+void ScriptReposModel::addEntry(ScriptRepository *script)
 {
 	insertRows(rowCount(), 1, QModelIndex());
 	QModelIndex row_index = index(rowCount() - 1, 0, QModelIndex());

@@ -2,7 +2,7 @@
 #define GITPROGRESSDIALOG_H
 
 #include <QDialog>
-#include "scriptrepository.h"
+#include "models/scriptrepository.h"
 
 namespace Ui {
 class GitProgressDialog;
@@ -33,8 +33,8 @@ signals:
 	void cloned(ScriptRepository *repository);
 
 private:
-	Ui::GitProgressDialog *ui;
-	ScriptRepository *dest_repo;
+	Ui::GitProgressDialog *m_ui;
+	ScriptRepository *m_dest_repo;
 };
 
 #endif // GITPROGRESSDIALOG_H

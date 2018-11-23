@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ScriptListWidget</class>
- <widget class="QWidget" name="ScriptListWidget">
+ <class>RepoListWidget</class>
+ <widget class="QWidget" name="RepoListWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
