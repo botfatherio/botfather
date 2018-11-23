@@ -13,6 +13,7 @@
 #include "browser_window.h"
 #include "android_dialog.h"
 #include "auth_dialog.h"
+#include "scriptmanager/scriptmanagerdialog.h"
 #include "../settings.h"
 #include "../tools/mtoolwrapper.h"
 
@@ -319,7 +320,8 @@ void ControlWindow::on_save_button_clicked()
 
 void ControlWindow::on_actionScripts_triggered()
 {
-	QDesktopServices::openUrl(QUrl("https://botfather.io/scripts/"));
+	ScriptManagerDialog dialog(this);
+	dialog.exec();
 }
 
 void ControlWindow::on_actionAbout_triggered()
