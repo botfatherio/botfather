@@ -3,6 +3,7 @@
 #include <QUrl>
 #include <QDebug>
 #include <QThread>
+#include <git2.h>
 #include "../../../git/gitfetchoperation.h"
 #include "../../../git/gitbehindoperation.h"
 
@@ -21,7 +22,18 @@ ScriptRepository::ScriptRepository(ScriptRepository::Data data, QObject *parent)
 
 bool ScriptRepository::isValid() const
 {
-	return !localPath().isEmpty() || !remoteUrl().isEmpty();
+	if (localPath().isEmpty())
+	{
+		return !remoteUrl().isEmpty() && QUrl(remoteUrl()).isValid();
+	}
+
+	git_libgit2_init();
+
+	// Pass nullptr for the output parameter to check for but not open the repo
+	bool valid_repo = git_repository_open_ext(nullptr, localPath().toUtf8(), GIT_REPOSITORY_OPEN_NO_SEARCH, nullptr) == 0;
+
+	git_libgit2_shutdown();
+	return valid_repo;
 }
 
 ScriptRepository::Status ScriptRepository::status() const

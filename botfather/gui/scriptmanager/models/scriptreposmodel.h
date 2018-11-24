@@ -27,7 +27,7 @@ public:
 	void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
 
 public slots:
-	//void load(const QString &filename);
+	void load(const QString &filename, bool filter_invalid = true);
 	void save(const QString &filename);
 	void addEntry(ScriptRepository *repository);
 

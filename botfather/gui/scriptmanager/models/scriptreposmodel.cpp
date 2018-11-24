@@ -159,8 +159,8 @@ void ScriptReposModel::sort(int column, Qt::SortOrder order)
 	emit dataChanged(QModelIndex(), QModelIndex());
 }
 
-/*
-void ScriptListModel::load(const QString &filename)
+
+void ScriptReposModel::load(const QString &filename, bool filter_invalid)
 {
 	QFile file(filename);
 	if (!file.open(QIODevice::ReadOnly))
@@ -168,16 +168,21 @@ void ScriptListModel::load(const QString &filename)
 		return;
 	}
 
-	QVector<ScriptRepository*> repositories;
+	QVector<ScriptRepository::Data> repo_data;
 	QDataStream in(&file);
-	in >> repositories;
+	in >> repo_data;
 
-	for (ScriptRepository *repo : repositories)
+	for (ScriptRepository::Data repo_date : repo_data)
 	{
-		addEntry(repo);
+		ScriptRepository *repository = new ScriptRepository(repo_date);
+		if (!filter_invalid || repository->isValid())
+		{
+			addEntry(repository);
+		}
 	}
+
+	file.close();
 }
-*/
 
 void ScriptReposModel::save(const QString &filename)
 {

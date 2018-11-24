@@ -7,7 +7,6 @@
 #include <QFileInfo>
 #include <QDebug>
 #include <QTimer>
-#include <git2.h>
 #include "gitprogressdialog.h"
 
 RepoMaintainWidget::RepoMaintainWidget(QWidget *parent)
@@ -63,33 +62,7 @@ RepoMaintainWidget::~RepoMaintainWidget()
 
 void RepoMaintainWidget::loadModelData()
 {
-	QFile file(m_scripts_dat_filepath);
-	if (!file.open(QIODevice::ReadOnly))
-	{
-		return;
-	}
-
-	QVector<ScriptRepository::Data> repo_data;
-	QDataStream in(&file);
-	in >> repo_data;
-
-	git_libgit2_init();
-
-	for (ScriptRepository::Data repo_date : repo_data)
-	{
-		// TODO: move this check and use of libgit into the ScriptRepository::isValid method
-		// NOTE: after doing so move this back into the model
-
-		// Pass nullptr for the output parameter to check for but not open the repo
-		if (git_repository_open_ext(nullptr, repo_date.local_path.toUtf8(), GIT_REPOSITORY_OPEN_NO_SEARCH, nullptr) == 0)
-		{
-			qDebug() << "Adding repository to local model:" << repo_date.local_path;
-			m_repos_model->addEntry(new ScriptRepository(repo_date));
-		}
-	}
-
-	git_libgit2_shutdown();
-	file.close();
+	m_repos_model->load(m_scripts_dat_filepath);
 }
 
 void RepoMaintainWidget::updateButtonStatuses(const QModelIndex &current, const QModelIndex &previous)
