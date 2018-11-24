@@ -19,11 +19,11 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="install_tab">
+     <widget class="QWidget" name="manage_tab">
       <attribute name="title">
-       <string>Install</string>
+       <string>Manage</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
        <property name="leftMargin">
         <number>0</number>
        </property>
@@ -38,11 +38,11 @@
        </property>
       </layout>
      </widget>
-     <widget class="QWidget" name="manage_tab">
+     <widget class="QWidget" name="install_tab">
       <attribute name="title">
-       <string>Manage</string>
+       <string>Install</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
        <property name="leftMargin">
         <number>0</number>
        </property>

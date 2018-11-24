@@ -140,9 +140,7 @@
    <addaction name="actionStart"/>
    <addaction name="actionStop"/>
    <addaction name="separator"/>
-   <addaction name="actionScripts"/>
    <addaction name="actionSettings"/>
-   <addaction name="separator"/>
    <addaction name="actionBrowser"/>
    <addaction name="actionAndroid"/>
   </widget>

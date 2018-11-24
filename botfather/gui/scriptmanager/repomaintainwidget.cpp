@@ -33,21 +33,25 @@ RepoMaintainWidget::RepoMaintainWidget(QWidget *parent)
 	connect(m_ui->filter, &QLineEdit::textChanged, m_repos_proxy, &QSortFilterProxyModel::setFilterWildcard);
 	connect(m_ui->view->selectionModel(), &QItemSelectionModel::currentChanged, this, &RepoMaintainWidget::updateButtonStatuses);
 
-	m_update_button = new QPushButton("Update", this);
+	m_execute_button = new QPushButton("Run", this);
 	m_inspect_button = new QPushButton("Inspect", this);
+	m_update_button = new QPushButton("Update", this);
 	m_delete_button = new QPushButton("Delete", this);
 
-	m_update_button->setDisabled(true);
+	m_execute_button->setDisabled(true);
 	m_inspect_button->setDisabled(true);
+	m_update_button->setDisabled(true);
 	m_delete_button->setDisabled(true);
 
-	m_ui->buttons->addWidget(m_update_button);
+	m_ui->buttons->addWidget(m_execute_button);
 	m_ui->buttons->addWidget(m_inspect_button);
+	m_ui->buttons->addWidget(m_update_button);
 	m_ui->buttons->addWidget(m_delete_button);
 	m_ui->buttons->addStretch();
 
-	connect(m_update_button, &QPushButton::clicked, this, &RepoMaintainWidget::updateSelectedRepository);
+	connect(m_execute_button, &QPushButton::clicked, this, &RepoMaintainWidget::executeSelectedRepository);
 	connect(m_inspect_button, &QPushButton::clicked, this, &RepoMaintainWidget::inspectSelectedRepository);
+	connect(m_update_button, &QPushButton::clicked, this, &RepoMaintainWidget::updateSelectedRepository);
 	connect(m_delete_button, &QPushButton::clicked, this, &RepoMaintainWidget::deleteSelectedRepository);
 
 	// Don't block the constructor while loading model data
@@ -69,9 +73,28 @@ void RepoMaintainWidget::updateButtonStatuses(const QModelIndex &current, const 
 {
 	Q_UNUSED(previous);
 	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(m_repos_model->data(current, ScriptReposModel::NativeDataRole));
-	m_update_button->setEnabled(current.isValid() && repository->status() == ScriptRepository::Status::Outdated);
+	m_execute_button->setEnabled(current.isValid());
 	m_inspect_button->setEnabled(current.isValid());
+	m_update_button->setEnabled(current.isValid() && repository->status() == ScriptRepository::Status::Outdated);
 	m_delete_button->setEnabled(current.isValid());
+}
+
+void RepoMaintainWidget::executeSelectedRepository()
+{
+	QModelIndex current = m_ui->view->selectionModel()->currentIndex();
+	if (!current.isValid()) return;
+
+	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(m_repos_model->data(current, ScriptReposModel::NativeDataRole));
+	emit executeRepository(repository);
+}
+
+void RepoMaintainWidget::inspectSelectedRepository()
+{
+	QModelIndex current = m_ui->view->selectionModel()->currentIndex();
+	if (!current.isValid()) return;
+
+	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(m_repos_model->data(current, ScriptReposModel::NativeDataRole));
+	QDesktopServices::openUrl(QUrl::fromLocalFile(repository->localPath()));
 }
 
 void RepoMaintainWidget::updateSelectedRepository()
@@ -104,17 +127,6 @@ void RepoMaintainWidget::repositoryUpdated()
 	});
 
 	repository->checkStatus();
-}
-
-void RepoMaintainWidget::inspectSelectedRepository()
-{
-	QModelIndex current = m_ui->view->selectionModel()->currentIndex();
-	if (!current.isValid()) return;
-
-	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(m_repos_model->data(current, ScriptReposModel::NativeDataRole));
-	qDebug() << "Opening" << repository->localPath();
-
-	QDesktopServices::openUrl(QUrl::fromLocalFile(repository->localPath()));
 }
 
 void RepoMaintainWidget::deleteSelectedRepository()

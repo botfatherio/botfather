@@ -17,6 +17,9 @@ public:
 	explicit ScriptManagerDialog(QWidget *parent = nullptr);
 	~ScriptManagerDialog();
 
+signals:
+	void executeRepository(ScriptRepository *repository);
+
 private:
 	Ui::ScriptManagerDialog *m_ui;
 };

@@ -114,9 +114,36 @@ void ControlWindow::onLogout()
 
 void ControlWindow::onStartClicked()
 {
+	ScriptManagerDialog dialog(this);
+	connect(&dialog, SIGNAL(executeRepository(ScriptRepository *)), this, SLOT(launchRepoScript(ScriptRepository *)));
+	dialog.exec();
+}
+
+void ControlWindow::launchRepoScript(ScriptRepository *repository)
+{
+	if (bot && bot->isRunning())
+	{
+		// There is already a script running
+		QMessageBox::information(this, "Can't run this script", "There is already a script running. Stop it first, before running other scripts.");
+		return;
+	}
+
+	QString script_path = repository->findScriptPath();
+	if (script_path.isEmpty())
+	{
+		// No script file found
+		return;
+	}
+
+	checkPermissions();
+	startBot(script_path);
+}
+
+void ControlWindow::checkPermissions()
+{
 #ifdef Q_OS_LINUX
 	// On linux the desktop api needs permission to write to /dev/uinput to generate
-	// authentic not ignore input events. On Ubuntu the file is writable (660). On other
+	// authentic not ignored input events. On Ubuntu the file is writable (660). On other
 	// systems it might not be, so we must check that.
 
 	QFileInfo fi("/dev/uinput");
@@ -163,26 +190,6 @@ void ControlWindow::onStartClicked()
 		}
 	}
 #endif
-
-	// Increses memory usage by some bytes caching file icons.
-	// https://bugreports.qt.io/browse/QTBUG-10651
-	QString script_path = QFileDialog::getOpenFileName(
-		this,
-		tr("Run Bot Script"),
-		"",
-		tr("Bot Script Files (*.js)"),
-		Q_NULLPTR,
-		// Triggering the file dialog more than once using the native dialog made the program get stuck.
-		QFileDialog::DontUseNativeDialog
-	);
-
-	if (script_path.isEmpty()) {
-		// No script selected. Reset ui modifications and tell the user.
-		appendMessage("No script selected.", Bot::LogSource::System);
-		return;
-	}
-
-	startBot(script_path);
 }
 
 void ControlWindow::startBot(const QString &script_path)
@@ -316,12 +323,6 @@ void ControlWindow::on_save_button_clicked()
 	}
 	file.write(log.toUtf8());
 	file.close();
-}
-
-void ControlWindow::on_actionScripts_triggered()
-{
-	ScriptManagerDialog dialog(this);
-	dialog.exec();
 }
 
 void ControlWindow::on_actionAbout_triggered()

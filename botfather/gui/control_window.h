@@ -10,6 +10,7 @@
 #include "../engine/bot.h"
 
 class BrowserWindow;
+class ScriptRepository;
 
 namespace Ui {
 	class ControlWindow;
@@ -28,13 +29,14 @@ public slots:
 	void onLoggedIn(int curtime, int premend);
 	void onLogout();
 	void onStartClicked();
+	void launchRepoScript(ScriptRepository *repository);
+	void checkPermissions();
 	void startBot(const QString &script_path);
 	void botStarted();
 	void stopBot();
 	void botStopped(bool without_errors);
 	void appendMessage(const QString &message, const Bot::LogSource &source);
 	void on_save_button_clicked();
-	void on_actionScripts_triggered();
 	void on_actionAbout_triggered();
 	void on_actionAboutQt_triggered();
 	void playWavSound(QString path_to_wav_file);

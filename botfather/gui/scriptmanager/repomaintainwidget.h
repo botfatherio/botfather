@@ -21,16 +21,21 @@ public:
 public slots:
 	void loadModelData();
 	void updateButtonStatuses(const QModelIndex &current, const QModelIndex &previous);
+	void executeSelectedRepository();
+	void inspectSelectedRepository();
 	void updateSelectedRepository();
 	void repositoryUpdated();
-	void inspectSelectedRepository();
 	void deleteSelectedRepository();
 	void addScriptRepository(ScriptRepository *repository);
 
+signals:
+	void executeRepository(ScriptRepository *repository);
+
 private:
 	Ui::RepoListWidget *m_ui;
-	QPushButton *m_update_button;
+	QPushButton *m_execute_button;
 	QPushButton *m_inspect_button;
+	QPushButton *m_update_button;
 	QPushButton *m_delete_button;
 
 	ScriptReposModel *m_repos_model;
