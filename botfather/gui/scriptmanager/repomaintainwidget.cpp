@@ -32,6 +32,7 @@ RepoMaintainWidget::RepoMaintainWidget(QWidget *parent)
 	m_ui->view->setModel(m_repos_proxy);
 	connect(m_ui->filter, &QLineEdit::textChanged, m_repos_proxy, &QSortFilterProxyModel::setFilterWildcard);
 	connect(m_ui->view->selectionModel(), &QItemSelectionModel::currentChanged, this, &RepoMaintainWidget::updateButtonStatuses);
+	connect(m_ui->view, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(executeSelectedRepository()));
 
 	m_execute_button = new QPushButton("Run", this);
 	m_inspect_button = new QPushButton("Inspect", this);
