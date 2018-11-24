@@ -81,17 +81,16 @@ void GitProgressDialog::reclone(ScriptRepository *repository)
 	thread->start();
 }
 
-void GitProgressDialog::clone(ScriptRepository *repository, const QString &local_path)
+void GitProgressDialog::clone(ScriptRepository *repository)
 {
-	m_dest_repo = new ScriptRepository(repository->data());
-	m_dest_repo->setLocalPath(local_path);
+	m_dest_repo = repository;
 
 	setWindowTitle("Cloning script repository...");
 	setLabelText("Cloning script repository...");
 	show();
 
 	QThread *thread = new QThread;
-	GitCloneOperation *operation = new GitCloneOperation(repository->remoteUrl(), local_path);
+	GitCloneOperation *operation = new GitCloneOperation(repository->remoteUrl(), repository->localPath());
 	operation->moveToThread(thread);
 
 	connect(thread, &QThread::started, operation, &GitCloneOperation::process);

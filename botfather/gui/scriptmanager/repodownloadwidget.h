@@ -20,6 +20,7 @@ public:
 public slots:
 	void loadModelData();
 	void itemDoubleClicked(const QModelIndex &index);
+	void cloneRepository(ScriptRepository *repository);
 
 signals:
 	void scriptInstalled(ScriptRepository *repository);

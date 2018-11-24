@@ -25,7 +25,7 @@ public slots:
 	void checkoutProgressChanged(ulong current, ulong total, const QString &path);
 
 	void reclone(ScriptRepository *repository);
-	void clone(ScriptRepository *repository, const QString &local_path);
+	void clone(ScriptRepository *repository);
 	void cloneSuccess();
 	void cloneFailure();
 

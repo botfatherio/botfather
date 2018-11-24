@@ -1,10 +1,11 @@
 #include "repodownloadwidget.h"
 #include "ui_repolistwidget.h"
 #include <QMessageBox>
-#include <QTimer>
 #include <QStandardPaths>
+#include <QInputDialog>
+#include <QTimer>
+#include <QUuid>
 #include <QDir>
-#include <QFileDialog>
 #include <QDebug>
 #include "gitprogressdialog.h"
 
@@ -58,33 +59,49 @@ void RepoDownloadWidget::loadModelData()
 void RepoDownloadWidget::itemDoubleClicked(const QModelIndex &index)
 {
 	if (!index.isValid()) return;
+	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(m_repos_model->data(index, ScriptReposModel::NativeDataRole));
 
-	QDir dir;
-	dir.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+	QDir repo_parent_dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+	repo_parent_dir.mkpath(repo_parent_dir.absolutePath());
 
-	QFileDialog file_dialog(
-		this,
-		tr("Where to store the script?"),
-		QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)
-	);
+	//QString reponame = QInputDialog::getText(this, "Choose a bot name", "Please choose a fancy bot name");
+	//if (reponame.isEmpty()) return;
 
-	file_dialog.setOptions(QFileDialog::ShowDirsOnly/*|QFileDialog::DontUseNativeDialog*/);
-	file_dialog.setFileMode(QFileDialog::Directory);
-	file_dialog.setViewMode(QFileDialog::Detail);
+	QInputDialog *name_dialog = new QInputDialog(this);
+	name_dialog->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
+	name_dialog->setInputMode(QInputDialog::TextInput);
+	name_dialog->resize(380, 100);
+	name_dialog->setWindowTitle("Choose a bot name");
+	name_dialog->setLabelText("Please choose a fancy bot name");
 
-	if (!file_dialog.exec()) return;
-	QString repo_dir_path = file_dialog.selectedFiles().first();
-
-	QDir repo_dir(repo_dir_path);
-	if (!repo_dir.isEmpty(QDir::AllEntries|QDir::NoDotAndDotDot))
+	if (!name_dialog->exec() || name_dialog->textValue().isEmpty())
 	{
-		QMessageBox::information(this, "Directory not empty", "The selected directory must be empty.");
-		return; // Otherwise git_clone will fail.
+		// Dialog closed or provided text is empty
+		return;
 	}
 
+	QString reponame = name_dialog->textValue();
+	QString repouuid = QUuid::createUuid().toString(QUuid::WithoutBraces);
+
+	if (!repo_parent_dir.mkdir(repouuid))
+	{
+		// Fatal error, couldn't create the repo dir
+		return;
+	}
+
+	QString repopath = repo_parent_dir.filePath(repouuid);
+	qDebug() << "Repodir created. Name:" << reponame << "Uuid:" << repouuid << "Path:" << repopath;
+
+	ScriptRepository *new_repo = new ScriptRepository(repository->data());
+	new_repo->setName(reponame);
+	new_repo->setLocalPath(repopath);
+
+	cloneRepository(new_repo);
+}
+
+void RepoDownloadWidget::cloneRepository(ScriptRepository *repository)
+{
 	GitProgressDialog *dialog = new GitProgressDialog(this);
 	connect(dialog, &GitProgressDialog::cloned, this, &RepoDownloadWidget::scriptInstalled);
-
-	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(m_repos_model->data(index, ScriptReposModel::NativeDataRole));
-	dialog->clone(repository, repo_dir_path);
+	dialog->clone(repository);
 }
