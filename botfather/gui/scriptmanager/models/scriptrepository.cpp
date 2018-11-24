@@ -3,6 +3,7 @@
 #include <QUrl>
 #include <QDebug>
 #include <QThread>
+#include <QDir>
 #include <git2.h>
 #include "../../../git/gitfetchoperation.h"
 #include "../../../git/gitbehindoperation.h"
@@ -34,6 +35,31 @@ bool ScriptRepository::isValid() const
 
 	git_libgit2_shutdown();
 	return valid_repo;
+}
+
+QString ScriptRepository::findScriptPath() const
+{
+	QDir repo_dir(localPath());
+
+	if (localPath().isEmpty() || repo_dir.isEmpty())
+	{
+		// Invalid local repo
+		return QString();
+	}
+
+	QStringList scriptname_filters;
+	scriptname_filters << "*.js";
+
+	// Don't check for readability yet, the bot engine informs the user about permission issues
+	QStringList entries = repo_dir.entryList(scriptname_filters, QDir::Files|QDir::NoDotAndDotDot);
+
+	if (entries.isEmpty())
+	{
+		// No script found
+		return QString();
+	}
+
+	return repo_dir.filePath(entries.first());
 }
 
 ScriptRepository::Status ScriptRepository::status() const

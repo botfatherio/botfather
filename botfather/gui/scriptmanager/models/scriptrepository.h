@@ -41,6 +41,7 @@ public:
 	};
 
 	bool isValid() const;
+	QString findScriptPath() const;
 
 	Status status() const;
 	Data data() const;
