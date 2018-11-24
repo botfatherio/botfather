@@ -87,6 +87,7 @@ void RepoDownloadWidget::installSelectedScript()
 	name_dialog->resize(380, 100);
 	name_dialog->setWindowTitle("Choose a bot name");
 	name_dialog->setLabelText("Please choose a fancy bot name");
+	name_dialog->setTextValue(repository->name()); // As default text
 
 	if (!name_dialog->exec() || name_dialog->textValue().isEmpty())
 	{
