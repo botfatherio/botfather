@@ -2,6 +2,7 @@
 #define REPODOWNLOADWIDGET_H
 
 #include <QWidget>
+#include <QPushButton>
 #include <QSortFilterProxyModel>
 #include "models/scriptreposmodel.h"
 
@@ -19,7 +20,8 @@ public:
 
 public slots:
 	void loadModelData();
-	void itemDoubleClicked(const QModelIndex &index);
+	void updateButtonStatuses(const QModelIndex &current, const QModelIndex &previous);
+	void installSelectedScript();
 	void cloneRepository(ScriptRepository *repository);
 
 signals:
@@ -27,6 +29,7 @@ signals:
 
 private:
 	Ui::RepoListWidget *m_ui;
+	QPushButton *m_install_button;
 	ScriptReposModel *m_repos_model;
 	QSortFilterProxyModel *m_repos_proxy;
 };

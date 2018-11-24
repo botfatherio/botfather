@@ -26,12 +26,21 @@ RepoDownloadWidget::RepoDownloadWidget(QWidget *parent)
 
 	m_ui->view->setModel(m_repos_proxy);
 	connect(m_ui->filter, &QLineEdit::textChanged, m_repos_proxy, &QSortFilterProxyModel::setFilterWildcard);
-	connect(m_ui->view, &QTableView::doubleClicked, this, &RepoDownloadWidget::itemDoubleClicked);
+	connect(m_ui->view->selectionModel(), &QItemSelectionModel::currentChanged, this, &RepoDownloadWidget::updateButtonStatuses);
+	connect(m_ui->view, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(installSelectedScript()));
 
 	// Hide some columns after setting the model
 	m_ui->view->hideColumn(1); // Status
 	m_ui->view->hideColumn(4); // Local Path
 	m_ui->view->hideColumn(5); // Remote Url
+
+	m_install_button = new QPushButton("Install", this);
+	m_install_button->setDisabled(true);
+
+	m_ui->buttons->addWidget(m_install_button);
+	m_ui->buttons->addStretch();
+
+	connect(m_install_button, SIGNAL(clicked()), this, SLOT(installSelectedScript()));
 
 	// Don't block the constructor while loading model data
 	QTimer::singleShot(1, this, &RepoDownloadWidget::loadModelData);
@@ -56,16 +65,21 @@ void RepoDownloadWidget::loadModelData()
 	}
 }
 
-void RepoDownloadWidget::itemDoubleClicked(const QModelIndex &index)
+void RepoDownloadWidget::updateButtonStatuses(const QModelIndex &current, const QModelIndex &previous)
 {
-	if (!index.isValid()) return;
-	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(m_repos_model->data(index, ScriptReposModel::NativeDataRole));
+	Q_UNUSED(previous);
+	m_install_button->setEnabled(current.isValid());
+}
+
+void RepoDownloadWidget::installSelectedScript()
+{
+	QModelIndex current = m_ui->view->selectionModel()->currentIndex();
+	if (!current.isValid()) return;
+
+	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(m_repos_model->data(current, ScriptReposModel::NativeDataRole));
 
 	QDir repo_parent_dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
 	repo_parent_dir.mkpath(repo_parent_dir.absolutePath());
-
-	//QString reponame = QInputDialog::getText(this, "Choose a bot name", "Please choose a fancy bot name");
-	//if (reponame.isEmpty()) return;
 
 	QInputDialog *name_dialog = new QInputDialog(this);
 	name_dialog->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
