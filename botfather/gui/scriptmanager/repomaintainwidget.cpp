@@ -34,6 +34,10 @@ RepoMaintainWidget::RepoMaintainWidget(QWidget *parent)
 	connect(m_ui->view->selectionModel(), &QItemSelectionModel::currentChanged, this, &RepoMaintainWidget::updateButtonStatuses);
 	connect(m_ui->view, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(executeSelectedRepository()));
 
+	// Hide some columns after setting the model
+	m_ui->view->hideColumn(4); // Local Path
+	m_ui->view->hideColumn(5); // Remote Url
+
 	m_execute_button = new QPushButton("Run", this);
 	m_inspect_button = new QPushButton("Inspect", this);
 	m_update_button = new QPushButton("Update", this);
