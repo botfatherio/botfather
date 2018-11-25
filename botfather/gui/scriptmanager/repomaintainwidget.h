@@ -27,9 +27,10 @@ public slots:
 	void repositoryUpdated();
 	void deleteSelectedRepository();
 	void addScriptRepository(ScriptRepository *repository);
+	void runLocalScript();
 
 signals:
-	void executeRepository(ScriptRepository *repository);
+	void scriptExecRequest(const QString &script_path);
 
 private:
 	Ui::RepoListWidget *m_ui;

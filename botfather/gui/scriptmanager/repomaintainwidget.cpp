@@ -54,6 +54,11 @@ RepoMaintainWidget::RepoMaintainWidget(QWidget *parent)
 	m_ui->buttons->addWidget(m_delete_button);
 	m_ui->buttons->addStretch();
 
+	// Run local script button
+	QPushButton *run_local_script_button = new QPushButton("Run a local script", this);
+	m_ui->buttons->addWidget(run_local_script_button);
+	connect(run_local_script_button, SIGNAL(clicked()), this, SLOT(runLocalScript()));
+
 	connect(m_execute_button, &QPushButton::clicked, this, &RepoMaintainWidget::executeSelectedRepository);
 	connect(m_inspect_button, &QPushButton::clicked, this, &RepoMaintainWidget::inspectSelectedRepository);
 	connect(m_update_button, &QPushButton::clicked, this, &RepoMaintainWidget::updateSelectedRepository);
@@ -90,7 +95,9 @@ void RepoMaintainWidget::executeSelectedRepository()
 	if (!current.isValid()) return;
 
 	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(m_repos_model->data(current, ScriptReposModel::NativeDataRole));
-	emit executeRepository(repository);
+	QString script_path = repository->findScriptPath();
+
+	emit scriptExecRequest(script_path);
 }
 
 void RepoMaintainWidget::inspectSelectedRepository()
@@ -152,4 +159,24 @@ void RepoMaintainWidget::deleteSelectedRepository()
 void RepoMaintainWidget::addScriptRepository(ScriptRepository *repository)
 {
 	m_repos_model->addEntry(repository);
+}
+
+void RepoMaintainWidget::runLocalScript()
+{
+	QString script_path = QFileDialog::getOpenFileName(
+		this,
+		tr("Run a local script"),
+		QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first(),
+		tr("Bot Scripts (*.js)")
+	);
+
+	qDebug() << "Local script selected:" << script_path;
+
+	if (script_path.isEmpty())
+	{
+		// No script selected
+		return;
+	}
+
+	emit scriptExecRequest(script_path);
 }

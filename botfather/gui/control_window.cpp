@@ -115,23 +115,16 @@ void ControlWindow::onLogout()
 void ControlWindow::onStartClicked()
 {
 	ScriptManagerDialog dialog(this);
-	connect(&dialog, SIGNAL(executeRepository(ScriptRepository *)), this, SLOT(launchRepoScript(ScriptRepository *)));
+	connect(&dialog, SIGNAL(scriptExecRequest(QString)), this, SLOT(scriptExecRequested(QString)));
 	dialog.exec();
 }
 
-void ControlWindow::launchRepoScript(ScriptRepository *repository)
+void ControlWindow::scriptExecRequested(const QString &script_path)
 {
 	if (bot && bot->isRunning())
 	{
 		// There is already a script running
 		QMessageBox::information(this, "Can't run this script", "There is already a script running. Stop it first, before running other scripts.");
-		return;
-	}
-
-	QString script_path = repository->findScriptPath();
-	if (script_path.isEmpty())
-	{
-		// No script file found
 		return;
 	}
 

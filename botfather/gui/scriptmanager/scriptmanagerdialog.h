@@ -18,7 +18,7 @@ public:
 	~ScriptManagerDialog();
 
 signals:
-	void executeRepository(ScriptRepository *repository);
+	void scriptExecRequest(const QString &script_path);
 
 private:
 	Ui::ScriptManagerDialog *m_ui;

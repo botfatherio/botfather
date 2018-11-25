@@ -29,7 +29,7 @@ public slots:
 	void onLoggedIn(int curtime, int premend);
 	void onLogout();
 	void onStartClicked();
-	void launchRepoScript(ScriptRepository *repository);
+	void scriptExecRequested(const QString &script_path);
 	void checkPermissions();
 	void startBot(const QString &script_path);
 	void botStarted();

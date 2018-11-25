@@ -19,8 +19,8 @@ ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 	m_ui->manage_tab->layout()->addWidget(manage_widget);
 
 	connect(install_widget, &RepoDownloadWidget::scriptInstalled, manage_widget, &RepoMaintainWidget::addScriptRepository);
-	connect(manage_widget, SIGNAL(executeRepository(ScriptRepository*)), this, SLOT(accept()));
-	connect(manage_widget, SIGNAL(executeRepository(ScriptRepository*)), this, SIGNAL(executeRepository(ScriptRepository*)));
+	connect(manage_widget, SIGNAL(scriptExecRequest(QString)), this, SLOT(accept()));
+	connect(manage_widget, SIGNAL(scriptExecRequest(QString)), this, SIGNAL(scriptExecRequest(QString)));
 }
 
 ScriptManagerDialog::~ScriptManagerDialog()
