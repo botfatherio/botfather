@@ -28,6 +28,11 @@ public:
 			this->local_path = local_path;
 			this->remote_url = remote_url;
 		}
+
+		bool isEmpty() const
+		{
+			return local_path.isEmpty() && remote_url.isEmpty();
+		}
 	};
 
 	explicit ScriptRepository(QObject *parent = nullptr);
