@@ -87,7 +87,7 @@ bool ScriptReposModel::insertRows(int position, int rows, const QModelIndex &par
 
 	for (int row = 0; row < rows; ++row)
 	{
-		repositories.insert(position, new ScriptRepository());
+		repositories.insert(position, new ScriptRepository(this));
 	}
 
 	endInsertRows();
@@ -174,7 +174,7 @@ void ScriptReposModel::load(const QString &filename, bool filter_invalid)
 
 	for (ScriptRepository::Data repo_date : repo_data)
 	{
-		ScriptRepository *repository = new ScriptRepository(repo_date);
+		ScriptRepository *repository = new ScriptRepository(repo_date, this);
 		if (!filter_invalid || repository->isValid())
 		{
 			addEntry(repository);
