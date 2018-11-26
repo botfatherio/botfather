@@ -37,7 +37,7 @@
           <item>
            <widget class="QCheckBox" name="devmode">
             <property name="text">
-             <string>Wizard mode</string>
+             <string>Debug mode (let scripts log extra debug messages)</string>
             </property>
            </widget>
           </item>
