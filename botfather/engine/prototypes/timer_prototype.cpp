@@ -12,7 +12,7 @@ QScriptValue TimerPrototype::constructor(QScriptContext *context, QScriptEngine 
 	NO_MATCHING_CTOR("Timer", TIMER_PROTOTYPE_DOCS)
 }
 
-bool TimerPrototype::running() const
+bool TimerPrototype::isRunning() const
 {
 	return THIS_TIMER().isValid();
 }
@@ -66,5 +66,5 @@ qint64 TimerPrototype::msecsTo(const QElapsedTimer &other) const
 
 QString TimerPrototype::toString() const
 {
-	return QString("Timer(running: %1, elapsed: %2)").arg(running() ? "true" : "false").arg(elapsed());
+	return QString("Timer(running: %1, elapsed: %2)").arg(isRunning() ? "true" : "false").arg(elapsed());
 }

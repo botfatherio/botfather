@@ -24,7 +24,7 @@ public:
 
 	// Returns false if the timer has never been started or stopped by a call to stop().
 	// http://doc.qt.io/qt-5/qelapsedtimer.html#isValid
-	Q_INVOKABLE bool running() const;
+	Q_INVOKABLE bool isRunning() const;
 
 	// Starts this timer. Once started, a timer value can be checked with elapsed() or msecsSinceReference().
 	// http://doc.qt.io/qt-5/qelapsedtimer.html#start
