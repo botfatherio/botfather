@@ -18,9 +18,8 @@ signals:
 	void errorsReceived(QJsonArray error_codes);
 
 protected:
-	void prepareRequest(QNetworkRequest &network_request);
-	QString certificateChecksum(QCryptographicHash::Algorithm algorithm);
-	void processJsonResponse(QJsonDocument json);
+	QUrl provideApiEndpoint() override;
+	void processJsonResponse(QJsonDocument json) override;
 };
 
 #endif // BFP_AUTH_LICENSE_API_CLIENT_H

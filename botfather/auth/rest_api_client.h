@@ -22,9 +22,11 @@ signals:
 	void networkError(QNetworkReply::NetworkError network_error);
 
 protected:
-	virtual void prepareRequest(QNetworkRequest &network_request) = 0;
 	void sendPostData(QUrlQuery post_data);
-	virtual QString certificateChecksum(QCryptographicHash::Algorithm) = 0;
+	void prepareRequest(QNetworkRequest &network_request);
+	virtual void adjustSslConfiguration(QSslConfiguration &ssl_config);
+	virtual QUrl provideApiEndpoint() = 0;
+	virtual QString certificateChecksum(QCryptographicHash::Algorithm);
 	bool verifyReply(QNetworkReply* reply);
 	virtual void processJsonResponse(QJsonDocument json) = 0;
 	
