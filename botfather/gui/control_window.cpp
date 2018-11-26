@@ -322,12 +322,17 @@ void ControlWindow::on_actionAbout_triggered()
 {
 	QString text = QString(
 		"<html><body>"
-		"<p><b>Botfather</b> is framework and engine for creating and running bots playing online games, android apps and more.</p>"
+		"<p><b>Botfather</b> is a universal automation framework for creating and running bots playing online games, android apps and more.</p>"
 		"<p><a href='https://botfather.io/'>Website</a> | <a href='https://botfather.io/docs/legal/privacy/'>Privacy</a> | <a href='https://botfather.io/docs/legal/tos/'>EULA</a> | Version: %1</p>"
 		"<b>Software used by botfather:</b>"
-		"<p>Those beautiful application icons are by <a href='https://icons8.com/'>website</a> | <a href='https://icons8.com/license/'>license</a></p>"
-		"<p>Chromium Embedded Framework. Copyright (c) 2008-2014 Marshall A. Greenblatt. <a href='https://bitbucket.org/chromiumembedded/cef'>website</a> | <a href='https://bitbucket.org/chromiumembedded/cef/src/master/LICENSE.txt'>license</a></p>"
-		"<p>OpenSSL. Copyright © 1998-2018 The OpenSSL Project. <a href='https://www.openssl.org/'>website</a> | <a href='https://www.openssl.org/source/license.html'>license</a></p>"
+		"<p>Those beautiful application icons are made by Icons8.<br>"
+		"<a href='https://icons8.com/'>website</a> | <a href='https://icons8.com/license/'>license</a></p>"
+		"<p>Chromium Embedded Framework. Copyright (c) 2008-2014 Marshall A. Greenblatt.<br>"
+		"<a href='https://bitbucket.org/chromiumembedded/cef'>website</a> | <a href='https://bitbucket.org/chromiumembedded/cef/src/master/LICENSE.txt'>license</a></p>"
+		"<p>OpenSSL. Copyright © 1998-2018 The OpenSSL Project.<br>"
+		"<a href='https://www.openssl.org/'>website</a> | <a href='https://www.openssl.org/source/license.html'>license</a></p>"
+		"<p>Libgit2. Copyright (C) the libgit2 contributors.<br>"
+		"<a href='https://libgit2.org/'>website</a> | <a href='https://github.com/libgit2/libgit2/blob/master/COPYING'>license</a></p>"
 		"</body></html>"
 	).arg(QCoreApplication::applicationVersion());
 
