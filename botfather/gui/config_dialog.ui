@@ -21,7 +21,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_3">
       <attribute name="title">
@@ -159,13 +159,33 @@
           <bool>true</bool>
          </property>
          <property name="title">
-          <string>Flash on Linux</string>
+          <string>Flashplayer</string>
+         </property>
+         <property name="checkable">
+          <bool>false</bool>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QRadioButton" name="use_bundled_flash">
+            <property name="text">
+             <string>Use bundled Flashplayer (default)</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="use_custom_flash">
+            <property name="text">
+             <string>Use custo&amp;m Flashplayer files</string>
+            </property>
+           </widget>
+          </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout">
             <item>
              <widget class="QLineEdit" name="flash_so">
+              <property name="text">
+               <string/>
+              </property>
               <property name="placeholderText">
                <string>Flash Player PPAPI libpepflashplayer.so</string>
               </property>
@@ -204,19 +224,6 @@
             </item>
            </layout>
           </item>
-          <item>
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://get.adobe.com/de/flashplayer/otherversions/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Download FP for Linux 64-bit PPAPI&lt;/span&gt;&lt;/a&gt; and extract it. Then select the extracted libpepflashplayer.so and manifest.json above. Press OK and restart Botfather.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-            <property name="openExternalLinks">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
          </layout>
         </widget>
        </item>
@@ -235,7 +242,7 @@
              <bool>true</bool>
             </property>
             <property name="text">
-             <string>Use system wide flash installation</string>
+             <string>Use the system wide flash installation if available</string>
             </property>
             <property name="checked">
              <bool>true</bool>

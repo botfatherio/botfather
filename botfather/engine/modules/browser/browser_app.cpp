@@ -72,9 +72,15 @@ void BrowserApp::OnBeforeCommandLineProcessing(const CefString& process_type, Ce
 	QSettings settings;
 
 #ifdef Q_OS_LINUX
-	QString flash_so(settings.value(browser::options::FLASH_SO).toString());
-	QString flash_manifest(settings.value(browser::options::FLASH_MANIFEST).toString());
+	QString flash_so = browser::fallback::BUNDLED_FLASH_SO_PATH; // default
+	QString flash_manifest = browser::fallback::BUNDLED_FLASH_MANIFEST_PATH; // default
 	
+	if (settings.value(browser::options::USE_CUSTOM_FLASH, browser::fallback::USE_CUSTOM_FLASH).toBool())
+	{
+		flash_so = settings.value(browser::options::FLASH_SO).toString();
+		flash_manifest = settings.value(browser::options::FLASH_MANIFEST).toString();
+	}
+
 	QFileInfo flash_so_info(flash_so);
 	QFileInfo flash_manifest_info(flash_manifest);
 	
