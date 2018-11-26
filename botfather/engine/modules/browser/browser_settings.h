@@ -16,7 +16,7 @@ namespace browser
 	{
 		static const int WIDTH = 1366;
 		static const int HEIGHT = 768;
-		static const bool USE_SYSTEM_FLASH = false;
+		static const bool USE_SYSTEM_FLASH = true;
 	}
 }
 
