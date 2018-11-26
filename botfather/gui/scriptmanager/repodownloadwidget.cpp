@@ -8,6 +8,7 @@
 #include <QDir>
 #include <QDebug>
 #include "gitprogressdialog.h"
+#include "../../auth/scriptsapiclient.h"
 
 RepoDownloadWidget::RepoDownloadWidget(QWidget *parent)
 	: QWidget(parent)
@@ -43,7 +44,18 @@ RepoDownloadWidget::RepoDownloadWidget(QWidget *parent)
 	connect(m_install_button, SIGNAL(clicked()), this, SLOT(installSelectedScript()));
 
 	// Don't block the constructor while loading model data
-	QTimer::singleShot(1, this, &RepoDownloadWidget::loadModelData);
+	ScriptsApiClient *sac = new ScriptsApiClient(this);
+
+	connect(sac, &ScriptsApiClient::errorsReceived, [](){
+		qDebug() << "sac errors received"; // TODO: provide feedback to the user
+	});
+
+	connect(sac, &ScriptsApiClient::networkError, [](){
+		qDebug() << "sac network error"; // TODO: provide feedback to the user
+	});
+
+	connect(sac, &ScriptsApiClient::scriptsReceived, this, &RepoDownloadWidget::loadModelData);
+	QTimer::singleShot(1, sac, &ScriptsApiClient::requestScripts);
 }
 
 RepoDownloadWidget::~RepoDownloadWidget()
@@ -51,17 +63,11 @@ RepoDownloadWidget::~RepoDownloadWidget()
 	delete m_ui;
 }
 
-void RepoDownloadWidget::loadModelData()
+void RepoDownloadWidget::loadModelData(const QVector<ScriptRepository::Data> &repo_data_list)
 {
-	// TODO: get script data from the website instead
-	QVector<ScriptRepository*> testscripts = {
-		new ScriptRepository({"Elisa Music Player", "KDE", "Elisa is a music player developed by the KDE community that strives to be simple and nice to use.", "", "https://anongit.kde.org/elisa.git"}),
-		new ScriptRepository({"Clementine", "Clementine Team", "Clementine is a multiplatform music player.", "", "https://github.com/clementine-player/Clementine.git"}),
-		new ScriptRepository({"Fetch Test Repo", "DoctorJohn", "No description", "", "https://github.com/DoctorJohn/tmp-test-repo.git"}),
-	};
-	for (ScriptRepository *ts : testscripts)
+	for (ScriptRepository::Data date : repo_data_list)
 	{
-		m_repos_model->addEntry(ts);
+		m_repos_model->addEntry(new ScriptRepository(date, m_repos_model));
 	}
 }
 

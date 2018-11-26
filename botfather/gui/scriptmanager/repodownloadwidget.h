@@ -19,7 +19,7 @@ public:
 	~RepoDownloadWidget();
 
 public slots:
-	void loadModelData();
+	void loadModelData(const QVector<ScriptRepository::Data> &repo_data_list);
 	void updateButtonStatuses(const QModelIndex &current, const QModelIndex &previous);
 	void installSelectedScript();
 	void cloneRepository(ScriptRepository *repository);
