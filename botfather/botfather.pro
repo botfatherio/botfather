@@ -117,7 +117,8 @@ HEADERS += \
     gui/scriptmanager/gitprogressdialog.h \
     gui/scriptmanager/models/scriptreposmodel.h \
     gui/scriptmanager/repodownloadwidget.h \
-    gui/scriptmanager/repomaintainwidget.h
+    gui/scriptmanager/repomaintainwidget.h \
+    auth/scriptsapiclient.h
 SOURCES += \
     ./auth/license_api_client.cpp \
     ./auth/rest_api_client.cpp \
@@ -168,7 +169,8 @@ SOURCES += \
     gui/scriptmanager/gitprogressdialog.cpp \
     gui/scriptmanager/models/scriptreposmodel.cpp \
     gui/scriptmanager/repodownloadwidget.cpp \
-    gui/scriptmanager/repomaintainwidget.cpp
+    gui/scriptmanager/repomaintainwidget.cpp \
+    auth/scriptsapiclient.cpp
 FORMS += \
     ./gui/android_dialog.ui \
     ./gui/auth_dialog.ui \
