@@ -292,6 +292,20 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_6">
           <item>
+           <widget class="QRadioButton" name="use_bundled_adb">
+            <property name="text">
+             <string>Use bundled Android SDK tools (default)</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="use_custom_adb">
+            <property name="text">
+             <string>Use custo&amp;m Android Debug Bridge executable</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
              <widget class="QLineEdit" name="adb_binary">
@@ -301,26 +315,13 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="adb_binary_browse_button">
+             <widget class="QPushButton" name="browse_adb_binary">
               <property name="text">
                <string>Browse...</string>
               </property>
              </widget>
             </item>
            </layout>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Android Debug Bridge (ADB) is required to run Android Bot Scripts. It is part of the Android SDK Platform-Tools. &lt;a href=&quot;https://developer.android.com/studio/releases/platform-tools.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Download and install SDK Platform-Tools&lt;/span&gt;&lt;/a&gt; manually. Then provide the path to the manually installed ADB executable.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-            <property name="openExternalLinks">
-             <bool>true</bool>
-            </property>
-           </widget>
           </item>
          </layout>
         </widget>

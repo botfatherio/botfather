@@ -14,8 +14,10 @@ class AdbWrapper : public QObject
 public:
 	explicit AdbWrapper(QObject *parent = nullptr, QString adb_binary = QString());
 	
-public:
+public slots:
 	bool startAdbServer();
+
+public:
 	bool queryForDevices(QVector<AdbDeviceInfo> &devices);
 	bool listPackages(QString serial_number, QVector<QString> &packages);
 	bool startApp(QString serial_number, QString package);

@@ -20,7 +20,7 @@ signals:
 	void configSaved();
 	
 public slots:
-	void on_adb_binary_browse_button_pressed();
+	void on_browse_adb_binary_pressed();
 	void on_browse_flash_so_pressed();
 	void on_browse_flash_manifest_pressed();
 	void saveConfig();
