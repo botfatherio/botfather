@@ -30,7 +30,6 @@ public:
 	
 public slots:
 	void runScript();
-	bool isRunning() const;
 	void stop();
 
 signals:
@@ -48,7 +47,6 @@ protected:
 private:
 	QScriptEngine *script_engine;
 	QString script_path;
-	bool running = false;
 };
 
 #endif // BFB_ENGINE_BOT_H

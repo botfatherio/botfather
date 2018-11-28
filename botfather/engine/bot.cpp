@@ -65,7 +65,6 @@ bool Bot::scriptFileExists(QString file_path)
 
 void Bot::runScript()
 {
-	running = true;
 	emit started();
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
@@ -120,13 +119,8 @@ void Bot::runScript()
 	} else {
 		emit log("Bot script execution finished.", LogSource::System);
 	}
-	
-	running = false;
-	emit stopped(!result.isError());
-}
 
-bool Bot::isRunning() const {
-	return running;
+	emit stopped(!result.isError());
 }
 
 void Bot::stop()
