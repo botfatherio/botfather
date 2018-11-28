@@ -26,6 +26,7 @@ public:
 	
 public slots:
 	void adjustLimitations(bool is_premium);
+	void runtimerTimedOut();
 	void onLoggedIn(int curtime, int premend);
 	void onLogout();
 	void onStartClicked();

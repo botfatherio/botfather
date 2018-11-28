@@ -67,14 +67,6 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	connect(ui->actionCheckForUpdates, &QAction::triggered, mtool, &MtoolWrapper::startDetachedUpdater);
 	connect(mtool, &MtoolWrapper::startedDetached, this, &ControlWindow::close);
 	connect(ui->actionExit, &QAction::triggered, this, &ControlWindow::close);
-
-	// Inform the user about the runtimer timing out
-	connect(&runtimer, &QTimer::timeout, [&]() {
-		QString msg1("The bot stopped after 90 minutes, because you were not logged in.");
-		QString msg2("Go to Account > Login to prevent the bot from stopping after 90 minutes.");
-		appendMessage(msg1, Bot::LogSource::System);
-		appendMessage(msg2, Bot::LogSource::System);
-	});
 }
 
 ControlWindow::~ControlWindow()
@@ -89,13 +81,23 @@ void ControlWindow::adjustLimitations(bool is_premium)
 	if (is_premium)
 	{
 		ui->actionStatus->setText("Status: 1 bot, no time limit");
+		disconnect(&runtimer, &QTimer::timeout, this, &ControlWindow::runtimerTimedOut);
 		disconnect(&runtimer, &QTimer::timeout, this, &ControlWindow::stopBot);
 	}
 	else
 	{
 		ui->actionStatus->setText("Status: 1 bot, stops after 90 minutes");
+		connect(&runtimer, &QTimer::timeout, this, &ControlWindow::runtimerTimedOut);
 		connect(&runtimer, &QTimer::timeout, this, &ControlWindow::stopBot);
 	}
+}
+
+void ControlWindow::runtimerTimedOut()
+{
+	QString msg1("The bot stopped after 90 minutes, because you were not logged in.");
+	QString msg2("Go to Account > Login to prevent the bot from stopping after 90 minutes.");
+	appendMessage(msg1, Bot::LogSource::System);
+	appendMessage(msg2, Bot::LogSource::System);
 }
 
 void ControlWindow::onLoggedIn(int curtime, int premend)
