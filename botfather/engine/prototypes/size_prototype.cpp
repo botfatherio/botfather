@@ -79,5 +79,5 @@ QSize SizePrototype::transposed() const
 QString SizePrototype::toString() const
 {
 	QSize size = THIS_SIZE();
-	return QString("Size(width: %1, height: %2").arg(size.width()).arg(size.height());
+	return QString("Size(width: %1, height: %2)").arg(size.width()).arg(size.height());
 }
