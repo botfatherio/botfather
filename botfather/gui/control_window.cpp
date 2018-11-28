@@ -123,13 +123,6 @@ void ControlWindow::onStartClicked()
 
 void ControlWindow::scriptExecRequested(const QString &script_path)
 {
-	if (bot && bot->isRunning())
-	{
-		// There is already a script running
-		QMessageBox::information(this, "Can't run this script", "There is already a script running. Stop it first, before running other scripts.");
-		return;
-	}
-
 	checkPermissions();
 	startBot(script_path);
 }
