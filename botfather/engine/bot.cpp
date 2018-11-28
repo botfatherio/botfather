@@ -80,7 +80,7 @@ void Bot::runScript()
 	REGISTER_API(script_engine, this, DesktopAPI, "Desktop");
 	REGISTER_API(script_engine, this, HelperAPI, "Helper");
 	REGISTER_API(script_engine, this, VisionAPI, "Vision");
-	REGISTER_API(script_engine, this, AlgorithmApi, "Algorithm");
+	REGISTER_API(script_engine, this, AlgorithmAPI, "Algorithm");
 	
 	REGISTER_PROTO(script_engine, TimerPrototype, QElapsedTimer, "Timer");
 	REGISTER_PROTO(script_engine, BlobTplPrototype, BlobTpl, "BlobTpl");

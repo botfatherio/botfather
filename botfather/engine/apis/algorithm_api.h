@@ -3,7 +3,7 @@
 
 #include "abstract_api.h"
 
-class AlgorithmApi : public AbstractAPI
+class AlgorithmAPI : public AbstractAPI
 {
 	Q_OBJECT
 

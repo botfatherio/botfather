@@ -4,7 +4,7 @@
 #include <QDebug>
 #include "../modules/algorithm/dijkstra.h"
 
-QScriptValue AlgorithmApi::dijkstra(const QScriptValue &graph_object, const QString &start, const QString &dest)
+QScriptValue AlgorithmAPI::dijkstra(const QScriptValue &graph_object, const QString &start, const QString &dest)
 {
 	// The script value must be an object. The objects properties are the names of the graphs nodes.
 	// The properties/nodes values are the nodes edges. Those must be objects aswell.
