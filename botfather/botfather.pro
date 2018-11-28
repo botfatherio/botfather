@@ -20,6 +20,7 @@ CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 include(../3rdparty/QHotkey/qhotkey.pri)
 include(../3rdparty/CEF/CEF.pri)
 include(../3rdparty/OpenCV/OpenCV.pri)
+include(../3rdparty/ADB/ADB.pri)
 
 unix {
     # Disables unused warnings
