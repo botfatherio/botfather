@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>BotFather - Config Window</string>
+   <string>Settings</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../res/gui.qrc">
@@ -168,7 +168,7 @@
           <item>
            <widget class="QRadioButton" name="use_bundled_flash">
             <property name="text">
-             <string>Use bundled Flashplayer (default)</string>
+             <string>&amp;Use bundled Flashplayer (default)</string>
             </property>
            </widget>
           </item>
@@ -233,7 +233,7 @@
           <bool>true</bool>
          </property>
          <property name="title">
-          <string>Flash on Window</string>
+          <string>Flashplayer</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_7">
           <item>
@@ -294,7 +294,7 @@
           <item>
            <widget class="QRadioButton" name="use_bundled_adb">
             <property name="text">
-             <string>Use bundled Android SDK tools (default)</string>
+             <string>&amp;Use bundled Android SDK tools (default)</string>
             </property>
            </widget>
           </item>
@@ -363,12 +363,12 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>433</x>
-     <y>93</y>
+     <x>475</x>
+     <y>180</y>
     </hint>
     <hint type="destinationlabel">
-     <x>240</x>
-     <y>93</y>
+     <x>330</x>
+     <y>179</y>
     </hint>
    </hints>
   </connection>
