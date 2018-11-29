@@ -1,0 +1,25 @@
+{
+	"name": "flasplayer",
+	"buildsystem": "simple",
+	"build-commands": [
+		"install -D -t /app/bin apply_extra"
+	],
+	"sources": [
+		{
+			"type": "script",
+			"dest-filename": "apply_extra",
+			"commands": [
+				"mkdir -p /app/extra/flash",
+				"tar --warning=no-unknown-keyword -zxf flashplayer.tar.gz -C /app/extra/flash",
+				"rm -rf flashplayer.tar.gz"
+			]
+		},
+		{
+			"type": "extra-data",
+			"filename": "flashplayer.tar.gz",
+			"url": "https://fpdownload.adobe.com/pub/flashplayer/pdc/31.0.0.153/flash_player_ppapi_linux.x86_64.tar.gz ",
+			"sha256": "1771505f6a96d4a56af9918ed7896874a826de4666beb55aea8d3f8b4356e586",
+			"size": 9482489
+		}
+	]
+}

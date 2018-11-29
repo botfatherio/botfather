@@ -35,6 +35,7 @@ modules:
   - cef/cef-3.3325.1758-linux64.json
   - opencv/opencv-3.4.3.json
   - libgit2/libgit2.json
+  - flashplayer/flashplayer.json
   - name: botfather
     buildsystem: qmake
     config-opts:
