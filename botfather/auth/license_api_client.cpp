@@ -22,18 +22,21 @@ void LicenseApiClient::processJsonResponse(QJsonDocument json)
 {
 	if (!json.object().contains("errors"))
 	{
+		qDebug() << "contains no errors array";
 		emit networkError(QNetworkReply::UnknownContentError);
 		return;
 	}
 
 	if (!json.object().value("errors").toArray().isEmpty())
 	{
+		qDebug() << "contains errors";
 		emit errorsReceived(json.object().value("errors").toArray());
 		return;
 	}
 
 	if (!json.object().contains("curtime") || !json.object().contains("premend"))
 	{
+		qDebug() << "curtime or premend missing";
 		emit networkError(QNetworkReply::UnknownContentError);
 		return;
 	}
