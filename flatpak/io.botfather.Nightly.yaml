@@ -34,6 +34,7 @@ modules:
   - nss/nss-3.39.json
   - cef/cef-3.3325.1758-linux64.json
   - opencv/opencv-3.4.3.json
+  - libgit2/libgit2.json
   - name: botfather
     buildsystem: qmake
     config-opts:
