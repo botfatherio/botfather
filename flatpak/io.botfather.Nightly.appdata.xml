@@ -7,6 +7,7 @@
 	<url type="homepage">https://botfather.io</url>
 	<name>Botfather Nightly</name>
 	<summary>Universal automation framework</summary>
+	<developer_name>Botfather</developer_name>
 	
 	<categories>
     	<category>Development</category>
