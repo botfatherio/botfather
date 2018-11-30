@@ -6,6 +6,8 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <QSettings>
+#include <QStandardPaths>
+#include <QDir>
 #include "../engine/modules/android/android_settings.h"
 #include "../engine/modules/android/adb_wrapper.h"
 
@@ -33,14 +35,23 @@ void AndroidDialog::refreshListOfDevicesAttached()
 	ui->attached_devices->clearContents();
 	ui->attached_devices->setRowCount(0);
 	
-	QSettings settings;
-	QString adb_binary = settings.value(android::options::ADB_BINARY).toString();
+    QStringList search_paths;
+    search_paths << QApplication::applicationDirPath() << QDir(QApplication::applicationDirPath()).filePath("adb");
+
+    QString adb_binary = QStandardPaths::findExecutable("adb", search_paths); // default
+    QSettings settings;
+
+    if (settings.value(android::options::USE_CUSTOM_ADB, android::fallback::USE_CUSTOM_ADB).toBool())
+    {
+        adb_binary = settings.value(android::options::ADB_BINARY).toString();
+    }
+
 	AdbWrapper adb(this, adb_binary);
 	
 	QVector<AdbDeviceInfo> devices;
-	if (!adb.queryForDevices(devices)) {
+    if (!adb.queryForDevices(devices)) {
 		QString message(
-			"Can't use ADB.\n Botfather was unable to use the Android Debug Bridge.\n"
+            "Can't use ADB.\nBotfather was unable to use the Android Debug Bridge.\n"
 			"Please check the Botfather Android settings and make sure you've set the correct path to your ADB executable.\n"
 			"The path we tried to use: " + adb_binary
 		);

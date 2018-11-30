@@ -1,6 +1,7 @@
 #include "android_api.h"
 #include <QApplication>
 #include <QStandardPaths>
+#include <QDir>
 #include <QTimer>
 #include "../modules/android/adb_wrapper.h"
 #include "../modules/android/android_settings.h"
@@ -12,12 +13,16 @@
 
 AndroidAPI::AndroidAPI(Bot *bot, QObject *parent) : AbstractAPI(bot, parent)
 {
-	QString adb_binary = QStandardPaths::findExecutable("adb", { QApplication::applicationDirPath() }); // default
+    QStringList search_paths;
+    search_paths << QApplication::applicationDirPath() << QDir(QApplication::applicationDirPath()).filePath("adb");
 
-	if (m_settings.value(android::options::USE_CUSTOM_ADB, android::fallback::USE_CUSTOM_ADB).toBool())
-	{
-		adb_binary = m_settings.value(android::options::ADB_BINARY).toString();
-	}
+    QString adb_binary = QStandardPaths::findExecutable("adb", search_paths); // default
+    QSettings settings;
+
+    if (settings.value(android::options::USE_CUSTOM_ADB, android::fallback::USE_CUSTOM_ADB).toBool())
+    {
+        adb_binary = settings.value(android::options::ADB_BINARY).toString();
+    }
 
 	adb = new AdbWrapper(this, adb_binary);
 	serial_number = m_settings.value(android::options::SERIAL_NUMBER).toString();
