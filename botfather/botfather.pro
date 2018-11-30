@@ -21,6 +21,7 @@ include(../3rdparty/QHotkey/qhotkey.pri)
 include(../3rdparty/CEF/CEF.pri)
 include(../3rdparty/OpenCV/OpenCV.pri)
 include(../3rdparty/ADB/ADB.pri)
+include(../3rdparty/libgit2/libgit2.pri)
 
 unix {
     # Disables unused warnings
