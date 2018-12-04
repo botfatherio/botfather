@@ -43,6 +43,9 @@ win32 {
     CONFIG(release, debug|release):LIBS += -L$$(CEF_ROOT)\Release -llibcef
     else: CONFIG(debug, debug|release):LIBS += -L$$(CEF_ROOT)\Debug -llibcef
 
-    # Use the compatibility manifest required by CEF
-    WINRT_MANIFEST = ./compatibility.manifest
+    # Add app manifest required by CEF. See botfather.pro for details
+    CONFIG += embed_manifest_exe
+    QMAKE_MANIFEST = $$PWD/botfather_helper.exe.manifest
 }
+
+DISTFILES +=

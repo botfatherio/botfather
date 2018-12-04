@@ -58,8 +58,20 @@ win32 {
 
     LIBS += -lUser32 -lGdi32
 
-    WINRT_MANIFEST = ./res/compatibility.manifest # Use the compatibility manifest required by CEF
-    RC_FILE = ./res/botfather.rc # Make the app icon be compiled into the bianary on windows
+    # CEF requires us to include an app manifest. If the manifest isn't included correctly, CEF will crash (atleast in debug mode).
+    # Both the main application and the helper application (botfather_helper) must have their own manifests.
+    # In case the solution below stops working for some reason, here are two alternative methods:
+    # 1. Alternative:
+    #    Add this to qmake: CONFIG -= embed_manifest_exe
+    #    Create an .rc file and add it to the qmake project via RC_FILE = /path/to/file.rc
+    #    Add this to the rc file: 1 24 botfather.exe.manifest
+    # 2. Alternative:
+    #    Call this command after compiling:
+    #    mt.exe -nologo -manifest botfather.exe.manifest -outputresource:botfather.exe;#1
+    CONFIG += embed_manifest_exe
+    QMAKE_MANIFEST = $$PWD/res/botfather.exe.manifest
+
+    RC_FILE = ./res/botfather.rc
     HEADERS += ./res/resource.h
     SOURCES += ./engine/modules/desktop/desktop_win.cpp
 }
