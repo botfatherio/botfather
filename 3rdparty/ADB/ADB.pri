@@ -3,5 +3,9 @@ linux {
 }
 
 win32 {
-    QMAKE_POST_LINK += $$QMAKE_COPY_DIR $$PWD/windows/* $${DESTDIR}$$escape_expand(\\n\\t)
+    DESTDIR_WIN = $${DESTDIR}
+    DESTDIR_WIN ~= s,/,\\,g
+    PWD_WIN = $$PWD
+    PWD_WIN ~= s,/,\\,g
+    QMAKE_POST_LINK +=$$quote(cmd /c xcopy /E /y $${PWD_WIN}\\windows\\* $${DESTDIR_WIN}$$escape_expand(\\n\\t))
 }
