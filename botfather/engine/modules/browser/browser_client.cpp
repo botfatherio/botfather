@@ -202,7 +202,7 @@ void BrowserClient::OnPaint(
 	// QPixmap objects can be passed around by value since the QPixmap class uses implicit data sharing.
 	// For more information, see the Implicit Data Sharing documentation.QPixmap objects can also be streamed.
 
-	g_browser_image = QImage(static_cast<const unsigned char*>(buffer), width, height, QImage::Format_RGB32);
+    g_browser_image = QImage(static_cast<const unsigned char*>(buffer), width, height, QImage::Format_RGB32).copy();
 	emit paintSignal(g_browser_image);
 }
 
