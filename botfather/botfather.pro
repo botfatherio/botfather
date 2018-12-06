@@ -22,6 +22,7 @@ include(../3rdparty/CEF/CEF.pri)
 include(../3rdparty/OpenCV/OpenCV.pri)
 include(../3rdparty/ADB/ADB.pri)
 include(../3rdparty/libgit2/libgit2.pri)
+include(../3rdparty/OpenSSL/OpenSSL.pri)
 
 unix {
     # Disables unused warnings
