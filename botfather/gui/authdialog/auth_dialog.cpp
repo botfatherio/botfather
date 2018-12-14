@@ -4,8 +4,8 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QSettings>
-#include "../auth/auth_settings.h"
-#include "../auth/license_api_client.h"
+#include "../../auth/auth_settings.h"
+#include "../../auth/license_api_client.h"
 
 AuthDialog::AuthDialog(QWidget *parent) :
 	QDialog(parent),

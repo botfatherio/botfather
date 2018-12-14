@@ -112,7 +112,7 @@ HEADERS += \
     ./gui/browserwindow/browser_window.h \
     ./gui/configdialog/config_dialog.h \
     ./gui/control_window.h \
-    ./gui/auth_dialog.h \
+    ./gui/authdialog/auth_dialog.h \
     ./settings.h \
     ./engine/apis/abstract_api.h \
     ./engine/types/blob_tpl.h \
@@ -164,7 +164,7 @@ SOURCES += \
     ./gui/browserwindow/browser_window.cpp \
     ./gui/configdialog/config_dialog.cpp \
     ./gui/control_window.cpp \
-    ./gui/auth_dialog.cpp \
+    ./gui/authdialog/auth_dialog.cpp \
     ./main.cpp \
     ./engine/apis/abstract_api.cpp \
     ./engine/types/blob_tpl.cpp \
@@ -188,7 +188,7 @@ SOURCES += \
     auth/scriptsapiclient.cpp
 FORMS += \
     ./gui/androiddialog/android_dialog.ui \
-    ./gui/auth_dialog.ui \
+    ./gui/authdialog/auth_dialog.ui \
     ./gui/browserwindow/browser_window.ui \
     ./gui/configdialog/config_dialog.ui \
     ./gui/control_window.ui \
