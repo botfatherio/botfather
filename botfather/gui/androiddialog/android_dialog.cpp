@@ -47,6 +47,7 @@ void AndroidDialog::refreshListOfDevicesAttached()
     }
 
 	AdbWrapper adb(this, adb_binary);
+	adb.startAdbServer();
 	
 	QVector<AdbDeviceInfo> devices;
     if (!adb.queryForDevices(devices)) {
