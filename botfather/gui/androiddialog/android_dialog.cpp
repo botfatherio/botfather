@@ -8,8 +8,8 @@
 #include <QSettings>
 #include <QStandardPaths>
 #include <QDir>
-#include "../engine/modules/android/android_settings.h"
-#include "../engine/modules/android/adb_wrapper.h"
+#include "../../engine/modules/android/android_settings.h"
+#include "../../engine/modules/android/adb_wrapper.h"
 
 AndroidDialog::AndroidDialog(QWidget *parent) :
 	QDialog(parent),

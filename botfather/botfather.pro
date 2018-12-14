@@ -106,7 +106,7 @@ HEADERS += \
     ./engine/prototypes/rect_prototype.h \
     ./engine/prototypes/size_prototype.h \
     ./engine/types/match.h \
-    ./gui/android_dialog.h \
+    ./gui/androiddialog/android_dialog.h \
     ./gui/browserwindow/browser_address_bar.h \
     ./gui/browserwindow/browser_widget.h \
     ./gui/browserwindow/browser_window.h \
@@ -158,7 +158,7 @@ SOURCES += \
     ./engine/prototypes/rect_prototype.cpp \
     ./engine/prototypes/size_prototype.cpp \
     ./engine/types/match.cpp \
-    ./gui/android_dialog.cpp \
+    ./gui/androiddialog/android_dialog.cpp \
     ./gui/browserwindow/browser_address_bar.cpp \
     ./gui/browserwindow/browser_widget.cpp \
     ./gui/browserwindow/browser_window.cpp \
@@ -187,7 +187,7 @@ SOURCES += \
     gui/scriptmanager/repomaintainwidget.cpp \
     auth/scriptsapiclient.cpp
 FORMS += \
-    ./gui/android_dialog.ui \
+    ./gui/androiddialog/android_dialog.ui \
     ./gui/auth_dialog.ui \
     ./gui/browserwindow/browser_window.ui \
     ./gui/config_dialog.ui \
