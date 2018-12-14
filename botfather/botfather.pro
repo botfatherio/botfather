@@ -107,9 +107,9 @@ HEADERS += \
     ./engine/prototypes/size_prototype.h \
     ./engine/types/match.h \
     ./gui/android_dialog.h \
-    ./gui/browser_address_bar.h \
-    ./gui/browser_widget.h \
-    ./gui/browser_window.h \
+    ./gui/browserwindow/browser_address_bar.h \
+    ./gui/browserwindow/browser_widget.h \
+    ./gui/browserwindow/browser_window.h \
     ./gui/config_dialog.h \
     ./gui/control_window.h \
     ./gui/auth_dialog.h \
@@ -159,9 +159,9 @@ SOURCES += \
     ./engine/prototypes/size_prototype.cpp \
     ./engine/types/match.cpp \
     ./gui/android_dialog.cpp \
-    ./gui/browser_address_bar.cpp \
-    ./gui/browser_widget.cpp \
-    ./gui/browser_window.cpp \
+    ./gui/browserwindow/browser_address_bar.cpp \
+    ./gui/browserwindow/browser_widget.cpp \
+    ./gui/browserwindow/browser_window.cpp \
     ./gui/config_dialog.cpp \
     ./gui/control_window.cpp \
     ./gui/auth_dialog.cpp \
@@ -189,7 +189,7 @@ SOURCES += \
 FORMS += \
     ./gui/android_dialog.ui \
     ./gui/auth_dialog.ui \
-    ./gui/browser_window.ui \
+    ./gui/browserwindow/browser_window.ui \
     ./gui/config_dialog.ui \
     ./gui/control_window.ui \
     gui/scriptmanager/scriptmanagerdialog.ui \

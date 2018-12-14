@@ -1,6 +1,6 @@
 #include "browser_address_bar.h"
-#include "../engine/modules/browser/browser.h"
-#include "../engine/modules/browser/browser_client.h"
+#include "../../engine/modules/browser/browser.h"
+#include "../../engine/modules/browser/browser_client.h"
 
 BrowserAddressBar::BrowserAddressBar(QWidget* parent) : QLineEdit(parent)
 {

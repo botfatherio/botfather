@@ -10,9 +10,9 @@
 #include <QDateTime>
 #include <QProcess>
 #include "config_dialog.h"
-#include "browser_window.h"
 #include "android_dialog.h"
 #include "auth_dialog.h"
+#include "browserwindow/browser_window.h"
 #include "scriptmanager/scriptmanagerdialog.h"
 #include "../settings.h"
 #include "../tools/mtoolwrapper.h"

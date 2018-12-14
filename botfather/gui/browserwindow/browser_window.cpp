@@ -6,9 +6,9 @@
 #include <QScreen>
 #include "browser_widget.h"
 #include "browser_address_bar.h"
-#include "../engine/modules/browser/browser_settings.h"
-#include "../engine/modules/browser/browser_client.h"
-#include "../engine/modules/browser/browser.h"
+#include "../../engine/modules/browser/browser_settings.h"
+#include "../../engine/modules/browser/browser_client.h"
+#include "../../engine/modules/browser/browser.h"
 
 BrowserWindow::BrowserWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::BrowserWindow)
 {

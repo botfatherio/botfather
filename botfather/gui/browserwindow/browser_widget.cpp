@@ -1,8 +1,8 @@
 #include "browser_widget.h"
 #include <QMouseEvent>
 #include <QMessageBox>
-#include "../engine/modules/browser/browser_client.h"
-#include "../engine/modules/browser/browser.h"
+#include "../../engine/modules/browser/browser_client.h"
+#include "../../engine/modules/browser/browser.h"
 
 BrowserWidget::BrowserWidget(QWidget* parent) : QLabel(parent)
 {
