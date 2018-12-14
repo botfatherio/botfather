@@ -3,9 +3,9 @@
 #include <QFileDialog>
 #include <QDebug>
 #include <QSettings>
-#include "../engine/modules/android/android_settings.h"
-#include "../engine/modules/browser/browser_settings.h"
-#include "../settings.h"
+#include "../../engine/modules/android/android_settings.h"
+#include "../../engine/modules/browser/browser_settings.h"
+#include "../../settings.h"
 
 ConfigDialog::ConfigDialog(QWidget *parent) :
 	QDialog(parent),
