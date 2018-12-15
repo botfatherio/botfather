@@ -9,9 +9,9 @@
 #include <QThread>
 #include <QDateTime>
 #include <QProcess>
-#include "config_dialog.h"
-#include "android_dialog.h"
-#include "auth_dialog.h"
+#include "configdialog/config_dialog.h"
+#include "androiddialog/android_dialog.h"
+#include "authdialog/auth_dialog.h"
 #include "browserwindow/browser_window.h"
 #include "scriptmanager/scriptmanagerdialog.h"
 #include "../settings.h"
