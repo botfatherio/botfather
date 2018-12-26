@@ -110,7 +110,7 @@ HEADERS += \
     ./gui/browserwindow/browser_address_bar.h \
     ./gui/browserwindow/browser_widget.h \
     ./gui/browserwindow/browser_window.h \
-    ./gui/configdialog/config_dialog.h \
+    ./gui/settingsdialog/settings_dialog.h \
     ./gui/control_window.h \
     ./gui/authdialog/auth_dialog.h \
     ./settings.h \
@@ -162,7 +162,7 @@ SOURCES += \
     ./gui/browserwindow/browser_address_bar.cpp \
     ./gui/browserwindow/browser_widget.cpp \
     ./gui/browserwindow/browser_window.cpp \
-    ./gui/configdialog/config_dialog.cpp \
+    ./gui/settingsdialog/settings_dialog.cpp \
     ./gui/control_window.cpp \
     ./gui/authdialog/auth_dialog.cpp \
     ./main.cpp \
@@ -190,7 +190,7 @@ FORMS += \
     ./gui/androiddialog/android_dialog.ui \
     ./gui/authdialog/auth_dialog.ui \
     ./gui/browserwindow/browser_window.ui \
-    ./gui/configdialog/config_dialog.ui \
+    ./gui/settingsdialog/settings_dialog.ui \
     ./gui/control_window.ui \
     gui/scriptmanager/scriptmanagerdialog.ui \
     gui/scriptmanager/gitprogressdialog.ui \

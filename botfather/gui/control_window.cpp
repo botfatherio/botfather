@@ -9,7 +9,7 @@
 #include <QThread>
 #include <QDateTime>
 #include <QProcess>
-#include "configdialog/config_dialog.h"
+#include "settingsdialog/settings_dialog.h"
 #include "androiddialog/android_dialog.h"
 #include "authdialog/auth_dialog.h"
 #include "browserwindow/browser_window.h"
@@ -29,7 +29,7 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 {
 	ui->setupUi(this);
 
-	ConfigDialog* config_dialog = new ConfigDialog(this);
+	SettingsDialog* config_dialog = new SettingsDialog(this);
 	AndroidDialog* android_dialog = new AndroidDialog(this);
 	browser_window = new BrowserWindow(); // Don't give it a parent, otherwise it's blocking the control window on microsoft windows
 	media_player = new QMediaPlayer(this);
@@ -50,12 +50,12 @@ ControlWindow::ControlWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	connect(ui->actionShowLogin, &QAction::triggered, auth_dialog, &AuthDialog::exec);
 	connect(ui->actionLogout, &QAction::triggered, this, &ControlWindow::onLogout);
 
-	connect(ui->actionSettings, &QAction::triggered, config_dialog, &ConfigDialog::exec);
+	connect(ui->actionSettings, &QAction::triggered, config_dialog, &SettingsDialog::exec);
 	connect(ui->actionAndroid, &QAction::triggered, android_dialog, &AndroidDialog::exec);
     connect(ui->actionBrowser, &QAction::triggered, browser_window, &BrowserWindow::show);
 
-	connect(config_dialog, &ConfigDialog::configLoaded, this, &ControlWindow::updateHotkeys);
-	connect(config_dialog, &ConfigDialog::configSaved, this, &ControlWindow::updateHotkeys);
+	connect(config_dialog, &SettingsDialog::configLoaded, this, &ControlWindow::updateHotkeys);
+	connect(config_dialog, &SettingsDialog::configSaved, this, &ControlWindow::updateHotkeys);
 
 	connect(ui->actionStart, &QAction::triggered, this, &ControlWindow::onStartClicked);
 	connect(ui->actionStop, &QAction::triggered, this, &ControlWindow::stopBot);

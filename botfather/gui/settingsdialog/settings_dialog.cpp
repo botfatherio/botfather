@@ -1,5 +1,5 @@
-#include "config_dialog.h"
-#include "ui_config_dialog.h"
+#include "settings_dialog.h"
+#include "ui_settings_dialog.h"
 #include <QFileDialog>
 #include <QDebug>
 #include <QSettings>
@@ -7,9 +7,9 @@
 #include "../../engine/modules/browser/browser_settings.h"
 #include "../../settings.h"
 
-ConfigDialog::ConfigDialog(QWidget *parent) :
+SettingsDialog::SettingsDialog(QWidget *parent) :
 	QDialog(parent),
-	ui(new Ui::ConfigDialog)
+        ui(new Ui::SettingsDialog)
 {
 	ui->setupUi(this);
 
@@ -36,12 +36,12 @@ ConfigDialog::ConfigDialog(QWidget *parent) :
 	loadConfig();
 }
 
-ConfigDialog::~ConfigDialog()
+SettingsDialog::~SettingsDialog()
 {
 	delete ui;
 }
 
-void ConfigDialog::saveConfig()
+void SettingsDialog::saveConfig()
 {
 	QSettings s;
 	s.setValue(browser::options::WIDTH, ui->browser_width->value());
@@ -62,7 +62,7 @@ void ConfigDialog::saveConfig()
 	emit configSaved();
 }
 
-void ConfigDialog::loadConfig()
+void SettingsDialog::loadConfig()
 {
 	QSettings s;
 
@@ -86,7 +86,7 @@ void ConfigDialog::loadConfig()
 	emit configLoaded();
 }
 
-void ConfigDialog::on_browse_adb_binary_pressed()
+void SettingsDialog::on_browse_adb_binary_pressed()
 {
 	QString adb_binary_file_name = QFileDialog::getOpenFileName(
 		this,
@@ -101,7 +101,7 @@ void ConfigDialog::on_browse_adb_binary_pressed()
 	}
 }
 
-void ConfigDialog::on_browse_flash_so_pressed()
+void SettingsDialog::on_browse_flash_so_pressed()
 {
 	QString flash_so = QFileDialog::getOpenFileName(
 		this,
@@ -116,7 +116,7 @@ void ConfigDialog::on_browse_flash_so_pressed()
 	}
 }
 
-void ConfigDialog::on_browse_flash_manifest_pressed()
+void SettingsDialog::on_browse_flash_manifest_pressed()
 {
 	QString flash_manifest = QFileDialog::getOpenFileName(
 		this,

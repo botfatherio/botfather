@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ConfigDialog</class>
- <widget class="QDialog" name="ConfigDialog">
+ <class>SettingsDialog</class>
+ <widget class="QDialog" name="SettingsDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -14,7 +14,7 @@
    <string>Settings</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../res/gui.qrc">
+   <iconset resource="../../res/gui.qrc">
     <normaloff>:/gui/logo_v2.png</normaloff>:/gui/logo_v2.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -353,7 +353,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../res/gui.qrc"/>
+  <include location="../../res/gui.qrc"/>
  </resources>
  <connections>
   <connection>
