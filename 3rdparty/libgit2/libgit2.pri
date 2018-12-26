@@ -1,5 +1,6 @@
 linux {
-
+    INCLUDEPATH += $$(LIBGIT2_ROOT)/include
+    LIBS += -L$$(LIBGIT2_ROOT)/build -lgit2
 }
 
 win32 {

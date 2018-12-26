@@ -39,7 +39,7 @@ unix {
     # That way libcef.so and other shared objects can be loaded which otherwise couldn't be found.
     QMAKE_RPATHDIR += ./
 
-    LIBS += -lX11 -lgit2
+    LIBS += -lX11
 
     # Dramatically reduces shared libary file size after linking
     CONFIG(release, debug|release):QMAKE_POST_LINK += find $${DESTDIR} -type f -name \*.so | xargs strip --strip-all
