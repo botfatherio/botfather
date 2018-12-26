@@ -1,7 +1,7 @@
 #include "image_prototype.h"
 #include <QDebug>
 #include "../modules/vision/vision.h"
-#include "../bot.h"
+#include "../engine.h"
 
 #define THIS_IMAGE() qscriptvalue_cast<QImage>(thisObject())
 #define THIS_IMAGE_P() qscriptvalue_cast<QImage*>(thisObject())
@@ -10,7 +10,7 @@ QScriptValue ImagePrototype::constructor(QScriptContext *context, QScriptEngine 
 {
 	// Instead of casting the engines parent to a Bot* we could expose required bot functionality
 	// via the HelperAPI to engine and call it from here.
-	Bot *bot = qobject_cast<Bot *>(engine->parent());
+	Engine *bot = qobject_cast<Engine *>(engine->parent());
 	Q_ASSERT(bot);
 	
 	// new Image();
@@ -90,7 +90,7 @@ QSize ImagePrototype::getSize() const
 
 void ImagePrototype::load(const QString &filepath)
 {
-	Bot *bot = qobject_cast<Bot *>(engine()->parent());
+	Engine *bot = qobject_cast<Engine *>(engine()->parent());
 	Q_ASSERT(bot);
 	QString absolute_path = bot->normalisePath(filepath);
 
@@ -104,7 +104,7 @@ void ImagePrototype::load(const QString &filepath)
 
 void ImagePrototype::save(const QString &filepath)
 {
-	Bot *bot = qobject_cast<Bot *>(engine()->parent());
+	Engine *bot = qobject_cast<Engine *>(engine()->parent());
 	Q_ASSERT(bot);
 	QString absolute_path = bot->normalisePath(filepath);
 	THIS_IMAGE().save(absolute_path);

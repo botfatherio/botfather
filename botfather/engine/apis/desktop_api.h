@@ -12,7 +12,7 @@ class DesktopAPI : public AbstractAPI
 {
 	Q_OBJECT
 public:
-	DesktopAPI(Bot *bot, QObject *parent = nullptr);
+	DesktopAPI(Engine *bot, QObject *parent = nullptr);
 	
 	// Returns a Image showing a screenshot of the desktop.
 	Q_INVOKABLE QImage takeScreenshot();

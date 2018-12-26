@@ -86,7 +86,7 @@ HEADERS += \
     ./engine/apis/desktop_api.h \
     ./engine/apis/helper_api.h \
     ./engine/apis/vision_api.h \
-    ./engine/bot.h \
+    ./engine/engine.h \
     ./engine/modules/algorithm/dijkstra.h \
     ./engine/modules/android/adb_device_info.h \
     ./engine/modules/android/adb_wrapper.h \
@@ -142,7 +142,7 @@ SOURCES += \
     ./engine/apis/desktop_api.cpp \
     ./engine/apis/helper_api.cpp \
     ./engine/apis/vision_api.cpp \
-    ./engine/bot.cpp \
+    ./engine/engine.cpp \
     ./engine/modules/algorithm/dijkstra.cpp \
     ./engine/modules/android/adb_device_info.cpp \
     ./engine/modules/android/adb_wrapper.cpp \

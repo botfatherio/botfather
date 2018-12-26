@@ -7,7 +7,7 @@
 #include <QHotkey>
 #include <QTimer>
 
-#include "../engine/bot.h"
+#include "../engine/engine.h"
 
 class BrowserWindow;
 class ScriptRepository;
@@ -36,7 +36,7 @@ public slots:
 	void botStarted();
 	void stopBot();
 	void botStopped(bool without_errors);
-	void appendMessage(const QString &message, const Bot::LogSource &source);
+	void appendMessage(const QString &message, const Engine::LogSource &source);
 	void on_save_button_clicked();
 	void on_actionAbout_triggered();
 	void on_actionAboutQt_triggered();
@@ -50,7 +50,7 @@ protected:
 private:
 	Ui::ControlWindow *ui;
 	BrowserWindow *browser_window;
-	Bot* bot = nullptr;
+	Engine* bot = nullptr;
 	QThread *bot_thread = nullptr;
 	QMediaPlayer *media_player;
 	QHotkey *stop_hotkey;

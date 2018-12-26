@@ -8,10 +8,10 @@
 #include "../modules/vision/vision.h"
 #include "../prototypes/image_prototype.h"
 #include "../types/match.h"
-#include "../bot.h"
+#include "../engine.h"
 #include "vision_api.h"
 
-AndroidAPI::AndroidAPI(Bot *bot, QObject *parent) : AbstractAPI(bot, parent)
+AndroidAPI::AndroidAPI(Engine *bot, QObject *parent) : AbstractAPI(bot, parent)
 {
     QStringList search_paths;
     search_paths << QApplication::applicationDirPath() << QDir(QApplication::applicationDirPath()).filePath("adb");

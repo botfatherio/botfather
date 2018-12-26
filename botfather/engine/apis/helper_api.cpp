@@ -81,7 +81,7 @@ QStringList HelperAPI::qScriptValueToStringList(const QScriptValue& value, bool 
 	return strings;
 }
 
-QScriptValue HelperAPI::genericLog(QScriptContext *context, QScriptEngine *engine, Bot::LogSource source)
+QScriptValue HelperAPI::genericLog(QScriptContext *context, QScriptEngine *engine, Engine::LogSource source)
 {
 	QStringList strings;
 
@@ -106,12 +106,12 @@ QScriptValue HelperAPI::genericLog(QScriptContext *context, QScriptEngine *engin
 
 QScriptValue HelperAPI::log(QScriptContext *context, QScriptEngine *engine)
 {
-	return HelperAPI::genericLog(context, engine, Bot::LogSource::Script);
+	return HelperAPI::genericLog(context, engine, Engine::LogSource::Script);
 }
 
 QScriptValue HelperAPI::debug(QScriptContext *context, QScriptEngine *engine)
 {
-	return HelperAPI::genericLog(context, engine, Bot::LogSource::Debug);
+	return HelperAPI::genericLog(context, engine, Engine::LogSource::Debug);
 }
 
 void HelperAPI::extendGlobalApiObject(QScriptEngine *engine, QScriptValue &api_object)

@@ -31,7 +31,7 @@ public:
 	
 protected:
 	static QStringList qScriptValueToStringList(const QScriptValue& value, bool quote_strings = false);
-	static QScriptValue genericLog(QScriptContext *context, QScriptEngine *engine, Bot::LogSource source);
+	static QScriptValue genericLog(QScriptContext *context, QScriptEngine *engine, Engine::LogSource source);
 	static QScriptValue log(QScriptContext *context, QScriptEngine *engine);
 	static QScriptValue debug(QScriptContext *context, QScriptEngine *engine);
 	void extendGlobalApiObject(QScriptEngine *engine, QScriptValue &api_object);

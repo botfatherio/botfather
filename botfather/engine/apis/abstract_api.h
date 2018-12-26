@@ -4,24 +4,24 @@
 #include <QObject>
 #include <QScriptable>
 #include <QScriptEngine>
-#include "../bot.h"
+#include "../engine.h"
 
 class AbstractAPI : public QObject, public QScriptable
 {
 	Q_OBJECT
 	
 public:
-	AbstractAPI(Bot *bot, QObject *parent = nullptr);
+	AbstractAPI(Engine *bot, QObject *parent = nullptr);
 	void enable(QScriptEngine *engine, QString api_name);
 	
 protected:
-	Bot *bot() const;
+	Engine *bot() const;
 	
 	// Template method
 	virtual void extendGlobalApiObject(QScriptEngine *engine, QScriptValue &api_object);
 	
 private:
-	Bot *bot_p;
+	Engine *bot_p;
 };
 
 #define REGISTER_API(ENGINE_P, BOT_P, API_CLS, API_NAME) \

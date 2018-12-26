@@ -14,7 +14,7 @@ class AndroidAPI : public AbstractAPI
 {
 	Q_OBJECT
 public:
-	AndroidAPI(Bot *bot, QObject *parent = nullptr);
+	AndroidAPI(Engine *bot, QObject *parent = nullptr);
 
 	Q_INVOKABLE QImage takeScreenshot();
 	

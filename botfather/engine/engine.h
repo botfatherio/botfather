@@ -1,19 +1,19 @@
-#ifndef BFB_ENGINE_BOT_H
-#define BFB_ENGINE_BOT_H
+#ifndef BFP_ENGINE_ENGINE_H
+#define BFP_ENGINE_ENGINE_H
 
 #include <QObject>
 #include <QString>
 #include <QScriptEngine>
 #include <QMetaType>
 
-class Bot : public QObject
+class Engine : public QObject
 {
 	Q_OBJECT
 
 public:
 	// Giving Bot a parent results in: QObject::moveToThread: Cannot move objects with a parent
-	Bot(QString script_path);
-	~Bot();
+	Engine(QString script_path);
+	~Engine();
 
 	enum LogSource{
 		System,
@@ -35,7 +35,7 @@ public slots:
 signals:
 	void started();
 	void stopped(bool without_errors);
-	void log(const QString &message, const Bot::LogSource &source);
+	void log(const QString &message, const Engine::LogSource &source);
 	
 	// Start/stop a wav sound in the main thread.
 	void playWavSound(QString path_to_wav_file);
@@ -49,4 +49,4 @@ private:
 	QString script_path;
 };
 
-#endif // BFB_ENGINE_BOT_H
+#endif // BFP_ENGINE_ENGINE_H

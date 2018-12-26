@@ -96,8 +96,8 @@ void ControlWindow::runtimerTimedOut()
 {
 	QString msg1("The bot stopped after 90 minutes, because you were not logged in.");
 	QString msg2("Go to Account > Login to prevent the bot from stopping after 90 minutes.");
-	appendMessage(msg1, Bot::LogSource::System);
-	appendMessage(msg2, Bot::LogSource::System);
+	appendMessage(msg1, Engine::LogSource::System);
+	appendMessage(msg2, Engine::LogSource::System);
 }
 
 void ControlWindow::onLoggedIn(int curtime, int premend)
@@ -187,21 +187,21 @@ void ControlWindow::startBot(const QString &script_path)
 	ui->actionLogout->setEnabled(false);
 
 	bot_thread = new QThread;
-	bot = new Bot(script_path);
+	bot = new Engine(script_path);
 	bot->moveToThread(bot_thread);
 
-	connect(bot, &Bot::started, this, &ControlWindow::botStarted);
-	connect(bot, &Bot::stopped, this, &ControlWindow::botStopped);
-	connect(bot, &Bot::log, this, &ControlWindow::appendMessage);
+	connect(bot, &Engine::started, this, &ControlWindow::botStarted);
+	connect(bot, &Engine::stopped, this, &ControlWindow::botStopped);
+	connect(bot, &Engine::log, this, &ControlWindow::appendMessage);
 
 	// QSound only works in the main thread, thats why we have to the control window to play
 	// the desired sound whenever to bot wants us to do so.
-	connect(bot, &Bot::playWavSound, this, &ControlWindow::playWavSound);
-	connect(bot, &Bot::stopWavSound, this, &ControlWindow::stopWavSound);
+	connect(bot, &Engine::playWavSound, this, &ControlWindow::playWavSound);
+	connect(bot, &Engine::stopWavSound, this, &ControlWindow::stopWavSound);
 
-	connect(bot_thread, &QThread::started, bot, &Bot::runScript);
-	connect(bot, &Bot::stopped, bot_thread, &QThread::quit);
-	connect(bot, &Bot::stopped, bot, &QObject::deleteLater);
+	connect(bot_thread, &QThread::started, bot, &Engine::runScript);
+	connect(bot, &Engine::stopped, bot_thread, &QThread::quit);
+	connect(bot, &Engine::stopped, bot, &QObject::deleteLater);
 	connect(bot_thread, &QThread::finished, bot_thread, &QObject::deleteLater);
 
 	bot_thread->start();
@@ -249,13 +249,13 @@ void ControlWindow::botStopped(bool without_errors)
 	}
 }
 
-void ControlWindow::appendMessage(const QString &message, const Bot::LogSource &source)
+void ControlWindow::appendMessage(const QString &message, const Engine::LogSource &source)
 {
 	QString time(QDateTime::currentDateTime().toString("HH:mm:ss"));
 	QString color, source_name;
 
 	QSettings settings;
-	if (source == Bot::LogSource::Debug && !settings.value(general::options::DEVMODE, general::fallback::DEVMODE).toBool())
+	if (source == Engine::LogSource::Debug && !settings.value(general::options::DEVMODE, general::fallback::DEVMODE).toBool())
 	{
 		// Do not show debug message when not in debug mode
 		return;
@@ -263,19 +263,19 @@ void ControlWindow::appendMessage(const QString &message, const Bot::LogSource &
 
 	switch (source)
 	{
-	case Bot::LogSource::System:
+	case Engine::LogSource::System:
 		color = "#209cee";
 		source_name = "system";
 		break;
-	case Bot::LogSource::Error:
+	case Engine::LogSource::Error:
 		color = "#ff3860";
 		source_name = "error";
 		break;
-	case Bot::LogSource::Script:
+	case Engine::LogSource::Script:
 		color = "#4a4a4a";
 		source_name = "script";
 		break;
-	case Bot::LogSource::Debug:
+	case Engine::LogSource::Debug:
 		color = "#85732d"; // #ffdd57
 		source_name = "debug";
 		break;

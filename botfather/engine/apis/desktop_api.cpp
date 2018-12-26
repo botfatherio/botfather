@@ -7,7 +7,7 @@
 #include "../types/match.h"
 #include "vision_api.h"
 
-DesktopAPI::DesktopAPI(Bot *bot, QObject *parent) : AbstractAPI(bot, parent)
+DesktopAPI::DesktopAPI(Engine *bot, QObject *parent) : AbstractAPI(bot, parent)
 {
 	desktop = new Desktop(this);
 }

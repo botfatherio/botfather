@@ -1,4 +1,4 @@
-#include "bot.h"
+#include "engine.h"
 #include <QScriptEngine>
 #include <QRegularExpression>
 #include <QDir>
@@ -23,17 +23,17 @@
 #include "apis/algorithm_api.h"
 #include "modules/browser/browser.h"
 
-Bot::Bot(QString script_path) : script_path(script_path)
+Engine::Engine(QString script_path) : script_path(script_path)
 {
 	// Otherwise Bot::LogSource can't be used with slots
-	qRegisterMetaType<Bot::LogSource>("Bot::LogSource");
+	qRegisterMetaType<Engine::LogSource>("Bot::LogSource");
 
 	// The script engines parent MUST BE the bot instance. This way we can obtain a pointer to the bot
 	// instance in static functions (like constructors) by casting the engines parent to a Bot*.
     script_engine = new QScriptEngine(this);
 }
 
-Bot::~Bot()
+Engine::~Engine()
 {
 	// The QJSEngine (not QScriptEngine) docs state that the garbage is not collected
 	// when the engine gets destroyed. The advise to call collectGarbage before deleting it.
@@ -41,13 +41,13 @@ Bot::~Bot()
 	//delete script_engine; // has bot as parent.
 }
 
-QString Bot::getAbsoluteScriptDirPath()
+QString Engine::getAbsoluteScriptDirPath()
 {
 	QFileInfo file_info(script_path);
 	return file_info.dir().absolutePath();
 }
 
-QString Bot::normalisePath(QString path)
+QString Engine::normalisePath(QString path)
 {
 	QFileInfo file_info(path);
 	if (file_info.isRelative()) {
@@ -56,14 +56,14 @@ QString Bot::normalisePath(QString path)
 	return path;
 }
 
-bool Bot::scriptFileExists(QString file_path)
+bool Engine::scriptFileExists(QString file_path)
 {
 	file_path = normalisePath(file_path);
 	QFileInfo file_info(file_path);
 	return file_info.exists() && file_info.isFile();
 }
 
-void Bot::runScript()
+void Engine::runScript()
 {
 	emit started();
 
@@ -123,12 +123,12 @@ void Bot::runScript()
 	emit stopped(!result.isError());
 }
 
-void Bot::stop()
+void Engine::stop()
 {
 	script_engine->abortEvaluation();
 }
 
-QString Bot::replaceQtWithEngineTypeNames(QString text)
+QString Engine::replaceQtWithEngineTypeNames(QString text)
 {
 	// Ignore reference errors: "ReferenceError: Can't find variable: QSomethingThatDoesNotExist"
 	if (text.contains("ReferenceError: Can't find variable"))
