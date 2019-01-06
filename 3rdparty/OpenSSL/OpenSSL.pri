@@ -11,5 +11,9 @@ win32 {
 
     PWD_WIN = $$PWD
     PWD_WIN ~= s,/,\\,g
-    QMAKE_POST_LINK +=$$quote(cmd /c xcopy /E /y $${PWD_WIN}\\windows\\* $${DESTDIR_WIN}$$escape_expand(\\n\\t))
+
+    #QMAKE_POST_LINK +=$$quote(cmd /c xcopy /E /y $${PWD_WIN}\\windows\\* $${DESTDIR_WIN}$$escape_expand(\\n\\t))
+
+    QMAKE_POST_LINK +=$$quote(copy $${PWD_WIN}\\windows\\libeay32.dll $${DESTDIR_WIN}$$escape_expand(\\n\\t))
+    QMAKE_POST_LINK +=$$quote(copy $${PWD_WIN}\\windows\\ssleay32.dll $${DESTDIR_WIN}$$escape_expand(\\n\\t))
 }
