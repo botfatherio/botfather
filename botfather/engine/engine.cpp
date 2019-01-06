@@ -26,7 +26,7 @@
 Engine::Engine(QString script_path) : script_path(script_path)
 {
 	// Otherwise Bot::LogSource can't be used with slots
-	qRegisterMetaType<Engine::LogSource>("Bot::LogSource");
+    qRegisterMetaType<Engine::LogSource>("Engine::LogSource");
 
 	// The script engines parent MUST BE the bot instance. This way we can obtain a pointer to the bot
 	// instance in static functions (like constructors) by casting the engines parent to a Bot*.
