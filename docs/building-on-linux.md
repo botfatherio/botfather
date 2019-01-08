@@ -18,39 +18,42 @@ On Centos 7 `libXScrnSaver` is installed as workaround for the following error d
 
 ### Step 2: Build Chromium Embedded Framework
 
-- Download the [CEF Linux 64-bit standard distribution](http://opensource.spotify.com/cefbuilds/index.html)
+- Download the [CEF Linux 64-bit standard distribution](http://opensource.spotify.com/cefbuilds/cef_binary_3.3325.1758.g9aea513_linux64.tar.bz2)
 - Unpack the archives contents to a persitent location
 - Open a terminal in the CEF source folder.
 - `cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release`
 - `make -j4 libcef_dll_wrapper`
 - `export CEF_ROOT=/path/to/CEF` (put this in ~/.bashrc or ~/.xsession)
 
-### Step 3: Build or install OpenCV 3
-
-You could just install OpenCV from your distributions repository...
-
-- On Ubuntu 18.04: `sudo apt install libopencv-*`
-- On Arch Linux: `sudo pacman -S opencv`
-
-But the get the latest OpenCV 3 version you might want to build it instead.
+### Step 3: Build OpenCV 3
 
 - `wget https://github.com/opencv/opencv/archive/3.4.3.zip`
-- `unzip opencv-3.4.3.zip`
+- `unzip 3.4.3.zip`
 - `cd opencv-3.4.3`
 - `mkdir build && cd build`
-- `cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=/usr/local ..`
-- `make -j4`
-- `sudo make install`
-- `sudo sh -c 'echo "/usr/local/lib64" >> /etc/ld.so.conf.d/opencv.conf'`
-- `sudo ldconfig`
+- `cmake -D CMAKE_BUILD_TYPE=Release ..`
+- `make -j $nproc` (`nproc` returns the number of CPU cores you have)
 - `export OPENCV_ROOT=/path/to/opencv/build` (put this in ~/.bashrc or ~/.xsession)
 
-### Step 4: Build botfather_helper and botfather
+### Step 4: Build Libgit2
+
+- `wget https://github.com/libgit2/libgit2/archive/v0.27.7.zip`
+- `unzip v0.27.7.zip`
+- `cd libgit2-v0.27.7`
+- `mkdir build && cd build`
+- `cmake -D CMAKE_BUILD_TYPE=Release -D BUILD_CLAR=OFF -D THREADSAFE=ON ..`
+- `cmake --build .`
+- `sudo make install`
+- `export LIBGIT2_ROOT=/path/to/libgit2/build` (put this in ~/.bashrc or ~/.xsession)
+
+### Step 5: Build botfather_helper and botfather
 
 - `mkdir package-build`
 - `qmake-qt5 "CONFIG+=release" ../package.pro`
 - `make -j $nproc` (`nproc` returns the number of CPU cores you have)
 - `make install` (creates a `package` directory and puts `botfather` and `botfather_helper` in it)
+
+*or use qtcreator...*
 
 ## Troubleshooting
 
