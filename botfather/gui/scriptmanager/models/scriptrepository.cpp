@@ -28,13 +28,8 @@ bool ScriptRepository::isValid() const
 		return !remoteUrl().isEmpty() && QUrl(remoteUrl()).isValid();
 	}
 
-	git_libgit2_init();
-
 	// Pass nullptr for the output parameter to check for but not open the repo
-	bool valid_repo = git_repository_open_ext(nullptr, localPath().toUtf8(), GIT_REPOSITORY_OPEN_NO_SEARCH, nullptr) == 0;
-
-	git_libgit2_shutdown();
-	return valid_repo;
+    return git_repository_open_ext(nullptr, localPath().toUtf8(), GIT_REPOSITORY_OPEN_NO_SEARCH, nullptr) == 0;
 }
 
 QString ScriptRepository::findScriptPath() const

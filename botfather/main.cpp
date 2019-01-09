@@ -4,14 +4,17 @@
 #include <QMessageBox>
 #include "gui/control_window.h"
 #include "engine/modules/browser/browser.h"
+#include <git2.h>
 
 #if defined(_WIN32) || defined(_WIN64)
 #include <Windows.h>
 
 int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
 {
+    UNREFERENCED_PARAMETER(hInstance);
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
+    UNREFERENCED_PARAMETER(nCmdShow);
 
 	// Initialise the QApplication on Windows.
 	QApplication a(__argc, __argv);
@@ -74,11 +77,24 @@ int main(int argc, char *argv[])
     qsrand(static_cast<uint>(QTime::currentTime().msec()));
 #endif
 
-	#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32) || defined(_WIN64)
 		Browser::init(__argc, __argv);
-	#else
+#else
 		Browser::init(argc, argv);
-	#endif
+#endif
+
+    // Init libgit2 once and never shut it down. Shutting libgit2 down caused crashes related to multithreading
+    // even when compiling libgit2 to be thread safe. The libgit2 docs state some interesting things:
+    /* 1. (Thats a CMAKE flag ->) THREADSAFE. Selects whether libgit2 **tries** to be threadsafe
+     * - https://libgit2.org/docs/guides/build-and-link/
+     * 2. Usually you don’t need to call the shutdown function as the operating system will take care of reclaiming resources,
+     * but if your application uses libgit2 in some areas which are not usually active, you can use
+     * git_libgit2_shutdown();
+     * to ask the library to clean up the global state. The cleanup will be performed once there have been the same number of calls
+     * to git_libgit2_shutdown() as there were for git_libgit2_init().
+     * - https://libgit2.org/docs/guides/101-samples/
+     */
+    git_libgit2_init();
 
 	ControlWindow *control_window = new ControlWindow;
 	control_window->show();

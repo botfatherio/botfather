@@ -4,8 +4,6 @@
 
 AbstractGitOperation::AbstractGitOperation()
 {
-	git_libgit2_init();
-
 	// Emit ::finished whenever ::failure or ::success are emitted
 	connect(this, &AbstractGitOperation::failure, this, &AbstractGitOperation::finished);
 	connect(this, &AbstractGitOperation::success, this, &AbstractGitOperation::finished);
@@ -13,7 +11,7 @@ AbstractGitOperation::AbstractGitOperation()
 
 AbstractGitOperation::~AbstractGitOperation()
 {
-	git_libgit2_shutdown();
+
 }
 
 bool AbstractGitOperation::isCanceled() const
