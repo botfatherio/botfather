@@ -128,7 +128,7 @@ void ScriptRepository::checkStatus()
 	// After doing so we can calculate the differences to the remote.
 
 	GitFetchOperation *fetch_op = new GitFetchOperation(localPath());
-	QThread *fetch_thread = new QThread(this);
+	QThread *fetch_thread = new QThread; // Don't give it a parent, otherwise the app will crash when the parent gets destroyed before the thread finished.
 	fetch_op->moveToThread(fetch_thread);
 
 	connect(fetch_thread, &QThread::started, fetch_op, &GitFetchOperation::process);
@@ -137,7 +137,7 @@ void ScriptRepository::checkStatus()
 	connect(fetch_thread, &QThread::finished, fetch_thread, &QThread::deleteLater);
 
 	GitBehindOperation *behind_op = new GitBehindOperation(localPath());
-	QThread *behind_thread = new QThread(this);
+	QThread *behind_thread = new QThread; // Don't give it a parent, otherwise the app will crash when the parent gets destroyed before the thread finished.
 
 	connect(behind_thread, &QThread::started, behind_op, &GitBehindOperation::process);
 	connect(behind_op, &GitBehindOperation::finished, behind_thread, &QThread::quit);

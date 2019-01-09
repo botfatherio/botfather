@@ -53,7 +53,7 @@ void GitProgressDialog::reclone(ScriptRepository *repository)
 	setLabelText("Updating script repository");
 	show();
 
-	QThread *thread = new QThread;
+	QThread *thread = new QThread; // Don't give it a parent, otherwise the app will crash when the parent gets destroyed before the thread finished.
 	GitRecloneOperation *operation = new GitRecloneOperation(repository->remoteUrl(), repository->localPath());
 	operation->moveToThread(thread);
 
@@ -89,7 +89,7 @@ void GitProgressDialog::clone(ScriptRepository *repository)
 	setLabelText("Cloning script repository...");
 	show();
 
-	QThread *thread = new QThread;
+	QThread *thread = new QThread; // Don't give it a parent, otherwise the app will crash when the parent gets destroyed before the thread finished.
 	GitCloneOperation *operation = new GitCloneOperation(repository->remoteUrl(), repository->localPath());
 	operation->moveToThread(thread);
 
