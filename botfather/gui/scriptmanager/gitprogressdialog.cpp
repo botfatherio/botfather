@@ -53,32 +53,34 @@ void GitProgressDialog::reclone(ScriptRepository *repository)
 	setLabelText("Updating script repository");
 	show();
 
-	QThread *thread = new QThread; // Don't give it a parent, otherwise the app will crash when the parent gets destroyed before the thread finished.
-	GitRecloneOperation *operation = new GitRecloneOperation(repository->remoteUrl(), repository->localPath());
-	operation->moveToThread(thread);
+    QThread *reclone_thread = new QThread; // Don't give it a parent, otherwise the app will crash when the parent gets destroyed before the thread finished.
+    reclone_thread->setObjectName(QString("GitRecloneOperation Thread for %0").arg(repository->name()));
 
-	connect(thread, &QThread::started, operation, &GitRecloneOperation::process);
-	connect(operation, &GitRecloneOperation::finished, thread, &QThread::quit);
-	connect(operation, &GitRecloneOperation::finished, operation, &GitRecloneOperation::deleteLater);
-	connect(thread, &QThread::finished, thread, &QThread::deleteLater);
+    GitRecloneOperation *reclone_op = new GitRecloneOperation(repository->remoteUrl(), repository->localPath());
+    reclone_op->moveToThread(reclone_thread);
 
-	connect(m_ui->buttonBox, &QDialogButtonBox::rejected, operation, &GitRecloneOperation::cancel);
+    connect(reclone_thread, &QThread::started, reclone_op, &GitRecloneOperation::process);
+    connect(reclone_op, &GitRecloneOperation::finished, reclone_thread, &QThread::quit);
+    connect(reclone_op, &GitRecloneOperation::finished, reclone_op, &GitRecloneOperation::deleteLater);
+    connect(reclone_thread, &QThread::finished, reclone_thread, &QThread::deleteLater);
+
+    connect(m_ui->buttonBox, &QDialogButtonBox::rejected, reclone_op, &GitRecloneOperation::cancel);
 	connect(m_ui->buttonBox, &QDialogButtonBox::rejected, this, &GitProgressDialog::reject);
-	connect(operation, &GitRecloneOperation::success, this, &GitProgressDialog::cloneSuccess);
-	connect(operation, &GitRecloneOperation::failure, this, &GitProgressDialog::cloneFailure);
+    connect(reclone_op, &GitRecloneOperation::success, this, &GitProgressDialog::cloneSuccess);
+    connect(reclone_op, &GitRecloneOperation::failure, this, &GitProgressDialog::cloneFailure);
 
-	connect(operation, &GitRecloneOperation::totalObjectsChanged, this, &GitProgressDialog::setMaximum);
-	connect(operation, &GitRecloneOperation::receivedObjectsChanged, this, &GitProgressDialog::setValue);
-	connect(operation, &GitRecloneOperation::checkoutTotalChanged, this, &GitProgressDialog::setMaximum);
-	connect(operation, &GitRecloneOperation::checkoutCurrentChanged, this, &GitProgressDialog::setValue);
-	connect(operation, &GitRecloneOperation::transferProgressChanged, this, &GitProgressDialog::transferProgressChanged);
-	connect(operation, &GitRecloneOperation::checkoutProgressChanged, this, &GitProgressDialog::checkoutProgressChanged);
+    connect(reclone_op, &GitRecloneOperation::totalObjectsChanged, this, &GitProgressDialog::setMaximum);
+    connect(reclone_op, &GitRecloneOperation::receivedObjectsChanged, this, &GitProgressDialog::setValue);
+    connect(reclone_op, &GitRecloneOperation::checkoutTotalChanged, this, &GitProgressDialog::setMaximum);
+    connect(reclone_op, &GitRecloneOperation::checkoutCurrentChanged, this, &GitProgressDialog::setValue);
+    connect(reclone_op, &GitRecloneOperation::transferProgressChanged, this, &GitProgressDialog::transferProgressChanged);
+    connect(reclone_op, &GitRecloneOperation::checkoutProgressChanged, this, &GitProgressDialog::checkoutProgressChanged);
 
-	connect(operation, &GitRecloneOperation::replacingRepo, [this](){
+    connect(reclone_op, &GitRecloneOperation::replacingRepo, [this](){
 		this->setLabelText("Almost done updating...");
 	});
 
-	thread->start();
+    reclone_thread->start();
 }
 
 void GitProgressDialog::clone(ScriptRepository *repository)
@@ -89,28 +91,30 @@ void GitProgressDialog::clone(ScriptRepository *repository)
 	setLabelText("Cloning script repository...");
 	show();
 
-	QThread *thread = new QThread; // Don't give it a parent, otherwise the app will crash when the parent gets destroyed before the thread finished.
-	GitCloneOperation *operation = new GitCloneOperation(repository->remoteUrl(), repository->localPath());
-	operation->moveToThread(thread);
+    QThread *clone_thread = new QThread; // Don't give it a parent, otherwise the app will crash when the parent gets destroyed before the thread finished.
+    clone_thread->setObjectName(QString("GitCloneOperation Thread for %0").arg(repository->name()));
 
-	connect(thread, &QThread::started, operation, &GitCloneOperation::process);
-	connect(operation, &GitCloneOperation::finished, thread, &QThread::quit);
-	connect(operation, &GitCloneOperation::finished, operation, &GitCloneOperation::deleteLater);
-	connect(thread, &QThread::finished, thread, &QThread::deleteLater);
+    GitCloneOperation *clone_op = new GitCloneOperation(repository->remoteUrl(), repository->localPath());
+    clone_op->moveToThread(clone_thread);
 
-	connect(m_ui->buttonBox, &QDialogButtonBox::rejected, operation, &GitCloneOperation::cancel);
+    connect(clone_thread, &QThread::started, clone_op, &GitCloneOperation::process);
+    connect(clone_op, &GitCloneOperation::finished, clone_thread, &QThread::quit);
+    connect(clone_op, &GitCloneOperation::finished, clone_op, &GitCloneOperation::deleteLater);
+    connect(clone_thread, &QThread::finished, clone_thread, &QThread::deleteLater);
+
+    connect(m_ui->buttonBox, &QDialogButtonBox::rejected, clone_op, &GitCloneOperation::cancel);
 	connect(m_ui->buttonBox, &QDialogButtonBox::rejected, this, &GitProgressDialog::reject);
-	connect(operation, &GitCloneOperation::success, this, &GitProgressDialog::cloneSuccess);
-	connect(operation, &GitCloneOperation::failure, this, &GitProgressDialog::cloneFailure);
+    connect(clone_op, &GitCloneOperation::success, this, &GitProgressDialog::cloneSuccess);
+    connect(clone_op, &GitCloneOperation::failure, this, &GitProgressDialog::cloneFailure);
 
-	connect(operation, &GitCloneOperation::totalObjectsChanged, this, &GitProgressDialog::setMaximum);
-	connect(operation, &GitCloneOperation::receivedObjectsChanged, this, &GitProgressDialog::setValue);
-	connect(operation, &GitCloneOperation::checkoutTotalChanged, this, &GitProgressDialog::setMaximum);
-	connect(operation, &GitCloneOperation::checkoutCurrentChanged, this, &GitProgressDialog::setValue);
-	connect(operation, &GitCloneOperation::transferProgressChanged, this, &GitProgressDialog::transferProgressChanged);
-	connect(operation, &GitCloneOperation::checkoutProgressChanged, this, &GitProgressDialog::checkoutProgressChanged);
+    connect(clone_op, &GitCloneOperation::totalObjectsChanged, this, &GitProgressDialog::setMaximum);
+    connect(clone_op, &GitCloneOperation::receivedObjectsChanged, this, &GitProgressDialog::setValue);
+    connect(clone_op, &GitCloneOperation::checkoutTotalChanged, this, &GitProgressDialog::setMaximum);
+    connect(clone_op, &GitCloneOperation::checkoutCurrentChanged, this, &GitProgressDialog::setValue);
+    connect(clone_op, &GitCloneOperation::transferProgressChanged, this, &GitProgressDialog::transferProgressChanged);
+    connect(clone_op, &GitCloneOperation::checkoutProgressChanged, this, &GitProgressDialog::checkoutProgressChanged);
 
-	thread->start();
+    clone_thread->start();
 }
 
 void GitProgressDialog::cloneSuccess()

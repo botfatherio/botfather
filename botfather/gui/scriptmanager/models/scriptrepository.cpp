@@ -127,8 +127,10 @@ void ScriptRepository::checkStatus()
 	// To check whether the script is outdated we first have to fetch from the remote.
 	// After doing so we can calculate the differences to the remote.
 
-	GitFetchOperation *fetch_op = new GitFetchOperation(localPath());
-	QThread *fetch_thread = new QThread; // Don't give it a parent, otherwise the app will crash when the parent gets destroyed before the thread finished.
+    QThread *fetch_thread = new QThread; // Don't give it a parent, otherwise the app will crash when the parent gets destroyed before the thread finished.
+    fetch_thread->setObjectName(QString("GitFetchOperation Thread for %0").arg(localPath()));
+
+    GitFetchOperation *fetch_op = new GitFetchOperation(localPath());
 	fetch_op->moveToThread(fetch_thread);
 
 	connect(fetch_thread, &QThread::started, fetch_op, &GitFetchOperation::process);
@@ -136,8 +138,11 @@ void ScriptRepository::checkStatus()
 	connect(fetch_op, &GitFetchOperation::finished, fetch_op, &GitFetchOperation::deleteLater);
 	connect(fetch_thread, &QThread::finished, fetch_thread, &QThread::deleteLater);
 
-	GitBehindOperation *behind_op = new GitBehindOperation(localPath());
-	QThread *behind_thread = new QThread; // Don't give it a parent, otherwise the app will crash when the parent gets destroyed before the thread finished.
+    QThread *behind_thread = new QThread; // Don't give it a parent, otherwise the app will crash when the parent gets destroyed before the thread finished.
+    behind_thread->setObjectName(QString("GitBehindOperation Thread for %0").arg(localPath()));
+
+    GitBehindOperation *behind_op = new GitBehindOperation(localPath());
+    behind_op->moveToThread(behind_thread);
 
 	connect(behind_thread, &QThread::started, behind_op, &GitBehindOperation::process);
 	connect(behind_op, &GitBehindOperation::finished, behind_thread, &QThread::quit);

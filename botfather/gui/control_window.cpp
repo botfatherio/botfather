@@ -187,6 +187,7 @@ void ControlWindow::startBot(const QString &script_path)
 	ui->actionLogout->setEnabled(false);
 
 	bot_thread = new QThread;
+    bot_thread->setObjectName("BF Engine Thread");
 	bot = new Engine(script_path);
 	bot->moveToThread(bot_thread);
 
