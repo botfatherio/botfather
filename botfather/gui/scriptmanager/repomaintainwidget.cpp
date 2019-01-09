@@ -77,6 +77,7 @@ RepoMaintainWidget::~RepoMaintainWidget()
 void RepoMaintainWidget::loadModelData()
 {
 	m_repos_model->load(m_scripts_dat_filepath);
+	m_repos_model->checkForUpdates();
 }
 
 void RepoMaintainWidget::updateButtonStatuses(const QModelIndex &current, const QModelIndex &previous)

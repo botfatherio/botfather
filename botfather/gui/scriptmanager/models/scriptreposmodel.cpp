@@ -209,10 +209,12 @@ void ScriptReposModel::addEntry(ScriptRepository *script)
 	insertRows(rowCount(), 1, QModelIndex());
 	QModelIndex row_index = index(rowCount() - 1, 0, QModelIndex());
 	setData(row_index, QVariant::fromValue(script), NativeDataRole);
+}
 
-	// Only the status of local scripts can be checked
-	if (!script->localPath().isEmpty())
+void ScriptReposModel::checkForUpdates()
+{
+	for (ScriptRepository *repo : repositories)
 	{
-		script->checkStatus();
+		repo->checkStatus();
 	}
 }
