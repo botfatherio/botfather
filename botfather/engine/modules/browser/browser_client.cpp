@@ -12,8 +12,7 @@
 #include "browser_settings.h"
 
 namespace {
-	BrowserClient * g_instance = nullptr;
-	QImage g_browser_image;
+    BrowserClient * g_instance = nullptr;
 }
 
 BrowserClient::BrowserClient()
@@ -34,8 +33,11 @@ BrowserClient * BrowserClient::instance()
 
 QImage BrowserClient::takeScreenshot()
 {
-	// NOTE: Not using copy caused fracments in browser screenshots some times.
-	return g_browser_image.copy();
+    screenshot_lock.lockForRead();
+    QImage copy = screenshot;
+    screenshot_lock.unlock();
+
+    return copy;
 }
 
 CefRefPtr<CefBrowser> BrowserClient::getBrowser() const
@@ -202,8 +204,13 @@ void BrowserClient::OnPaint(
 	// QPixmap objects can be passed around by value since the QPixmap class uses implicit data sharing.
 	// For more information, see the Implicit Data Sharing documentation.QPixmap objects can also be streamed.
 
-    g_browser_image = QImage(static_cast<const unsigned char*>(buffer), width, height, QImage::Format_RGB32).copy();
-	emit paintSignal(g_browser_image);
+    screenshot_lock.lockForWrite();
+    screenshot = QImage(static_cast<const unsigned char*>(buffer), width, height, QImage::Format_RGB32).copy();
+    screenshot_lock.unlock();
+
+    screenshot_lock.lockForRead();
+    emit paintSignal(screenshot);
+    screenshot_lock.unlock();
 }
 
 void BrowserClient::OnLoadEnd(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, int httpStatusCode)

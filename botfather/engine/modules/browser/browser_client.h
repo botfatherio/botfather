@@ -5,6 +5,8 @@
 #include <QImage>
 #include <QSettings>
 #include <QMap>
+#include <QReadWriteLock>
+
 #include "include/cef_client.h"
 
 class BrowserClient :
@@ -34,8 +36,7 @@ public:
 	// Returns the pointer to the singleton instance of this object.
 	static BrowserClient* instance();
 	
-	//
-	static QImage takeScreenshot();
+    QImage takeScreenshot();
 	
 	// Returns the cef browser object. There is only one browser because we're always
 	// running in offscreen rendering mode.
@@ -133,6 +134,9 @@ private:
 	// The second item is either empty, meaning the url should not be loaded (is blocked),
 	// or there is a second url provided, meaning the second url should be loaded instead.
 	QVector<QPair<QString, QString>> modified_resources;
+
+    QReadWriteLock screenshot_lock;
+    QImage screenshot;
 	
 	// Include the default reference counting implementation.
 	IMPLEMENT_REFCOUNTING(BrowserClient)

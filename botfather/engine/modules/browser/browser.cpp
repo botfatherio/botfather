@@ -119,7 +119,7 @@ void Browser::resize(const QSize &new_size)
 QImage Browser::takeScreenshot()
 {
 	Q_ASSERT(BrowserClient::instance());
-	return BrowserClient::takeScreenshot();
+    return BrowserClient::instance()->takeScreenshot();
 }
 
 void Browser::blockResource(const QString &resource)
