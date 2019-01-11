@@ -18,12 +18,10 @@ On Centos 7 `libXScrnSaver` is installed as workaround for the following error d
 
 ### Step 2: Build Chromium Embedded Framework
 
-- Download the [CEF Linux 64-bit standard distribution](http://opensource.spotify.com/cefbuilds/cef_binary_3.3325.1758.g9aea513_linux64.tar.bz2)
-- Unpack the archives contents to a persitent location
-- Open a terminal in the CEF source folder.
-- `cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release`
-- `make -j4 libcef_dll_wrapper`
-- `export CEF_ROOT=/path/to/CEF` (put this in ~/.bashrc or ~/.xsession)
+- Change directory to botfather/3rdparty/CEF
+- Run ```chmod +x CEF_setup.sh```
+- Run ```./CEF_setup.sh```
+- Follow the scripts instructions
 
 ### Step 3: Build OpenCV 3
 
