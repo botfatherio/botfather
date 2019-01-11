@@ -168,7 +168,7 @@ bool BrowserClient::OnBeforePopup(
 	return true;
 }
 
-bool BrowserClient::GetViewRect(CefRefPtr<CefBrowser> browser, CefRect& rect)
+void BrowserClient::GetViewRect(CefRefPtr<CefBrowser> browser, CefRect& rect)
 {
 	Q_UNUSED(browser)
 	CEF_REQUIRE_UI_THREAD();
@@ -182,7 +182,6 @@ bool BrowserClient::GetViewRect(CefRefPtr<CefBrowser> browser, CefRect& rect)
 		settings.value(browser::options::WIDTH, browser::fallback::WIDTH).toInt(),
 		settings.value(browser::options::HEIGHT, browser::fallback::HEIGHT).toInt()
 	);
-	return true;
 }
 
 void BrowserClient::OnPaint(
