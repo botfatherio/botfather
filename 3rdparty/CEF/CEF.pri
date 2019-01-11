@@ -1,6 +1,8 @@
 linux {
     INCLUDEPATH += $$(CEF_ROOT)
-    LIBS += -L$$(CEF_ROOT)/libcef_dll_wrapper/ -lcef_dll_wrapper
+
+    CONFIG(release, debug|release):LIBS += -L$$(CEF_ROOT)/ReleaseBuild/libcef_dll_wrapper -lcef_dll_wrapper
+    else:CONFIG(debug, debug|release):LIBS += -L$$(CEF_ROOT)/DebugBuild/libcef_dll_wrapper -lcef_dll_wrapper
 
     CONFIG(release, debug|release):LIBS += -L$$(CEF_ROOT)/Release -lcef
     else: CONFIG(debug, debug|release):LIBS += -L$$(CEF_ROOT)/Debug -lcef
@@ -20,8 +22,8 @@ win32 {
     DESTDIR_WIN ~= s,/,\\,g
     INCLUDEPATH += $$(CEF_ROOT)
 
-    CONFIG(release, debug|release):LIBS += -L$$(CEF_ROOT)\libcef_dll_wrapper\Release -llibcef_dll_wrapper
-    else:CONFIG(debug, debug|release):LIBS += -L$$(CEF_ROOT)\libcef_dll_wrapper\Debug -llibcef_dll_wrapper
+    CONFIG(release, debug|release):LIBS += -L$$(CEF_ROOT)\build\libcef_dll_wrapper\Release -llibcef_dll_wrapper
+    else:CONFIG(debug, debug|release):LIBS += -L$$(CEF_ROOT)\build\libcef_dll_wrapper\Debug -llibcef_dll_wrapper
 
     CONFIG(release, debug|release):LIBS += -L$$(CEF_ROOT)\Release -llibcef
     else: CONFIG(debug, debug|release):LIBS += -L$$(CEF_ROOT)\Debug -llibcef
