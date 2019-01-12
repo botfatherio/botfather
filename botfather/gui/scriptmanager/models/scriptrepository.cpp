@@ -11,14 +11,13 @@
 ScriptRepository::ScriptRepository(QObject *parent)
 	: QObject(parent)
 {
-
+	qRegisterMetaType<QVector<ScriptRepository::Data>>("QVector<ScriptRepository::Data>");
 }
 
 ScriptRepository::ScriptRepository(ScriptRepository::Data data, QObject *parent)
-	: QObject(parent)
-	, m_data(data)
+	: ScriptRepository(parent)
 {
-
+	m_data = data;
 }
 
 bool ScriptRepository::isValid() const

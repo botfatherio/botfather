@@ -3,126 +3,135 @@
 #include <QMessageBox>
 #include <QStandardPaths>
 #include <QInputDialog>
-#include <QTimer>
 #include <QUuid>
 #include <QDir>
+#include <QThread>
 #include <QDebug>
 #include "gitprogressdialog.h"
 #include "../../auth/scriptsapiclient.h"
 
 RepoDownloadWidget::RepoDownloadWidget(QWidget *parent)
-	: QWidget(parent)
-	, m_ui(new Ui::RepoListWidget)
+    : QWidget(parent)
+        , m_ui(new Ui::RepoListWidget)
 {
-	m_ui->setupUi(this);
-	m_ui->label->setText("<p style='font-size: 14px'>Download and install Scripts</p>");
+        m_ui->setupUi(this);
+        m_ui->label->setText("<p style='font-size: 14px'>Download and install Scripts</p>");
 
-	m_repos_model = new ScriptReposModel(this);
-	m_repos_proxy= new QSortFilterProxyModel(this);
-	m_repos_proxy->setSourceModel(m_repos_model);
+        m_repos_model = new ScriptReposModel(this);
+        m_repos_proxy= new QSortFilterProxyModel(this);
+        m_repos_proxy->setSourceModel(m_repos_model);
 
-	m_repos_proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
-	m_repos_proxy->setFilterRole(ScriptReposModel::KeywordsRole);
-	m_repos_proxy->setFilterKeyColumn(0);
+        m_repos_proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
+        m_repos_proxy->setFilterRole(ScriptReposModel::KeywordsRole);
+        m_repos_proxy->setFilterKeyColumn(0);
 
-	m_ui->view->setModel(m_repos_proxy);
-	connect(m_ui->filter, &QLineEdit::textChanged, m_repos_proxy, &QSortFilterProxyModel::setFilterWildcard);
-	connect(m_ui->view->selectionModel(), &QItemSelectionModel::currentChanged, this, &RepoDownloadWidget::updateButtonStatuses);
-	connect(m_ui->view, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(installSelectedScript()));
+        m_ui->view->setModel(m_repos_proxy);
+        connect(m_ui->filter, &QLineEdit::textChanged, m_repos_proxy, &QSortFilterProxyModel::setFilterWildcard);
+        connect(m_ui->view->selectionModel(), &QItemSelectionModel::currentChanged, this, &RepoDownloadWidget::updateButtonStatuses);
+        connect(m_ui->view, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(installSelectedScript()));
 
-	// Hide some columns after setting the model
-	m_ui->view->hideColumn(1); // Status
-	m_ui->view->hideColumn(4); // Local Path
-	m_ui->view->hideColumn(5); // Remote Url
+        // Hide some columns after setting the model
+        m_ui->view->hideColumn(1); // Status
+        m_ui->view->hideColumn(4); // Local Path
+        m_ui->view->hideColumn(5); // Remote Url
 
-	m_install_button = new QPushButton("Install", this);
-	m_install_button->setDisabled(true);
+        m_install_button = new QPushButton("Install", this);
+        m_install_button->setDisabled(true);
 
-	m_ui->buttons->addWidget(m_install_button);
-	m_ui->buttons->addStretch();
+        m_ui->buttons->addWidget(m_install_button);
+        m_ui->buttons->addStretch();
 
-	connect(m_install_button, SIGNAL(clicked()), this, SLOT(installSelectedScript()));
+        connect(m_install_button, SIGNAL(clicked()), this, SLOT(installSelectedScript()));
 
-	// Don't block the constructor while loading model data
-	ScriptsApiClient *sac = new ScriptsApiClient(this);
+        // Don't block the constructor while loading model data
+		QThread *sac_thread = new QThread;
+		sac_thread->setObjectName("Scriptlist fetch thread");
 
-	connect(sac, &ScriptsApiClient::errorsReceived, [](){
-		qDebug() << "sac errors received"; // TODO: provide feedback to the user
-	});
+		ScriptsApiClient *sac = new ScriptsApiClient;
+        sac->moveToThread(sac_thread);
 
-	connect(sac, &ScriptsApiClient::networkError, [](){
-		qDebug() << "sac network error"; // TODO: provide feedback to the user
-	});
+        connect(sac_thread, SIGNAL(started()), sac, SLOT(requestScripts()));
+        connect(sac, SIGNAL(finished()), sac_thread, SLOT(quit()));
+        connect(sac, SIGNAL(finished()), sac, SLOT(deleteLater()));
+        connect(sac_thread, SIGNAL(finished()), sac_thread, SLOT(deleteLater()));
 
-	connect(sac, &ScriptsApiClient::scriptsReceived, this, &RepoDownloadWidget::loadModelData);
-	QTimer::singleShot(1, sac, &ScriptsApiClient::requestScripts);
+        connect(sac, &ScriptsApiClient::errorsReceived, [](){
+                qDebug() << "sac errors received"; // TODO: provide feedback to the user
+        });
+
+        connect(sac, &ScriptsApiClient::networkError, [](){
+                qDebug() << "sac network error"; // TODO: provide feedback to the user
+        });
+
+        connect(sac, &ScriptsApiClient::scriptsReceived, this, &RepoDownloadWidget::loadModelData);
+        sac_thread->start();
 }
 
 RepoDownloadWidget::~RepoDownloadWidget()
 {
-	delete m_ui;
+        delete m_ui;
 }
 
 void RepoDownloadWidget::loadModelData(const QVector<ScriptRepository::Data> &repo_data_list)
 {
-	for (ScriptRepository::Data date : repo_data_list)
-	{
-		m_repos_model->addEntry(new ScriptRepository(date, m_repos_model));
-	}
+        for (ScriptRepository::Data date : repo_data_list)
+        {
+                m_repos_model->addEntry(new ScriptRepository(date, m_repos_model));
+        }
 }
 
 void RepoDownloadWidget::updateButtonStatuses(const QModelIndex &current, const QModelIndex &previous)
 {
-	Q_UNUSED(previous);
-	m_install_button->setEnabled(current.isValid());
+        Q_UNUSED(previous);
+        m_install_button->setEnabled(current.isValid());
 }
 
 void RepoDownloadWidget::installSelectedScript()
 {
-	QModelIndex current = m_ui->view->selectionModel()->currentIndex();
-	if (!current.isValid()) return;
+        QModelIndex current = m_ui->view->selectionModel()->currentIndex();
+        if (!current.isValid()) return;
 
-	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(m_repos_model->data(current, ScriptReposModel::NativeDataRole));
+        ScriptRepository *repository = qvariant_cast<ScriptRepository*>(m_repos_model->data(current, ScriptReposModel::NativeDataRole));
 
-	QDir repo_parent_dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
-	repo_parent_dir.mkpath(repo_parent_dir.absolutePath());
+        QDir repo_parent_dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+        repo_parent_dir.mkpath(repo_parent_dir.absolutePath());
 
-	QInputDialog *name_dialog = new QInputDialog(this);
-	name_dialog->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
-	name_dialog->setInputMode(QInputDialog::TextInput);
-	name_dialog->resize(380, 100);
-	name_dialog->setWindowTitle("Choose a bot name");
-	name_dialog->setLabelText("Please choose a fancy bot name");
-	name_dialog->setTextValue(repository->name()); // As default text
+        QInputDialog *name_dialog = new QInputDialog(this);
+        name_dialog->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
+        name_dialog->setInputMode(QInputDialog::TextInput);
+        name_dialog->resize(380, 100);
+        name_dialog->setWindowTitle("Choose a bot name");
+        name_dialog->setLabelText("Please choose a fancy bot name");
+        name_dialog->setTextValue(repository->name()); // As default text
 
-	if (!name_dialog->exec() || name_dialog->textValue().isEmpty())
-	{
-		// Dialog closed or provided text is empty
-		return;
-	}
+        if (!name_dialog->exec() || name_dialog->textValue().isEmpty())
+        {
+                // Dialog closed or provided text is empty
+                return;
+        }
 
-	QString reponame = name_dialog->textValue();
-	QString repouuid = QUuid::createUuid().toString(QUuid::WithoutBraces);
+        QString reponame = name_dialog->textValue();
+        QString repouuid = QUuid::createUuid().toString(QUuid::WithoutBraces);
 
-	if (!repo_parent_dir.mkdir(repouuid))
-	{
-		// Fatal error, couldn't create the repo dir
-		return;
-	}
+        if (!repo_parent_dir.mkdir(repouuid))
+        {
+                // Fatal error, couldn't create the repo dir
+                return;
+        }
 
-	QString repopath = repo_parent_dir.filePath(repouuid);
-	qDebug() << "Repodir created. Name:" << reponame << "Uuid:" << repouuid << "Path:" << repopath;
+        QString repopath = repo_parent_dir.filePath(repouuid);
+        qDebug() << "Repodir created. Name:" << reponame << "Uuid:" << repouuid << "Path:" << repopath;
 
-	ScriptRepository *new_repo = new ScriptRepository(repository->data());
-	new_repo->setName(reponame);
-	new_repo->setLocalPath(repopath);
+        ScriptRepository *new_repo = new ScriptRepository(repository->data());
+        new_repo->setName(reponame);
+        new_repo->setLocalPath(repopath);
 
-	cloneRepository(new_repo);
+        cloneRepository(new_repo);
 }
 
 void RepoDownloadWidget::cloneRepository(ScriptRepository *repository)
 {
-	GitProgressDialog *dialog = new GitProgressDialog(this);
-	connect(dialog, &GitProgressDialog::cloned, this, &RepoDownloadWidget::scriptInstalled);
-	dialog->clone(repository);
+        GitProgressDialog *dialog = new GitProgressDialog(this);
+        connect(dialog, &GitProgressDialog::cloned, this, &RepoDownloadWidget::scriptInstalled);
+        dialog->clone(repository);
 }
