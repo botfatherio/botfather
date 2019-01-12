@@ -42,5 +42,7 @@ void LicenseApiClient::processJsonResponse(QJsonDocument json)
 	}
 	int curtime = json.object().value("curtime").toInt();
 	int premend = json.object().value("premend").toInt();
+
 	emit licenseReceived(curtime, premend);
+	emit finished();
 }

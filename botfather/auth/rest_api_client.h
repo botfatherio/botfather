@@ -20,6 +20,7 @@ public slots:
 
 signals:
 	void networkError(QNetworkReply::NetworkError network_error);
+	void finished(); // Will help thread to know when RestApiClient derivatives are done with their work
 
 protected:
 	void sendPostData(QUrlQuery post_data);

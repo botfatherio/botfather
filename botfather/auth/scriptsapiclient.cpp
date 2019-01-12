@@ -52,6 +52,7 @@ void ScriptsApiClient::processJsonResponse(QJsonDocument json)
 	}
 
 	emit scriptsReceived(repo_data_list);
+	emit finished();
 }
 
 ScriptRepository::Data ScriptsApiClient::jsonObjectToRepoData(const QJsonObject &object)
