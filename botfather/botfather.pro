@@ -25,10 +25,9 @@ include(../3rdparty/libgit2/libgit2.pri)
 include(../3rdparty/OpenSSL/OpenSSL.pri)
 
 unix {
-    # Disables unused warnings
-    QMAKE_CXXFLAGS_WARN_OFF -= -Wunused-parameter
-    QMAKE_CFLAGS = -Wno-unused-parameter
-    QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
+    # Disables some warnings
+    QMAKE_CXXFLAGS += -Wno-unused-parameter
+    QMAKE_CXXFLAGS += -Wno-missing-field-initializers # libgit2 would otherwise spam a lot
 
     # Newer distros set GCC default link flag -pie, which marks e_type as ET_DYN on the binary file.
     # Consequently, the Operating System recognizes them as Shared Library.
