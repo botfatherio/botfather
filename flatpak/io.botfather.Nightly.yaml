@@ -32,7 +32,7 @@ modules:
   - udev/udev-175.json
   - gyp/gyp.json
   - nss/nss-3.39.json
-  - cef/cef-3.3325.1758-linux64.json
+  - cef/cef-3.3578.1861-linux64.json
   - opencv/opencv-3.4.3.json
   - libgit2/libgit2.json
   - flashplayer/flashplayer.json

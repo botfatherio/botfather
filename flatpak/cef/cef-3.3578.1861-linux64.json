@@ -1,0 +1,23 @@
+{
+	"name": "CEF",
+	"buildsystem": "cmake",
+	"no-make-install": true,
+	"config-opts": [
+		"-D CMAKE_BUILD_TYPE=RELEASE"
+	],
+	"make-args": [
+		"libcef_dll_wrapper"	
+	],
+	"build-commands": [
+		"mkdir -p /app/CEF",
+		"cp -R . /app/CEF",
+		"cp libcef_dll_wrapper/libcef_dll_wrapper.a /app/lib/"
+	],
+	"sources": [
+		{
+			"type": "archive",
+			"url": "http://opensource.spotify.com/cefbuilds/cef_binary_3.3578.1861.g1992780_linux64.tar.bz2",
+			"sha256": "f6ec1507b9f1bc7aed610c9ce30275196319f17a967474909d306d192024b503"
+		}
+	]
+} 
