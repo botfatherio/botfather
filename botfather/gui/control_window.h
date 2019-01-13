@@ -31,7 +31,7 @@ public slots:
 	void onLogout();
 	void onStartClicked();
 	void scriptExecRequested(const QString &script_path);
-	void checkPermissions();
+	void checkPermissions(const QString &script_path);
 	void startBot(const QString &script_path);
 	void botStarted();
 	void stopBot();
