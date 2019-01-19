@@ -23,7 +23,7 @@ void RestApiClient::sendPostData(QUrlQuery post_data)
 void RestApiClient::prepareRequest(QNetworkRequest &network_request)
 {
 	QSslConfiguration ssl_config = QSslConfiguration::defaultConfiguration();
-	adjustSslConfiguration(ssl_config);
+	//adjustSslConfiguration(ssl_config); // TODO: Disabled, because the certs hashvalues change every 90 days with the le certs renewval.
 
 	network_request.setSslConfiguration(ssl_config);
 	network_request.setUrl(provideApiEndpoint());
