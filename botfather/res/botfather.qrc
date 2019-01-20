@@ -1,3 +1,6 @@
 <RCC>
+    <qresource prefix="/icons">
+        <file>icons/icons8-plus-64.png</file>
+        <file>icons/icons8-add-new-64.png</file>
     </qresource>
 </RCC>
