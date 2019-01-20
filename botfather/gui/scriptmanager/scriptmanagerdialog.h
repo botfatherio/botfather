@@ -3,7 +3,8 @@
 
 #include <QDialog>
 #include <QSortFilterProxyModel>
-#include "models/scriptreposmodel.h"
+#include "../models/scriptreposmodel.h"
+#include "../models/bot.h"
 
 namespace Ui {
 class ScriptManagerDialog;
@@ -17,11 +18,18 @@ public:
 	explicit ScriptManagerDialog(QWidget *parent = nullptr);
 	~ScriptManagerDialog();
 
+public slots:
+	void loadModelData(const QVector<ScriptRepository::Data> &repo_data_list);
+	void installSelectedScript();
+	void cloneRepository(const Bot::Data &bot_data);
+
 signals:
-	void scriptExecRequest(const QString &script_path);
+	void botCreated(const Bot::Data &bot_data);
 
 private:
 	Ui::ScriptManagerDialog *m_ui;
+	ScriptReposModel *m_repos_model;
+	QSortFilterProxyModel *m_repos_proxy;
 };
 
 #endif // SCRIPTMANAGERDIALOG_H

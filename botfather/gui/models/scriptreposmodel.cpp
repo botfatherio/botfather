@@ -159,7 +159,6 @@ void ScriptReposModel::sort(int column, Qt::SortOrder order)
 	emit dataChanged(QModelIndex(), QModelIndex());
 }
 
-
 void ScriptReposModel::load(const QString &filename, bool filter_invalid)
 {
 	QFile file(filename);

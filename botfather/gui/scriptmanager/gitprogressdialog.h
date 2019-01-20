@@ -2,7 +2,7 @@
 #define GITPROGRESSDIALOG_H
 
 #include <QDialog>
-#include "models/scriptrepository.h"
+#include "../models/scriptrepository.h"
 
 namespace Ui {
 class GitProgressDialog;
@@ -24,17 +24,16 @@ public slots:
 	void transferProgressChanged(uint received, uint total, uint bytes);
 	void checkoutProgressChanged(ulong current, ulong total, const QString &path);
 
-	void reclone(ScriptRepository *repository);
-	void clone(ScriptRepository *repository);
+	void reclone(const QString &repo_url, const QString &dir_path);
+	void clone(const QString &repo_url, const QString &dir_path);
 	void cloneSuccess();
 	void cloneFailure();
 
 signals:
-	void cloned(ScriptRepository *repository);
+	void cloned(); // TODO: maybe rename this signal
 
 private:
 	Ui::GitProgressDialog *m_ui;
-	ScriptRepository *m_dest_repo;
 };
 
 #endif // GITPROGRESSDIALOG_H

@@ -47,16 +47,16 @@ void GitProgressDialog::checkoutProgressChanged(ulong current, ulong total, cons
 	setLabelText(label_text);
 }
 
-void GitProgressDialog::reclone(ScriptRepository *repository)
+void GitProgressDialog::reclone(const QString &repo_url, const QString &dir_path)
 {
 	setWindowTitle("Script repository update");
 	setLabelText("Updating script repository");
 	show();
 
     QThread *reclone_thread = new QThread; // Don't give it a parent, otherwise the app will crash when the parent gets destroyed before the thread finished.
-    reclone_thread->setObjectName(QString("GitRecloneOperation Thread for %0").arg(repository->name()));
+	reclone_thread->setObjectName("GitRecloneOperation Thread");
 
-    GitRecloneOperation *reclone_op = new GitRecloneOperation(repository->remoteUrl(), repository->localPath());
+	GitRecloneOperation *reclone_op = new GitRecloneOperation(repo_url, dir_path);
     reclone_op->moveToThread(reclone_thread);
 
     connect(reclone_thread, &QThread::started, reclone_op, &GitRecloneOperation::process);
@@ -83,18 +83,16 @@ void GitProgressDialog::reclone(ScriptRepository *repository)
     reclone_thread->start();
 }
 
-void GitProgressDialog::clone(ScriptRepository *repository)
+void GitProgressDialog::clone(const QString &repo_url, const QString &dir_path)
 {
-	m_dest_repo = repository;
-
 	setWindowTitle("Cloning script repository...");
 	setLabelText("Cloning script repository...");
 	show();
 
     QThread *clone_thread = new QThread; // Don't give it a parent, otherwise the app will crash when the parent gets destroyed before the thread finished.
-    clone_thread->setObjectName(QString("GitCloneOperation Thread for %0").arg(repository->name()));
+	clone_thread->setObjectName("GitCloneOperation Thread");
 
-    GitCloneOperation *clone_op = new GitCloneOperation(repository->remoteUrl(), repository->localPath());
+	GitCloneOperation *clone_op = new GitCloneOperation(repo_url, dir_path);
     clone_op->moveToThread(clone_thread);
 
     connect(clone_thread, &QThread::started, clone_op, &GitCloneOperation::process);
@@ -128,7 +126,7 @@ void GitProgressDialog::cloneSuccess()
 	Q_ASSERT(btn);
 	connect(btn, &QPushButton::clicked, this, &GitProgressDialog::accept);
 
-	emit cloned(m_dest_repo);
+	emit cloned();
 }
 
 void GitProgressDialog::cloneFailure()

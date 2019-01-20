@@ -2,7 +2,7 @@
 #define SCRIPTSAPICLIENT_H
 
 #include "rest_api_client.h"
-#include "../gui/scriptmanager/models/scriptrepository.h"
+#include "../gui/models/scriptrepository.h"
 
 class ScriptsApiClient : public RestApiClient
 {

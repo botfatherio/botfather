@@ -11,7 +11,7 @@
 ScriptRepository::ScriptRepository(QObject *parent)
 	: QObject(parent)
 {
-	qRegisterMetaType<QVector<ScriptRepository::Data>>("QVector<ScriptRepository::Data>");
+
 }
 
 ScriptRepository::ScriptRepository(ScriptRepository::Data data, QObject *parent)

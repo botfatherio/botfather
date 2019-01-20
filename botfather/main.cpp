@@ -3,6 +3,7 @@
 #include <QTime>
 #include <QMessageBox>
 #include "gui/control_window.h"
+#include "gui/mainwindow.h"
 #include "engine/modules/browser/browser.h"
 #include <git2.h>
 
@@ -96,8 +97,11 @@ int main(int argc, char *argv[])
      */
     git_libgit2_init();
 
-	ControlWindow *control_window = new ControlWindow;
-	control_window->show();
+	//ControlWindow *control_window = new ControlWindow;
+	//control_window->show();
+
+	MainWindow *main_window = new MainWindow;
+	main_window->show();
 
 	// Runs the QApplication event loop blocking. When the event loop stops the timer
 	// powering the CEF event loop will stop aswell. After that the CEF can be shut
