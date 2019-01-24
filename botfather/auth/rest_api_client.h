@@ -25,10 +25,10 @@ signals:
 protected:
 	void sendPostData(QUrlQuery post_data);
 	void prepareRequest(QNetworkRequest &network_request);
-	virtual void adjustSslConfiguration(QSslConfiguration &ssl_config);
+	//virtual void adjustSslConfiguration(QSslConfiguration &ssl_config);
 	virtual QUrl provideApiEndpoint() = 0;
-	virtual QString certificateChecksum(QCryptographicHash::Algorithm);
-	bool verifyReply(QNetworkReply* reply);
+	//virtual QString certificateChecksum(QCryptographicHash::Algorithm);
+	//bool verifyReply(QNetworkReply* reply);
 	virtual void processJsonResponse(QJsonDocument json) = 0;
 	
 private:

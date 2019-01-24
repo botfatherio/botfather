@@ -22,14 +22,16 @@ void RestApiClient::sendPostData(QUrlQuery post_data)
 
 void RestApiClient::prepareRequest(QNetworkRequest &network_request)
 {
-	QSslConfiguration ssl_config = QSslConfiguration::defaultConfiguration();
-	//adjustSslConfiguration(ssl_config); // TODO: Disabled, because the certs hashvalues change every 90 days with the le certs renewval.
+	// TODO: Disabled, because the certs hashvalues change every 90 days with the le certs renewval.
+	//QSslConfiguration ssl_config = QSslConfiguration::defaultConfiguration();
+	//adjustSslConfiguration(ssl_config);
+	//network_request.setSslConfiguration(ssl_config);
 
-	network_request.setSslConfiguration(ssl_config);
 	network_request.setUrl(provideApiEndpoint());
 	network_request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 }
 
+/*
 void RestApiClient::adjustSslConfiguration(QSslConfiguration &ssl_config)
 {
 	static const QStringList cert_file_paths({
@@ -67,6 +69,7 @@ QString RestApiClient::certificateChecksum(QCryptographicHash::Algorithm algorit
 	};
 	return checksums.value(algorithm, QString());
 }
+*/
 
 void RestApiClient::replyReceived(QNetworkReply* reply)
 {
@@ -78,12 +81,14 @@ void RestApiClient::replyReceived(QNetworkReply* reply)
 		return;
 	}
 
+	/*
 	if (!verifyReply(reply)) {
 		qDebug() << "Network reply verification failed.";
 		emit networkError(QNetworkReply::SslHandshakeFailedError);
 		reply->deleteLater();
 		return;
 	}
+	*/
 
 	QByteArray response_data = reply->readAll();
 	QJsonDocument json = QJsonDocument::fromJson(response_data);
@@ -92,6 +97,7 @@ void RestApiClient::replyReceived(QNetworkReply* reply)
 	processJsonResponse(json);
 }
 
+/*
 bool RestApiClient::verifyReply(QNetworkReply* reply)
 {
 	QByteArray pem_cert = reply->sslConfiguration().peerCertificate().toPem();
@@ -132,3 +138,4 @@ bool RestApiClient::verifyReply(QNetworkReply* reply)
 
 	return true;
 }
+*/
