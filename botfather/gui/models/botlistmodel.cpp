@@ -183,7 +183,7 @@ void BotListModel::load(const QString &filepath)
 
 	for (Bot::Data bot_data : bot_data_list)
 	{
-		qDebug() << "Listing bot" << bot_data.path;
+		qDebug() << "Listing bot" << bot_data.name << bot_data.path;
 		list(bot_data);
 	}
 
@@ -192,9 +192,9 @@ void BotListModel::load(const QString &filepath)
 
 void BotListModel::list(const Bot::Data &bot_data)
 {
-	Bot *bot = new Bot(bot_data);
-	bool is_valid = bot->isValid();
-	delete bot;
+	Bot *temp_bot = new Bot(bot_data);
+	bool is_valid = temp_bot->isValid();
+	delete temp_bot;
 
 	if (!is_valid)
 	{
@@ -211,6 +211,9 @@ void BotListModel::list(const Bot::Data &bot_data)
 	setData(index(rowCount() - 1, 0), bot_data.name, Qt::DisplayRole);
 	setData(index(rowCount() - 1, 1), bot_data.path, Qt::DisplayRole);
 	setData(index(rowCount() - 1, 2), bot_data.repo, Qt::DisplayRole);
+
+	Bot *bot_to_list = bot(index(rowCount() - 1));
+	emit botListed(bot_to_list);
 }
 
 QString BotListModel::defaultLocation() const

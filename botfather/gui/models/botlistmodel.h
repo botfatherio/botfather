@@ -31,6 +31,7 @@ public:
 	QString defaultLocation() const;
 
 signals:
+	void botListed(Bot *bot);
 	void botRemoved(const QString &bot_path);
 
 private:
