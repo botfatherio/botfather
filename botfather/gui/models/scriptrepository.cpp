@@ -5,8 +5,8 @@
 #include <QThread>
 #include <QDir>
 #include <git2.h>
-#include "../../../git/gitfetchoperation.h"
-#include "../../../git/gitbehindoperation.h"
+#include "../../git/gitfetchoperation.h"
+#include "../../git/gitbehindoperation.h"
 
 ScriptRepository::ScriptRepository(QObject *parent)
 	: QObject(parent)
