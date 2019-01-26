@@ -20,7 +20,7 @@ public:
 	~AuthDialog();
 	
 signals:
-	void authenticated(int curtime, int premend);
+	void authenticated(bool is_premium);
 	void triedAutoLogin();
 	
 public slots:

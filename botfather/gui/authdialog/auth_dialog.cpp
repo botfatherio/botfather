@@ -133,7 +133,7 @@ void AuthDialog::onLicenseReceived(int curtime, int premend)
 		settings.setValue(auth::options::USERNAME, this->ui->username->text());
 		settings.setValue(auth::options::PASSWORD, this->ui->password->text());
 	}
-	emit authenticated(curtime, premend);
+	emit authenticated(curtime < premend);
 	allowInput(true);
 	accept();
 }
