@@ -1,6 +1,23 @@
 <RCC>
     <qresource prefix="/icons">
-        <file>icons/icons8-plus-64.png</file>
-        <file>icons/icons8-add-new-64.png</file>
+        <file>icons/icons8-shutdown-32.png</file>
+        <file>icons/icons8-available-updates-32.png</file>
+        <file>icons/icons8-login-32.png</file>
+        <file>icons/icons8-close-window-32.png</file>
+        <file>icons/icons8-add-new-32.png</file>
+        <file>icons/icons8-android-32.png</file>
+        <file>icons/icons8-browse-page-32.png</file>
+        <file>icons/icons8-monitor-32.png</file>
+        <file>icons/icons8-offline-32.png</file>
+        <file>icons/icons8-online-32.png</file>
+        <file>icons/icons8-play-32.png</file>
+        <file>icons/icons8-quick-mode-off-32.png</file>
+        <file>icons/icons8-quick-mode-on-32.png</file>
+        <file>icons/icons8-running-rabbit-32.png</file>
+        <file>icons/icons8-settings-32.png</file>
+        <file>icons/icons8-sleep-32.png</file>
+        <file>icons/icons8-stop-32.png</file>
+        <file>icons/icons8-trash-32.png</file>
+        <file>icons/icons8-workstation-32.png</file>
     </qresource>
 </RCC>
