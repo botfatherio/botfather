@@ -1,8 +1,9 @@
 #include "botlistmodel.h"
 #include <QFile>
+#include <QIcon>
 #include <QDataStream>
-#include <QDebug>
 #include <QStandardPaths>
+#include <QDebug>
 
 BotListModel::BotListModel(QObject *parent)
 	: QAbstractListModel(parent)
@@ -80,6 +81,12 @@ QVariant BotListModel::data(const QModelIndex &index, int role) const
 		case 1: return bot->path();
 		case 2: return bot->repo();
 		}
+	}
+
+	if (role == Qt::DecorationRole && index.column() == 0)
+	{
+		if (bot->isRunning()) return QIcon(":/icons/icons/icons8-running-rabbit-64.png");
+		else return QIcon(":/icons/icons/icons8-sleep-64.png");
 	}
 
 	return QVariant();
