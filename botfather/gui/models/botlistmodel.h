@@ -30,6 +30,9 @@ public:
 
 	QString defaultLocation() const;
 
+signals:
+	void botRemoved(const QString &bot_path);
+
 private:
 	QVector<Bot*> m_bots;
 };

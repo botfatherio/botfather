@@ -132,13 +132,15 @@ bool BotListModel::insertRows(int position, int count, const QModelIndex &parent
 	return true;
 }
 
-bool BotListModel::removeRows(int row, int count, const QModelIndex &parent)
+bool BotListModel::removeRows(int position, int count, const QModelIndex &parent)
 {
-	beginRemoveRows(parent, row, row + count - 1);
+	beginRemoveRows(parent, position, position + count - 1);
 
 	for (int row = 0; row < count; ++row)
 	{
-		m_bots.removeAt(row);
+		Bot *bot = m_bots.takeAt(position);
+		emit botRemoved(bot->path());
+		bot->deleteLater();
 	}
 
 	endRemoveRows();
