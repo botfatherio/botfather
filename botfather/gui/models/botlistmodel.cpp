@@ -147,6 +147,17 @@ bool BotListModel::removeRows(int position, int count, const QModelIndex &parent
 	return true;
 }
 
+Bot* BotListModel::bot(const QModelIndex &index)
+{
+	if (!index.isValid())
+	{
+		qDebug() << "Bot at invalid index requested";
+		return nullptr;
+	}
+
+	return m_bots.at(index.row());
+}
+
 void BotListModel::save(const QString &filepath)
 {
 	QFile file(filepath);

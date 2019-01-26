@@ -24,6 +24,8 @@ public:
 	bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 	bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
+	Bot *bot(const QModelIndex &index); // TODO: adjust the data() method instead
+
 	void save(const QString &filepath);
 	void load(const QString &filepath);
 	void list(const Bot::Data &bot_data);
