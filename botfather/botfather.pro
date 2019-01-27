@@ -133,7 +133,8 @@ HEADERS += \
     auth/scriptsapiclient.h \
     gui/mainwindow.h \
     gui/models/botlistmodel.h \
-    gui/models/bot.h
+    gui/models/bot.h \
+    gui/botwidget.h
 SOURCES += \
     ./auth/license_api_client.cpp \
     ./auth/rest_api_client.cpp \
@@ -186,16 +187,17 @@ SOURCES += \
     auth/scriptsapiclient.cpp \
     gui/mainwindow.cpp \
     gui/models/botlistmodel.cpp \
-    gui/models/bot.cpp
+    gui/models/bot.cpp \
+    gui/botwidget.cpp
 FORMS += \
     ./gui/androiddialog/android_dialog.ui \
     ./gui/authdialog/auth_dialog.ui \
     ./gui/browserwindow/browser_window.ui \
     ./gui/settingsdialog/settings_dialog.ui \
-    ./gui/control_window.ui \
     gui/scriptmanager/scriptmanagerdialog.ui \
     gui/scriptmanager/gitprogressdialog.ui \
-    gui/mainwindow.ui
+    gui/mainwindow.ui \
+    gui/botwidget.ui
 RESOURCES += \
     ./res/gui.qrc \
     res/botfather.qrc
