@@ -157,17 +157,6 @@ bool BotListModel::removeRows(int position, int count, const QModelIndex &parent
 	return true;
 }
 
-Bot* BotListModel::bot(const QModelIndex &index)
-{
-	if (!index.isValid())
-	{
-		qDebug() << "Bot at invalid index requested";
-		return nullptr;
-	}
-
-	return m_bots.at(index.row());
-}
-
 void BotListModel::save(const QString &filepath)
 {
 	QFile file(filepath);
@@ -233,7 +222,7 @@ void BotListModel::list(const Bot::Data &bot_data)
 	setData(index(rowCount() - 1, 1), bot_data.path, Qt::DisplayRole);
 	setData(index(rowCount() - 1, 2), bot_data.repo, Qt::DisplayRole);
 
-	Bot *bot_to_list = bot(index(rowCount() - 1));
+	Bot *bot_to_list = qvariant_cast<Bot*>(data(index(rowCount() - 1), BOT_PTR_ROLE));
 	emit botListed(bot_to_list);
 }
 
