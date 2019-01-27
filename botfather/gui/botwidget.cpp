@@ -18,7 +18,7 @@ BotWidget::BotWidget(Bot *bot, QWidget *parent)
 
 	media_player = new QMediaPlayer(this);
 
-	connect(ui->save_log_button, &QPushButton::clicked, this, &BotWidget::saveLogToFile);
+	connect(ui->save_log, &QPushButton::clicked, this, &BotWidget::saveLogToFile);
 	connect(ui->clear_log, &QPushButton::clicked, ui->log, &QTextEdit::clear);
 
 	connect(bot, &Bot::nameChanged, this, &BotWidget::updateBotName);

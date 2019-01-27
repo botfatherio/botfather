@@ -58,9 +58,9 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="save_log_button">
+          <widget class="QPushButton" name="save_log">
            <property name="text">
-            <string>Save log</string>
+            <string>Save</string>
            </property>
           </widget>
          </item>
