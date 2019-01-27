@@ -12,6 +12,9 @@ class BotListModel : public QAbstractListModel
 public:
 	explicit BotListModel(QObject *parent = nullptr);
 
+	static const int BOT_PTR_ROLE = Qt::UserRole + 1;
+	static const int BOT_PATH_ROLE = Qt::UserRole + 2;
+
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 

@@ -89,6 +89,16 @@ QVariant BotListModel::data(const QModelIndex &index, int role) const
 		else return QIcon(":/icons/icons/icons8-sleep-64.png");
 	}
 
+	if (role == BOT_PTR_ROLE)
+	{
+		return QVariant::fromValue(bot);
+	}
+
+	if (role == BOT_PATH_ROLE)
+	{
+		return bot->path();
+	}
+
 	return QVariant();
 }
 
