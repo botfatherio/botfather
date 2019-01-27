@@ -110,7 +110,6 @@ HEADERS += \
     ./gui/browserwindow/browser_widget.h \
     ./gui/browserwindow/browser_window.h \
     ./gui/settingsdialog/settings_dialog.h \
-    ./gui/control_window.h \
     ./gui/authdialog/auth_dialog.h \
     ./settings.h \
     ./engine/apis/abstract_api.h \
@@ -164,7 +163,6 @@ SOURCES += \
     ./gui/browserwindow/browser_widget.cpp \
     ./gui/browserwindow/browser_window.cpp \
     ./gui/settingsdialog/settings_dialog.cpp \
-    ./gui/control_window.cpp \
     ./gui/authdialog/auth_dialog.cpp \
     ./main.cpp \
     ./engine/apis/abstract_api.cpp \

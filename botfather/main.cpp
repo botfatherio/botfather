@@ -2,7 +2,6 @@
 #include <QSettings>
 #include <QTime>
 #include <QMessageBox>
-#include "gui/control_window.h"
 #include "gui/mainwindow.h"
 #include "engine/modules/browser/browser.h"
 #include <git2.h>
@@ -96,9 +95,6 @@ int main(int argc, char *argv[])
      * - https://libgit2.org/docs/guides/101-samples/
      */
     git_libgit2_init();
-
-	//ControlWindow *control_window = new ControlWindow;
-	//control_window->show();
 
 	MainWindow *main_window = new MainWindow;
 	main_window->show();
