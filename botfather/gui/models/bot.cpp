@@ -1,5 +1,8 @@
 #include "bot.h"
 #include <QDir>
+#include <git2.h>
+#include "../../git/gitfetchoperation.h"
+#include "../../git/gitbehindoperation.h"
 
 Bot::Bot(QObject *parent) : QObject(parent)
 {
@@ -24,6 +27,17 @@ bool Bot::isValid() const
 bool Bot::isRunning() const
 {
 	return m_is_running;
+}
+
+bool Bot::isUpdatable() const
+{
+	// Pass nullptr for the output parameter to check for but not open the repo
+	return isValid() && git_repository_open_ext(nullptr, path().toUtf8(), GIT_REPOSITORY_OPEN_NO_SEARCH, nullptr) == 0;
+}
+
+Bot::Status Bot::status() const
+{
+	return m_status;
 }
 
 Bot::Data Bot::data() const
@@ -125,4 +139,42 @@ void Bot::stop()
 	if (!isRunning()) return;
 	Q_ASSERT(m_engine);
 	m_engine->stop();
+}
+
+void Bot::checkStatus()
+{
+	// To check whether the script is outdated we first have to fetch from the remote.
+	// After doing so we can calculate the differences to the remote.
+
+	QThread *fetch_thread = new QThread; // Don't give it a parent, otherwise the app will crash when the parent gets destroyed before the thread finished.
+	fetch_thread->setObjectName(QString("GitFetchOperation Thread for %0").arg(path()));
+
+	GitFetchOperation *fetch_op = new GitFetchOperation(path());
+	fetch_op->moveToThread(fetch_thread);
+
+	connect(fetch_thread, &QThread::started, fetch_op, &GitFetchOperation::process);
+	connect(fetch_op, &GitFetchOperation::finished, fetch_thread, &QThread::quit);
+	connect(fetch_op, &GitFetchOperation::finished, fetch_op, &GitFetchOperation::deleteLater);
+	connect(fetch_thread, &QThread::finished, fetch_thread, &QThread::deleteLater);
+
+	QThread *behind_thread = new QThread; // Don't give it a parent, otherwise the app will crash when the parent gets destroyed before the thread finished.
+	behind_thread->setObjectName(QString("GitBehindOperation Thread for %0").arg(path()));
+
+	GitBehindOperation *behind_op = new GitBehindOperation(path());
+	behind_op->moveToThread(behind_thread);
+
+	connect(behind_thread, &QThread::started, behind_op, &GitBehindOperation::process);
+	connect(behind_op, &GitBehindOperation::finished, behind_thread, &QThread::quit);
+	connect(behind_op, &GitBehindOperation::finished, behind_op, &GitBehindOperation::deleteLater);
+	connect(behind_thread, &QThread::finished, behind_thread, &QThread::deleteLater);
+
+	connect(behind_op, &GitBehindOperation::differencesToRemote, this, &Bot::noteDifferencesToRemote);
+	connect(fetch_op, SIGNAL(finished()), behind_thread, SLOT(start()));
+
+	fetch_thread->start();
+}
+
+void Bot::noteDifferencesToRemote(int differences)
+{
+	m_status = differences > 0 ? Status::Outdated : Status::UpToDate;
 }

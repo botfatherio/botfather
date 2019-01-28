@@ -30,7 +30,6 @@ public slots:
 	void load(const QString &filename, bool filter_invalid = true);
 	void save(const QString &filename);
 	void addEntry(BotRepo *repository);
-	void checkForUpdates();
 
 private:
 	QVector<BotRepo*> repositories;

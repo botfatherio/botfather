@@ -4,9 +4,6 @@
 #include <QDebug>
 #include <QThread>
 #include <QDir>
-#include <git2.h>
-#include "../../git/gitfetchoperation.h"
-#include "../../git/gitbehindoperation.h"
 
 BotRepo::BotRepo(QObject *parent)
 	: QObject(parent)
@@ -22,13 +19,7 @@ BotRepo::BotRepo(BotRepo::Data data, QObject *parent)
 
 bool BotRepo::isValid() const
 {
-	if (localPath().isEmpty())
-	{
-		return !remoteUrl().isEmpty() && QUrl(remoteUrl()).isValid();
-	}
-
-	// Pass nullptr for the output parameter to check for but not open the repo
-    return git_repository_open_ext(nullptr, localPath().toUtf8(), GIT_REPOSITORY_OPEN_NO_SEARCH, nullptr) == 0;
+	return !remoteUrl().isEmpty() && QUrl(remoteUrl()).isValid();
 }
 
 QString BotRepo::findScriptPath() const
@@ -54,11 +45,6 @@ QString BotRepo::findScriptPath() const
 	}
 
 	return repo_dir.filePath(entries.first());
-}
-
-BotRepo::Status BotRepo::status() const
-{
-	return m_status;
 }
 
 BotRepo::Data BotRepo::data() const
@@ -114,42 +100,4 @@ QString BotRepo::remoteUrl() const
 void BotRepo::setRemoteUrl(const QString &url)
 {
 	m_data.remote_url = url;
-}
-
-void BotRepo::checkStatus()
-{
-	// To check whether the script is outdated we first have to fetch from the remote.
-	// After doing so we can calculate the differences to the remote.
-
-    QThread *fetch_thread = new QThread; // Don't give it a parent, otherwise the app will crash when the parent gets destroyed before the thread finished.
-    fetch_thread->setObjectName(QString("GitFetchOperation Thread for %0").arg(localPath()));
-
-    GitFetchOperation *fetch_op = new GitFetchOperation(localPath());
-	fetch_op->moveToThread(fetch_thread);
-
-	connect(fetch_thread, &QThread::started, fetch_op, &GitFetchOperation::process);
-	connect(fetch_op, &GitFetchOperation::finished, fetch_thread, &QThread::quit);
-	connect(fetch_op, &GitFetchOperation::finished, fetch_op, &GitFetchOperation::deleteLater);
-	connect(fetch_thread, &QThread::finished, fetch_thread, &QThread::deleteLater);
-
-    QThread *behind_thread = new QThread; // Don't give it a parent, otherwise the app will crash when the parent gets destroyed before the thread finished.
-    behind_thread->setObjectName(QString("GitBehindOperation Thread for %0").arg(localPath()));
-
-    GitBehindOperation *behind_op = new GitBehindOperation(localPath());
-    behind_op->moveToThread(behind_thread);
-
-	connect(behind_thread, &QThread::started, behind_op, &GitBehindOperation::process);
-	connect(behind_op, &GitBehindOperation::finished, behind_thread, &QThread::quit);
-	connect(behind_op, &GitBehindOperation::finished, behind_op, &GitBehindOperation::deleteLater);
-	connect(behind_thread, &QThread::finished, behind_thread, &QThread::deleteLater);
-
-	connect(behind_op, &GitBehindOperation::differencesToRemote, this, &BotRepo::noteDifferencesToRemote);
-	connect(fetch_op, SIGNAL(finished()), behind_thread, SLOT(start()));
-
-	fetch_thread->start();
-}
-
-void BotRepo::noteDifferencesToRemote(int differences)
-{
-	m_status = differences > 0 ? Status::Outdated : Status::UpToDate;
 }

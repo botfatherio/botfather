@@ -26,6 +26,13 @@ public:
 		}
 	};
 
+	enum class Status
+	{
+		Unavailabe,
+		UpToDate,
+		Outdated,
+	};
+
 	explicit Bot(QObject *parent = nullptr);
 	explicit Bot(const Bot::Data &data, QObject *parent = nullptr);
 
@@ -37,6 +44,10 @@ public:
 
 	bool isRunning() const;
 
+	// Whether this bot is technically updateable. It is if it has a valid git repository.
+	bool isUpdatable() const;
+
+	Status status() const;
 	Bot::Data data() const;
 
 	// The path to the folder in which the bots files are stored. Use a bots path to identify it.
@@ -57,6 +68,13 @@ public:
 	// Returns the path to the bots settings such as hotkeys and wether to use the debug mode
 	QString settingsPath() const;
 
+public slots:
+	void start();
+	void stop();
+
+	void checkStatus();
+	void noteDifferencesToRemote(int differences_to_remote);
+
 signals:
 	void nameChanged(const QString &new_name);
 	void log(const QString &message, const Engine::LogSource &source);
@@ -66,13 +84,12 @@ signals:
 	void started();
 	void stopped();
 
-public slots:
-	void start();
-	void stop();
+	void statusChanged(const Status &status);
 
 private:
-	bool m_is_running = false;
+	Status m_status = Status::Unavailabe;
 	Bot::Data m_data;
+	bool m_is_running = false;
 	Engine *m_engine;
 	QThread *m_engine_thread;
 };

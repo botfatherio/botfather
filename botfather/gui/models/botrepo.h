@@ -38,17 +38,10 @@ public:
 	explicit BotRepo(QObject *parent = nullptr);
 	explicit BotRepo(BotRepo::Data data, QObject *parent = nullptr);
 
-	enum class Status
-	{
-		Unavailabe,
-		UpToDate,
-		Outdated,
-	};
 
 	bool isValid() const;
 	QString findScriptPath() const;
 
-	Status status() const;
 	Data data() const;
 
 	QString name() const;
@@ -66,16 +59,8 @@ public:
 	QString remoteUrl() const;
 	void setRemoteUrl(const QString &url);
 
-public slots:
-	void checkStatus();
-	void noteDifferencesToRemote(int differences_to_remote);
-
-signals:
-	void statusChanged(const Status &status);
-
 private:
 	Data m_data;
-	Status m_status = Status::Unavailabe;
 };
 
 Q_DECLARE_METATYPE(BotRepo*)

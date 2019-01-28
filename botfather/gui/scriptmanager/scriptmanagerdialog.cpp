@@ -34,8 +34,8 @@ ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 
 	// Hide some columns after setting the model
 	m_ui->view->hideColumn(1); // Status
-	m_ui->view->hideColumn(4); // Local Path
-	m_ui->view->hideColumn(5); // Remote Url
+	m_ui->view->hideColumn(3); // Local Path // FIXME: remove this aswell
+	m_ui->view->hideColumn(4); // Remote Url
 
 	// Don't block the constructor while loading model data
 	QThread *sac_thread = new QThread;

@@ -17,7 +17,7 @@ int BotRepoListModel::rowCount(const QModelIndex &parent) const
 int BotRepoListModel::columnCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
-	return 6;
+	return 5;
 }
 
 QVariant BotRepoListModel::data(const QModelIndex &index, int role) const
@@ -46,17 +46,10 @@ QVariant BotRepoListModel::data(const QModelIndex &index, int role) const
 		switch (index.column())
 		{
 		case 0: return script->name();
-		case 1: {
-			switch (script->status()) {
-			case BotRepo::Status::Outdated: return "Outdated";
-			case BotRepo::Status::UpToDate: return "Up to date";
-			default: return "Unavailable";
-			}
-		}
-		case 2: return script->developer();
-		case 3: return script->description();
-		case 4: return script->localPath();
-		case 5: return script->remoteUrl();
+		case 1: return script->developer();
+		case 2: return script->description();
+		case 3: return script->localPath();
+		case 4: return script->remoteUrl();
 		}
 	}
 
@@ -72,11 +65,10 @@ QVariant BotRepoListModel::headerData(int section, Qt::Orientation orientation, 
 
 	switch (section) {
 	case 0: return "Name";
-	case 1: return "Status";
-	case 2: return "Developer";
-	case 3: return "Description";
-	case 4: return "Local path";
-	case 5: return "Remote url";
+	case 1: return "Developer";
+	case 2: return "Description";
+	case 3: return "Local path"; // FIXME: remove this aswell
+	case 4: return "Remote url";
 	default: return QVariant();
 	}
 }
@@ -208,12 +200,4 @@ void BotRepoListModel::addEntry(BotRepo *script)
 	insertRows(rowCount(), 1, QModelIndex());
 	QModelIndex row_index = index(rowCount() - 1, 0, QModelIndex());
 	setData(row_index, QVariant::fromValue(script), NativeDataRole);
-}
-
-void BotRepoListModel::checkForUpdates()
-{
-	for (BotRepo *repo : repositories)
-	{
-		repo->checkStatus();
-	}
 }
