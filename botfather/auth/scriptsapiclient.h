@@ -2,7 +2,7 @@
 #define SCRIPTSAPICLIENT_H
 
 #include "rest_api_client.h"
-#include "../gui/models/scriptrepository.h"
+#include "../gui/models/botrepo.h"
 
 class ScriptsApiClient : public RestApiClient
 {
@@ -15,7 +15,7 @@ public slots:
 	void requestScripts();
 
 signals:
-	void scriptsReceived(const QVector<ScriptRepository::Data> &repo_data_list);
+	void scriptsReceived(const QVector<BotRepo::Data> &repo_data_list);
 	void errorsReceived(const QJsonArray &error_codes);
 
 protected:
@@ -23,7 +23,7 @@ protected:
 	void processJsonResponse(QJsonDocument json) override;
 
 private:
-	ScriptRepository::Data jsonObjectToRepoData(const QJsonObject &object);
+	BotRepo::Data jsonObjectToRepoData(const QJsonObject &object);
 };
 
 #endif // SCRIPTSAPICLIENT_H

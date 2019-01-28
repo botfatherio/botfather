@@ -29,7 +29,7 @@ void ScriptsApiClient::processJsonResponse(QJsonDocument json)
 		return;
 	}
 
-	QVector<ScriptRepository::Data> repo_data_list;
+	QVector<BotRepo::Data> repo_data_list;
 
 	for (QJsonValue raw_repo : json.object().value("scripts").toArray())
 	{
@@ -40,7 +40,7 @@ void ScriptsApiClient::processJsonResponse(QJsonDocument json)
 		}
 
 		QJsonObject raw_repo_object = raw_repo.toObject();
-		ScriptRepository::Data repo_data = jsonObjectToRepoData(raw_repo_object);
+		BotRepo::Data repo_data = jsonObjectToRepoData(raw_repo_object);
 
 		if (repo_data.isEmpty())
 		{
@@ -55,9 +55,9 @@ void ScriptsApiClient::processJsonResponse(QJsonDocument json)
 	emit finished();
 }
 
-ScriptRepository::Data ScriptsApiClient::jsonObjectToRepoData(const QJsonObject &object)
+BotRepo::Data ScriptsApiClient::jsonObjectToRepoData(const QJsonObject &object)
 {
-	return ScriptRepository::Data(
+	return BotRepo::Data(
 		object.value("name").toString(),
 		object.value("developer").toString(),
 		object.value("description").toString(),

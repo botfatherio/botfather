@@ -121,19 +121,19 @@ HEADERS += \
     engine/prototypes/timer_prototype.h \
     tools/mtoolwrapper.h \
     gui/scriptmanager/scriptmanagerdialog.h \
-    gui/models/scriptrepository.h \
     git/gitfetchoperation.h \
     git/abstractgitoperation.h \
     git/gitcloneoperation.h \
     git/gitbehindoperation.h \
     git/gitrecloneoperation.h \
     gui/scriptmanager/gitprogressdialog.h \
-    gui/models/scriptreposmodel.h \
     auth/scriptsapiclient.h \
     gui/mainwindow.h \
     gui/models/botlistmodel.h \
     gui/models/bot.h \
-    gui/botwidget.h
+    gui/botwidget.h \
+    gui/models/botrepo.h \
+    gui/models/botrepolistmodel.h
 SOURCES += \
     ./auth/license_api_client.cpp \
     ./auth/rest_api_client.cpp \
@@ -174,19 +174,19 @@ SOURCES += \
     engine/prototypes/timer_prototype.cpp \
     tools/mtoolwrapper.cpp \
     gui/scriptmanager/scriptmanagerdialog.cpp \
-    gui/models/scriptrepository.cpp \
     git/gitfetchoperation.cpp \
     git/abstractgitoperation.cpp \
     git/gitcloneoperation.cpp \
     git/gitbehindoperation.cpp \
     git/gitrecloneoperation.cpp \
     gui/scriptmanager/gitprogressdialog.cpp \
-    gui/models/scriptreposmodel.cpp \
     auth/scriptsapiclient.cpp \
     gui/mainwindow.cpp \
     gui/models/botlistmodel.cpp \
     gui/models/bot.cpp \
-    gui/botwidget.cpp
+    gui/botwidget.cpp \
+    gui/models/botrepo.cpp \
+    gui/models/botrepolistmodel.cpp
 FORMS += \
     ./gui/androiddialog/android_dialog.ui \
     ./gui/authdialog/auth_dialog.ui \

@@ -18,12 +18,12 @@ ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 	connect(m_ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
 	connect(m_ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
-	m_repos_model = new ScriptReposModel(this);
+	m_repos_model = new BotRepoListModel(this);
 	m_repos_proxy= new QSortFilterProxyModel(this);
 	m_repos_proxy->setSourceModel(m_repos_model);
 
 	m_repos_proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
-	m_repos_proxy->setFilterRole(ScriptReposModel::KeywordsRole);
+	m_repos_proxy->setFilterRole(BotRepoListModel::KeywordsRole);
 	m_repos_proxy->setFilterKeyColumn(0);
 
 	m_ui->view->setModel(m_repos_proxy);
@@ -57,7 +57,7 @@ ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 		qDebug() << "sac network error"; // TODO: provide feedback to the user
 	});
 
-	qRegisterMetaType<QVector<ScriptRepository::Data>>("QVector<ScriptRepository::Data>");
+	qRegisterMetaType<QVector<BotRepo::Data>>("QVector<BotRepo::Data>");
 
 	connect(sac, &ScriptsApiClient::scriptsReceived, this, &ScriptManagerDialog::loadModelData);
 	sac_thread->start();
@@ -68,11 +68,11 @@ ScriptManagerDialog::~ScriptManagerDialog()
 	delete m_ui;
 }
 
-void ScriptManagerDialog::loadModelData(const QVector<ScriptRepository::Data> &repo_data_list)
+void ScriptManagerDialog::loadModelData(const QVector<BotRepo::Data> &repo_data_list)
 {
-	for (ScriptRepository::Data date : repo_data_list)
+	for (BotRepo::Data date : repo_data_list)
 	{
-		m_repos_model->addEntry(new ScriptRepository(date, m_repos_model));
+		m_repos_model->addEntry(new BotRepo(date, m_repos_model));
 	}
 }
 
@@ -81,7 +81,7 @@ void ScriptManagerDialog::installSelectedScript()
 	QModelIndex current = m_ui->view->selectionModel()->currentIndex();
 	if (!current.isValid()) return;
 
-	ScriptRepository *repository = qvariant_cast<ScriptRepository*>(m_repos_model->data(current, ScriptReposModel::NativeDataRole));
+	BotRepo *repository = qvariant_cast<BotRepo*>(m_repos_model->data(current, BotRepoListModel::NativeDataRole));
 
 	QInputDialog *name_dialog = new QInputDialog(this);
 	name_dialog->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);

@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include <QSortFilterProxyModel>
-#include "../models/scriptreposmodel.h"
+#include "../models/botrepolistmodel.h"
 #include "../models/bot.h"
 
 namespace Ui {
@@ -19,7 +19,7 @@ public:
 	~ScriptManagerDialog();
 
 public slots:
-	void loadModelData(const QVector<ScriptRepository::Data> &repo_data_list);
+	void loadModelData(const QVector<BotRepo::Data> &repo_data_list);
 	void installSelectedScript();
 	void cloneRepository(const Bot::Data &bot_data);
 
@@ -28,7 +28,7 @@ signals:
 
 private:
 	Ui::ScriptManagerDialog *m_ui;
-	ScriptReposModel *m_repos_model;
+	BotRepoListModel *m_repos_model;
 	QSortFilterProxyModel *m_repos_proxy;
 };
 

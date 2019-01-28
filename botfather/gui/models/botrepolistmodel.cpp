@@ -1,33 +1,33 @@
-#include "scriptreposmodel.h"
+#include "botrepolistmodel.h"
 #include <QDataStream>
 #include <QFile>
 #include <QDebug>
 
-ScriptReposModel::ScriptReposModel(QObject *parent) : QAbstractListModel(parent)
+BotRepoListModel::BotRepoListModel(QObject *parent) : QAbstractListModel(parent)
 {
 
 }
 
-int ScriptReposModel::rowCount(const QModelIndex &parent) const
+int BotRepoListModel::rowCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
 	return repositories.size();
 }
 
-int ScriptReposModel::columnCount(const QModelIndex &parent) const
+int BotRepoListModel::columnCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
 	return 6;
 }
 
-QVariant ScriptReposModel::data(const QModelIndex &index, int role) const
+QVariant BotRepoListModel::data(const QModelIndex &index, int role) const
 {
 	if (!index.isValid() || index.row() > rowCount() || index.row() < 0)
 	{
 		return QVariant();
 	}
 
-	ScriptRepository *script = repositories.at(index.row());
+	BotRepo *script = repositories.at(index.row());
 
 	if (role == NativeDataRole)
 	{
@@ -48,8 +48,8 @@ QVariant ScriptReposModel::data(const QModelIndex &index, int role) const
 		case 0: return script->name();
 		case 1: {
 			switch (script->status()) {
-			case ScriptRepository::Status::Outdated: return "Outdated";
-			case ScriptRepository::Status::UpToDate: return "Up to date";
+			case BotRepo::Status::Outdated: return "Outdated";
+			case BotRepo::Status::UpToDate: return "Up to date";
 			default: return "Unavailable";
 			}
 		}
@@ -63,7 +63,7 @@ QVariant ScriptReposModel::data(const QModelIndex &index, int role) const
 	return QVariant();
 }
 
-QVariant ScriptReposModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant BotRepoListModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	if (role != Qt::DisplayRole || orientation != Qt::Horizontal)
 	{
@@ -81,20 +81,20 @@ QVariant ScriptReposModel::headerData(int section, Qt::Orientation orientation, 
 	}
 }
 
-bool ScriptReposModel::insertRows(int position, int rows, const QModelIndex &parent)
+bool BotRepoListModel::insertRows(int position, int rows, const QModelIndex &parent)
 {
 	beginInsertRows(parent, position, position + rows - 1);
 
 	for (int row = 0; row < rows; ++row)
 	{
-		repositories.insert(position, new ScriptRepository(this));
+		repositories.insert(position, new BotRepo(this));
 	}
 
 	endInsertRows();
 	return true;
 }
 
-bool ScriptReposModel::removeRows(int position, int rows, const QModelIndex &parent)
+bool BotRepoListModel::removeRows(int position, int rows, const QModelIndex &parent)
 {
 	beginRemoveRows(parent, position, position + rows - 1);
 
@@ -107,7 +107,7 @@ bool ScriptReposModel::removeRows(int position, int rows, const QModelIndex &par
 	return true;
 }
 
-bool ScriptReposModel::setData(const QModelIndex &index, const QVariant &value, int role)
+bool BotRepoListModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
 	if (!index.isValid())
 	{
@@ -116,7 +116,7 @@ bool ScriptReposModel::setData(const QModelIndex &index, const QVariant &value, 
 
 	if (role == NativeDataRole)
 	{
-		ScriptRepository *script = qvariant_cast<ScriptRepository*>(value);
+		BotRepo *script = qvariant_cast<BotRepo*>(value);
 		repositories.replace(index.row(), script);
 
 		emit(dataChanged(index, index));
@@ -126,24 +126,24 @@ bool ScriptReposModel::setData(const QModelIndex &index, const QVariant &value, 
 	return false;
 }
 
-static bool remoteScriptNameLess(const ScriptRepository *rs1, const ScriptRepository *rs2)
+static bool remoteScriptNameLess(const BotRepo *rs1, const BotRepo *rs2)
 {
 	return rs1->name() < rs2->name();
 }
 
-static bool remoteScriptDevlLess(const ScriptRepository *rs1, const ScriptRepository *rs2)
+static bool remoteScriptDevlLess(const BotRepo *rs1, const BotRepo *rs2)
 {
 	return rs1->developer() < rs2->developer();
 }
 
-static bool remoteScriptDescLess(const ScriptRepository *rs1, const ScriptRepository *rs2)
+static bool remoteScriptDescLess(const BotRepo *rs1, const BotRepo *rs2)
 {
 	return rs1->description() < rs2->description();
 }
 
-void ScriptReposModel::sort(int column, Qt::SortOrder order)
+void BotRepoListModel::sort(int column, Qt::SortOrder order)
 {
-	std::function<bool(const ScriptRepository *, const ScriptRepository *)> comparator_function;
+	std::function<bool(const BotRepo *, const BotRepo *)> comparator_function;
 
 	if (column == 0) comparator_function = remoteScriptNameLess;
 	if (column == 1) comparator_function = remoteScriptDevlLess;
@@ -159,7 +159,7 @@ void ScriptReposModel::sort(int column, Qt::SortOrder order)
 	emit dataChanged(QModelIndex(), QModelIndex());
 }
 
-void ScriptReposModel::load(const QString &filename, bool filter_invalid)
+void BotRepoListModel::load(const QString &filename, bool filter_invalid)
 {
 	QFile file(filename);
 	if (!file.open(QIODevice::ReadOnly))
@@ -167,13 +167,13 @@ void ScriptReposModel::load(const QString &filename, bool filter_invalid)
 		return;
 	}
 
-	QVector<ScriptRepository::Data> repo_data;
+	QVector<BotRepo::Data> repo_data;
 	QDataStream in(&file);
 	in >> repo_data;
 
-	for (ScriptRepository::Data repo_date : repo_data)
+	for (BotRepo::Data repo_date : repo_data)
 	{
-		ScriptRepository *repository = new ScriptRepository(repo_date, this);
+		BotRepo *repository = new BotRepo(repo_date, this);
 		if (!filter_invalid || repository->isValid())
 		{
 			addEntry(repository);
@@ -183,7 +183,7 @@ void ScriptReposModel::load(const QString &filename, bool filter_invalid)
 	file.close();
 }
 
-void ScriptReposModel::save(const QString &filename)
+void BotRepoListModel::save(const QString &filename)
 {
 	QFile file(filename);
 	if (!file.open(QIODevice::WriteOnly))
@@ -192,8 +192,8 @@ void ScriptReposModel::save(const QString &filename)
 	}
 
 	// Data has to be stored the same way it's loaded, meaning we have to have it in an QVector.
-	QVector<ScriptRepository::Data> data_list;
-	for (ScriptRepository *repo : repositories)
+	QVector<BotRepo::Data> data_list;
+	for (BotRepo *repo : repositories)
 	{
 		data_list << repo->data();
 	}
@@ -203,16 +203,16 @@ void ScriptReposModel::save(const QString &filename)
 	file.close();
 }
 
-void ScriptReposModel::addEntry(ScriptRepository *script)
+void BotRepoListModel::addEntry(BotRepo *script)
 {
 	insertRows(rowCount(), 1, QModelIndex());
 	QModelIndex row_index = index(rowCount() - 1, 0, QModelIndex());
 	setData(row_index, QVariant::fromValue(script), NativeDataRole);
 }
 
-void ScriptReposModel::checkForUpdates()
+void BotRepoListModel::checkForUpdates()
 {
-	for (ScriptRepository *repo : repositories)
+	for (BotRepo *repo : repositories)
 	{
 		repo->checkStatus();
 	}

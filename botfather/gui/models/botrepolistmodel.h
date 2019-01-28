@@ -2,14 +2,14 @@
 #define SCRIPTREPOSMODEL_H
 
 #include <QAbstractListModel>
-#include "scriptrepository.h"
+#include "botrepo.h"
 
-class ScriptReposModel : public QAbstractListModel
+class BotRepoListModel : public QAbstractListModel
 {
 	Q_OBJECT
 
 public:
-	ScriptReposModel(QObject *parent = nullptr);
+	BotRepoListModel(QObject *parent = nullptr);
 
 	static const int NativeDataRole = Qt::UserRole + 1;
 	static const int KeywordsRole = Qt::UserRole + 2;
@@ -29,11 +29,11 @@ public:
 public slots:
 	void load(const QString &filename, bool filter_invalid = true);
 	void save(const QString &filename);
-	void addEntry(ScriptRepository *repository);
+	void addEntry(BotRepo *repository);
 	void checkForUpdates();
 
 private:
-	QVector<ScriptRepository*> repositories;
+	QVector<BotRepo*> repositories;
 };
 
 #endif // SCRIPTREPOSMODEL_H

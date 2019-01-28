@@ -6,7 +6,7 @@
 #include <QMetaType>
 #include <QDataStream>
 
-class ScriptRepository : public QObject
+class BotRepo : public QObject
 {
 	Q_OBJECT
 
@@ -35,8 +35,8 @@ public:
 		}
 	};
 
-	explicit ScriptRepository(QObject *parent = nullptr);
-	explicit ScriptRepository(ScriptRepository::Data data, QObject *parent = nullptr);
+	explicit BotRepo(QObject *parent = nullptr);
+	explicit BotRepo(BotRepo::Data data, QObject *parent = nullptr);
 
 	enum class Status
 	{
@@ -78,14 +78,14 @@ private:
 	Status m_status = Status::Unavailabe;
 };
 
-Q_DECLARE_METATYPE(ScriptRepository*)
+Q_DECLARE_METATYPE(BotRepo*)
 
-inline QDataStream &operator<<(QDataStream &stream, const ScriptRepository::Data &data)
+inline QDataStream &operator<<(QDataStream &stream, const BotRepo::Data &data)
 {
 	return stream << data.name << data.developer << data.description << data.local_path << data.remote_url;
 }
 
-inline QDataStream &operator>>(QDataStream &stream, ScriptRepository::Data &data)
+inline QDataStream &operator>>(QDataStream &stream, BotRepo::Data &data)
 {
 	return stream >> data.name >> data.developer >> data.description >> data.local_path >> data.remote_url;
 }

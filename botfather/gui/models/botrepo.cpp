@@ -1,4 +1,4 @@
-#include "scriptrepository.h"
+#include "botrepo.h"
 #include <QFileInfo>
 #include <QUrl>
 #include <QDebug>
@@ -8,19 +8,19 @@
 #include "../../git/gitfetchoperation.h"
 #include "../../git/gitbehindoperation.h"
 
-ScriptRepository::ScriptRepository(QObject *parent)
+BotRepo::BotRepo(QObject *parent)
 	: QObject(parent)
 {
 
 }
 
-ScriptRepository::ScriptRepository(ScriptRepository::Data data, QObject *parent)
-	: ScriptRepository(parent)
+BotRepo::BotRepo(BotRepo::Data data, QObject *parent)
+	: BotRepo(parent)
 {
 	m_data = data;
 }
 
-bool ScriptRepository::isValid() const
+bool BotRepo::isValid() const
 {
 	if (localPath().isEmpty())
 	{
@@ -31,7 +31,7 @@ bool ScriptRepository::isValid() const
     return git_repository_open_ext(nullptr, localPath().toUtf8(), GIT_REPOSITORY_OPEN_NO_SEARCH, nullptr) == 0;
 }
 
-QString ScriptRepository::findScriptPath() const
+QString BotRepo::findScriptPath() const
 {
 	QDir repo_dir(localPath());
 
@@ -56,67 +56,67 @@ QString ScriptRepository::findScriptPath() const
 	return repo_dir.filePath(entries.first());
 }
 
-ScriptRepository::Status ScriptRepository::status() const
+BotRepo::Status BotRepo::status() const
 {
 	return m_status;
 }
 
-ScriptRepository::Data ScriptRepository::data() const
+BotRepo::Data BotRepo::data() const
 {
 	return m_data;
 }
 
-QString ScriptRepository::name() const
+QString BotRepo::name() const
 {
 	return m_data.name;
 }
 
-void ScriptRepository::setName(const QString &name)
+void BotRepo::setName(const QString &name)
 {
 	m_data.name = name;
 }
 
-QString ScriptRepository::developer() const
+QString BotRepo::developer() const
 {
 	return m_data.developer;
 }
 
-void ScriptRepository::setDeveloper(const QString &developer)
+void BotRepo::setDeveloper(const QString &developer)
 {
 	m_data.developer = developer;
 }
 
-QString ScriptRepository::description() const
+QString BotRepo::description() const
 {
 	return m_data.description;
 }
 
-void ScriptRepository::setDescription(const QString &description)
+void BotRepo::setDescription(const QString &description)
 {
 	m_data.description = description;
 }
 
-QString ScriptRepository::localPath() const
+QString BotRepo::localPath() const
 {
 	return m_data.local_path;
 }
 
-void ScriptRepository::setLocalPath(const QString &path)
+void BotRepo::setLocalPath(const QString &path)
 {
 	m_data.local_path = path;
 }
 
-QString ScriptRepository::remoteUrl() const
+QString BotRepo::remoteUrl() const
 {
 	return m_data.remote_url;
 }
 
-void ScriptRepository::setRemoteUrl(const QString &url)
+void BotRepo::setRemoteUrl(const QString &url)
 {
 	m_data.remote_url = url;
 }
 
-void ScriptRepository::checkStatus()
+void BotRepo::checkStatus()
 {
 	// To check whether the script is outdated we first have to fetch from the remote.
 	// After doing so we can calculate the differences to the remote.
@@ -143,13 +143,13 @@ void ScriptRepository::checkStatus()
 	connect(behind_op, &GitBehindOperation::finished, behind_op, &GitBehindOperation::deleteLater);
 	connect(behind_thread, &QThread::finished, behind_thread, &QThread::deleteLater);
 
-	connect(behind_op, &GitBehindOperation::differencesToRemote, this, &ScriptRepository::noteDifferencesToRemote);
+	connect(behind_op, &GitBehindOperation::differencesToRemote, this, &BotRepo::noteDifferencesToRemote);
 	connect(fetch_op, SIGNAL(finished()), behind_thread, SLOT(start()));
 
 	fetch_thread->start();
 }
 
-void ScriptRepository::noteDifferencesToRemote(int differences)
+void BotRepo::noteDifferencesToRemote(int differences)
 {
 	m_status = differences > 0 ? Status::Outdated : Status::UpToDate;
 }

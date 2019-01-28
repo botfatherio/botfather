@@ -2,7 +2,7 @@
 #define GITPROGRESSDIALOG_H
 
 #include <QDialog>
-#include "../models/scriptrepository.h"
+#include "../models/botrepo.h"
 
 namespace Ui {
 class GitProgressDialog;
