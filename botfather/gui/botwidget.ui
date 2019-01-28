@@ -92,21 +92,32 @@
          <property name="title">
           <string>Global shortcuts</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="2">
-           <widget class="QPushButton" name="clear_stop_shortcut">
-            <property name="text">
-             <string>Clear</string>
-            </property>
-           </widget>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QLabel" name="label_2">
+              <property name="text">
+               <string>Stop this bot</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QKeySequenceEdit" name="stop_shortcut"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="clear_stop_shortcut">
+              <property name="text">
+               <string>Clear</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
-          <item row="0" column="1">
-           <widget class="QKeySequenceEdit" name="stop_shortcut"/>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_2">
+          <item>
+           <widget class="QLabel" name="label_3">
             <property name="text">
-             <string>Stop this bot</string>
+             <string>Whether a key sequence works or not depends on your operating system and platform. Test your settings in advance.</string>
             </property>
            </widget>
           </item>
