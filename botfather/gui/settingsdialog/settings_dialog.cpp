@@ -57,8 +57,6 @@ void SettingsDialog::saveConfig()
 	s.setValue(android::options::USE_CUSTOM_ADB, ui->use_custom_adb->isChecked());
 	s.setValue(android::options::USE_BUNDLED_ADB, ui->use_bundled_adb->isChecked());
 
-	s.setValue(general::options::STOP_SHORTCUT, ui->stop_shortcut->keySequence().toString());
-	s.setValue(general::options::DEVMODE, ui->devmode->isChecked());
 	emit configSaved();
 }
 
@@ -81,8 +79,6 @@ void SettingsDialog::loadConfig()
 	ui->use_custom_adb->setChecked(s.value(android::options::USE_CUSTOM_ADB, android::fallback::USE_CUSTOM_ADB).toBool());
 	ui->use_bundled_adb->setChecked(s.value(android::options::USE_BUNDLED_ADB, android::fallback::USE_BUNDLED_ADB).toBool());
 
-	ui->stop_shortcut->setKeySequence(QKeySequence::fromString(s.value(general::options::STOP_SHORTCUT).toString()));
-	ui->devmode->setChecked(s.value(general::options::DEVMODE, general::fallback::DEVMODE).toBool());
 	emit configLoaded();
 }
 

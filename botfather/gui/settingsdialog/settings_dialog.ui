@@ -23,68 +23,6 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tab_3">
-      <attribute name="title">
-       <string>General</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_8">
-       <item>
-        <widget class="QGroupBox" name="groupBox_4">
-         <property name="title">
-          <string>Developer options</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_9">
-          <item>
-           <widget class="QCheckBox" name="devmode">
-            <property name="text">
-             <string>Debug mode (let scripts log extra debug messages)</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="groupBox">
-         <property name="title">
-          <string>Global shortcuts</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_6">
-            <property name="text">
-             <string>Stop Script</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QKeySequenceEdit" name="stop_shortcut"/>
-          </item>
-          <item row="0" column="2">
-           <widget class="QPushButton" name="clear_stop_shortcut">
-            <property name="text">
-             <string>Clear</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_4">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
      <widget class="QWidget" name="tab">
       <attribute name="title">
        <string>Browser</string>
@@ -355,22 +293,5 @@
  <resources>
   <include location="../../res/gui.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>clear_stop_shortcut</sender>
-   <signal>pressed()</signal>
-   <receiver>stop_shortcut</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>475</x>
-     <y>180</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>330</x>
-     <y>179</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
