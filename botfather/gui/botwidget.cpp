@@ -54,7 +54,8 @@ BotWidget::~BotWidget()
 
 void BotWidget::updateBotName(const QString &new_bot_name)
 {
-	ui->label->setText(new_bot_name);
+	QString formated_bot_name = QString("<span style='font-size:12pt;'>%0</span>").arg(new_bot_name);
+	ui->label->setText(formated_bot_name);
 }
 
 void BotWidget::loadBotSettings()
