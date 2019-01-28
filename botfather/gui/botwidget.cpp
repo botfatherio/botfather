@@ -19,6 +19,7 @@ BotWidget::BotWidget(Bot *bot, QWidget *parent)
 
 	media_player = new QMediaPlayer(this);
 	bot_settings = new QSettings(bot->settingsPath(), QSettings::IniFormat);
+	stop_hotkey = new QHotkey();
 
 	connect(ui->save_log, &QPushButton::clicked, this, &BotWidget::saveLogToFile);
 	connect(ui->clear_log, &QPushButton::clicked, ui->log, &QTextEdit::clear);
@@ -35,8 +36,15 @@ BotWidget::BotWidget(Bot *bot, QWidget *parent)
 
 	// Storing the bot setting when the application is about to quit delays the quit noticeable
 	connect(ui->debug_mode, &QCheckBox::clicked, this, &BotWidget::saveBotSettings);
+	connect(ui->clear_stop_shortcut, &QPushButton::clicked, this, &BotWidget::saveBotSettings);
+	connect(ui->clear_stop_shortcut, &QPushButton::clicked, this, &BotWidget::updateShortcuts);
 	connect(ui->stop_shortcut, &QKeySequenceEdit::editingFinished, this, &BotWidget::saveBotSettings);
+	connect(ui->stop_shortcut, &QKeySequenceEdit::editingFinished, this, &BotWidget::updateShortcuts);
+
+	connect(stop_hotkey, &QHotkey::activated, this, &BotWidget::tryBotStop);
+
 	loadBotSettings();
+	updateShortcuts();
 }
 
 BotWidget::~BotWidget()
@@ -63,6 +71,13 @@ void BotWidget::saveBotSettings()
 {
 	bot_settings->setValue("debug_mode", ui->debug_mode->isChecked());
 	bot_settings->setValue("stop_shortcut", ui->stop_shortcut->keySequence().toString());
+}
+
+void BotWidget::updateShortcuts()
+{
+	QKeySequence stop_ks = QKeySequence::fromString(bot_settings->value("stop_shortcut").toString());
+	stop_hotkey->setShortcut(stop_ks);
+	stop_hotkey->setRegistered(!stop_ks.isEmpty());
 }
 
 void BotWidget::tryBotStart(int runtime_in_secs)
