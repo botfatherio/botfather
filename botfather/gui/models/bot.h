@@ -54,6 +54,9 @@ public:
 	// Returns the path to the first script file found in the bots directory or an empty string if nothing has been found.
 	QString scriptPath() const;
 
+	// Returns the path to the bots settings such as hotkeys and wether to use the debug mode
+	QString settingsPath() const;
+
 signals:
 	void nameChanged(const QString &new_name);
 	void log(const QString &message, const Engine::LogSource &source);

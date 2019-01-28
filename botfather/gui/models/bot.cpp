@@ -86,6 +86,11 @@ QString Bot::scriptPath() const
 	return repo_dir.filePath(entries.first());
 }
 
+QString Bot::settingsPath() const
+{
+	return path().isEmpty() ? QString() : path() + QDir::separator() + ".settings.ini";
+}
+
 void Bot::start()
 {
 	if (isRunning()) return;
