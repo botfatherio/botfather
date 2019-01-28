@@ -85,8 +85,8 @@ QVariant BotListModel::data(const QModelIndex &index, int role) const
 
 	if (role == Qt::DecorationRole && index.column() == 0)
 	{
-		if (bot->isRunning()) return QIcon(":/icons/icons/icons8-running-rabbit-64.png");
-		else return QIcon(":/icons/icons/icons8-sleep-64.png");
+		if (bot->isRunning()) return QIcon(":/icons/icons/icons8-running-rabbit-32.png");
+		else return QIcon(":/icons/icons/icons8-sleep-32.png");
 	}
 
 	if (role == BOT_PTR_ROLE)
