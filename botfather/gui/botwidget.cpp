@@ -15,8 +15,10 @@ BotWidget::BotWidget(Bot *bot, QWidget *parent)
 {
 	ui->setupUi(this);
 	layout()->setMargin(0);
+	updateBotName(bot->name());
 
 	media_player = new QMediaPlayer(this);
+	bot_settings = new QSettings(bot->settingsPath(), QSettings::IniFormat);
 
 	connect(ui->save_log, &QPushButton::clicked, this, &BotWidget::saveLogToFile);
 	connect(ui->clear_log, &QPushButton::clicked, ui->log, &QTextEdit::clear);
@@ -25,11 +27,17 @@ BotWidget::BotWidget(Bot *bot, QWidget *parent)
 	connect(bot, &Bot::log, this, &BotWidget::log);
 	connect(bot, &Bot::audioPlaybackRequested, this, &BotWidget::playWavSound);
 	connect(bot, &Bot::audioStopRequested, this, &BotWidget::stopWavSound);
+
 	connect(bot, &Bot::stopped, &runtimer, &QTimer::stop);
 	runtimer.callOnTimeout(this, &BotWidget::runtimerTimedOut);
 	runtimer.callOnTimeout(this, &BotWidget::tryBotStop);
 
-	updateBotName(bot->name());
+	// Storing the bot setting when the application is about to quit delays the quit noticeable
+	connect(ui->debug_mode, &QCheckBox::clicked, this, &BotWidget::saveBotSettings);
+	if (bot->isValid())
+	{
+		loadBotSettings();
+	}
 }
 
 BotWidget::~BotWidget()
@@ -40,6 +48,16 @@ BotWidget::~BotWidget()
 void BotWidget::updateBotName(const QString &new_bot_name)
 {
 	ui->label->setText(new_bot_name);
+}
+
+void BotWidget::loadBotSettings()
+{
+	ui->debug_mode->setChecked(bot_settings->value("debug_mode", false).toBool());
+}
+
+void BotWidget::saveBotSettings()
+{
+	bot_settings->setValue("debug_mode", ui->debug_mode->isChecked());
 }
 
 void BotWidget::tryBotStart(int runtime_in_secs)
@@ -90,14 +108,11 @@ void BotWidget::log(const QString &message, const Engine::LogSource &source)
 	QString time(QDateTime::currentDateTime().toString("HH:mm:ss"));
 	QString color, source_name;
 
-	/* FIXME: dont show debug messages when not in debug mode
-	QSettings settings;
-	if (source == Engine::LogSource::Debug && !settings.value(general::options::DEVMODE, general::fallback::DEVMODE).toBool())
+	if (source == Engine::LogSource::Debug && !bot_settings->value("debug_mode").toBool())
 	{
 		// Do not show debug message when not in debug mode
 		return;
 	}
-	*/
 
 	switch (source)
 	{

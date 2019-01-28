@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QTimer>
 #include <QMediaPlayer>
+#include <QSettings>
 #include "models/bot.h"
 #include "../engine/engine.h"
 
@@ -21,6 +22,8 @@ public:
 
 public slots:
 	void updateBotName(const QString &new_bot_name);
+	void loadBotSettings();
+	void saveBotSettings();
 	void tryBotStart(int runtime_in_secs = -1);
 	void tryBotStop();
 	void runtimerTimedOut();
@@ -35,6 +38,7 @@ private:
 	Bot *m_bot;
 	QMediaPlayer *media_player;
 	QTimer runtimer;
+	QSettings *bot_settings;
 };
 
 #endif // BOTWIDGET_H
