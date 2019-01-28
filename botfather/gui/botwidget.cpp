@@ -22,6 +22,7 @@ BotWidget::BotWidget(Bot *bot, QWidget *parent)
 
 	connect(ui->save_log, &QPushButton::clicked, this, &BotWidget::saveLogToFile);
 	connect(ui->clear_log, &QPushButton::clicked, ui->log, &QTextEdit::clear);
+	connect(ui->clear_stop_shortcut, &QPushButton::clicked, ui->stop_shortcut, &QKeySequenceEdit::clear);
 
 	connect(bot, &Bot::nameChanged, this, &BotWidget::updateBotName);
 	connect(bot, &Bot::log, this, &BotWidget::log);
@@ -34,10 +35,8 @@ BotWidget::BotWidget(Bot *bot, QWidget *parent)
 
 	// Storing the bot setting when the application is about to quit delays the quit noticeable
 	connect(ui->debug_mode, &QCheckBox::clicked, this, &BotWidget::saveBotSettings);
-	if (bot->isValid())
-	{
-		loadBotSettings();
-	}
+	connect(ui->stop_shortcut, &QKeySequenceEdit::editingFinished, this, &BotWidget::saveBotSettings);
+	loadBotSettings();
 }
 
 BotWidget::~BotWidget()
@@ -52,12 +51,18 @@ void BotWidget::updateBotName(const QString &new_bot_name)
 
 void BotWidget::loadBotSettings()
 {
+	if (m_bot->settingsPath().isEmpty())
+	{
+		return;
+	}
 	ui->debug_mode->setChecked(bot_settings->value("debug_mode", false).toBool());
+	ui->stop_shortcut->setKeySequence(QKeySequence::fromString(bot_settings->value("stop_shortcut").toString()));
 }
 
 void BotWidget::saveBotSettings()
 {
 	bot_settings->setValue("debug_mode", ui->debug_mode->isChecked());
+	bot_settings->setValue("stop_shortcut", ui->stop_shortcut->keySequence().toString());
 }
 
 void BotWidget::tryBotStart(int runtime_in_secs)
