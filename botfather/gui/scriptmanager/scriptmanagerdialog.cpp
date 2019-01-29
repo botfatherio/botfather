@@ -45,14 +45,16 @@ ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 	connect(sac, SIGNAL(finished()), sac, SLOT(deleteLater()));
 	connect(sac_thread, SIGNAL(finished()), sac_thread, SLOT(deleteLater()));
 
-	connect(sac, &ScriptsApiClient::errorsReceived, [](){
-		qDebug() << "sac errors received"; // TODO: provide feedback to the user
+	connect(sac, &ScriptsApiClient::errorsReceived, [this](){
+		// This error implies that our REST API returned errors and is likely broken
+		m_ui->status_label->setText("<span style='color:red'>Fetching the script list failed. Contact support.</span>");
 	});
 
-	connect(sac, &ScriptsApiClient::networkError, [](){
-		qDebug() << "sac network error"; // TODO: provide feedback to the user
+	connect(sac, &ScriptsApiClient::networkError, [this](){
+		m_ui->status_label->setText("<span style='color:red'>Fetching the script list failed. Check your network.</span>");
 	});
 
+	connect(sac, &ScriptsApiClient::finished, m_ui->progressBar, &QProgressBar::hide);
 	connect(sac, &ScriptsApiClient::scriptsReceived, m_repos_model, &BotRepoListModel::addBotRepos);
 	sac_thread->start();
 }
