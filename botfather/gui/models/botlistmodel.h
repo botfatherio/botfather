@@ -27,6 +27,7 @@ public:
 	bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 	bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
+	void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
 	void save(const QString &filepath);
 	void load(const QString &filepath);
 	void list(const Bot::Data &bot_data);

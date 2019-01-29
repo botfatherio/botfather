@@ -157,6 +157,24 @@ bool BotListModel::removeRows(int position, int count, const QModelIndex &parent
 	return true;
 }
 
+static bool botNameLess(const Bot *bot1, const Bot *bot2)
+{
+	return bot1->name() < bot2->name();
+}
+
+void BotListModel::sort(int /*column*/, Qt::SortOrder order)
+{
+	std::sort(m_bots.begin(), m_bots.end(), botNameLess);
+
+	if (order == Qt::AscendingOrder)
+	{
+		std::reverse(m_bots.begin(), m_bots.end());
+	}
+
+	// This signals that all items changed (views will thus be updated).
+	emit dataChanged(QModelIndex(), QModelIndex());
+}
+
 void BotListModel::save(const QString &filepath)
 {
 	QFile file(filepath);
