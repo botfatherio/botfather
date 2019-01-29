@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Botfather</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../res/gui.qrc">
@@ -405,7 +405,7 @@
      <normaloff>:/icons/icons/icons8-file-32.png</normaloff>:/icons/icons/icons8-file-32.png</iconset>
    </property>
    <property name="text">
-    <string>Add a local bot</string>
+    <string>Add a &amp;local bot</string>
    </property>
    <property name="toolTip">
     <string>Add a bot from a local folder</string>
