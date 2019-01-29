@@ -5,19 +5,19 @@
 
 BotRepoListModel::BotRepoListModel(QObject *parent) : QAbstractListModel(parent)
 {
-
+	qRegisterMetaType<QVector<BotRepo>>("QVector<BotRepo>");
 }
 
 int BotRepoListModel::rowCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
-	return repositories.size();
+	return m_bot_repos.size();
 }
 
 int BotRepoListModel::columnCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
-	return 5;
+	return 4;
 }
 
 QVariant BotRepoListModel::data(const QModelIndex &index, int role) const
@@ -27,17 +27,17 @@ QVariant BotRepoListModel::data(const QModelIndex &index, int role) const
 		return QVariant();
 	}
 
-	BotRepo *script = repositories.at(index.row());
+	BotRepo bot_repo = m_bot_repos.at(index.row());
 
 	if (role == NativeDataRole)
 	{
-		return QVariant::fromValue(script);
+		return QVariant::fromValue(bot_repo);
 	}
 
 	if (role == KeywordsRole)
 	{
 		QStringList keyword_parts;
-		keyword_parts << script->name() << script->developer() << script->description();
+		keyword_parts << bot_repo.name() << bot_repo.developer() << bot_repo.description();
 		return keyword_parts.join(" ");
 	}
 
@@ -45,11 +45,10 @@ QVariant BotRepoListModel::data(const QModelIndex &index, int role) const
 	{
 		switch (index.column())
 		{
-		case 0: return script->name();
-		case 1: return script->developer();
-		case 2: return script->description();
-		case 3: return script->localPath();
-		case 4: return script->remoteUrl();
+		case 0: return bot_repo.name();
+		case 1: return bot_repo.developer();
+		case 2: return bot_repo.description();
+		case 3: return bot_repo.gitUrl();
 		}
 	}
 
@@ -67,8 +66,7 @@ QVariant BotRepoListModel::headerData(int section, Qt::Orientation orientation, 
 	case 0: return "Name";
 	case 1: return "Developer";
 	case 2: return "Description";
-	case 3: return "Local path"; // FIXME: remove this aswell
-	case 4: return "Remote url";
+	case 3: return "Url";
 	default: return QVariant();
 	}
 }
@@ -79,7 +77,7 @@ bool BotRepoListModel::insertRows(int position, int rows, const QModelIndex &par
 
 	for (int row = 0; row < rows; ++row)
 	{
-		repositories.insert(position, new BotRepo(this));
+		m_bot_repos.insert(position, BotRepo());
 	}
 
 	endInsertRows();
@@ -92,7 +90,7 @@ bool BotRepoListModel::removeRows(int position, int rows, const QModelIndex &par
 
 	for (int row = 0; row < rows; ++row)
 	{
-		repositories.removeAt(position);
+		m_bot_repos.removeAt(position);
 	}
 
 	endRemoveRows();
@@ -108,8 +106,8 @@ bool BotRepoListModel::setData(const QModelIndex &index, const QVariant &value, 
 
 	if (role == NativeDataRole)
 	{
-		BotRepo *script = qvariant_cast<BotRepo*>(value);
-		repositories.replace(index.row(), script);
+		BotRepo bot_repo = qvariant_cast<BotRepo>(value);
+		m_bot_repos.replace(index.row(), bot_repo);
 
 		emit(dataChanged(index, index));
 		return true;
@@ -118,86 +116,45 @@ bool BotRepoListModel::setData(const QModelIndex &index, const QVariant &value, 
 	return false;
 }
 
-static bool remoteScriptNameLess(const BotRepo *rs1, const BotRepo *rs2)
+static bool remoteScriptNameLess(const BotRepo &br1, const BotRepo &br2)
 {
-	return rs1->name() < rs2->name();
+	return br1.name() < br2.name();
 }
 
-static bool remoteScriptDevlLess(const BotRepo *rs1, const BotRepo *rs2)
+static bool remoteScriptDevlLess(const BotRepo &br1, const BotRepo &br2)
 {
-	return rs1->developer() < rs2->developer();
+	return br1.developer() < br2.developer();
 }
 
-static bool remoteScriptDescLess(const BotRepo *rs1, const BotRepo *rs2)
+static bool remoteScriptDescLess(const BotRepo &br1, const BotRepo &br2)
 {
-	return rs1->description() < rs2->description();
+	return br1.description() < br2.description();
 }
 
 void BotRepoListModel::sort(int column, Qt::SortOrder order)
 {
-	std::function<bool(const BotRepo *, const BotRepo *)> comparator_function;
+	std::function<bool(const BotRepo &, const BotRepo &)> comparator_function;
 
 	if (column == 0) comparator_function = remoteScriptNameLess;
 	if (column == 1) comparator_function = remoteScriptDevlLess;
 	if (column == 2) comparator_function = remoteScriptDescLess;
 
-	std::sort(repositories.begin(), repositories.end(), comparator_function);
+	std::sort(m_bot_repos.begin(), m_bot_repos.end(), comparator_function);
 
 	if (order == Qt::AscendingOrder)
 	{
-		std::reverse(repositories.begin(), repositories.end());
+		std::reverse(m_bot_repos.begin(), m_bot_repos.end());
 	}
 
 	emit dataChanged(QModelIndex(), QModelIndex());
 }
 
-void BotRepoListModel::load(const QString &filename, bool filter_invalid)
+void BotRepoListModel::addBotRepos(const QVector<BotRepo> &bot_repo_list)
 {
-	QFile file(filename);
-	if (!file.open(QIODevice::ReadOnly))
+	for (BotRepo bot_repo : bot_repo_list)
 	{
-		return;
+		insertRows(rowCount(), 1, QModelIndex());
+		QModelIndex row_index = index(rowCount() - 1, 0, QModelIndex());
+		setData(row_index, QVariant::fromValue(bot_repo), NativeDataRole);
 	}
-
-	QVector<BotRepo::Data> repo_data;
-	QDataStream in(&file);
-	in >> repo_data;
-
-	for (BotRepo::Data repo_date : repo_data)
-	{
-		BotRepo *repository = new BotRepo(repo_date, this);
-		if (!filter_invalid || repository->isValid())
-		{
-			addEntry(repository);
-		}
-	}
-
-	file.close();
-}
-
-void BotRepoListModel::save(const QString &filename)
-{
-	QFile file(filename);
-	if (!file.open(QIODevice::WriteOnly))
-	{
-		return;
-	}
-
-	// Data has to be stored the same way it's loaded, meaning we have to have it in an QVector.
-	QVector<BotRepo::Data> data_list;
-	for (BotRepo *repo : repositories)
-	{
-		data_list << repo->data();
-	}
-
-	QDataStream out(&file);
-	out << data_list;
-	file.close();
-}
-
-void BotRepoListModel::addEntry(BotRepo *script)
-{
-	insertRows(rowCount(), 1, QModelIndex());
-	QModelIndex row_index = index(rowCount() - 1, 0, QModelIndex());
-	setData(row_index, QVariant::fromValue(script), NativeDataRole);
 }

@@ -19,7 +19,6 @@ public:
 	~ScriptManagerDialog();
 
 public slots:
-	void loadModelData(const QVector<BotRepo::Data> &repo_data_list);
 	void installSelectedScript();
 	void cloneRepository(const Bot::Data &bot_data);
 

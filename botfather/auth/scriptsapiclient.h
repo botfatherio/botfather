@@ -15,7 +15,7 @@ public slots:
 	void requestScripts();
 
 signals:
-	void scriptsReceived(const QVector<BotRepo::Data> &repo_data_list);
+	void scriptsReceived(const QVector<BotRepo> &bot_repo_list);
 	void errorsReceived(const QJsonArray &error_codes);
 
 protected:
@@ -23,7 +23,7 @@ protected:
 	void processJsonResponse(QJsonDocument json) override;
 
 private:
-	BotRepo::Data jsonObjectToRepoData(const QJsonObject &object);
+	BotRepo jsonObjectToRepoData(const QJsonObject &object);
 };
 
 #endif // SCRIPTSAPICLIENT_H

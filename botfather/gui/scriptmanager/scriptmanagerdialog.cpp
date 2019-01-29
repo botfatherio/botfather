@@ -27,15 +27,11 @@ ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 	m_repos_proxy->setFilterKeyColumn(0);
 
 	m_ui->view->setModel(m_repos_proxy);
-	connect(m_ui->filter, &QLineEdit::textChanged, m_repos_proxy, &QSortFilterProxyModel::setFilterWildcard);
+	m_ui->view->hideColumn(3); // Hide the Url column
 
+	connect(m_ui->filter, &QLineEdit::textChanged, m_repos_proxy, &QSortFilterProxyModel::setFilterWildcard);
 	connect(m_ui->view, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(accept())); // Will trigger the line below and close the dialog
 	connect(this, SIGNAL(accepted()), this, SLOT(installSelectedScript()));
-
-	// Hide some columns after setting the model
-	m_ui->view->hideColumn(1); // Status
-	m_ui->view->hideColumn(3); // Local Path // FIXME: remove this aswell
-	m_ui->view->hideColumn(4); // Remote Url
 
 	// Don't block the constructor while loading model data
 	QThread *sac_thread = new QThread;
@@ -57,9 +53,7 @@ ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 		qDebug() << "sac network error"; // TODO: provide feedback to the user
 	});
 
-	qRegisterMetaType<QVector<BotRepo::Data>>("QVector<BotRepo::Data>");
-
-	connect(sac, &ScriptsApiClient::scriptsReceived, this, &ScriptManagerDialog::loadModelData);
+	connect(sac, &ScriptsApiClient::scriptsReceived, m_repos_model, &BotRepoListModel::addBotRepos);
 	sac_thread->start();
 }
 
@@ -68,20 +62,12 @@ ScriptManagerDialog::~ScriptManagerDialog()
 	delete m_ui;
 }
 
-void ScriptManagerDialog::loadModelData(const QVector<BotRepo::Data> &repo_data_list)
-{
-	for (BotRepo::Data date : repo_data_list)
-	{
-		m_repos_model->addEntry(new BotRepo(date, m_repos_model));
-	}
-}
-
 void ScriptManagerDialog::installSelectedScript()
 {
 	QModelIndex current = m_ui->view->selectionModel()->currentIndex();
 	if (!current.isValid()) return;
 
-	BotRepo *repository = qvariant_cast<BotRepo*>(m_repos_model->data(current, BotRepoListModel::NativeDataRole));
+	BotRepo bot_repo = qvariant_cast<BotRepo>(m_repos_model->data(current, BotRepoListModel::NativeDataRole));
 
 	QInputDialog *name_dialog = new QInputDialog(this);
 	name_dialog->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
@@ -89,7 +75,7 @@ void ScriptManagerDialog::installSelectedScript()
 	name_dialog->resize(380, 100);
 	name_dialog->setWindowTitle("Choose a bot name");
 	name_dialog->setLabelText("Please choose a fancy bot name");
-	name_dialog->setTextValue(repository->name()); // As default text
+	name_dialog->setTextValue(bot_repo.name()); // As default name
 
 	if (!name_dialog->exec() || name_dialog->textValue().isEmpty())
 	{
@@ -113,7 +99,7 @@ void ScriptManagerDialog::installSelectedScript()
 
 	QString bot_path = bot_parent_dir.filePath(bot_uuid);
 
-	Bot::Data bot_data(bot_path, bot_name, repository->remoteUrl());
+	Bot::Data bot_data(bot_path, bot_name, bot_repo.gitUrl());
 	qDebug() << "Bot created. Path:" << bot_data.path << "Name:" << bot_data.name << "Repo:" << bot_data.repo;
 
 	cloneRepository(bot_data);

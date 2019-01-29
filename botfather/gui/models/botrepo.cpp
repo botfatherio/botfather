@@ -1,103 +1,57 @@
 #include "botrepo.h"
-#include <QFileInfo>
 #include <QUrl>
 #include <QDebug>
-#include <QThread>
-#include <QDir>
 
-BotRepo::BotRepo(QObject *parent)
-	: QObject(parent)
+BotRepo::BotRepo(const QString &name, const QString &developer, const QString &description, const QString &git_url)
+	: m_name(name)
+	, m_developer(developer)
+	, m_description(description)
+	, m_git_url(git_url)
 {
 
-}
-
-BotRepo::BotRepo(BotRepo::Data data, QObject *parent)
-	: BotRepo(parent)
-{
-	m_data = data;
 }
 
 bool BotRepo::isValid() const
 {
-	return !remoteUrl().isEmpty() && QUrl(remoteUrl()).isValid();
-}
-
-QString BotRepo::findScriptPath() const
-{
-	QDir repo_dir(localPath());
-
-	if (localPath().isEmpty() || repo_dir.isEmpty())
-	{
-		// Invalid local repo
-		return QString();
-	}
-
-	QStringList scriptname_filters;
-	scriptname_filters << "*.js";
-
-	// Don't check for readability yet, the bot engine informs the user about permission issues
-	QStringList entries = repo_dir.entryList(scriptname_filters, QDir::Files|QDir::NoDotAndDotDot);
-
-	if (entries.isEmpty())
-	{
-		// No script found
-		return QString();
-	}
-
-	return repo_dir.filePath(entries.first());
-}
-
-BotRepo::Data BotRepo::data() const
-{
-	return m_data;
+	return !gitUrl().isEmpty() && QUrl(gitUrl()).isValid();
 }
 
 QString BotRepo::name() const
 {
-	return m_data.name;
+	return m_name;
 }
 
 void BotRepo::setName(const QString &name)
 {
-	m_data.name = name;
+	m_name = name;
 }
 
 QString BotRepo::developer() const
 {
-	return m_data.developer;
+	return m_developer;
 }
 
 void BotRepo::setDeveloper(const QString &developer)
 {
-	m_data.developer = developer;
+	m_developer = developer;
 }
 
 QString BotRepo::description() const
 {
-	return m_data.description;
+	return m_description;
 }
 
 void BotRepo::setDescription(const QString &description)
 {
-	m_data.description = description;
+	m_description = description;
 }
 
-QString BotRepo::localPath() const
+QString BotRepo::gitUrl() const
 {
-	return m_data.local_path;
+	return m_git_url;
 }
 
-void BotRepo::setLocalPath(const QString &path)
+void BotRepo::setGitUrl(const QString &git_url)
 {
-	m_data.local_path = path;
-}
-
-QString BotRepo::remoteUrl() const
-{
-	return m_data.remote_url;
-}
-
-void BotRepo::setRemoteUrl(const QString &url)
-{
-	m_data.remote_url = url;
+	m_git_url = git_url;
 }

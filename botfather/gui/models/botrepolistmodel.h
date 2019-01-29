@@ -27,12 +27,10 @@ public:
 	void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
 
 public slots:
-	void load(const QString &filename, bool filter_invalid = true);
-	void save(const QString &filename);
-	void addEntry(BotRepo *repository);
+	void addBotRepos(const QVector<BotRepo> &bot_repo_list);
 
 private:
-	QVector<BotRepo*> repositories;
+	QVector<BotRepo> m_bot_repos;
 };
 
 #endif // SCRIPTREPOSMODEL_H

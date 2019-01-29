@@ -29,7 +29,7 @@ void ScriptsApiClient::processJsonResponse(QJsonDocument json)
 		return;
 	}
 
-	QVector<BotRepo::Data> repo_data_list;
+	QVector<BotRepo> bot_repo_list;
 
 	for (QJsonValue raw_repo : json.object().value("scripts").toArray())
 	{
@@ -40,28 +40,27 @@ void ScriptsApiClient::processJsonResponse(QJsonDocument json)
 		}
 
 		QJsonObject raw_repo_object = raw_repo.toObject();
-		BotRepo::Data repo_data = jsonObjectToRepoData(raw_repo_object);
+		BotRepo bot_repo = jsonObjectToRepoData(raw_repo_object);
 
-		if (repo_data.isEmpty())
+		if (!bot_repo.isValid())
 		{
-			qDebug() << "Repo data is empty";
+			qDebug() << "Bot repo is invalid:" << bot_repo.name() << bot_repo.gitUrl();
 			continue;
 		}
 
-		repo_data_list.append(repo_data);
+		bot_repo_list.append(bot_repo);
 	}
 
-	emit scriptsReceived(repo_data_list);
+	emit scriptsReceived(bot_repo_list);
 	emit finished();
 }
 
-BotRepo::Data ScriptsApiClient::jsonObjectToRepoData(const QJsonObject &object)
+BotRepo ScriptsApiClient::jsonObjectToRepoData(const QJsonObject &object)
 {
-	return BotRepo::Data(
+	return BotRepo(
 		object.value("name").toString(),
 		object.value("developer").toString(),
 		object.value("description").toString(),
-		"", // local path
 		object.value("git_clone_url").toString()
 	);
 }
