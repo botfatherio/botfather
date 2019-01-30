@@ -4,7 +4,6 @@
 #include <QWidget>
 #include <QSettings>
 #include "../models/bot.h"
-#include "../../engine/engine.h"
 
 namespace Ui {
 class BotSettingsWidget;
