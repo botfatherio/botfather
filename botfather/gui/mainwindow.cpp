@@ -22,6 +22,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->bot_list_view->setModel(m_bot_list_model);
 	ui->bot_list_view->hideColumn(1); // Path
 	ui->bot_list_view->hideColumn(2); // Repo
+	ui->bot_list_view->setContextMenuPolicy(Qt::ContextMenuPolicy::ActionsContextMenu);
+	ui->bot_list_view->addAction(ui->add_bot_action);
+	ui->bot_list_view->addAction(ui->add_local_action);
 
 	connect(ui->add_bot_button, &QPushButton::clicked, m_script_manager_dialog, &QDialog::exec);
 	connect(ui->add_bot_action, &QAction::triggered, m_script_manager_dialog, &QDialog::exec);
