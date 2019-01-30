@@ -142,7 +142,6 @@ void MainWindow::removeWidgetForBot(const QString &bot_path)
 {
 	BotWidget *bot_widget = m_bot_path_to_widget_map[bot_path];
 	Q_ASSERT(bot_widget);
-	bot_widget->saveBotSettings();
 	ui->stackedWidget->removeWidget(bot_widget);
 }
 

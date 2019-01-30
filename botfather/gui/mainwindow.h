@@ -10,7 +10,7 @@
 #include "settingsdialog/settings_dialog.h"
 #include "authdialog/auth_dialog.h"
 #include "../tools/mtoolwrapper.h"
-#include "botwidget.h"
+#include "botwidgets/botwidget.h"
 
 namespace Ui {
 class MainWindow;

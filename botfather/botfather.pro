@@ -131,9 +131,12 @@ HEADERS += \
     gui/mainwindow.h \
     gui/models/botlistmodel.h \
     gui/models/bot.h \
-    gui/botwidget.h \
     gui/models/botrepo.h \
-    gui/models/botrepolistmodel.h
+    gui/models/botrepolistmodel.h \
+    gui/botwidgets/botwidget.h \
+    gui/botwidgets/botlogwidget.h \
+    gui/botwidgets/botsettingswidget.h \
+    gui/botwidgets/abstractbotwidget.h
 SOURCES += \
     ./auth/license_api_client.cpp \
     ./auth/rest_api_client.cpp \
@@ -184,9 +187,12 @@ SOURCES += \
     gui/mainwindow.cpp \
     gui/models/botlistmodel.cpp \
     gui/models/bot.cpp \
-    gui/botwidget.cpp \
     gui/models/botrepo.cpp \
-    gui/models/botrepolistmodel.cpp
+    gui/models/botrepolistmodel.cpp \
+    gui/botwidgets/botwidget.cpp \
+    gui/botwidgets/botlogwidget.cpp \
+    gui/botwidgets/botsettingswidget.cpp \
+    gui/botwidgets/abstractbotwidget.cpp
 FORMS += \
     ./gui/androiddialog/android_dialog.ui \
     ./gui/authdialog/auth_dialog.ui \
@@ -195,7 +201,8 @@ FORMS += \
     gui/scriptmanager/scriptmanagerdialog.ui \
     gui/scriptmanager/gitprogressdialog.ui \
     gui/mainwindow.ui \
-    gui/botwidget.ui
+    gui/botwidgets/botlogwidget.ui \
+    gui/botwidgets/botsettingswidget.ui
 RESOURCES += \
     ./res/gui.qrc \
     res/botfather.qrc

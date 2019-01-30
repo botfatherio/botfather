@@ -1,84 +1,55 @@
 #include "botwidget.h"
-#include "ui_botwidget.h"
-#include <QDateTime>
-#include <QFileDialog>
+#include <QVBoxLayout>
 #include <QMessageBox>
 #include <QFileInfo>
 #include <QProcess>
 #include <QRegularExpression>
 #include <QStandardPaths>
 
-BotWidget::BotWidget(Bot *bot, QWidget *parent)
-	: QWidget(parent)
-	, ui(new Ui::BotWidget)
-	, m_bot(bot)
+BotWidget::BotWidget(Bot *bot, QWidget *parent) : AbstractBotWidget(bot, parent)
 {
-	ui->setupUi(this);
+	m_tab_widget = new QTabWidget(this);
+	m_corner_widget = new QLabel(m_tab_widget);
+	m_bot_log_widget = new BotLogWidget(bot, this);
+	m_bot_settings_widget = new BotSettingsWidget(bot, this);
+	m_bot_settings = new QSettings(bot->settingsPath(), QSettings::IniFormat);
+	m_stop_hotkey = new QHotkey();
+
+	setLayout(new QVBoxLayout(this));
 	layout()->setMargin(0);
-	updateBotName(bot->name());
+	layout()->addWidget(m_tab_widget);
 
-	media_player = new QMediaPlayer(this);
-	bot_settings = new QSettings(bot->settingsPath(), QSettings::IniFormat);
-	stop_hotkey = new QHotkey();
-
-	connect(ui->save_log, &QPushButton::clicked, this, &BotWidget::saveLogToFile);
-	connect(ui->clear_log, &QPushButton::clicked, ui->log, &QTextEdit::clear);
-	connect(ui->clear_stop_shortcut, &QPushButton::clicked, ui->stop_shortcut, &QKeySequenceEdit::clear);
+	m_tab_widget->setCornerWidget(m_corner_widget);
+	m_tab_widget->addTab(m_bot_log_widget, "Log");
+	m_tab_widget->addTab(m_bot_settings_widget, "Settings");
 
 	connect(bot, &Bot::nameChanged, this, &BotWidget::updateBotName);
-	connect(bot, &Bot::log, this, &BotWidget::log);
-	connect(bot, &Bot::audioPlaybackRequested, this, &BotWidget::playWavSound);
-	connect(bot, &Bot::audioStopRequested, this, &BotWidget::stopWavSound);
+	connect(bot, &Bot::audioPlaybackRequested, this, &AbstractBotWidget::playWavSound);
+	connect(bot, &Bot::audioStopRequested, this, &AbstractBotWidget::stopWavSound);
 
 	connect(bot, &Bot::stopped, &runtimer, &QTimer::stop);
 	runtimer.callOnTimeout(this, &BotWidget::runtimerTimedOut);
 	runtimer.callOnTimeout(this, &BotWidget::tryBotStop);
 
-	// Storing the bot setting when the application is about to quit delays the quit noticeable
-	connect(ui->debug_mode, &QCheckBox::clicked, this, &BotWidget::saveBotSettings);
-	connect(ui->clear_stop_shortcut, &QPushButton::clicked, this, &BotWidget::saveBotSettings);
-	connect(ui->clear_stop_shortcut, &QPushButton::clicked, this, &BotWidget::updateShortcuts);
-	connect(ui->stop_shortcut, &QKeySequenceEdit::editingFinished, this, &BotWidget::saveBotSettings);
-	connect(ui->stop_shortcut, &QKeySequenceEdit::editingFinished, this, &BotWidget::updateShortcuts);
+	connect(m_bot_settings_widget, &BotSettingsWidget::settingsChanged, this, &BotWidget::updateShortcuts);
+	connect(m_stop_hotkey, &QHotkey::activated, this, &BotWidget::tryBotStop);
+	updateShortcuts(); // To initially setup the shortcuts
 
-	connect(stop_hotkey, &QHotkey::activated, this, &BotWidget::tryBotStop);
-
-	loadBotSettings();
-	updateShortcuts();
-}
-
-BotWidget::~BotWidget()
-{
-	delete ui;
+	updateBotName(bot->name());
 }
 
 void BotWidget::updateBotName(const QString &new_bot_name)
 {
 	QString formated_bot_name = QString("<span style='font-size:12pt;'>%0</span>").arg(new_bot_name);
-	ui->label->setText(formated_bot_name);
-}
-
-void BotWidget::loadBotSettings()
-{
-	if (m_bot->settingsPath().isEmpty())
-	{
-		return;
-	}
-	ui->debug_mode->setChecked(bot_settings->value("debug_mode", false).toBool());
-	ui->stop_shortcut->setKeySequence(QKeySequence::fromString(bot_settings->value("stop_shortcut").toString()));
-}
-
-void BotWidget::saveBotSettings()
-{
-	bot_settings->setValue("debug_mode", ui->debug_mode->isChecked());
-	bot_settings->setValue("stop_shortcut", ui->stop_shortcut->keySequence().toString());
+	m_corner_widget->setText(formated_bot_name);
 }
 
 void BotWidget::updateShortcuts()
 {
-	QKeySequence stop_ks = QKeySequence::fromString(bot_settings->value("stop_shortcut").toString());
-	stop_hotkey->setShortcut(stop_ks);
-	stop_hotkey->setRegistered(!stop_ks.isEmpty());
+	QKeySequence stop_ks = QKeySequence::fromString(m_bot_settings->value("stop_shortcut").toString());
+	m_stop_hotkey->resetShortcut(); // required, otherwise the new shortcut will not override the old one
+	m_stop_hotkey->setShortcut(stop_ks);
+	m_stop_hotkey->setRegistered(!stop_ks.isEmpty());
 }
 
 void BotWidget::tryBotStart(int runtime_in_secs)
@@ -96,7 +67,7 @@ void BotWidget::tryBotStart(int runtime_in_secs)
 		runtimer.setInterval(runtime_in_secs * 1000);
 		int runtime_in_minutes = qRound(runtimer.interval() / 1000 / 60.0);
 		QString limitation_msg = QString("The bot will run for %0 minutes, login first to avoid this limitation.").arg(runtime_in_minutes);
-		log(limitation_msg, Engine::LogSource::System);
+		m_bot_log_widget->log(limitation_msg, Engine::LogSource::System);
 		runtimer.start();
 	}
 
@@ -120,80 +91,8 @@ void BotWidget::runtimerTimedOut()
 	int runtime_in_minutes = qRound(runtimer.interval() / 1000 / 60.0);
 	QString msg1 = QString("The bot stopped after %0 minutes, because you were not logged in.").arg(runtime_in_minutes);
 	QString msg2 = QString("Go to Account > Login to prevent the bot from stopping after %0 minutes.").arg(runtime_in_minutes);
-	log(msg1, Engine::LogSource::System);
-	log(msg2, Engine::LogSource::System);
-}
-
-void BotWidget::log(const QString &message, const Engine::LogSource &source)
-{
-	QString time(QDateTime::currentDateTime().toString("HH:mm:ss"));
-	QString color, source_name;
-
-	if (source == Engine::LogSource::Debug && !bot_settings->value("debug_mode").toBool())
-	{
-		// Do not show debug message when not in debug mode
-		return;
-	}
-
-	switch (source)
-	{
-	case Engine::LogSource::System:
-		color = "#209cee";
-		source_name = "system";
-		break;
-	case Engine::LogSource::Error:
-		color = "#ff3860";
-		source_name = "error";
-		break;
-	case Engine::LogSource::Script:
-		color = "#4a4a4a";
-		source_name = "script";
-		break;
-	case Engine::LogSource::Debug:
-		color = "#85732d"; // #ffdd57
-		source_name = "debug";
-		break;
-	}
-
-	QString text = QString("<span style='color:%1'>%2 | %3 &gt; %4</span>").arg(color).arg(time).arg(source_name).arg(message);
-	ui->log->append(text);
-}
-
-void BotWidget::saveLogToFile()
-{
-	QString filename = QFileDialog::getSaveFileName(
-		this,
-		tr("Save Logfile"),
-		QDir::homePath(),
-		tr("Text files (*.txt *.log)"),
-		nullptr
-	);
-
-	if (filename.isEmpty()){
-		qDebug() << "No logfile selected.";
-		return;
-	}
-
-	QFile file(filename);
-	if (!file.open(QIODevice::WriteOnly)) {
-		qDebug() << "Can't open logfile" << filename;
-		return;
-	}
-	file.write(ui->log->toPlainText().toUtf8());
-	file.close();
-}
-
-void BotWidget::playWavSound(const QString &path_to_wav_file)
-{
-	// QMediaPlayer does only work in the main thread.
-	stopWavSound();
-	media_player->setMedia(QUrl::fromLocalFile(path_to_wav_file));
-	media_player->play();
-}
-
-void BotWidget::stopWavSound()
-{
-	media_player->stop();
+	m_bot_log_widget->log(msg1, Engine::LogSource::System);
+	m_bot_log_widget->log(msg2, Engine::LogSource::System);
 }
 
 void BotWidget::checkPermissions(const QString &script_path)
