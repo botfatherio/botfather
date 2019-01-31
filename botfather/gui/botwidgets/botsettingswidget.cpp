@@ -1,5 +1,8 @@
 #include "botsettingswidget.h"
 #include "ui_botsettingswidget.h"
+#include <QDesktopServices>
+#include <QUrl>
+#include <QDebug>
 
 BotSettingsWidget::BotSettingsWidget(Bot *bot, QWidget *parent)
 	: QWidget(parent)
@@ -7,6 +10,10 @@ BotSettingsWidget::BotSettingsWidget(Bot *bot, QWidget *parent)
 {
 	m_ui->setupUi(this);
 	m_bot_settings = new QSettings(bot->settingsPath(), QSettings::IniFormat);
+
+	connect(m_ui->bot_folder_button, &QPushButton::clicked, [bot](){
+		QDesktopServices::openUrl(QUrl::fromLocalFile(bot->path()));
+	});
 
 	connect(m_ui->clear_stop_shortcut, &QPushButton::clicked, m_ui->stop_shortcut, &QKeySequenceEdit::clear);
 
