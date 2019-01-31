@@ -111,6 +111,17 @@ QString Bot::settingsPath() const
 	return path().isEmpty() ? QString() : path() + QDir::separator() + ".settings.ini";
 }
 
+bool Bot::deleteFiles()
+{
+	QDir bot_dir(path());
+	if (bot_dir.removeRecursively())
+	{
+		setPath(QString()); // Clear the bots path and thus render it invalid
+		return true;
+	}
+	return false;
+}
+
 void Bot::start()
 {
 	if (isRunning()) return;

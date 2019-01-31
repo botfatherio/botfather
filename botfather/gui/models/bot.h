@@ -71,6 +71,9 @@ public:
 	// Returns the path to the bots settings such as hotkeys and wether to use the debug mode
 	QString settingsPath() const;
 
+	// Returns true when the bots files have been successfully deleted
+	bool deleteFiles();
+
 public slots:
 	void start();
 	void stop();
