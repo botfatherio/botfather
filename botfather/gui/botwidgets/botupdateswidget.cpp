@@ -19,7 +19,7 @@ BotUpdatesWidget::BotUpdatesWidget(Bot *bot, QWidget *parent)
 	connect(bot, &Bot::statusChanged, this, &BotUpdatesWidget::botStatusChanged);
 	botStatusChanged(bot->status());
 
-	if (m_bot_settings->value("check_for_bot_updates", true).toBool())
+	if (m_bot_settings->value("auto_update_check", true).toBool())
 	{
 		QTimer::singleShot(1, bot, &Bot::checkStatus);
 	}
