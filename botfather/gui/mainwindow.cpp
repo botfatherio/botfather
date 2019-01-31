@@ -206,3 +206,9 @@ void MainWindow::showAboutDialog()
 
 	QMessageBox::about(this, "About Botfather", text);
 }
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+	m_tray_icon->hide();
+	event->accept();
+}

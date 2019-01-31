@@ -39,6 +39,9 @@ public slots:
 	void adjustLimitations(bool is_premium = false);
 	void showAboutDialog();
 
+protected:
+	void closeEvent(QCloseEvent *event) override;
+
 private:
 	Ui::MainWindow *ui;
 	QSystemTrayIcon *m_tray_icon;
