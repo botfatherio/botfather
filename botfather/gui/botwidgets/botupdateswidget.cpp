@@ -1,0 +1,88 @@
+#include "botupdateswidget.h"
+#include "ui_botupdateswidget.h"
+#include "../scriptmanager/gitprogressdialog.h"
+#include <QTimer>
+#include <QDateTime>
+#include <QDebug>
+
+BotUpdatesWidget::BotUpdatesWidget(Bot *bot, QWidget *parent)
+	: QWidget(parent)
+	, ui(new Ui::BotUpdatesWidget)
+	, m_bot(bot)
+{
+	ui->setupUi(this);
+	m_bot_settings = new QSettings(bot->settingsPath(), QSettings::IniFormat);
+
+	connect(ui->check_button, &QPushButton::clicked, this, &BotUpdatesWidget::checkForUpdates);
+	connect(ui->update_button, &QPushButton::clicked, this, &BotUpdatesWidget::updateTheBot);
+
+	connect(bot, &Bot::statusChanged, this, &BotUpdatesWidget::botStatusChanged);
+	botStatusChanged(bot->status());
+
+	if (m_bot_settings->value("check_for_bot_updates", true).toBool())
+	{
+		QTimer::singleShot(1, bot, &Bot::checkStatus);
+	}
+}
+
+BotUpdatesWidget::~BotUpdatesWidget()
+{
+	delete ui;
+}
+
+void BotUpdatesWidget::checkForUpdates()
+{
+	ui->progressBar->setEnabled(true);
+	ui->check_button->setDisabled(true);
+	ui->check_button->clearFocus(); // looks weird otherwise
+	m_bot->checkStatus();
+}
+
+void BotUpdatesWidget::updateTheBot()
+{
+	ui->progressBar->setEnabled(true);
+	ui->update_button->setDisabled(true);
+	ui->update_button->clearFocus(); // looks weird otherwise
+
+	GitProgressDialog *git_progress_dialog = new GitProgressDialog(this);
+	connect(git_progress_dialog, &GitProgressDialog::accepted, this, &BotUpdatesWidget::checkForUpdates);
+	connect(git_progress_dialog, &GitProgressDialog::rejected, this, &BotUpdatesWidget::resetProgressIndicators);
+	git_progress_dialog->reclone(m_bot->repo(), m_bot->path());
+}
+
+void BotUpdatesWidget::resetProgressIndicators()
+{
+	ui->progressBar->setDisabled(true);
+	ui->check_button->setEnabled(true);
+	ui->update_button->setEnabled(true);
+}
+
+void BotUpdatesWidget::botStatusChanged(const Bot::Status &status)
+{
+	switch (status) {
+	case Bot::Status::Outdated:
+		ui->update_button->show();
+		ui->check_button->hide();
+		ui->updates_available_label->show();
+		ui->up_to_date_label->hide();
+		break;
+	case Bot::Status::UpToDate:
+		ui->check_button->show();
+		ui->update_button->hide();
+		ui->up_to_date_label->show();
+		ui->updates_available_label->hide();
+		break;
+	case Bot::Status::Unavailabe:
+		ui->check_button->show();
+		ui->update_button->hide();
+		ui->updates_available_label->hide();
+		ui->up_to_date_label->hide();
+		break;
+	}
+
+	QString time_string = QDateTime::currentDateTime().toString("ddd MMM, hh:mm:ss");
+	ui->last_check_label->setText(time_string);
+
+	// Reset what checkForUpdates() and updateTheBot() changed
+	resetProgressIndicators();
+}

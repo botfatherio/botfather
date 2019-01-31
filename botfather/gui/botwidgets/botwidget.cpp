@@ -11,6 +11,7 @@ BotWidget::BotWidget(Bot *bot, QWidget *parent) : AbstractBotWidget(bot, parent)
 	m_tab_widget = new QTabWidget(this);
 	m_corner_widget = new QLabel(m_tab_widget);
 	m_bot_log_widget = new BotLogWidget(bot, this);
+	m_bot_updates_widget = new BotUpdatesWidget(bot, this);
 	m_bot_settings_widget = new BotSettingsWidget(bot, this);
 	m_bot_settings = new QSettings(bot->settingsPath(), QSettings::IniFormat);
 	m_stop_hotkey = new QHotkey();
@@ -21,6 +22,7 @@ BotWidget::BotWidget(Bot *bot, QWidget *parent) : AbstractBotWidget(bot, parent)
 
 	m_tab_widget->setCornerWidget(m_corner_widget);
 	m_tab_widget->addTab(m_bot_log_widget, "Log");
+	m_tab_widget->addTab(m_bot_updates_widget, "Updates");
 	m_tab_widget->addTab(m_bot_settings_widget, "Settings");
 
 	connect(bot, &Bot::nameChanged, this, &BotWidget::updateBotName);

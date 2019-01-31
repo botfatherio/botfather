@@ -8,6 +8,7 @@
 #include <QHotkey>
 #include "abstractbotwidget.h"
 #include "botlogwidget.h"
+#include "botupdateswidget.h"
 #include "botsettingswidget.h"
 #include "../../engine/engine.h"
 
@@ -30,6 +31,7 @@ private:
 	QTabWidget *m_tab_widget;
 	QLabel *m_corner_widget;
 	BotLogWidget *m_bot_log_widget;
+	BotUpdatesWidget *m_bot_updates_widget;
 	BotSettingsWidget *m_bot_settings_widget;
 	QTimer runtimer;
 	QSettings *m_bot_settings;
