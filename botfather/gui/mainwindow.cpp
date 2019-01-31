@@ -59,6 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(m_maintainance_tool, &MtoolWrapper::startedDetached, QApplication::instance(), &QApplication::quit);
 
 	connect(ui->login_action, &QAction::triggered, m_auth_dialog, &AuthDialog::exec);
+	connect(ui->logout_action, &QAction::triggered, m_auth_dialog, &AuthDialog::logout);
 	connect(ui->logout_action, &QAction::triggered, m_license_api_client, &LicenseApiClient::resetLicense);
 	connect(ui->logout_action, &QAction::triggered, this, &MainWindow::updateLicenseInfo);
 	connect(m_auth_dialog, &AuthDialog::authenticated, this, &MainWindow::updateLicenseInfo);

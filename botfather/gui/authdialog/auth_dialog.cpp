@@ -85,6 +85,12 @@ void AuthDialog::login()
 	m_license_api->requestLicense(software, username, password);
 }
 
+void AuthDialog::logout()
+{
+	// Forget about the user when he logs out. Otherwise he'll be automatically logged in again when he start the application the next time.
+	rememberMe(false);
+}
+
 void AuthDialog::rememberMe(bool checked)
 {
 	QSettings settings;

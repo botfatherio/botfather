@@ -27,6 +27,7 @@ public slots:
 	
 	void tryAutoLogin();
 	void login();
+	void logout();
 	void rememberMe(bool checked);
 
 	void onNetworkError(QNetworkReply::NetworkError network_error);
