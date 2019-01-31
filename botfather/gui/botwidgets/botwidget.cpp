@@ -26,6 +26,13 @@ BotWidget::BotWidget(Bot *bot, QSystemTrayIcon *trayicon, QWidget *parent)
 	m_tab_widget->addTab(m_bot_updates_widget, "Updates");
 	m_tab_widget->addTab(m_bot_settings_widget, "Settings");
 
+	if (bot->repo().isEmpty())
+	{
+		// Disable the updates tab for bots without repo url
+		int updates_widget_index = m_tab_widget->indexOf(m_bot_updates_widget);
+		m_tab_widget->setTabEnabled(updates_widget_index, false);
+	}
+
 	connect(bot, &Bot::nameChanged, this, &BotWidget::updateBotName);
 	connect(bot, &Bot::statusChanged, this, &BotWidget::updateTabIconBasedOnBotStatus);
 	connect(bot, &Bot::audioPlaybackRequested, this, &AbstractBotWidget::playWavSound);
