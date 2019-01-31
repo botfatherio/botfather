@@ -5,21 +5,20 @@
 #include <QDebug>
 #include <QSettings>
 #include "../../auth/auth_settings.h"
-#include "../../auth/license_api_client.h"
 
-AuthDialog::AuthDialog(QWidget *parent) :
-	QDialog(parent),
-	ui(new Ui::AuthDialog)
+AuthDialog::AuthDialog(LicenseApiClient *license_api, QWidget *parent)
+	: QDialog(parent)
+	, ui(new Ui::AuthDialog)
+	, m_license_api(license_api)
 {
 	ui->setupUi(this);
 	int h = height();
 	adjustSize();
 	setFixedSize(width(), h);
 
-	license_api = new LicenseApiClient(this);
-	connect(license_api, &LicenseApiClient::networkError, this, &AuthDialog::onNetworkError);
-	connect(license_api, &LicenseApiClient::errorsReceived, this, &AuthDialog::onErrorsReceived);
-	connect(license_api, &LicenseApiClient::licenseReceived, this, &AuthDialog::onLicenseReceived);
+	connect(m_license_api, &LicenseApiClient::networkError, this, &AuthDialog::onNetworkError);
+	connect(m_license_api, &LicenseApiClient::errorsReceived, this, &AuthDialog::onErrorsReceived);
+	connect(m_license_api, &LicenseApiClient::licenseReceived, this, &AuthDialog::onLicenseReceived);
 
 	// Make hitting the enter button trigger the authenticate process.
 	connect(ui->username, &QLineEdit::returnPressed, this, &AuthDialog::login);
@@ -58,8 +57,8 @@ void AuthDialog::tryAutoLogin()
 	if (settings.value(auth::options::REMEMBER_ME, false).toBool() && !ui->username->text().isEmpty() && !ui->password->text().isEmpty())
 	{
 		// Show the login dialog when the auto login failes
-		connect(license_api, &LicenseApiClient::networkError, this, &AuthDialog::show);
-		connect(license_api, &LicenseApiClient::errorsReceived, this, &AuthDialog::show);
+		connect(m_license_api, &LicenseApiClient::networkError, this, &AuthDialog::show);
+		connect(m_license_api, &LicenseApiClient::errorsReceived, this, &AuthDialog::show);
 
 		login();
 	}
@@ -83,7 +82,7 @@ void AuthDialog::login()
 	}
 
 	allowInput(false); // Prevent spamming until we receive an reply from the server
-	license_api->requestLicense(software, username, password);
+	m_license_api->requestLicense(software, username, password);
 }
 
 void AuthDialog::rememberMe(bool checked)

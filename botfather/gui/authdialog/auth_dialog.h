@@ -4,11 +4,10 @@
 #include <QDialog>
 #include <QNetworkReply>
 #include <QJsonArray>
-
-class LicenseApiClient;
+#include "../../auth/license_api_client.h"
 
 namespace Ui {
-	class AuthDialog;
+class AuthDialog;
 }
 
 class AuthDialog : public QDialog
@@ -16,7 +15,7 @@ class AuthDialog : public QDialog
 	Q_OBJECT
 	
 public:
-	explicit AuthDialog(QWidget *parent = nullptr);
+	explicit AuthDialog(LicenseApiClient *license_api, QWidget *parent = nullptr);
 	~AuthDialog();
 	
 signals:
@@ -35,8 +34,8 @@ public slots:
 	void onLicenseReceived(int curtime, int premend);
 
 private:
-	Ui::AuthDialog* ui;
-	LicenseApiClient* license_api;
+	Ui::AuthDialog *ui;
+	LicenseApiClient *m_license_api;
 	QString software = "botfather";
 };
 
