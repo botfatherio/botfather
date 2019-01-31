@@ -20,7 +20,7 @@ BotUpdatesWidget::BotUpdatesWidget(Bot *bot, QWidget *parent)
 	connect(bot, &Bot::statusCheckFailed, this, &BotUpdatesWidget::resetProgressIndicators);
 	botStatusChanged(bot->status());
 
-	if (m_bot_settings->value("auto_update_check", true).toBool())
+	if (!bot->repo().isEmpty() && m_bot_settings->value("auto_update_check", true).toBool())
 	{
 		QTimer::singleShot(1, bot, &Bot::checkStatus);
 	}
