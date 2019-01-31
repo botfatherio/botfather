@@ -395,6 +395,10 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../res/botfather.qrc">
+     <normaloff>:/icons/icons/icons8-heart-outline-32.png</normaloff>:/icons/icons/icons8-heart-outline-32.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Status</string>
    </property>
@@ -416,8 +420,8 @@
   </action>
  </widget>
  <resources>
-  <include location="../res/gui.qrc"/>
   <include location="../res/botfather.qrc"/>
+  <include location="../res/gui.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -21,5 +21,6 @@
         <file>icons/icons8-workstation-32.png</file>
         <file>icons/icons8-file-32.png</file>
         <file>icons/icons8-exclamation-mark-32.png</file>
+        <file>icons/icons8-heart-outline-32.png</file>
     </qresource>
 </RCC>
