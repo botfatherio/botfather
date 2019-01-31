@@ -103,7 +103,28 @@ void MainWindow::deleteSelectedBot()
 		return;
 	}
 
-	m_bot_list_model->removeRow(model_index.row());
+	// Ask whether the bots files shall be deleted
+	QMessageBox::StandardButton clicked_button = QMessageBox::question(
+		this,
+		tr("Delete bot files?"),
+		tr("Do you wan to delete the bots files, settings and config?\nNote: You can remove the bot without deleting its files."),
+		QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel,
+		QMessageBox::No
+	);
+
+	switch (clicked_button) {
+	case QMessageBox::Yes:
+		m_bot_list_model->removeRow(model_index.row());
+		bot->deleteFiles();
+		break;
+	case QMessageBox::No:
+		m_bot_list_model->removeRow(model_index.row());
+		// Keep the bots files
+		break;
+	default:
+		qDebug() << "Bot deletion canceled";
+		return;
+	}
 }
 
 void MainWindow::startSelectedBot()
