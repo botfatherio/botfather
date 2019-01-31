@@ -85,7 +85,7 @@ void MainWindow::handleRowChange(const QModelIndex &current, const QModelIndex &
 void MainWindow::deleteSelectedBot()
 {
 	QModelIndex model_index = ui->bot_list_view->selectionModel()->currentIndex();
-	if (!model_index.isValid()) return;
+	if (!model_index.isValid()) return; // There might not be a single bot listed
 
 	Bot *bot = qvariant_cast<Bot*>(m_bot_list_model->data(model_index, BotListModel::BOT_PTR_ROLE));
 	Q_ASSERT(bot);
@@ -102,22 +102,24 @@ void MainWindow::deleteSelectedBot()
 void MainWindow::startSelectedBot()
 {
 	QModelIndex model_index = ui->bot_list_view->selectionModel()->currentIndex();
+	if (!model_index.isValid()) return; // There might not be a single bot listed
+
 	QString bot_path = m_bot_list_model->data(model_index, BotListModel::BOT_PATH_ROLE).toString();
-
 	BotWidget *bot_widget = m_bot_path_to_widget_map[bot_path];
-	Q_ASSERT(bot_widget);
 
+	Q_ASSERT(bot_widget);
 	bot_widget->tryBotStart(120); // FIXME: apply real limitations.
 }
 
 void MainWindow::stopSelectedBot()
 {
 	QModelIndex model_index = ui->bot_list_view->selectionModel()->currentIndex();
+	if (!model_index.isValid()) return; // There might not be a single bot listed
+
 	QString bot_path = m_bot_list_model->data(model_index, BotListModel::BOT_PATH_ROLE).toString();
-
 	BotWidget *bot_widget = m_bot_path_to_widget_map[bot_path];
-	Q_ASSERT(bot_widget);
 
+	Q_ASSERT(bot_widget);
 	bot_widget->tryBotStop();
 }
 
