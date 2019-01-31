@@ -188,8 +188,8 @@ void MainWindow::addLocalBot()
 	}
 
 	// Use the bots filename as name
-	QFileInfo bot_file(bot_path);
-	QString bot_name = bot_file.fileName();
+	QDir bot_dir(bot_path);
+	QString bot_name = bot_dir.dirName();
 
 	Bot::Data bot_data(bot_path, bot_name, QString());
 	m_bot_list_model->list(bot_data);
