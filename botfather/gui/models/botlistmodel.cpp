@@ -249,3 +249,16 @@ QString BotListModel::defaultLocation() const
 	// TODO: Think about whether this method belongs here or not.
 	return QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/bots.dat";
 }
+
+int BotListModel::numberOfRunningBots() const
+{
+	int number_of_running_bots = 0;
+	for (Bot * bot : m_bots)
+	{
+		if (bot->isRunning())
+		{
+			number_of_running_bots++;
+		}
+	}
+	return number_of_running_bots;
+}

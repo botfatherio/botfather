@@ -33,6 +33,7 @@ public:
 	void list(const Bot::Data &bot_data);
 
 	QString defaultLocation() const;
+	int numberOfRunningBots() const;
 
 signals:
 	void botListed(Bot *bot);
