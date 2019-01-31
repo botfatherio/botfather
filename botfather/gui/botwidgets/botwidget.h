@@ -21,6 +21,7 @@ public:
 
 public slots:
 	void updateBotName(const QString &new_bot_name);
+	void updateTabIconBasedOnBotStatus(const Bot::Status &status);
 	void updateShortcuts();
 	void tryBotStart(int runtime_in_secs = -1);
 	void tryBotStop();

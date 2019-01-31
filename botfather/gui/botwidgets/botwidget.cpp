@@ -27,6 +27,7 @@ BotWidget::BotWidget(Bot *bot, QSystemTrayIcon *trayicon, QWidget *parent)
 	m_tab_widget->addTab(m_bot_settings_widget, "Settings");
 
 	connect(bot, &Bot::nameChanged, this, &BotWidget::updateBotName);
+	connect(bot, &Bot::statusChanged, this, &BotWidget::updateTabIconBasedOnBotStatus);
 	connect(bot, &Bot::audioPlaybackRequested, this, &AbstractBotWidget::playWavSound);
 	connect(bot, &Bot::audioStopRequested, this, &AbstractBotWidget::stopWavSound);
 
@@ -45,6 +46,13 @@ void BotWidget::updateBotName(const QString &new_bot_name)
 {
 	QString formated_bot_name = QString("<span style='font-size:12pt;'>%0</span>").arg(new_bot_name);
 	m_corner_widget->setText(formated_bot_name);
+}
+
+void BotWidget::updateTabIconBasedOnBotStatus(const Bot::Status &status)
+{
+	int updates_widget_index = m_tab_widget->indexOf(m_bot_updates_widget);
+	QIcon tab_icon = status == Bot::Status::Outdated ? QIcon(":/icons/icons/icons8-exclamation-mark-32.png") : QIcon();
+	m_tab_widget->setTabIcon(updates_widget_index, tab_icon);
 }
 
 void BotWidget::updateShortcuts()
