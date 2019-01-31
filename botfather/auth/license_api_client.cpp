@@ -13,6 +13,39 @@ void LicenseApiClient::requestLicense(const QString &software, const QString &us
 	sendPostData(post_data);
 }
 
+bool LicenseApiClient::isLicenseActive() const
+{
+	return m_premend > m_curtime;
+}
+
+bool LicenseApiClient::isBotRuntimeLimited() const
+{
+	return allowedBotRuntimeInSecs() > 0;
+}
+
+int LicenseApiClient::allowedBotRuntimeInSecs() const
+{
+	// 90 minutes for non premiums, unlimited (-1) for premiums
+	return isLicenseActive() ? -1 : 90 * 60;
+}
+
+bool LicenseApiClient::isNumberOfRunningBotsLimited() const
+{
+	return maxNumberOfRunningBotsAllowed() > 0;
+}
+
+int LicenseApiClient::maxNumberOfRunningBotsAllowed() const
+{
+	// 1 for non premiums, unlimited (-1) for premiums
+	return isLicenseActive() ? -1 : 1;
+}
+
+void LicenseApiClient::resetLicense()
+{
+	m_premend = 0;
+	m_curtime = 1;
+}
+
 QUrl LicenseApiClient::provideApiEndpoint()
 {
 	return QUrl("https://botfather.io/api/v7/license/");
@@ -40,9 +73,10 @@ void LicenseApiClient::processJsonResponse(QJsonDocument json)
 		emit networkError(QNetworkReply::UnknownContentError);
 		return;
 	}
-	int curtime = json.object().value("curtime").toInt();
-	int premend = json.object().value("premend").toInt();
 
-	emit licenseReceived(curtime, premend);
+	m_curtime = json.object().value("curtime").toInt();
+	m_premend = json.object().value("premend").toInt();
+
+	emit licenseReceived(m_curtime, m_premend);
 	emit finished();
 }
