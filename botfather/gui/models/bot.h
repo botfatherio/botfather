@@ -47,8 +47,11 @@ public:
 	// Whether this bot is technically updateable. It is if it has a valid git repository.
 	bool isUpdatable() const;
 
-	Status status() const;
 	Bot::Data data() const;
+
+	// Whether the bot is uptodate with its remote git repo (if there is such)
+	Status status() const;
+	void setStatus(const Status &status);
 
 	// The path to the folder in which the bots files are stored. Use a bots path to identify it.
 	QString path() const;

@@ -35,14 +35,20 @@ bool Bot::isUpdatable() const
 	return isValid() && git_repository_open_ext(nullptr, path().toUtf8(), GIT_REPOSITORY_OPEN_NO_SEARCH, nullptr) == 0;
 }
 
+Bot::Data Bot::data() const
+{
+	return m_data;
+}
+
 Bot::Status Bot::status() const
 {
 	return m_status;
 }
 
-Bot::Data Bot::data() const
+void Bot::setStatus(const Status &status)
 {
-	return m_data;
+	m_status = status;
+	emit statusChanged(status);
 }
 
 QString Bot::path() const
@@ -176,5 +182,5 @@ void Bot::checkStatus()
 
 void Bot::noteDifferencesToRemote(int differences)
 {
-	m_status = differences > 0 ? Status::Outdated : Status::UpToDate;
+	setStatus(differences > 0 ? Status::Outdated : Status::UpToDate);
 }
