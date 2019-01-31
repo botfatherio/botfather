@@ -17,6 +17,7 @@ BotUpdatesWidget::BotUpdatesWidget(Bot *bot, QWidget *parent)
 	connect(ui->update_button, &QPushButton::clicked, this, &BotUpdatesWidget::updateTheBot);
 
 	connect(bot, &Bot::statusChanged, this, &BotUpdatesWidget::botStatusChanged);
+	connect(bot, &Bot::statusCheckFailed, this, &BotUpdatesWidget::resetProgressIndicators);
 	botStatusChanged(bot->status());
 
 	if (m_bot_settings->value("auto_update_check", true).toBool())
