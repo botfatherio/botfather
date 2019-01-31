@@ -17,13 +17,14 @@ class BotWidget : public AbstractBotWidget
 	Q_OBJECT
 
 public:
-	explicit BotWidget(Bot *bot, QWidget *parent = nullptr);
+	explicit BotWidget(Bot *bot, QSystemTrayIcon *trayicon, QWidget *parent = nullptr);
 
 public slots:
 	void updateBotName(const QString &new_bot_name);
 	void updateShortcuts();
 	void tryBotStart(int runtime_in_secs = -1);
 	void tryBotStop();
+	void stopHotkeyActivated();
 	void runtimerTimedOut();
 	void checkPermissions(const QString &script_path);
 

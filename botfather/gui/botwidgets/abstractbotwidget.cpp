@@ -1,8 +1,9 @@
 #include "abstractbotwidget.h"
 
-AbstractBotWidget::AbstractBotWidget(Bot *bot, QWidget *parent)
+AbstractBotWidget::AbstractBotWidget(Bot *bot, QSystemTrayIcon *trayicon, QWidget *parent)
 	: QWidget(parent)
 	, m_bot(bot)
+	, m_trayicon(trayicon)
 {
 	m_media_player = new QMediaPlayer(this);
 }

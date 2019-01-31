@@ -6,7 +6,8 @@
 #include <QRegularExpression>
 #include <QStandardPaths>
 
-BotWidget::BotWidget(Bot *bot, QWidget *parent) : AbstractBotWidget(bot, parent)
+BotWidget::BotWidget(Bot *bot, QSystemTrayIcon *trayicon, QWidget *parent)
+	: AbstractBotWidget(bot, trayicon, parent)
 {
 	m_tab_widget = new QTabWidget(this);
 	m_corner_widget = new QLabel(m_tab_widget);
@@ -34,7 +35,7 @@ BotWidget::BotWidget(Bot *bot, QWidget *parent) : AbstractBotWidget(bot, parent)
 	runtimer.callOnTimeout(this, &BotWidget::tryBotStop);
 
 	connect(m_bot_settings_widget, &BotSettingsWidget::settingsChanged, this, &BotWidget::updateShortcuts);
-	connect(m_stop_hotkey, &QHotkey::activated, this, &BotWidget::tryBotStop);
+	connect(m_stop_hotkey, &QHotkey::activated, this, &BotWidget::stopHotkeyActivated);
 	updateShortcuts(); // To initially setup the shortcuts
 
 	updateBotName(bot->name());
@@ -86,6 +87,23 @@ void BotWidget::tryBotStop()
 
 	runtimer.stop();
 	m_bot->stop();
+}
+
+void BotWidget::stopHotkeyActivated()
+{
+	if (!m_bot->isRunning())
+	{
+		qDebug() << "Can't stop not running bot via hotkey";
+		return;
+	}
+
+	m_trayicon->showMessage(
+		tr("Bot stopped via hotkey"),
+		tr("%0 has been stopped via hotkey").arg(m_bot->name()),
+		windowIcon()
+	);
+
+	tryBotStop();
 }
 
 void BotWidget::runtimerTimedOut()

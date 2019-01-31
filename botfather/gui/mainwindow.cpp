@@ -133,7 +133,7 @@ void MainWindow::stopSelectedBot()
 void MainWindow::setupWidgetForBot(Bot *bot)
 {
 	Q_ASSERT(bot);
-	BotWidget *bot_widget = new BotWidget(bot);
+	BotWidget *bot_widget = new BotWidget(bot, m_tray_icon);
 	ui->stackedWidget->addWidget(bot_widget); // QtDocs: Ownership of widget is passed on to the QStackedWidget.
 	m_bot_path_to_widget_map.insert(bot->path(), bot_widget);
 }
