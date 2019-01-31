@@ -16,6 +16,9 @@ BotSettingsWidget::BotSettingsWidget(Bot *bot, QWidget *parent)
 	connect(m_ui->clear_stop_shortcut, &QPushButton::clicked, this, &BotSettingsWidget::saveBotSettings);
 	connect(m_ui->stop_shortcut, &QKeySequenceEdit::editingFinished, this, &BotSettingsWidget::saveBotSettings);
 
+	// Disable update settings for bots without repo url
+	m_ui->bot_updates_box->setDisabled(bot->repo().isEmpty());
+
 	loadBotSettings();
 }
 
