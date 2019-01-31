@@ -101,12 +101,12 @@ Q_DECLARE_METATYPE(Bot*)
 
 inline QDataStream &operator<<(QDataStream &stream, const Bot::Data &data)
 {
-	return stream << data.name << data.path;
+	return stream << data.name << data.path << data.repo;
 }
 
 inline QDataStream &operator>>(QDataStream &stream, Bot::Data &data)
 {
-	return stream >> data.name >> data.path;
+	return stream >> data.name >> data.path >> data.repo;
 }
 
 #endif // BOT_H
