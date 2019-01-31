@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QSystemTrayIcon>
 #include <QHash>
 #include "models/botlistmodel.h"
 #include "scriptmanager/scriptmanagerdialog.h"
@@ -40,6 +41,7 @@ public slots:
 
 private:
 	Ui::MainWindow *ui;
+	QSystemTrayIcon *m_tray_icon;
 	BotListModel *m_bot_list_model;
 	QHash<QString, BotWidget*> m_bot_path_to_widget_map;
 	ScriptManagerDialog *m_script_manager_dialog;

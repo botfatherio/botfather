@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui(new Ui::MainWindow)
 {
 	ui->setupUi(this);
+	m_tray_icon = new QSystemTrayIcon(windowIcon(), this);
 	m_bot_list_model = new BotListModel(this);
 	m_script_manager_dialog = new ScriptManagerDialog(this);
 	m_browser_window = new BrowserWindow; // Don't give it a parent, otherwise it's blocking the control window on microsoft windows
@@ -25,6 +26,12 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->bot_list_view->setContextMenuPolicy(Qt::ContextMenuPolicy::ActionsContextMenu);
 	ui->bot_list_view->addAction(ui->add_bot_action);
 	ui->bot_list_view->addAction(ui->add_local_action);
+
+	m_tray_icon->show();
+	connect(m_tray_icon, &QSystemTrayIcon::activated, this, &MainWindow::raise);
+	connect(m_tray_icon, &QSystemTrayIcon::messageClicked, this, &MainWindow::raise);
+	connect(m_tray_icon, &QSystemTrayIcon::activated, this, &MainWindow::activateWindow);
+	connect(m_tray_icon, &QSystemTrayIcon::messageClicked, this, &MainWindow::activateWindow);
 
 	connect(ui->add_bot_button, &QPushButton::clicked, m_script_manager_dialog, &QDialog::exec);
 	connect(ui->add_bot_action, &QAction::triggered, m_script_manager_dialog, &QDialog::exec);
