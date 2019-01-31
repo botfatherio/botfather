@@ -14,12 +14,6 @@ BotLogWidget::BotLogWidget(Bot *bot, QWidget *parent)
 	connect(bot, &Bot::log, this, &BotLogWidget::log);
 	connect(m_ui->clear_button, &QPushButton::clicked, m_ui->log, &QTextEdit::clear);
 	connect(m_ui->save_button, &QPushButton::clicked, this, &BotLogWidget::saveLogToFile);
-
-	connect(m_ui->debug_mode, &QCheckBox::toggled, [this](bool state){
-		m_bot_settings->setValue("debug_mode", state);
-	});
-
-	m_ui->debug_mode->setChecked(m_bot_settings->value("debug_mode", false).toBool());
 }
 
 BotLogWidget::~BotLogWidget()
