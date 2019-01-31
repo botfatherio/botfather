@@ -91,6 +91,7 @@ signals:
 	void stopped();
 
 	void statusChanged(const Status &status);
+	void statusCheckFailed();
 
 private:
 	Status m_status = Status::Unavailabe;

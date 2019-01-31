@@ -187,6 +187,8 @@ void Bot::checkStatus()
 
 	connect(behind_op, &GitBehindOperation::differencesToRemote, this, &Bot::noteDifferencesToRemote);
 	connect(fetch_op, SIGNAL(finished()), behind_thread, SLOT(start()));
+	connect(fetch_op, &GitFetchOperation::failure, this, &Bot::statusCheckFailed);
+	connect(fetch_op, &GitBehindOperation::failure, this, &Bot::statusCheckFailed);
 
 	fetch_thread->start();
 }
