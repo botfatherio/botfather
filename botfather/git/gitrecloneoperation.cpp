@@ -9,7 +9,7 @@ GitRecloneOperation::GitRecloneOperation(const QString &remote_url, const QStrin
 	, m_remote_url(remote_url)
 	, m_local_path(local_path)
 {
-
+	m_tmp_clone_dir.setAutoRemove(false);
 }
 
 void GitRecloneOperation::process()
@@ -65,10 +65,20 @@ void GitRecloneOperation::replaceRepo()
 	emit replacingRepo();
 
 	QDir repo_dir(m_local_path);
-	repo_dir.removeRecursively();
 
+	// Preserve the bots .settings.ini and .config.ini files
+	QStringList files_to_preserve;
+	files_to_preserve << ".settings.ini" << ".config.ini";
+
+	for (const QString &file_name : files_to_preserve)
+	{
+		qDebug() << "Trying to preserve" << file_name;
+		QFile::copy(repo_dir.filePath(file_name), m_tmp_clone_dir.filePath(file_name));
+	}
+
+	// Replace the bot folders contents with the updated contents including the preserved files
+	repo_dir.removeRecursively();
 	moveDir(m_tmp_clone_dir.path(), repo_dir.path());
-	m_tmp_clone_dir.setAutoRemove(false);
 
 	emit success();
 }
