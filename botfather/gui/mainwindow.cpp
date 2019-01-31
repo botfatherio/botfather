@@ -17,7 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	m_browser_window = new BrowserWindow; // Don't give it a parent, otherwise it's blocking the control window on microsoft windows
 	m_android_dialog = new AndroidDialog(this);
 	m_settings_dialog = new SettingsDialog(this);
-	m_auth_dialog = new AuthDialog(this);
+	m_license_api_client = new LicenseApiClient(this);
+	m_auth_dialog = new AuthDialog(m_license_api_client, this);
 	m_maintainance_tool = new MtoolWrapper(this);
 
 	ui->bot_list_view->setModel(m_bot_list_model);
@@ -58,12 +59,11 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(m_maintainance_tool, &MtoolWrapper::startedDetached, QApplication::instance(), &QApplication::quit);
 
 	connect(ui->login_action, &QAction::triggered, m_auth_dialog, &AuthDialog::exec);
-	connect(ui->logout_action, &QAction::triggered, [this](){ adjustLimitations(); });
-	connect(ui->logout_action, &QAction::triggered, [this]() { ui->logout_action->setVisible(false); ui->login_action->setVisible(true); });
-	connect(m_auth_dialog, &AuthDialog::authenticated, [this]() { ui->logout_action->setVisible(true); ui->login_action->setVisible(false); });
-	connect(m_auth_dialog, &AuthDialog::authenticated, this, &MainWindow::adjustLimitations);
+	connect(ui->logout_action, &QAction::triggered, m_license_api_client, &LicenseApiClient::resetLicense);
+	connect(ui->logout_action, &QAction::triggered, this, &MainWindow::updateLicenseInfo);
+	connect(m_auth_dialog, &AuthDialog::authenticated, this, &MainWindow::updateLicenseInfo);
 	connect(m_auth_dialog, &AuthDialog::triedAutoLogin, [this](){ ui->menuAccount->setEnabled(true); });
-	adjustLimitations(false);
+	updateLicenseInfo();
 	QTimer::singleShot(0, m_auth_dialog, &AuthDialog::tryAutoLogin);
 
 	connect(QApplication::instance(), &QApplication::aboutToQuit, [this]() {
@@ -132,11 +132,31 @@ void MainWindow::startSelectedBot()
 	QModelIndex model_index = ui->bot_list_view->selectionModel()->currentIndex();
 	if (!model_index.isValid()) return; // There might not be a single bot listed
 
+	if (m_bot_list_model->numberOfRunningBots() >= m_license_api_client->maxNumberOfRunningBotsAllowed() && m_license_api_client->isNumberOfRunningBotsLimited())
+	{
+		QMessageBox::information(
+			this,
+			tr("Login to run more bots"),
+			tr("Please login to run more than %0 bots at the same time.").arg(m_license_api_client->maxNumberOfRunningBotsAllowed())
+		);
+		return;
+	}
+
+	// TODO: Remove this warning once we implemented multi browser support
+	if (m_bot_list_model->numberOfRunningBots() >= 1)
+	{
+		QMessageBox::information(
+			this,
+			tr("Limited functionality"),
+			tr("Current all bots SHARE THE SAME BROWSER and Android device!\n\nSupport for multiple browsers and android devices will come with version 6.0.0")
+		);
+	}
+
 	QString bot_path = m_bot_list_model->data(model_index, BotListModel::BOT_PATH_ROLE).toString();
 	BotWidget *bot_widget = m_bot_path_to_widget_map[bot_path];
 
 	Q_ASSERT(bot_widget);
-	bot_widget->tryBotStart(120); // FIXME: apply real limitations.
+	bot_widget->tryBotStart(m_license_api_client->allowedBotRuntimeInSecs());
 }
 
 void MainWindow::stopSelectedBot()
@@ -195,15 +215,23 @@ void MainWindow::addLocalBot()
 	m_bot_list_model->list(bot_data);
 }
 
-void MainWindow::adjustLimitations(bool is_premium)
+void MainWindow::updateLicenseInfo()
 {
-	if (is_premium)
+	if (m_license_api_client->isLicenseActive())
 	{
-		ui->status_action->setText("Status: 1 bot, no time limit");
+		QString status_info = tr("Status: unlimited bots, no time limit");
+		ui->status_action->setText(status_info);
+		ui->logout_action->setVisible(true);
+		ui->login_action->setVisible(false);
 	}
 	else
 	{
-		ui->status_action->setText("Status: 1 bot, stops after 90 minutes");
+		int number_of_bots = m_license_api_client->maxNumberOfRunningBotsAllowed();
+		int runtime_in_min = qRound(m_license_api_client->allowedBotRuntimeInSecs() / 60.0);
+		QString status_info = tr("Status: %0 bot(s), %1min sessions per bot").arg(number_of_bots).arg(runtime_in_min);
+		ui->status_action->setText(status_info);
+		ui->logout_action->setVisible(false);
+		ui->login_action->setVisible(true);
 	}
 }
 

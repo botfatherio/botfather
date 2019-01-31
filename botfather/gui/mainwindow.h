@@ -10,8 +10,8 @@
 #include "androiddialog/android_dialog.h"
 #include "settingsdialog/settings_dialog.h"
 #include "authdialog/auth_dialog.h"
-#include "../tools/mtoolwrapper.h"
 #include "botwidgets/botwidget.h"
+#include "../tools/mtoolwrapper.h"
 
 namespace Ui {
 class MainWindow;
@@ -36,7 +36,7 @@ public slots:
 	void removeWidgetForBot(const QString &bot_path);
 
 	void addLocalBot();
-	void adjustLimitations(bool is_premium = false);
+	void updateLicenseInfo();
 	void showAboutDialog();
 
 protected:
@@ -51,6 +51,7 @@ private:
 	BrowserWindow *m_browser_window;
 	AndroidDialog *m_android_dialog;
 	SettingsDialog *m_settings_dialog;
+	LicenseApiClient *m_license_api_client;
 	AuthDialog* m_auth_dialog;
 	MtoolWrapper* m_maintainance_tool;
 };
