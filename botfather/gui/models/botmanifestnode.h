@@ -1,15 +1,15 @@
-#ifndef JSONOBJECTWRAPPER_H
-#define JSONOBJECTWRAPPER_H
+#ifndef BOTMANIFESTNODE_H
+#define BOTMANIFESTNODE_H
 
 #include <QJsonObject>
 #include <QVector>
 #include <QVariant>
 
-class JsonObjectWrapper
+class BotManifestNode
 {
 public:
-	JsonObjectWrapper();
-	JsonObjectWrapper(const QJsonObject &json_object);
+	BotManifestNode();
+	BotManifestNode(const QJsonObject &json_object, const QString &config_path);
 
 	bool isNull() const;
 
@@ -22,9 +22,11 @@ public:
 protected:
 	QJsonObject jsonObject() const;
 	void setJsonObject(const QJsonObject &json_object);
+	QString configPath() const;
 
 private:
 	QJsonObject m_json_object;
+	QString m_config_path;
 };
 
-#endif // JSONOBJECTWRAPPER_H
+#endif // BOTMANIFESTNODE_H

@@ -27,7 +27,7 @@ QVector<BotConfigSetting> BotConfigGroup::settings() const
 		Q_ASSERT(setting.isObject());
 		Q_ASSERT(!setting.isArray());
 
-		config_settings.append(BotConfigSetting(setting.toObject()));
+		config_settings.append(BotConfigSetting(setting.toObject(), configPath()));
 	}
 
 	return config_settings;

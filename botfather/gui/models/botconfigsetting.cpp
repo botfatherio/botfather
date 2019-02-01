@@ -1,4 +1,17 @@
 #include "botconfigsetting.h"
+#include <QSettings>
+
+QVariant BotConfigSetting::value() const
+{
+	QSettings config(configPath(), QSettings::IniFormat);
+	return config.value(id(), fallback());
+}
+
+void BotConfigSetting::setValue(const QVariant &new_value)
+{
+	QSettings config(configPath(), QSettings::IniFormat);
+	config.setValue(id(), new_value);
+}
 
 bool BotConfigSetting::isValid() const
 {

@@ -1,13 +1,13 @@
 #ifndef BOTMANIFEST_H
 #define BOTMANIFEST_H
 
-#include "jsonobjectwrapper.h"
+#include "botmanifestnode.h"
 #include "botconfig.h"
 
-class BotManifest : public JsonObjectWrapper
+class BotManifest : public BotManifestNode
 {
 public:
-	using JsonObjectWrapper::JsonObjectWrapper;
+	BotManifest(const QString &config_path);
 	bool loadFromFile(const QString &manifest_path);
 
 	QString name() const;

@@ -2,6 +2,12 @@
 #include <QFile>
 #include <QJsonDocument>
 
+BotManifest::BotManifest(const QString &config_path)
+	: BotManifestNode(QJsonObject(), config_path)
+{
+
+}
+
 bool BotManifest::loadFromFile(const QString &manifest_path)
 {
 	QFile manifest_file(manifest_path);
@@ -44,5 +50,5 @@ BotConfig BotManifest::config() const
 	{
 		return BotConfig();
 	}
-	return BotConfig(jsonObject()["config"].toObject());
+	return BotConfig(jsonObject()["config"].toObject(), configPath());
 }

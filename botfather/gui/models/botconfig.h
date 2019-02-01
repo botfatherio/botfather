@@ -1,14 +1,14 @@
 #ifndef BOTCONFIG_H
 #define BOTCONFIG_H
 
-#include "jsonobjectwrapper.h"
+#include "botmanifestnode.h"
 #include "botconfiggroup.h"
 #include <QVector>
 
-class BotConfig : public JsonObjectWrapper
+class BotConfig : public BotManifestNode
 {
 public:
-	using JsonObjectWrapper::JsonObjectWrapper;
+	using BotManifestNode::BotManifestNode;
 	QVector<BotConfigGroup> groups() const;
 };
 

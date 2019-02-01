@@ -125,7 +125,7 @@ QString Bot::manifestPath() const
 
 BotManifest Bot::manifest() const
 {
-	BotManifest bot_manifest;
+	BotManifest bot_manifest(configPath());
 	bot_manifest.loadFromFile(manifestPath());
 	return bot_manifest;
 }

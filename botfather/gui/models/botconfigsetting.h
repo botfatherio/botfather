@@ -3,12 +3,12 @@
 
 #include <QVariant>
 #include <QMap>
-#include "jsonobjectwrapper.h"
+#include "botmanifestnode.h"
 
-class BotConfigSetting : public JsonObjectWrapper
+class BotConfigSetting : public BotManifestNode
 {
 public:
-	using JsonObjectWrapper::JsonObjectWrapper;
+	using BotManifestNode::BotManifestNode;
 
 	enum Type
 	{
@@ -20,6 +20,9 @@ public:
 		Choice,
 		Unknown
 	};
+
+	QVariant value() const;
+	void setValue(const QVariant &new_value);
 
 	bool isValid() const;
 	QString id() const;

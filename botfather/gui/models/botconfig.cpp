@@ -22,7 +22,7 @@ QVector<BotConfigGroup> BotConfig::groups() const
 		Q_ASSERT(group.isObject());
 		Q_ASSERT(!group.isArray());
 
-		groups.append(BotConfigGroup(group.toObject()));
+		groups.append(BotConfigGroup(group.toObject(), configPath()));
 	}
 
 	return groups;
