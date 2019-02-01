@@ -19,19 +19,20 @@ public:
 	explicit BotConfigWidget(Bot *bot, QWidget *parent = nullptr);
 	~BotConfigWidget();
 
-	void renderConfig(const BotConfig &bot_config, QVBoxLayout *vbox_layout);
-	void renderGroup(const BotConfigGroup &group, QVBoxLayout *vbox_layout);
-	void renderSetting(const BotConfigSetting &setting, QFormLayout *form_layout);
+	void renderConfig(BotConfig bot_config, QVBoxLayout *vbox_layout);
+	void renderGroup(BotConfigGroup group, QVBoxLayout *vbox_layout);
+	void renderSetting(BotConfigSetting *setting, QFormLayout *form_layout);
 
-	void renderBooleanSetting(const BotConfigSetting &setting, QFormLayout *form_layout);
-	void renderNumberSetting(const BotConfigSetting &setting, QFormLayout *form_layout);
-	void renderIntegerSetting(const BotConfigSetting &setting, QFormLayout *form_layout);
-	void renderStringSetting(const BotConfigSetting &setting, QFormLayout *form_layout);
-	void renderPasswordSetting(const BotConfigSetting &setting, QFormLayout *form_layout);
-	void renderChoiceSetting(const BotConfigSetting &setting, QFormLayout *form_layout);
+	void renderBooleanSetting(BotConfigSetting *setting, QFormLayout *form_layout);
+	void renderNumberSetting(BotConfigSetting *setting, QFormLayout *form_layout);
+	void renderIntegerSetting(BotConfigSetting *setting, QFormLayout *form_layout);
+	void renderStringSetting(BotConfigSetting *setting, QFormLayout *form_layout);
+	void renderPasswordSetting(BotConfigSetting *setting, QFormLayout *form_layout);
+	void renderChoiceSetting(BotConfigSetting *setting, QFormLayout *form_layout);
 
 private:
 	Ui::BotConfigWidget *ui;
+	QVector<BotConfigSetting*> m_bot_config_settings;
 };
 
 #endif // BOTCONFIGWIDGET_H
