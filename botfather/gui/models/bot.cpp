@@ -117,6 +117,19 @@ QString Bot::configPath() const
 	return bot_dir.exists() ? bot_dir.filePath(".config.ini") : QString();
 }
 
+QString Bot::manifestPath() const
+{
+	QDir bot_dir(path());
+	return bot_dir.exists() ? bot_dir.filePath("manifest.json") : QString();
+}
+
+BotManifest Bot::manifest() const
+{
+	BotManifest bot_manifest;
+	bot_manifest.loadFromFile(manifestPath());
+	return bot_manifest;
+}
+
 bool Bot::deleteFiles()
 {
 	QDir bot_dir(path());

@@ -137,7 +137,12 @@ HEADERS += \
     gui/botwidgets/botlogwidget.h \
     gui/botwidgets/botsettingswidget.h \
     gui/botwidgets/abstractbotwidget.h \
-    gui/botwidgets/botupdateswidget.h
+    gui/botwidgets/botupdateswidget.h \
+    gui/models/jsonobjectwrapper.h \
+    gui/models/botmanifest.h \
+    gui/models/botconfig.h \
+    gui/models/botconfiggroup.h \
+    gui/models/botconfigsetting.h
 SOURCES += \
     ./auth/license_api_client.cpp \
     ./auth/rest_api_client.cpp \
@@ -194,7 +199,12 @@ SOURCES += \
     gui/botwidgets/botlogwidget.cpp \
     gui/botwidgets/botsettingswidget.cpp \
     gui/botwidgets/abstractbotwidget.cpp \
-    gui/botwidgets/botupdateswidget.cpp
+    gui/botwidgets/botupdateswidget.cpp \
+    gui/models/jsonobjectwrapper.cpp \
+    gui/models/botmanifest.cpp \
+    gui/models/botconfig.cpp \
+    gui/models/botconfiggroup.cpp \
+    gui/models/botconfigsetting.cpp
 FORMS += \
     ./gui/androiddialog/android_dialog.ui \
     ./gui/authdialog/auth_dialog.ui \

@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QThread>
+#include "botmanifest.h"
 #include "../../engine/engine.h"
 
 class Bot : public QObject
@@ -73,6 +74,12 @@ public:
 
 	// Returns the path to the bots script configuration set by the user
 	QString configPath() const;
+
+	// Returns the path to the bots manifest
+	QString manifestPath() const;
+
+	// Returns the bots loaded manifest if such exists
+	BotManifest manifest() const;
 
 	// Returns true when the bots files have been successfully deleted
 	bool deleteFiles();
