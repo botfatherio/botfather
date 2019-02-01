@@ -21,6 +21,7 @@ BotConfigWidget::BotConfigWidget(Bot *bot, QWidget *parent)
 
 BotConfigWidget::~BotConfigWidget()
 {
+	qDeleteAll(m_bot_config_settings);
 	delete ui;
 }
 
