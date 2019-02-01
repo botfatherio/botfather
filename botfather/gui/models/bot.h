@@ -71,6 +71,9 @@ public:
 	// Returns the path to the bots settings such as hotkeys and wether to use the debug mode
 	QString settingsPath() const;
 
+	// Returns the path to the bots script configuration set by the user
+	QString configPath() const;
+
 	// Returns true when the bots files have been successfully deleted
 	bool deleteFiles();
 
