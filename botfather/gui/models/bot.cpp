@@ -90,6 +90,13 @@ QString Bot::scriptPath() const
 		return QString(); // Invalid or empty bot directory
 	}
 
+	QFileInfo manifested_script(repo_dir.filePath(manifest().scriptPath()));
+	if (manifested_script.exists() && manifested_script.isFile())
+	{
+		// The script Engine will complain by itself if the manifested file is not a script
+		return manifested_script.absoluteFilePath();
+	}
+
 	QStringList scriptname_filters;
 	scriptname_filters << "*.js";
 
@@ -100,8 +107,6 @@ QString Bot::scriptPath() const
 	{
 		return QString(); // No script found
 	}
-
-	// TODO: extend to check in the scripts manifest for the main scriptfiles path.
 
 	return repo_dir.filePath(entries.first());
 }
