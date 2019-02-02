@@ -5,6 +5,7 @@
 #include <QDoubleSpinBox>
 #include <QLineEdit>
 #include <QComboBox>
+#include <QTimer>
 #include <QDebug>
 
 BotConfigWidget::BotConfigWidget(Bot *bot, QWidget *parent)
@@ -16,7 +17,9 @@ BotConfigWidget::BotConfigWidget(Bot *bot, QWidget *parent)
 	config_container_layout->setMargin(0);
 	ui->config_container->setLayout(config_container_layout);
 
-	renderConfig(bot->manifest().config(), config_container_layout);
+	QTimer::singleShot(1, [this, bot, config_container_layout](){
+		renderConfig(bot->manifest().config(), config_container_layout);
+	});
 }
 
 BotConfigWidget::~BotConfigWidget()
