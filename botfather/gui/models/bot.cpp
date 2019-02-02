@@ -148,7 +148,7 @@ void Bot::start()
 	m_engine_thread = new QThread;
 	m_engine_thread->setObjectName("Engine thread for " + name());
 
-	m_engine = new Engine(scriptPath());
+	m_engine = new Engine(scriptPath(), configPath());
 	m_engine->moveToThread(m_engine_thread);
 
 	connect(m_engine_thread, &QThread::started, m_engine, &Engine::runScript);

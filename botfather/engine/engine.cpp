@@ -21,9 +21,12 @@
 #include "apis/android_api.h"
 #include "apis/desktop_api.h"
 #include "apis/algorithm_api.h"
+#include "apis/config_api.h"
 #include "modules/browser/browser.h"
 
-Engine::Engine(QString script_path) : script_path(script_path)
+Engine::Engine(QString script_path, const QString &config_ini_path)
+	: script_path(script_path)
+	, m_config_ini_path(config_ini_path)
 {
 	// Otherwise Bot::LogSource can't be used with slots
     qRegisterMetaType<Engine::LogSource>("Engine::LogSource");
@@ -63,6 +66,11 @@ bool Engine::scriptFileExists(QString file_path)
 	return file_info.exists() && file_info.isFile();
 }
 
+QString Engine::configIniPath() const
+{
+	return m_config_ini_path;
+}
+
 void Engine::runScript()
 {
 	emit started();
@@ -80,6 +88,7 @@ void Engine::runScript()
 	REGISTER_API(script_engine, this, HelperAPI, "Helper");
 	REGISTER_API(script_engine, this, VisionAPI, "Vision");
 	REGISTER_API(script_engine, this, AlgorithmAPI, "Algorithm");
+	REGISTER_API(script_engine, this, ConfigAPI, "Config");
 	
 	REGISTER_PROTO(script_engine, TimerPrototype, QElapsedTimer, "Timer");
 	REGISTER_PROTO(script_engine, BlobTplPrototype, BlobTpl, "BlobTpl");

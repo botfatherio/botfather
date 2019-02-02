@@ -143,7 +143,8 @@ HEADERS += \
     gui/models/botconfiggroup.h \
     gui/models/botconfigsetting.h \
     gui/botwidgets/botconfigwidget.h \
-    gui/models/botmanifestnode.h
+    gui/models/botmanifestnode.h \
+    engine/apis/config_api.h
 SOURCES += \
     ./auth/license_api_client.cpp \
     ./auth/rest_api_client.cpp \
@@ -206,7 +207,8 @@ SOURCES += \
     gui/models/botconfiggroup.cpp \
     gui/models/botconfigsetting.cpp \
     gui/botwidgets/botconfigwidget.cpp \
-    gui/models/botmanifestnode.cpp
+    gui/models/botmanifestnode.cpp \
+    engine/apis/config_api.cpp
 FORMS += \
     ./gui/androiddialog/android_dialog.ui \
     ./gui/authdialog/auth_dialog.ui \
