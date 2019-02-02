@@ -10,6 +10,7 @@ public:
 	BotManifest(const QString &config_path);
 	bool loadFromFile(const QString &manifest_path);
 
+	QString scriptPath() const;
 	QString version() const;
 	BotConfig config() const;
 };
