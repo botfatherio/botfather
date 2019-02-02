@@ -24,6 +24,9 @@ public:
 	QVariant value() const;
 	void setValue(const QVariant &new_value);
 
+	// Returns true when there is a value stored for this setting.
+	bool isStored() const;
+
 	bool isValid() const;
 	QString id() const;
 	Type type() const;

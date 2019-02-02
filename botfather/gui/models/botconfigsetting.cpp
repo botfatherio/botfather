@@ -18,6 +18,16 @@ bool BotConfigSetting::isValid() const
 	return !id().isEmpty();
 }
 
+bool BotConfigSetting::isStored() const
+{
+	QSettings config(configPath(), QSettings::IniFormat);
+
+	// Don't retrive the value using BotConfigSetting::value as it provides a fallback
+	QVariant retrived_value = config.value(id(), QVariant());
+
+	return !retrived_value.isNull() && retrived_value.isValid();
+}
+
 QString BotConfigSetting::id() const
 {
 	return getStringBykey("id");
