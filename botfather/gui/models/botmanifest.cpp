@@ -28,20 +28,12 @@ bool BotManifest::loadFromFile(const QString &manifest_path)
 
 QString BotManifest::name() const
 {
-	if (!jsonObject().contains("name"))
-	{
-		return QString();
-	}
-	return jsonObject()["name"].toString();
+	return getStringBykey("name");
 }
 
 QString BotManifest::version() const
 {
-	if (!jsonObject().contains("manifest_version"))
-	{
-		return QString();
-	}
-	return jsonObject()["manifest_version"].toString();
+	return getStringBykey("manifest_version");
 }
 
 BotConfig BotManifest::config() const
