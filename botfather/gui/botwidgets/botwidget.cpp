@@ -48,8 +48,8 @@ BotWidget::BotWidget(Bot *bot, QSystemTrayIcon *trayicon, QWidget *parent)
 	connect(bot, &Bot::audioStopRequested, this, &AbstractBotWidget::stopWavSound);
 
 	connect(bot, &Bot::stopped, &runtimer, &QTimer::stop);
-	runtimer.callOnTimeout(this, &BotWidget::runtimerTimedOut);
-	runtimer.callOnTimeout(this, &BotWidget::tryBotStop);
+	connect(&runtimer, &QTimer::timeout, this, &BotWidget::runtimerTimedOut);
+	connect(&runtimer, &QTimer::timeout, this, &BotWidget::tryBotStop);
 
 	connect(m_bot_settings_widget, &BotSettingsWidget::settingsChanged, this, &BotWidget::updateShortcuts);
 	connect(m_stop_hotkey, &QHotkey::activated, this, &BotWidget::stopHotkeyActivated);
