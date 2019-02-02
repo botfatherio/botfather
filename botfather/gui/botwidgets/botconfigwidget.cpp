@@ -59,6 +59,13 @@ void BotConfigWidget::renderGroup(BotConfigGroup group, QVBoxLayout *vbox_layout
 		BotConfigSetting *setting_p = new BotConfigSetting(setting);
 		m_bot_config_settings.append(setting_p);
 
+		if (!setting_p->isStored())
+		{
+			// Store the fallback if there is no other value stored yet. When there is no value stored
+			// the Engines ConfigAPI won't return a value (not even the fallback)
+			setting_p->setValue(setting_p->fallback());
+		}
+
 		renderSetting(setting_p, form_layout);
 	}
 }
