@@ -35,6 +35,13 @@ BotWidget::BotWidget(Bot *bot, QSystemTrayIcon *trayicon, QWidget *parent)
 		m_tab_widget->setTabEnabled(updates_widget_index, false);
 	}
 
+	if (!bot->manifest().config().isValid())
+	{
+		// Disable the config tab if the bot has no valid config
+		int config_widget_index = m_tab_widget->indexOf(m_bot_config_widget);
+		m_tab_widget->setTabEnabled(config_widget_index, false);
+	}
+
 	connect(bot, &Bot::nameChanged, this, &BotWidget::updateBotName);
 	connect(bot, &Bot::statusChanged, this, &BotWidget::updateTabIconBasedOnBotStatus);
 	connect(bot, &Bot::audioPlaybackRequested, this, &AbstractBotWidget::playWavSound);
