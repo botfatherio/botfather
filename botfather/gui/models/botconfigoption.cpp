@@ -1,24 +1,24 @@
-#include "botconfigsetting.h"
+#include "botconfigoption.h"
 #include <QSettings>
 
-QVariant BotConfigSetting::value() const
+QVariant BotConfigOption::value() const
 {
 	QSettings config(configPath(), QSettings::IniFormat);
 	return config.value(id(), fallback());
 }
 
-void BotConfigSetting::setValue(const QVariant &new_value)
+void BotConfigOption::setValue(const QVariant &new_value)
 {
 	QSettings config(configPath(), QSettings::IniFormat);
 	config.setValue(id(), new_value);
 }
 
-bool BotConfigSetting::isValid() const
+bool BotConfigOption::isValid() const
 {
 	return !id().isEmpty();
 }
 
-bool BotConfigSetting::isStored() const
+bool BotConfigOption::isStored() const
 {
 	QSettings config(configPath(), QSettings::IniFormat);
 
@@ -28,12 +28,12 @@ bool BotConfigSetting::isStored() const
 	return !retrived_value.isNull() && retrived_value.isValid();
 }
 
-QString BotConfigSetting::id() const
+QString BotConfigOption::id() const
 {
 	return getStringBykey("id");
 }
 
-BotConfigSetting::Type BotConfigSetting::type() const
+BotConfigOption::Type BotConfigOption::type() const
 {
 	QString type_string(getStringBykey("type").toLower());
 	if (type_string == "boolean")
@@ -63,17 +63,17 @@ BotConfigSetting::Type BotConfigSetting::type() const
 	return Type::Unknown;
 }
 
-QString BotConfigSetting::label() const
+QString BotConfigOption::label() const
 {
 	return getStringBykey("label");
 }
 
-QVariant BotConfigSetting::fallback() const
+QVariant BotConfigOption::fallback() const
 {
 	return getVariantByKey("default");
 }
 
-QMap<QString, QString> BotConfigSetting::choices() const
+QMap<QString, QString> BotConfigOption::choices() const
 {
 	QMap<QString, QString> choices;
 
@@ -98,17 +98,17 @@ QMap<QString, QString> BotConfigSetting::choices() const
 	return choices;
 }
 
-bool BotConfigSetting::hasRange() const
+bool BotConfigOption::hasRange() const
 {
 	return jsonObject().contains("min") && jsonObject().contains("max") && jsonObject()["min"].isDouble() && jsonObject()["max"].isDouble();
 }
 
-int BotConfigSetting::min() const
+int BotConfigOption::min() const
 {
 	return getIntegerByKey("min");
 }
 
-int BotConfigSetting::max() const
+int BotConfigOption::max() const
 {
 	return getIntegerByKey("max");
 }

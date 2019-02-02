@@ -32,7 +32,7 @@ void BotConfigWidget::renderConfig(BotConfig bot_config, QVBoxLayout *vbox_layou
 {
 	for (const BotConfigGroup &group : bot_config.groups())
 	{
-		if (group.settings().isEmpty())
+		if (group.options().isEmpty())
 		{
 			qDebug() << "Skip empty bot config group.";
 			continue;
@@ -51,53 +51,53 @@ void BotConfigWidget::renderGroup(BotConfigGroup group, QVBoxLayout *vbox_layout
 	group_box->setLayout(form_layout);
 	vbox_layout->addWidget(group_box);
 
-	for (const BotConfigSetting &setting : group.settings())
+	for (const BotConfigOption &option : group.options())
 	{
-		if (!setting.isValid())
+		if (!option.isValid())
 		{
 			qDebug() << "Skip invalid bot config settings.";
 			continue;
 		}
 
-		BotConfigSetting *setting_p = new BotConfigSetting(setting);
-		m_bot_config_settings.append(setting_p);
+		BotConfigOption *option_p = new BotConfigOption(option);
+		m_bot_config_settings.append(option_p);
 
-		if (!setting_p->isStored())
+		if (!option_p->isStored())
 		{
 			// Store the fallback if there is no other value stored yet. When there is no value stored
 			// the Engines ConfigAPI won't return a value (not even the fallback)
-			setting_p->setValue(setting_p->fallback());
+			option_p->setValue(option_p->fallback());
 		}
 
-		renderSetting(setting_p, form_layout);
+		renderOption(option_p, form_layout);
 	}
 }
 
-void BotConfigWidget::renderSetting(BotConfigSetting *setting, QFormLayout *form_layout)
+void BotConfigWidget::renderOption(BotConfigOption *option_p, QFormLayout *form_layout)
 {
-	switch (setting->type()) {
-	case BotConfigSetting::Type::Boolean: {
-		renderBooleanSetting(setting, form_layout);
+	switch (option_p->type()) {
+	case BotConfigOption::Type::Boolean: {
+		renderBooleanOption(option_p, form_layout);
 		break;
 	}
-	case BotConfigSetting::Type::Number: {
-		renderNumberSetting(setting, form_layout);
+	case BotConfigOption::Type::Number: {
+		renderNumberOption(option_p, form_layout);
 		break;
 	}
-	case BotConfigSetting::Type::Integer: {
-		renderIntegerSetting(setting, form_layout);
+	case BotConfigOption::Type::Integer: {
+		renderIntegerOption(option_p, form_layout);
 		break;
 	}
-	case BotConfigSetting::Type::String: {
-		renderStringSetting(setting, form_layout);
+	case BotConfigOption::Type::String: {
+		renderStringOption(option_p, form_layout);
 		break;
 	}
-	case BotConfigSetting::Type::Password: {
-		renderPasswordSetting(setting, form_layout);
+	case BotConfigOption::Type::Password: {
+		renderPasswordOption(option_p, form_layout);
 		break;
 	}
-	case BotConfigSetting::Type::Choice: {
-		renderChoiceSetting(setting, form_layout);
+	case BotConfigOption::Type::Choice: {
+		renderChoiceOption(option_p, form_layout);
 		break;
 	}
 	default:
@@ -106,90 +106,90 @@ void BotConfigWidget::renderSetting(BotConfigSetting *setting, QFormLayout *form
 	}
 }
 
-void BotConfigWidget::renderBooleanSetting(BotConfigSetting *setting, QFormLayout *form_layout)
+void BotConfigWidget::renderBooleanOption(BotConfigOption *option_p, QFormLayout *form_layout)
 {
 	QCheckBox *checkbox = new QCheckBox();
-	form_layout->addRow(setting->label(), checkbox);
+	form_layout->addRow(option_p->label(), checkbox);
 
-	checkbox->setChecked(setting->value().toBool());
-	connect(checkbox, &QCheckBox::toggled, [setting](bool checked){
-		setting->setValue(checked);
+	checkbox->setChecked(option_p->value().toBool());
+	connect(checkbox, &QCheckBox::toggled, [option_p](bool checked){
+		option_p->setValue(checked);
 	});
 }
 
-void BotConfigWidget::renderNumberSetting(BotConfigSetting *setting, QFormLayout *form_layout)
+void BotConfigWidget::renderNumberOption(BotConfigOption *option_p, QFormLayout *form_layout)
 {
 	QDoubleSpinBox *spinbox = new QDoubleSpinBox();
-	form_layout->addRow(setting->label(), spinbox);
+	form_layout->addRow(option_p->label(), spinbox);
 
-	if (setting->hasRange())
+	if (option_p->hasRange())
 	{
-		spinbox->setRange(setting->min(), setting->max());
+		spinbox->setRange(option_p->min(), option_p->max());
 	}
 
-	spinbox->setValue(setting->value().toDouble());
-	connect(spinbox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), [setting](double new_value){
-		setting->setValue(new_value);
+	spinbox->setValue(option_p->value().toDouble());
+	connect(spinbox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), [option_p](double new_value){
+		option_p->setValue(new_value);
 	});
 }
 
-void BotConfigWidget::renderIntegerSetting(BotConfigSetting *setting, QFormLayout *form_layout)
+void BotConfigWidget::renderIntegerOption(BotConfigOption *option_p, QFormLayout *form_layout)
 {
 	QSpinBox *spinbox = new QSpinBox();
-	form_layout->addRow(setting->label(), spinbox);
+	form_layout->addRow(option_p->label(), spinbox);
 
-	if (setting->hasRange())
+	if (option_p->hasRange())
 	{
-		spinbox->setRange(setting->min(), setting->max());
+		spinbox->setRange(option_p->min(), option_p->max());
 	}
 
-	spinbox->setValue(setting->value().toInt());
-	connect(spinbox, QOverload<int>::of(&QSpinBox::valueChanged), [setting](int new_value){
-		setting->setValue(new_value);
+	spinbox->setValue(option_p->value().toInt());
+	connect(spinbox, QOverload<int>::of(&QSpinBox::valueChanged), [option_p](int new_value){
+		option_p->setValue(new_value);
 	});
 }
 
-void BotConfigWidget::renderStringSetting(BotConfigSetting *setting, QFormLayout *form_layout)
+void BotConfigWidget::renderStringOption(BotConfigOption *option_p, QFormLayout *form_layout)
 {
 	QLineEdit *lineedit = new QLineEdit();
-	lineedit->setPlaceholderText(setting->label());
-	form_layout->addRow(setting->label(), lineedit);
+	lineedit->setPlaceholderText(option_p->label());
+	form_layout->addRow(option_p->label(), lineedit);
 
-	lineedit->setText(setting->value().toString());
-	connect(lineedit, &QLineEdit::editingFinished, [lineedit, setting](){
-		setting->setValue(lineedit->text());
+	lineedit->setText(option_p->value().toString());
+	connect(lineedit, &QLineEdit::editingFinished, [lineedit, option_p](){
+		option_p->setValue(lineedit->text());
 	});
 }
 
-void BotConfigWidget::renderPasswordSetting(BotConfigSetting *setting, QFormLayout *form_layout)
+void BotConfigWidget::renderPasswordOption(BotConfigOption *option_p, QFormLayout *form_layout)
 {
 	QLineEdit *lineedit = new QLineEdit();
-	lineedit->setPlaceholderText(setting->label());
+	lineedit->setPlaceholderText(option_p->label());
 	lineedit->setEchoMode(QLineEdit::EchoMode::Password);
-	form_layout->addRow(setting->label(), lineedit);
+	form_layout->addRow(option_p->label(), lineedit);
 
-	lineedit->setText(setting->value().toString());
-	connect(lineedit, &QLineEdit::editingFinished, [lineedit, setting](){
-		setting->setValue(lineedit->text());
+	lineedit->setText(option_p->value().toString());
+	connect(lineedit, &QLineEdit::editingFinished, [lineedit, option_p](){
+		option_p->setValue(lineedit->text());
 	});
 }
 
-void BotConfigWidget::renderChoiceSetting(BotConfigSetting *setting, QFormLayout *form_layout)
+void BotConfigWidget::renderChoiceOption(BotConfigOption *option_p, QFormLayout *form_layout)
 {
 	QComboBox *comboxbox = new QComboBox();
-	form_layout->addRow(setting->label(), comboxbox);
+	form_layout->addRow(option_p->label(), comboxbox);
 
-	QMapIterator<QString, QString> ci(setting->choices());
+	QMapIterator<QString, QString> ci(option_p->choices());
 	while (ci.hasNext())
 	{
 		ci.next();
 		comboxbox->addItem(ci.key(), ci.value());
 	}
 
-	int stored_index = comboxbox->findData(setting->value());
+	int stored_index = comboxbox->findData(option_p->value());
 	comboxbox->setCurrentIndex(stored_index);
 
-	connect(comboxbox, QOverload<int>::of(&QComboBox::currentIndexChanged), [comboxbox, setting](){
-		setting->setValue(comboxbox->currentData());
+	connect(comboxbox, QOverload<int>::of(&QComboBox::currentIndexChanged), [comboxbox, option_p](){
+		option_p->setValue(comboxbox->currentData());
 	});
 }

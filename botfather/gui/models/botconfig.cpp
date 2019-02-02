@@ -5,7 +5,7 @@ bool BotConfig::isValid() const
 {
 	for (BotConfigGroup group : groups())
 	{
-		for (BotConfigSetting setting : group.settings())
+		for (BotConfigOption setting : group.options())
 		{
 			// The bot config is considered valid when there is atleast on valid setting
 			if (setting.isValid()) return true;

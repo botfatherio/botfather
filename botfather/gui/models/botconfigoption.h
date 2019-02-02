@@ -1,11 +1,11 @@
-#ifndef BOTCONFIGSETTING_H
-#define BOTCONFIGSETTING_H
+#ifndef BOTCONFIGOPTION_H
+#define BOTCONFIGOPTION_H
 
 #include <QVariant>
 #include <QMap>
 #include "botmanifestnode.h"
 
-class BotConfigSetting : public BotManifestNode
+class BotConfigOption : public BotManifestNode
 {
 public:
 	using BotManifestNode::BotManifestNode;
@@ -44,4 +44,4 @@ public:
 	int max() const;
 };
 
-#endif // BOTCONFIGSETTING_H
+#endif // BOTCONFIGOPTION_H
