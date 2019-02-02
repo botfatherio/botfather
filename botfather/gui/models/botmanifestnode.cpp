@@ -35,6 +35,24 @@ QString BotManifestNode::getStringBykey(const QString &property_key) const
 	return jsonObject()[property_key].toString();
 }
 
+int BotManifestNode::getIntegerByKey(const QString &property_key) const
+{
+	if (!jsonObject().contains(property_key) || !jsonObject()[property_key].isDouble())
+	{
+		return 0;
+	}
+	return jsonObject()[property_key].toInt();
+}
+
+double BotManifestNode::getNumberByKey(const QString &property_key) const
+{
+	if (!jsonObject().contains(property_key) || !jsonObject()[property_key].isDouble())
+	{
+		return 0;
+	}
+	return jsonObject()[property_key].toDouble();
+}
+
 QJsonObject BotManifestNode::jsonObject() const
 {
 	return m_json_object;

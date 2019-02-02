@@ -19,6 +19,12 @@ public:
 	// Returns the the string value corresponding to the key if such exists, otherwise an null QString
 	QString getStringBykey(const QString &property_key) const;
 
+	// Returns the integer value corresponding to the key if such exists, otherwise 0
+	int getIntegerByKey(const QString &property_key) const;
+
+	// Returns the number value corresponding to the key if such exists, otherwise 0
+	double getNumberByKey(const QString &property_key) const;
+
 protected:
 	QJsonObject jsonObject() const;
 	void setJsonObject(const QJsonObject &json_object);
