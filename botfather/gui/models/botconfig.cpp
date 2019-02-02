@@ -1,6 +1,19 @@
 #include "botconfig.h"
 #include <QJsonArray>
 
+bool BotConfig::isValid() const
+{
+	for (BotConfigGroup group : groups())
+	{
+		for (BotConfigSetting setting : group.settings())
+		{
+			// The bot config is considered valid when there is atleast on valid setting
+			if (setting.isValid()) return true;
+		}
+	}
+	return false;
+}
+
 QVector<BotConfigGroup> BotConfig::groups() const
 {
 	QVector<BotConfigGroup> groups;
