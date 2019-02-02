@@ -119,6 +119,11 @@ void BotConfigWidget::renderNumberSetting(BotConfigSetting *setting, QFormLayout
 	QDoubleSpinBox *spinbox = new QDoubleSpinBox();
 	form_layout->addRow(setting->label(), spinbox);
 
+	if (setting->hasRange())
+	{
+		spinbox->setRange(setting->min(), setting->max());
+	}
+
 	spinbox->setValue(setting->value().toDouble());
 	connect(spinbox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), [setting](double new_value){
 		setting->setValue(new_value);
@@ -129,6 +134,11 @@ void BotConfigWidget::renderIntegerSetting(BotConfigSetting *setting, QFormLayou
 {
 	QSpinBox *spinbox = new QSpinBox();
 	form_layout->addRow(setting->label(), spinbox);
+
+	if (setting->hasRange())
+	{
+		spinbox->setRange(setting->min(), setting->max());
+	}
 
 	spinbox->setValue(setting->value().toInt());
 	connect(spinbox, QOverload<int>::of(&QSpinBox::valueChanged), [setting](int new_value){

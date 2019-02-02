@@ -33,6 +33,15 @@ public:
 	QString label() const;
 	QVariant fallback() const;
 	QMap<QString, QString> choices() const;
+
+	// Returns true if the setting has a valid range.
+	bool hasRange() const;
+
+	// Returns the settings (range) min value
+	int min() const;
+
+	// Returns the settings (range) max value
+	int max() const;
 };
 
 #endif // BOTCONFIGSETTING_H

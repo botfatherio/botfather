@@ -97,3 +97,18 @@ QMap<QString, QString> BotConfigSetting::choices() const
 
 	return choices;
 }
+
+bool BotConfigSetting::hasRange() const
+{
+	return jsonObject().contains("min") && jsonObject().contains("max") && jsonObject()["min"].isDouble() && jsonObject()["max"].isDouble();
+}
+
+int BotConfigSetting::min() const
+{
+	return getIntegerByKey("min");
+}
+
+int BotConfigSetting::max() const
+{
+	return getIntegerByKey("max");
+}
