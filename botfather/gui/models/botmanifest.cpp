@@ -26,11 +26,6 @@ bool BotManifest::loadFromFile(const QString &manifest_path)
 	return true;
 }
 
-QString BotManifest::name() const
-{
-	return getStringBykey("name");
-}
-
 QString BotManifest::version() const
 {
 	return getStringBykey("manifest_version");
