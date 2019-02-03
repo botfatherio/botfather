@@ -110,17 +110,6 @@ void BrowserApp::OnBeforeCommandLineProcessing(const CefString& process_type, Ce
 	// Loads system plugins like flash in newer CEF versions.
 	command_line->AppendSwitch("load-extension");
 	
-	// Enable hardware acceleration. CAUTION! This may break offscreen rendering in certain
-	// CEF builds.
-	//command_line->AppendSwitch("enable-gpu");
-	
-	// Use software rendering and compositing (disable GPU) for increased FPS
-	// and decreased CPU usage. This will also disable WebGL so remove these
-	// switches if you need that capability.
-	// See https://bitbucket.org/chromiumembedded/cef/issues/1257 for details.
-	command_line->AppendSwitch("disable-gpu");
-	command_line->AppendSwitch("disable-gpu-compositing");
-	
 	// Synchronize the frame rate between all processes. This results in
 	// decreased CPU usage by avoiding the generation of extra frames that
 	// would otherwise be discarded. The frame rate can be set at browser
@@ -136,7 +125,4 @@ void BrowserApp::OnBeforeCommandLineProcessing(const CefString& process_type, Ce
 	// On some CEF versions only commandline args disable sandbox properly
 	command_line->AppendSwitch("no-sandbox");
 	command_line->AppendSwitch("disable-setuid-sandbox");
-	
-	//command_line->AppendSwitch("show-paint-rects");
-	//command_line->AppendSwitch("disable-accelerated-video-decode");
 }
