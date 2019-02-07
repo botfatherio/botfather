@@ -109,6 +109,9 @@ void BrowserApp::OnBeforeCommandLineProcessing(const CefString& process_type, Ce
 
 	// Loads system plugins like flash in newer CEF versions.
 	command_line->AppendSwitch("load-extension");
+
+	//  Turn on hardware acceleration (required by some webgl apps and games)
+	command_line->AppendSwitch("enable-gpu");
 	
 	// Synchronize the frame rate between all processes. This results in
 	// decreased CPU usage by avoiding the generation of extra frames that
