@@ -229,7 +229,6 @@
    <addaction name="del_bot_action"/>
    <addaction name="run_bot_action"/>
    <addaction name="stop_bot_action"/>
-   <addaction name="open_browser_action"/>
    <addaction name="open_android_action"/>
   </widget>
   <action name="add_bot_action">
@@ -281,21 +280,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+G</string>
-   </property>
-  </action>
-  <action name="open_browser_action">
-   <property name="icon">
-    <iconset resource="../res/botfather.qrc">
-     <normaloff>:/icons/icons/icons8-browse-page-32.png</normaloff>:/icons/icons/icons8-browse-page-32.png</iconset>
-   </property>
-   <property name="text">
-    <string>Browser</string>
-   </property>
-   <property name="toolTip">
-    <string>Show the integrated browser</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+B</string>
    </property>
   </action>
   <action name="stop_bot_action">

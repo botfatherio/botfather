@@ -1,22 +1,20 @@
 #include "browser_address_bar.h"
-#include "../../engine/modules/browser/browser.h"
-#include "../../engine/modules/browser/browser_client.h"
 
 BrowserAddressBar::BrowserAddressBar(QWidget* parent) : QLineEdit(parent)
 {
-	this->setClearButtonEnabled(true);
-	this->setMaxLength(2000); // Url max length
-	connect(this, SIGNAL(returnPressed()), SLOT(navigate()));
-	connect(BrowserClient::instance(), SIGNAL(loadingFinishedSignal()), this, SLOT(updateUrl()));
+	//setClearButtonEnabled(true);
+	//setMaxLength(2000); // Url max length
+	//connect(this, SIGNAL(returnPressed()), SLOT(navigate()));
+	//connect(OldBrowserClient::instance(), SIGNAL(loadingFinishedSignal()), this, SLOT(updateUrl()));
 }
 
 void BrowserAddressBar::navigate()
 {
 	// CEF does a good job in interpreting text as urls. No need to help out.
-	Browser::loadUrl(this->text());
+	//OldBrowser::loadUrl(this->text());
 }
 
 void BrowserAddressBar::updateUrl()
 {
-	this->setText(Browser::getUrl().toString());
+	//setText(OldBrowser::getUrl().toString());
 }

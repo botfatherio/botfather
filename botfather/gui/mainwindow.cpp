@@ -14,7 +14,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	m_tray_icon = new QSystemTrayIcon(windowIcon(), this);
 	m_bot_list_model = new BotListModel(this);
 	m_script_manager_dialog = new ScriptManagerDialog(this);
-	m_browser_window = new BrowserWindow; // Don't give it a parent, otherwise it's blocking the control window on microsoft windows
 	m_android_dialog = new AndroidDialog(this);
 	m_preferences_dialog = new PreferencesDialog(this);
 	m_license_api_client = new LicenseApiClient(this);
@@ -46,7 +45,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(m_bot_list_model, &BotListModel::botRemoved, this, &MainWindow::removeWidgetForBot);
 	connect(ui->bot_list_view->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &MainWindow::handleRowChange);
 
-	connect(ui->open_browser_action, &QAction::triggered, m_browser_window, &BrowserWindow::show);
 	connect(ui->open_android_action, &QAction::triggered, m_android_dialog, &AndroidDialog::show);
 	connect(ui->preferences_action, &QAction::triggered, m_preferences_dialog, &PreferencesDialog::exec);
 	connect(ui->about_qt_action, &QAction::triggered, [this](){ QMessageBox::aboutQt(this); });
@@ -87,7 +85,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-	m_browser_window->deleteLater(); // Has no parent
 	delete ui;
 }
 

@@ -6,7 +6,6 @@
 #include <QHash>
 #include "models/botlistmodel.h"
 #include "scriptmanager/scriptmanagerdialog.h"
-#include "browserwindow/browser_window.h"
 #include "androiddialog/android_dialog.h"
 #include "preferences/preferences_dialog.h"
 #include "authdialog/auth_dialog.h"
@@ -50,7 +49,6 @@ private:
 	BotListModel *m_bot_list_model;
 	QHash<QString, BotWidget*> m_bot_path_to_widget_map;
 	ScriptManagerDialog *m_script_manager_dialog;
-	BrowserWindow *m_browser_window;
 	AndroidDialog *m_android_dialog;
 	PreferencesDialog *m_preferences_dialog;
 	LicenseApiClient *m_license_api_client;
