@@ -1,10 +1,10 @@
 #include <QApplication>
 #include <QSettings>
 #include <QTime>
-#include "shared/qsettingsjsonformat.h"
-#include "gui/mainwindow.h"
-#include "engine/modules/browser/browser.h"
 #include <git2.h>
+#include "shared/qsettingsjsonformat.h"
+#include "engine/modules/browser/browser_host.h"
+#include "gui/mainwindow.h"
 
 #if defined(_WIN32) || defined(_WIN64)
 #include <Windows.h>
@@ -82,7 +82,8 @@ int main(int argc, char *argv[])
 #if defined(_WIN32) || defined(_WIN64)
 		Browser::init(__argc, __argv);
 #else
-		Browser::init(argc, argv);
+		BrowserHost::instance()->init(argc, argv);
+		BrowserHost::instance()->bind(&a);
 #endif
 
     // Init libgit2 once and never shut it down. Shutting libgit2 down caused crashes related to multithreading
@@ -105,7 +106,5 @@ int main(int argc, char *argv[])
 	// powering the CEF event loop will stop aswell. After that the CEF can be shut
 	// down calling Browser::quit(). Subsequently both cef and qt event and message loops
 	// stopped, the applications exit code can be returned.
-	int return_code = a.exec();
-	Browser::quit();
-	return return_code;
+	return a.exec();
 }

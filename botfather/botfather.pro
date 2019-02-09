@@ -89,9 +89,6 @@ HEADERS += \
     ./engine/modules/android/adb_device_info.h \
     ./engine/modules/android/adb_wrapper.h \
     ./engine/modules/android/android_settings.h \
-    ./engine/modules/browser/browser.h \
-    ./engine/modules/browser/browser_app.h \
-    ./engine/modules/browser/browser_client.h \
     ./engine/modules/browser/browser_settings.h \
     ./engine/modules/desktop/desktop.h \
     ./engine/modules/desktop/keymap.h \
@@ -162,9 +159,6 @@ SOURCES += \
     ./engine/modules/algorithm/dijkstra.cpp \
     ./engine/modules/android/adb_device_info.cpp \
     ./engine/modules/android/adb_wrapper.cpp \
-    ./engine/modules/browser/browser.cpp \
-    ./engine/modules/browser/browser_app.cpp \
-    ./engine/modules/browser/browser_client.cpp \
     ./engine/modules/vision/vision.cpp \
     ./engine/prototypes/abstract_prototype.cpp \
     ./engine/prototypes/color_prototype.cpp \
@@ -214,7 +208,11 @@ SOURCES += \
     engine/apis/config_api.cpp \
     gui/models/botconfigoption.cpp \
     gui/maintenancetool/maintenancetool.cpp \
-    shared/qsettingsjsonformat.cpp
+    shared/qsettingsjsonformat.cpp \
+    engine/modules/browser/browser_app.cpp \
+    engine/modules/browser/browser_client.cpp \
+    engine/modules/browser/browser_creator.cpp \
+    engine/modules/browser/browser_host.cpp
 FORMS += \
     ./gui/androiddialog/android_dialog.ui \
     ./gui/authdialog/auth_dialog.ui \
