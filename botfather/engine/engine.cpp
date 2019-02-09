@@ -17,12 +17,10 @@
 #include "prototypes/url_prototype.h"
 #include "apis/helper_api.h"
 #include "apis/vision_api.h"
-#include "apis/browser_api.h"
 #include "apis/android_api.h"
 #include "apis/desktop_api.h"
 #include "apis/algorithm_api.h"
 #include "apis/config_api.h"
-#include "modules/browser/browser.h"
 
 Engine::Engine(QString script_path, const QString &config_ini_path)
 	: script_path(script_path)
@@ -79,11 +77,7 @@ void Engine::runScript()
     qsrand(static_cast<uint>(QTime::currentTime().msec()));
 #endif
 
-	// Reset settings eventually made by a previously run script.
-	Browser::unmodifyResources();
-	
 	REGISTER_API(script_engine, this, AndroidAPI, "Android");
-	REGISTER_API(script_engine, this, BrowserAPI, "Browser");
 	REGISTER_API(script_engine, this, DesktopAPI, "Desktop");
 	REGISTER_API(script_engine, this, HelperAPI, "Helper");
 	REGISTER_API(script_engine, this, VisionAPI, "Vision");

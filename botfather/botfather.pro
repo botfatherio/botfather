@@ -81,7 +81,6 @@ HEADERS += \
     ./auth/license_api_client.h \
     ./auth/rest_api_client.h \
     ./engine/apis/android_api.h \
-    ./engine/apis/browser_api.h \
     ./engine/apis/desktop_api.h \
     ./engine/apis/helper_api.h \
     ./engine/apis/vision_api.h \
@@ -145,12 +144,17 @@ HEADERS += \
     engine/apis/config_api.h \
     gui/models/botconfigoption.h \
     gui/maintenancetool/maintenancetool.h \
-    shared/qsettingsjsonformat.h
+    shared/qsettingsjsonformat.h \
+    engine/prototypes/browser_prototype.h \
+    engine/types/browser.h \
+    engine/modules/browser/browser_app.h \
+    engine/modules/browser/browser_client.h \
+    engine/modules/browser/browser_creator.h \
+    engine/modules/browser/browser_host.h
 SOURCES += \
     ./auth/license_api_client.cpp \
     ./auth/rest_api_client.cpp \
     ./engine/apis/android_api.cpp \
-    ./engine/apis/browser_api.cpp \
     ./engine/apis/desktop_api.cpp \
     ./engine/apis/helper_api.cpp \
     ./engine/apis/vision_api.cpp \
