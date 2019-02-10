@@ -15,6 +15,7 @@
 #include "prototypes/size_prototype.h"
 #include "prototypes/rect_prototype.h"
 #include "prototypes/url_prototype.h"
+#include "prototypes/browser_prototype.h"
 #include "apis/helper_api.h"
 #include "apis/vision_api.h"
 #include "apis/android_api.h"
@@ -94,6 +95,7 @@ void Engine::runScript()
 	REGISTER_PROTO(script_engine, SizePrototype, QSize, "Size");
 	REGISTER_PROTO(script_engine, RectPrototype, QRect, "Rect");
 	REGISTER_PROTO(script_engine, UrlPrototype, QUrl, "Url");
+	REGISTER_PROTO(script_engine, BrowserPrototype, Browser, "Browser");
 
 	// Try to open the submitted script file.
 	QFile script_file(script_path);
@@ -122,6 +124,8 @@ void Engine::runScript()
 	} else {
 		emit log("Bot script execution finished.", LogSource::System);
 	}
+
+	// FIXME: Close all non persistent browsers of this script.
 
 	emit stopped(!result.isError());
 }
