@@ -2,6 +2,7 @@
 #define BFP_ENGINE_MODULES_BROWSER_BROWSER_SETTINGS_H
 
 #include <QString>
+#include <QSize>
 
 namespace browser
 {
@@ -21,6 +22,8 @@ namespace browser
 		static const bool USE_SYSTEM_FLASH = true;
 		static const bool USE_BUNDLED_FLASH = true;
 		static const bool USE_CUSTOM_FLASH = !USE_BUNDLED_FLASH;
+
+		static const QSize SIZE(WIDTH, HEIGHT);
 
 		static const QString BUNDLED_FLASH_SO_PATH = "/app/extra/flash/libpepflashplayer.so";
 		static const QString BUNDLED_FLASH_MANIFEST_PATH = "/app/extra/flash/manifest.json";
