@@ -38,18 +38,21 @@ CefRefPtr<CefBrowser> BrowserCreator::createBrowserSync(const QString &name, con
 		qDebug() << "Creating browser from non main thread";
 
 		// Browsers can only be created synchronious on the main thread.
+		// Run a local event loop until the browser is ready. Then continue the control flow.
+
+		QEventLoop *event_loop = new QEventLoop;
 		browser_creator->moveToThread(QApplication::instance()->thread());
-		runInMainThread([browser_creator](){
+
+		runInMainThread([browser_creator, event_loop](){
 			browser_creator->process();
+			event_loop->quit();
 		});
 
-		// Run a local event loop until the browser is ready. Then continue the control flow.
-		QEventLoop loop;
-		QObject::connect(browser_creator, &BrowserCreator::finished, &loop, &QEventLoop::quit);
-		loop.exec();
-
+		event_loop->exec();
 		browser = browser_creator->browser();
+
 		browser_creator->deleteLater();
+		event_loop->deleteLater();
 	}
 
 	return browser;
