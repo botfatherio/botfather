@@ -209,6 +209,7 @@ SOURCES += \
     gui/models/botconfigoption.cpp \
     gui/maintenancetool/maintenancetool.cpp \
     shared/qsettingsjsonformat.cpp \
+    engine/prototypes/browser_prototype.cpp \
     engine/types/browser.cpp \
     engine/modules/browser/browser_app.cpp \
     engine/modules/browser/browser_client.cpp \
