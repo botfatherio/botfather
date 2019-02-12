@@ -11,7 +11,7 @@ CefRefPtr<CefBrowser> BrowserCreator::createBrowserSync(const QString &name, con
 	CefRefPtr<CefBrowser> browser;
 	BrowserCreator *browser_creator = new BrowserCreator(name, size);
 
-	if (QThread::currentThread() == QApplication::instance()->thread())
+	if (CefCurrentlyOn(TID_UI))
 	{
 		qDebug() << "Creating browser from main thread";
 		browser_creator->process();
