@@ -131,7 +131,8 @@ void Engine::runScript()
 		emit log("Bot script execution finished.", LogSource::System);
 	}
 
-	// FIXME: Close all non persistent browsers of this script.
+	// Close all unnamed/non-persistent browsers of this session
+	BrowserHost::instance()->closeManagedUnnamedBrowsers(id());
 
 	emit stopped(!result.isError());
 }
