@@ -23,8 +23,9 @@
 #include "apis/algorithm_api.h"
 #include "apis/config_api.h"
 
-Engine::Engine(QString script_path, const QString &config_ini_path)
-	: script_path(script_path)
+Engine::Engine(const QString &id, QString script_path, const QString &config_ini_path)
+	: m_id(id)
+	, script_path(script_path)
 	, m_config_ini_path(config_ini_path)
 {
 	// Otherwise Bot::LogSource can't be used with slots
@@ -32,7 +33,7 @@ Engine::Engine(QString script_path, const QString &config_ini_path)
 
 	// The script engines parent MUST BE the bot instance. This way we can obtain a pointer to the bot
 	// instance in static functions (like constructors) by casting the engines parent to a Bot*.
-    script_engine = new QScriptEngine(this);
+	script_engine = new QScriptEngine(this);
 }
 
 Engine::~Engine()
@@ -41,6 +42,11 @@ Engine::~Engine()
 	// when the engine gets destroyed. The advise to call collectGarbage before deleting it.
 	script_engine->collectGarbage();
 	//delete script_engine; // has bot as parent.
+}
+
+QString Engine::id() const
+{
+	return m_id;
 }
 
 QString Engine::getAbsoluteScriptDirPath()

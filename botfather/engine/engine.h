@@ -12,7 +12,7 @@ class Engine : public QObject
 
 public:
 	// Giving Bot a parent results in: QObject::moveToThread: Cannot move objects with a parent
-	Engine(QString script_path, const QString &config_ini_path);
+	Engine(const QString &id, QString script_path, const QString &config_ini_path);
 	~Engine();
 
 	enum LogSource{
@@ -21,6 +21,8 @@ public:
 		Script,
 		Debug
 	};
+
+	QString id() const;
 	
 	// Considers relative paths relative to the scripts dir and makes them absolute.
 	QString normalisePath(QString path);
@@ -48,6 +50,7 @@ protected:
 	
 private:
 	QScriptEngine *script_engine;
+	QString m_id;
 	QString script_path;
 	QString m_config_ini_path;
 };
