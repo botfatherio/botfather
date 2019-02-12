@@ -147,7 +147,8 @@ HEADERS += \
     engine/modules/browser/browser_app.h \
     engine/modules/browser/browser_client.h \
     engine/modules/browser/browser_creator.h \
-    engine/modules/browser/browser_host.h
+    engine/modules/browser/browser_host.h \
+    engine/modules/browser/browser_util.h
 SOURCES += \
     ./auth/license_api_client.cpp \
     ./auth/rest_api_client.cpp \
@@ -214,7 +215,8 @@ SOURCES += \
     engine/modules/browser/browser_app.cpp \
     engine/modules/browser/browser_client.cpp \
     engine/modules/browser/browser_creator.cpp \
-    engine/modules/browser/browser_host.cpp
+    engine/modules/browser/browser_host.cpp \
+    engine/modules/browser/browser_util.cpp
 FORMS += \
     ./gui/androiddialog/android_dialog.ui \
     ./gui/authdialog/auth_dialog.ui \

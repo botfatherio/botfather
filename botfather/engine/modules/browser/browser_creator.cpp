@@ -4,22 +4,7 @@
 #include <QThread>
 #include <QDebug>
 #include "include/wrapper/cef_helpers.h"
-
-static void runInMainThread(std::function<void()> callback)
-{
-	QTimer *timer = new QTimer;
-	timer->setSingleShot(true);
-	timer->moveToThread(QApplication::instance()->thread());
-
-	QObject::connect(timer, &QTimer::timeout, [=]()
-	{
-		// This code will run in the main thread
-		callback();
-		timer->deleteLater();
-	});
-
-	QMetaObject::invokeMethod(timer, "start", Qt::QueuedConnection, Q_ARG(int, 0));
-}
+#include "browser_util.h"
 
 CefRefPtr<CefBrowser> BrowserCreator::createBrowserSync(const QString &name, const QSize &size)
 {
@@ -43,7 +28,7 @@ CefRefPtr<CefBrowser> BrowserCreator::createBrowserSync(const QString &name, con
 		QEventLoop *event_loop = new QEventLoop;
 		browser_creator->moveToThread(QApplication::instance()->thread());
 
-		runInMainThread([browser_creator, event_loop](){
+		BrowserUtil::runInMainThread([browser_creator, event_loop](){
 			browser_creator->process();
 			event_loop->quit();
 		});
