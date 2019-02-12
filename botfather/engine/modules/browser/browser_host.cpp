@@ -1,9 +1,11 @@
 #include "browser_host.h"
 #include <QStandardPaths>
 #include <QApplication>
+#include <QThread>
 #include <QDebug>
 #include "include/wrapper/cef_helpers.h"
 #include "browser_creator.h"
+#include "browser_util.h"
 
 #if defined(_WIN32) || defined(_WIN64)
 	#include <windows.h>
@@ -46,12 +48,20 @@ void BrowserHost::bind(QCoreApplication *app)
 			m_cef_message_loop_timer = nullptr;
 		}
 	});
-	QObject::connect(app, &QCoreApplication::destroyed, CefShutdown);
+	QObject::connect(app, &QCoreApplication::destroyed, [this](){
+		this->quit(); // TODO: eventually make the BrowserHost a QObject
+	});
 
 	m_cef_message_loop_timer = new QTimer();
 	m_cef_message_loop_timer->setInterval(1);
 	QObject::connect(m_cef_message_loop_timer, &QTimer::timeout, CefDoMessageLoopWork);
 	m_cef_message_loop_timer->start();
+}
+
+void BrowserHost::quit()
+{
+	closeManagedBrowsers();
+	CefShutdown();
 }
 
 CefSettings BrowserHost::cefSettings() const
@@ -99,9 +109,101 @@ CefSettings BrowserHost::cefSettings() const
 	return cef_settings;
 }
 
-CefRefPtr<CefBrowser> BrowserHost::createManagedBrowser(const QSize &size, const QString &name)
+CefRefPtr<CefBrowser> BrowserHost::createManagedBrowser(const QString &group, const QString &name, const QSize &size)
 {
-	// TODO: store a reference to the browser before returning it if it's persistent.
-	// TODO: check whether the browser were about to create already exists (is persistent and has been created before)
-	return BrowserCreator::createBrowserSync(name, size);
+	if (!name.isEmpty() && m_map_of_grouped_named_browsers.contains(group) && m_map_of_grouped_named_browsers[group].contains(name))
+	{
+		qDebug() << "Returning aleady existing browser:" << group << name;
+		return m_map_of_grouped_named_browsers[group][name];
+	}
+
+	CefRefPtr<CefBrowser> browser = BrowserCreator::createBrowserSync(name, size);
+
+	// Both named and unnamed browsers and their group must be remembered.
+	// That way they can be closed and freed when they are no longer needed.
+	// In our case a browsers group is the bot who created the browser.
+
+	if (name.isEmpty())
+	{
+		// Unnamed browsers an empty name and can't be stored in the map of
+		// named browsers to avoid name/key collisions. Random names won't
+		// work as they limit the script-writers choice of name.
+		// Prefixing doesn't work either as every browser would then be
+		// considered named/persistent.
+		qDebug() << "Creating new unnamed browser in:" << group;
+		m_list_of_grouped_unnamed_browsers[group].append(browser);
+		return browser;
+	}
+
+	qDebug() << "Creating new named browser:" << name << group;
+	m_map_of_grouped_named_browsers[group][name] = browser;
+	return browser;
+}
+
+void BrowserHost::closeManagedBrowsers()
+{
+	QHashIterator<QString, QHash<QString, CefRefPtr<CefBrowser>>> groups_it(m_map_of_grouped_named_browsers);
+	while (groups_it.hasNext())
+	{
+		groups_it.next();
+		closeManagedBrowsers(groups_it.key());
+	}
+}
+
+void BrowserHost::closeManagedBrowsers(const QString &group)
+{
+	closeManagedNamedBrowsers(group);
+	closeManagedUnnamedBrowsers(group);
+}
+
+void BrowserHost::closeManagedNamedBrowsers(const QString &group)
+{
+	if (!m_map_of_grouped_named_browsers.contains(group))
+	{
+		return;
+	}
+
+	QHash<QString, CefRefPtr<CefBrowser>> group_map = m_map_of_grouped_named_browsers.take(group);
+	QHashIterator<QString, CefRefPtr<CefBrowser>> browser_it(group_map);
+
+	while (browser_it.hasNext())
+	{
+		browser_it.next();
+		CefRefPtr<CefBrowser> browser = group_map.take(browser_it.key());
+
+		qDebug() << "Closing named browser:" << group << browser_it.key();
+		closeCefBrowser(browser);
+	}
+}
+
+void BrowserHost::closeManagedUnnamedBrowsers(const QString &group)
+{
+	if (!m_list_of_grouped_unnamed_browsers.contains(group))
+	{
+		return;
+	}
+
+	while (!m_list_of_grouped_unnamed_browsers[group].isEmpty())
+	{
+		CefRefPtr<CefBrowser> browser = m_list_of_grouped_unnamed_browsers[group].takeLast();
+		closeCefBrowser(browser);
+	}
+}
+
+void BrowserHost::closeCefBrowser(CefRefPtr<CefBrowser> browser)
+{
+	// If this method is called when the application quits, we can't use the
+	// qapplications instance to check whether we are in the main thread
+	// because its already destroyed.
+
+	if (!CefCurrentlyOn(TID_UI))
+	{
+		BrowserUtil::runInMainThread([browser](){
+			closeCefBrowser(browser);
+		});
+		return;
+	}
+
+	CEF_REQUIRE_UI_THREAD();
+	browser->GetHost()->CloseBrowser(true);
 }
