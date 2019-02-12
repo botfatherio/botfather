@@ -1,28 +1,34 @@
 #include "browser_prototype.h"
+#include "../engine.h"
 
 // We must cast to Browser* otherwise the browsers pointers won't be valid.
 #define THIS_BROWSER_P() qscriptvalue_cast<Browser*>(thisObject())
 
 QScriptValue BrowserPrototype::constructor(QScriptContext *context, QScriptEngine *engine)
 {
+	// Each bot/engine instance has its own browsers. When creating a browser we must
+	// tell the browser host which group/bot it belongs in. The group name used here
+	// is the bots ID.
+	Engine *vm = qobject_cast<Engine*>(engine->parent());
+
 	// new Browser();
 	if (context->argumentCount() == 0)
 	{
-		return engine->toScriptValue(Browser());
+		return engine->toScriptValue(Browser(vm->id()));
 	}
 
 	// new Browser(size);
 	if (context->argumentCount() == 1 && isQSize(context->argument(0)))
 	{
 		QSize size(qscriptvalue_cast<QSize>(context->argument(0)));
-		return engine->toScriptValue(Browser(size));
+		return engine->toScriptValue(Browser(vm->id(), size));
 	}
 
 	// new Browser(name);
 	if (context->argumentCount() == 1 && context->argument(0).isString())
 	{
 		QString name(context->argument(0).toString());
-		return engine->toScriptValue(Browser(name));
+		return engine->toScriptValue(Browser(vm->id(), name));
 	}
 
 	// new Browser(size, name);
@@ -30,7 +36,7 @@ QScriptValue BrowserPrototype::constructor(QScriptContext *context, QScriptEngin
 	{
 		QSize size(qscriptvalue_cast<QSize>(context->argument(0)));
 		QString name(context->argument(1).toString());
-		return engine->toScriptValue(Browser(size, name));
+		return engine->toScriptValue(Browser(vm->id(), name, size));
 	}
 
 	NO_MATCHING_CTOR("Browser", BROWSER_PROTOTYPE_DOCS)

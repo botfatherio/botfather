@@ -4,25 +4,28 @@
 #include <QDebug>
 #include "../modules/browser/browser_settings.h"
 
-Browser::Browser(const QSize &size, const QString &name)
+Browser::Browser(const QString &group, const QString &name, const QSize &size)
 {
-	m_cef_browser = BrowserHost::instance()->createManagedBrowser(size, name);
+	m_cef_browser = BrowserHost::instance()->createManagedBrowser(group, name, size);
 	CefRefPtr<CefClient> cef_client = m_cef_browser->GetHost()->GetClient();
 	m_browser_client = static_cast<BrowserClient*>(cef_client.get());
 	Q_ASSERT(m_browser_client);
 }
 
-Browser::Browser(const QSize &size) : Browser(size, QString())
+Browser::Browser(const QString &group, const QString &name)
+	: Browser(group, name, browser::fallback::SIZE)
 {
 
 }
 
-Browser::Browser(const QString &name) : Browser(browser::fallback::SIZE, name)
+Browser::Browser(const QString &group, const QSize &size)
+	: Browser(group, QString(), size)
 {
 
 }
 
-Browser::Browser() : Browser(QString())
+Browser::Browser(const QString &group)
+	: Browser(group, QString())
 {
 
 }

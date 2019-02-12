@@ -9,10 +9,11 @@
 class Browser
 {
 public:
-	Browser(const QSize &size, const QString &name);
-	Browser(const QSize &size);
-	Browser(const QString &name);
-	Browser();
+	Browser(const QString &group, const QString &name, const QSize &size);
+	Browser(const QString &group, const QString &name);
+	Browser(const QString &group, const QSize &size);
+	Browser(const QString &group);
+	Browser() {} // Required for metatype registration. Never use it
 
 	QImage takeScreenshot();
 	QSize size() const;
