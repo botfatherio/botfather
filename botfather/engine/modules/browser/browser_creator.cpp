@@ -6,10 +6,10 @@
 #include "include/wrapper/cef_helpers.h"
 #include "browser_util.h"
 
-CefRefPtr<CefBrowser> BrowserCreator::createBrowserSync(const QString &name, const QSize &size)
+CefRefPtr<CefBrowser> BrowserCreator::createBrowserSync(const QString &id, const QSize &size)
 {
 	CefRefPtr<CefBrowser> browser;
-	BrowserCreator *browser_creator = new BrowserCreator(name, size);
+	BrowserCreator *browser_creator = new BrowserCreator(id, size);
 
 	if (CefCurrentlyOn(TID_UI))
 	{
@@ -43,10 +43,10 @@ CefRefPtr<CefBrowser> BrowserCreator::createBrowserSync(const QString &name, con
 	return browser;
 }
 
-BrowserCreator::BrowserCreator(const QString &name, const QSize &size, QObject *parent)
+BrowserCreator::BrowserCreator(const QString &id, const QSize &size, QObject *parent)
 	: QObject(parent)
 	, m_browser_size(size)
-	, m_browser_name(name)
+	, m_browser_id(id)
 {
 
 }
@@ -60,7 +60,7 @@ void BrowserCreator::process()
 {
 	CEF_REQUIRE_UI_THREAD();
 
-	BrowserClient *browser_client = new BrowserClient(m_browser_name, m_browser_size);
+	BrowserClient *browser_client = new BrowserClient(m_browser_id, m_browser_size);
 	CefRefPtr<BrowserClient> handler(browser_client);
 	CefBrowserSettings browser_settings;
 

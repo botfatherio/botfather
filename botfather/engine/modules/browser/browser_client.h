@@ -20,11 +20,10 @@ class BrowserClient
 	Q_OBJECT
 
 public:
-	//explicit BrowserClient();
-	explicit BrowserClient(const QString &name, const QSize &size);
+	explicit BrowserClient(const QString &id, const QSize &size);
 
 	// Used to identify persistent browsers. Anonymous/non-persistent browsers have no name.
-	QString name() const;
+	QString id() const;
 
 	// Returns the browser fixed size
 	QSize size() const;
@@ -83,7 +82,7 @@ signals: // FIXME: rename those signals. and remote the signal suffix
 	void loadingStateChangedSignal(bool state);
 
 private:
-	QString m_name;
+	QString m_id;
 	QSize m_size;
 	QReadWriteLock m_screenshot_lock;
 	QImage m_screenshot;

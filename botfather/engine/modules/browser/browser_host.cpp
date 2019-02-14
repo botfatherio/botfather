@@ -109,83 +109,74 @@ CefSettings BrowserHost::cefSettings() const
 	return cef_settings;
 }
 
-CefRefPtr<CefBrowser> BrowserHost::createManagedBrowser(const QString &group, const QString &name, const QSize &size)
+CefRefPtr<CefBrowser> BrowserHost::createManagedBrowser(const QString &group_name, const QSize &size, const QString &id)
 {
-	if (!name.isEmpty() && m_map_of_grouped_named_browsers.contains(group) && m_map_of_grouped_named_browsers[group].contains(name))
+	if (!id.isEmpty() && m_permanent_browsers.contains(group_name) && m_permanent_browsers[group_name].contains(id))
 	{
-		qDebug() << "Returning aleady existing browser:" << group << name;
-		return m_map_of_grouped_named_browsers[group][name];
+		qDebug() << "Returning existing persistent browser:" << group_name << id;
+		return m_permanent_browsers[group_name][id];
 	}
 
-	CefRefPtr<CefBrowser> browser = BrowserCreator::createBrowserSync(name, size);
+	qDebug() << "Creating new browser:" << group_name << id << size;
+	CefRefPtr<CefBrowser> browser = BrowserCreator::createBrowserSync(id, size);
 
-	// Both named and unnamed browsers and their group must be remembered.
-	// That way they can be closed and freed when they are no longer needed.
-	// In our case a browsers group is the bot who created the browser.
-
-	if (name.isEmpty())
+	if (id.isEmpty())
 	{
-		// Unnamed browsers an empty name and can't be stored in the map of
-		// named browsers to avoid name/key collisions. Random names won't
-		// work as they limit the script-writers choice of name.
-		// Prefixing doesn't work either as every browser would then be
-		// considered named/persistent.
-		qDebug() << "Creating new unnamed browser in:" << group;
-		m_list_of_grouped_unnamed_browsers[group].append(browser);
+		qDebug() << "Storing new temporary browser:" << group_name << size;
+		m_temporary_browsers[group_name].append(browser);
 		return browser;
 	}
 
-	qDebug() << "Creating new named browser:" << name << group;
-	m_map_of_grouped_named_browsers[group][name] = browser;
+	qDebug() << "Storing new permanent browser:" << group_name << id << size;
+	m_permanent_browsers[group_name][id] = browser;
 	return browser;
 }
 
 void BrowserHost::closeManagedBrowsers()
 {
-	QHashIterator<QString, QHash<QString, CefRefPtr<CefBrowser>>> groups_it(m_map_of_grouped_named_browsers);
-	while (groups_it.hasNext())
+	QList<QString> group_names = m_permanent_browsers.keys() + m_temporary_browsers.keys();
+	for (QString group_name : group_names)
 	{
-		groups_it.next();
-		closeManagedBrowsers(groups_it.key());
+		closeManagedBrowsers(group_name);
 	}
 }
 
-void BrowserHost::closeManagedBrowsers(const QString &group)
+void BrowserHost::closeManagedBrowsers(const QString &group_name)
 {
-	closeManagedNamedBrowsers(group);
-	closeManagedUnnamedBrowsers(group);
+	closeManagedPermanentBrowsers(group_name);
+	closeManagedTemporaryBrowsers(group_name);
 }
 
-void BrowserHost::closeManagedNamedBrowsers(const QString &group)
+void BrowserHost::closeManagedPermanentBrowsers(const QString &group_name)
 {
-	if (!m_map_of_grouped_named_browsers.contains(group))
+	if (!m_permanent_browsers.contains(group_name))
 	{
 		return;
 	}
 
-	QHash<QString, CefRefPtr<CefBrowser>> group_map = m_map_of_grouped_named_browsers.take(group);
-	QHashIterator<QString, CefRefPtr<CefBrowser>> browser_it(group_map);
+	QHash<QString, CefRefPtr<CefBrowser>> browsers = m_permanent_browsers.take(group_name);
+	QHashIterator<QString, CefRefPtr<CefBrowser>> browser_it(browsers);
 
 	while (browser_it.hasNext())
 	{
 		browser_it.next();
-		CefRefPtr<CefBrowser> browser = group_map.take(browser_it.key());
+		CefRefPtr<CefBrowser> browser = browsers.take(browser_it.key());
 
-		qDebug() << "Closing named browser:" << group << browser_it.key();
+		qDebug() << "Closing permanent browser:" << group_name << browser_it.key();
 		closeCefBrowser(browser);
 	}
 }
 
-void BrowserHost::closeManagedUnnamedBrowsers(const QString &group)
+void BrowserHost::closeManagedTemporaryBrowsers(const QString &group)
 {
-	if (!m_list_of_grouped_unnamed_browsers.contains(group))
+	if (!m_temporary_browsers.contains(group))
 	{
 		return;
 	}
 
-	while (!m_list_of_grouped_unnamed_browsers[group].isEmpty())
+	while (!m_temporary_browsers[group].isEmpty())
 	{
-		CefRefPtr<CefBrowser> browser = m_list_of_grouped_unnamed_browsers[group].takeLast();
+		CefRefPtr<CefBrowser> browser = m_temporary_browsers[group].takeLast();
 		closeCefBrowser(browser);
 	}
 }

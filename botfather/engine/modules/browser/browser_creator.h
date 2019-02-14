@@ -11,10 +11,10 @@ class BrowserCreator : public QObject
 public:
 	// Creates a CefBrowser synchronous in the applications main thread, no matter what thread this
 	// method is called from.
-	static CefRefPtr<CefBrowser> createBrowserSync(const QString &name, const QSize &size);
+	static CefRefPtr<CefBrowser> createBrowserSync(const QString &id, const QSize &size);
 
 private:
-	explicit BrowserCreator(const QString &name, const QSize &size, QObject *parent = nullptr);
+	explicit BrowserCreator(const QString &id, const QSize &size, QObject *parent = nullptr);
 	CefRefPtr<CefBrowser> browser() const;
 
 private slots:
@@ -25,7 +25,7 @@ signals:
 
 private:
 	QSize m_browser_size;
-	QString m_browser_name;
+	QString m_browser_id;
 	CefRefPtr<CefBrowser> m_browser;
 };
 

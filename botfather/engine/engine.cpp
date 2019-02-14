@@ -132,7 +132,7 @@ void Engine::runScript()
 	}
 
 	// Close all unnamed/non-persistent browsers of this session
-	BrowserHost::instance()->closeManagedUnnamedBrowsers(id());
+	BrowserHost::instance()->closeManagedTemporaryBrowsers(id());
 
 	emit stopped(!result.isError());
 }

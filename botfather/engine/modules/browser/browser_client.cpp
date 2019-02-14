@@ -11,26 +11,17 @@
 #include "include/wrapper/cef_helpers.h"
 #include "browser_settings.h"
 
-/*
-BrowserClient::BrowserClient()
-	: QObject()
-{
-	// Set the default size
-	m_size = QSize(browser::fallback::WIDTH, browser::fallback::HEIGHT);
-}
-*/
-
 BrowserClient::BrowserClient(const QString &name, const QSize &size)
 	: QObject()
-	, m_name(name)
+	, m_id(name)
 	, m_size(size)
 {
 
 }
 
-QString BrowserClient::name() const
+QString BrowserClient::id() const
 {
-	return m_name;
+	return m_id;
 }
 
 QSize BrowserClient::size() const
@@ -40,7 +31,7 @@ QSize BrowserClient::size() const
 
 bool BrowserClient::isPersistent() const
 {
-	return !m_name.isEmpty();
+	return !m_id.isEmpty();
 }
 
 QImage BrowserClient::takeScreenshot()

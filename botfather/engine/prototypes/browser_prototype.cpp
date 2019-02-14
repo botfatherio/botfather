@@ -11,32 +11,34 @@ QScriptValue BrowserPrototype::constructor(QScriptContext *context, QScriptEngin
 	// is the bots ID.
 	Engine *vm = qobject_cast<Engine*>(engine->parent());
 
+	// Validate and cast 'size'
+	QSize size;
+	if (context->argumentCount() >= 1 && isQSize(context->argument(0)))
+	{
+		size = qscriptvalue_cast<QSize>(context->argument(0));
+		if (size.width() < 400 || size.height() < 400)
+		{
+			return context->throwError(QScriptContext::Error::RangeError, "The browsers size must be at least 400x400");
+		}
+	}
+
+	// Validate and cast 'id'
+	QString id;
+	if (context->argumentCount() >= 2 && context->argument(1).isString())
+	{
+		id = context->argument(1).toString();
+		if (id.isEmpty())
+		{
+			return context->throwError(QScriptContext::Error::TypeError, "The browsers id must not be empty");
+		}
+	}
+
 	// new Browser();
-	if (context->argumentCount() == 0)
-	{
-		return engine->toScriptValue(Browser(vm->id()));
-	}
-
 	// new Browser(size);
-	if (context->argumentCount() == 1 && isQSize(context->argument(0)))
+	// new Browser(size, id);
+	if (context->argumentCount() >= 0 && context->argumentCount() <= 2)
 	{
-		QSize size(qscriptvalue_cast<QSize>(context->argument(0)));
-		return engine->toScriptValue(Browser(vm->id(), size));
-	}
-
-	// new Browser(name);
-	if (context->argumentCount() == 1 && context->argument(0).isString())
-	{
-		QString name(context->argument(0).toString());
-		return engine->toScriptValue(Browser(vm->id(), name));
-	}
-
-	// new Browser(size, name);
-	if (context->argumentCount() == 2 && isQSize(context->argument(0)) && context->argument(1).isString())
-	{
-		QSize size(qscriptvalue_cast<QSize>(context->argument(0)));
-		QString name(context->argument(1).toString());
-		return engine->toScriptValue(Browser(vm->id(), name, size));
+		return engine->toScriptValue(Browser(vm->id(), size, id));
 	}
 
 	NO_MATCHING_CTOR("Browser", BROWSER_PROTOTYPE_DOCS)
