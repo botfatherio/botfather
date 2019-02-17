@@ -1,5 +1,6 @@
 #include "browser_api.h"
 #include <QThread>
+#include <QRegularExpression>
 #include <QDebug>
 #include "../modules/browser/browser.h"
 #include "../modules/vision/vision.h"
@@ -14,19 +15,31 @@ QImage BrowserAPI::takeScreenshot()
 	return qimage;
 }
 
-void BrowserAPI::blockResource(const QString &resource)
+void BrowserAPI::blockResource(const QString &resource_pattern)
 {
-	Browser::blockResource(resource);
+	QRegularExpression regex(resource_pattern);
+	if (!regex.isValid())
+	{
+		engine()->currentContext()->throwError(QScriptContext::TypeError, "Invalid regular expression");
+		return;
+	}
+	Browser::blockResource(resource_pattern);
 }
 
-void BrowserAPI::replaceResource(const QString &old_resource, const QString &new_resource)
+void BrowserAPI::replaceResource(const QString &resource_pattern, const QString &new_resource)
 {
-	Browser::replaceResource(old_resource, new_resource);
+	QRegularExpression regex(resource_pattern);
+	if (!regex.isValid())
+	{
+		engine()->currentContext()->throwError(QScriptContext::TypeError, "Invalid regular expression");
+		return;
+	}
+	Browser::replaceResource(resource_pattern, new_resource);
 }
 
-void BrowserAPI::unmodifyResource(const QString &resource)
+void BrowserAPI::unmodifyResource(const QString &resource_pattern)
 {
-	Browser::unmodifyResource(resource);
+	Browser::unmodifyResource(resource_pattern);
 }
 
 void BrowserAPI::unmodifyResources()
