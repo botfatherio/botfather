@@ -19,6 +19,7 @@ public:
 	~ScriptManagerDialog();
 
 public slots:
+	void refetchModelData();
 	void installSelectedScript();
 	void cloneRepository(const Bot::Data &bot_data);
 

@@ -6,6 +6,7 @@
 #include <QUuid>
 #include <QDir>
 #include <QThread>
+#include <QAbstractButton>
 #include <QDebug>
 #include "gitprogressdialog.h"
 #include "../../auth/scriptsapiclient.h"
@@ -33,7 +34,30 @@ ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 	connect(m_ui->view, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(accept())); // Will trigger the line below and close the dialog
 	connect(this, SIGNAL(accepted()), this, SLOT(installSelectedScript()));
 
-	// Don't block the constructor while loading model data
+	m_ui->buttonBox->addButton("Refresh", QDialogButtonBox::ButtonRole::ResetRole);
+	connect(m_ui->buttonBox, &QDialogButtonBox::clicked, [this](QAbstractButton *button)
+	{
+		m_ui->buttonBox->clearFocus(); // Otherwise the reset button will still be highlighted
+		if (m_ui->buttonBox->buttonRole(button) == QDialogButtonBox::ButtonRole::ResetRole)
+		{
+			refetchModelData();
+		}
+	});
+
+	// Load model data initially
+	refetchModelData();
+}
+
+ScriptManagerDialog::~ScriptManagerDialog()
+{
+	delete m_ui;
+}
+
+void ScriptManagerDialog::refetchModelData()
+{
+	// Clear the model view
+	m_repos_model->removeRows(0, m_repos_model->rowCount());
+
 	QThread *sac_thread = new QThread;
 	sac_thread->setObjectName("Scriptlist fetch thread");
 
@@ -57,11 +81,6 @@ ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 	connect(sac, &ScriptsApiClient::finished, m_ui->progressBar, &QProgressBar::hide);
 	connect(sac, &ScriptsApiClient::scriptsReceived, m_repos_model, &BotRepoListModel::addBotRepos);
 	sac_thread->start();
-}
-
-ScriptManagerDialog::~ScriptManagerDialog()
-{
-	delete m_ui;
 }
 
 void ScriptManagerDialog::installSelectedScript()
