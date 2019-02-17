@@ -153,6 +153,7 @@ void BotConfigWidget::renderStringOption(BotConfigOption *option_p, QFormLayout 
 {
 	QLineEdit *lineedit = new QLineEdit();
 	lineedit->setPlaceholderText(option_p->label());
+	lineedit->setClearButtonEnabled(true);
 	form_layout->addRow(option_p->label(), lineedit);
 
 	lineedit->setText(option_p->value().toString());
@@ -166,6 +167,7 @@ void BotConfigWidget::renderPasswordOption(BotConfigOption *option_p, QFormLayou
 	QLineEdit *lineedit = new QLineEdit();
 	lineedit->setPlaceholderText(option_p->label());
 	lineedit->setEchoMode(QLineEdit::EchoMode::Password);
+	lineedit->setClearButtonEnabled(true);
 	form_layout->addRow(option_p->label(), lineedit);
 
 	lineedit->setText(option_p->value().toString());
