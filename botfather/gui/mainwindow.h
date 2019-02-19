@@ -11,7 +11,7 @@
 #include "settingsdialog/settings_dialog.h"
 #include "authdialog/auth_dialog.h"
 #include "botwidgets/botwidget.h"
-#include "../tools/mtoolwrapper.h"
+#include "maintenancetool/maintenancetool.h"
 
 namespace Ui {
 class MainWindow;
@@ -52,8 +52,8 @@ private:
 	AndroidDialog *m_android_dialog;
 	SettingsDialog *m_settings_dialog;
 	LicenseApiClient *m_license_api_client;
-	AuthDialog* m_auth_dialog;
-	MtoolWrapper* m_maintainance_tool;
+	AuthDialog *m_auth_dialog;
+	MaintenanceTool *m_maintenance_tool;
 };
 
 #endif // MAINWINDOW_H

@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	m_settings_dialog = new SettingsDialog(this);
 	m_license_api_client = new LicenseApiClient(this);
 	m_auth_dialog = new AuthDialog(m_license_api_client, this);
-	m_maintainance_tool = new MtoolWrapper(this);
+	m_maintenance_tool = new MaintenanceTool(this);
 
 	ui->bot_list_view->setModel(m_bot_list_model);
 	ui->bot_list_view->hideColumn(1); // Path
@@ -53,10 +53,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->about_action, &QAction::triggered, this, &MainWindow::showAboutDialog);
 	connect(ui->quit_action, &QAction::triggered, QApplication::instance(), &QApplication::quit);
 
-	connect(ui->menuFile, &QMenu::aboutToShow, m_maintainance_tool, &MtoolWrapper::findExecutable);
-	connect(m_maintainance_tool, &MtoolWrapper::executableFound, ui->update_action, &QAction::setEnabled);
-	connect(ui->update_action, &QAction::triggered, m_maintainance_tool, &MtoolWrapper::startDetachedUpdater);
-	connect(m_maintainance_tool, &MtoolWrapper::startedDetached, QApplication::instance(), &QApplication::quit);
+	ui->update_action->setEnabled(MaintenanceTool::exists());
+	connect(m_maintenance_tool, &MaintenanceTool::updaterStarted, QApplication::instance(), &QApplication::quit);
+	connect(ui->update_action, &QAction::triggered, m_maintenance_tool, &MaintenanceTool::startDetachedAsUpdater);
 
 	connect(ui->login_action, &QAction::triggered, m_auth_dialog, &AuthDialog::exec);
 	connect(ui->logout_action, &QAction::triggered, m_auth_dialog, &AuthDialog::logout);

@@ -119,7 +119,6 @@ HEADERS += \
     ./engine/prototypes/margins_prototype.h \
     ./engine/prototypes/url_prototype.h \
     engine/prototypes/timer_prototype.h \
-    tools/mtoolwrapper.h \
     gui/scriptmanager/scriptmanagerdialog.h \
     git/gitfetchoperation.h \
     git/abstractgitoperation.h \
@@ -144,7 +143,8 @@ HEADERS += \
     gui/botwidgets/botconfigwidget.h \
     gui/models/botmanifestnode.h \
     engine/apis/config_api.h \
-    gui/models/botconfigoption.h
+    gui/models/botconfigoption.h \
+    gui/maintenancetool/maintenancetool.h
 SOURCES += \
     ./auth/license_api_client.cpp \
     ./auth/rest_api_client.cpp \
@@ -183,7 +183,6 @@ SOURCES += \
     ./engine/prototypes/margins_prototype.cpp \
     ./engine/prototypes/url_prototype.cpp \
     engine/prototypes/timer_prototype.cpp \
-    tools/mtoolwrapper.cpp \
     gui/scriptmanager/scriptmanagerdialog.cpp \
     git/gitfetchoperation.cpp \
     git/abstractgitoperation.cpp \
@@ -208,7 +207,8 @@ SOURCES += \
     gui/botwidgets/botconfigwidget.cpp \
     gui/models/botmanifestnode.cpp \
     engine/apis/config_api.cpp \
-    gui/models/botconfigoption.cpp
+    gui/models/botconfigoption.cpp \
+    gui/maintenancetool/maintenancetool.cpp
 FORMS += \
     ./gui/androiddialog/android_dialog.ui \
     ./gui/authdialog/auth_dialog.ui \
