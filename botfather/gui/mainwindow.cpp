@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	m_script_manager_dialog = new ScriptManagerDialog(this);
 	m_browser_window = new BrowserWindow; // Don't give it a parent, otherwise it's blocking the control window on microsoft windows
 	m_android_dialog = new AndroidDialog(this);
-	m_settings_dialog = new SettingsDialog(this);
+	m_preferences_dialog = new PreferencesDialog(this);
 	m_license_api_client = new LicenseApiClient(this);
 	m_auth_dialog = new AuthDialog(m_license_api_client, this);
 	m_maintenance_tool = new MaintenanceTool(this);
@@ -48,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	connect(ui->open_browser_action, &QAction::triggered, m_browser_window, &BrowserWindow::show);
 	connect(ui->open_android_action, &QAction::triggered, m_android_dialog, &AndroidDialog::show);
-	connect(ui->settings_action, &QAction::triggered, m_settings_dialog, &SettingsDialog::exec);
+	connect(ui->preferences_action, &QAction::triggered, m_preferences_dialog, &PreferencesDialog::exec);
 	connect(ui->about_qt_action, &QAction::triggered, [this](){ QMessageBox::aboutQt(this); });
 	connect(ui->about_action, &QAction::triggered, this, &MainWindow::showAboutDialog);
 	connect(ui->quit_action, &QAction::triggered, QApplication::instance(), &QApplication::quit);

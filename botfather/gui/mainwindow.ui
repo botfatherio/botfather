@@ -142,14 +142,14 @@
      <x>0</x>
      <y>0</y>
      <width>980</width>
-     <height>21</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>Fi&amp;le</string>
     </property>
-    <addaction name="settings_action"/>
+    <addaction name="preferences_action"/>
     <addaction name="separator"/>
     <addaction name="update_action"/>
     <addaction name="quit_action"/>
@@ -306,16 +306,16 @@
     <string>Open the Android configuration window</string>
    </property>
   </action>
-  <action name="settings_action">
+  <action name="preferences_action">
    <property name="icon">
     <iconset resource="../res/botfather.qrc">
      <normaloff>:/icons/icons/icons8-settings-32.png</normaloff>:/icons/icons/icons8-settings-32.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;Settings</string>
+    <string>Preferences</string>
    </property>
    <property name="toolTip">
-    <string>Open the settings window</string>
+    <string>Open the preferences window</string>
    </property>
    <property name="menuRole">
     <enum>QAction::PreferencesRole</enum>

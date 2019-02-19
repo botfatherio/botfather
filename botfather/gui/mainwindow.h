@@ -8,7 +8,7 @@
 #include "scriptmanager/scriptmanagerdialog.h"
 #include "browserwindow/browser_window.h"
 #include "androiddialog/android_dialog.h"
-#include "settingsdialog/settings_dialog.h"
+#include "preferences/preferences_dialog.h"
 #include "authdialog/auth_dialog.h"
 #include "botwidgets/botwidget.h"
 #include "maintenancetool/maintenancetool.h"
@@ -51,7 +51,7 @@ private:
 	ScriptManagerDialog *m_script_manager_dialog;
 	BrowserWindow *m_browser_window;
 	AndroidDialog *m_android_dialog;
-	SettingsDialog *m_settings_dialog;
+	PreferencesDialog *m_preferences_dialog;
 	LicenseApiClient *m_license_api_client;
 	AuthDialog *m_auth_dialog;
 	MaintenanceTool *m_maintenance_tool;
