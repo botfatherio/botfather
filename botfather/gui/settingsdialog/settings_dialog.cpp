@@ -3,6 +3,7 @@
 #include <QFileDialog>
 #include <QDebug>
 #include <QSettings>
+#include "../maintenancetool/maintenancetool.h"
 #include "../../engine/modules/android/android_settings.h"
 #include "../../engine/modules/browser/browser_settings.h"
 #include "../../settings.h"
@@ -22,6 +23,8 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 #else
 	ui->flash_on_linux->hide();
 #endif
+
+	ui->check_for_updates->setDisabled(MaintenanceTool::filePath().isEmpty());
 
 	// Disabled/enable the flash input fields with the de/activation of the 'use custom flash' option.
 	connect(ui->use_bundled_flash, SIGNAL(toggled(bool)), ui->flash_so, SLOT(setDisabled(bool)));
@@ -57,6 +60,8 @@ void SettingsDialog::saveConfig()
 	s.setValue(android::options::USE_CUSTOM_ADB, ui->use_custom_adb->isChecked());
 	s.setValue(android::options::USE_BUNDLED_ADB, ui->use_bundled_adb->isChecked());
 
+	s.setValue("check_for_updates", ui->check_for_updates->isChecked());
+
 	emit configSaved();
 }
 
@@ -78,6 +83,8 @@ void SettingsDialog::loadConfig()
 	ui->adb_binary->setText(s.value(android::options::ADB_BINARY).toString());
 	ui->use_custom_adb->setChecked(s.value(android::options::USE_CUSTOM_ADB, android::fallback::USE_CUSTOM_ADB).toBool());
 	ui->use_bundled_adb->setChecked(s.value(android::options::USE_BUNDLED_ADB, android::fallback::USE_BUNDLED_ADB).toBool());
+
+	ui->check_for_updates->setChecked(s.value("check_for_updates", true).toBool() && !MaintenanceTool::filePath().isEmpty());
 
 	emit configLoaded();
 }

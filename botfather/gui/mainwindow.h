@@ -38,6 +38,7 @@ public slots:
 	void addLocalBot();
 	void updateLicenseInfo();
 	void showAboutDialog();
+	void notifyAboutUpdate();
 
 protected:
 	void closeEvent(QCloseEvent *event) override;

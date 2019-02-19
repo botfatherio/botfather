@@ -66,6 +66,14 @@ MainWindow::MainWindow(QWidget *parent) :
 	updateLicenseInfo();
 	QTimer::singleShot(0, m_auth_dialog, &AuthDialog::tryAutoLogin);
 
+	// Check for updates and notify about vailable ones
+	if (QSettings().value("check_for_updates", true).toBool() && !MaintenanceTool::filePath().isEmpty())
+	{
+		MaintenanceTool *mtool = new MaintenanceTool(this);
+		connect(mtool, &MaintenanceTool::updatesAvailable, this, &MainWindow::notifyAboutUpdate);
+		mtool->checkForUpdates();
+	}
+
 	connect(QApplication::instance(), &QApplication::aboutToQuit, [this]() {
 		// Store the BotListModels data before the application quits
 		m_bot_list_model->save(m_bot_list_model->defaultLocation());
@@ -254,6 +262,15 @@ void MainWindow::showAboutDialog()
 	).arg(QCoreApplication::applicationVersion());
 
 	QMessageBox::about(this, "About Botfather", text);
+}
+
+void MainWindow::notifyAboutUpdate()
+{
+	m_tray_icon->showMessage(
+		tr("Updates available!"),
+		tr("There are Botfather updates available. Install them to get the latest features and fixes."),
+		windowIcon()
+	);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
