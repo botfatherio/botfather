@@ -37,9 +37,11 @@ void MaintenanceTool::checkForUpdates()
 
 void MaintenanceTool::startDetachedAsUpdater()
 {
-	QProcess *process = new QProcess(this);
-	connect(process, &QProcess::started, this, &MaintenanceTool::updaterStarted);
-	process->startDetached(filePath(), {"--updates"});
+	QProcess *process = getPreparedProcess();
+	if (process->startDetached(filePath(), {"--updater"}))
+	{
+		emit updaterStarted();
+	}
 }
 
 QProcess *MaintenanceTool::getPreparedProcess()
