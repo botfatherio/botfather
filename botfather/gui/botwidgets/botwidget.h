@@ -30,11 +30,14 @@ public slots:
 	void runtimerTimedOut();
 	void checkPermissions(const QString &script_path);
 
+protected:
+	void setupConfigTab();
+
 private:
 	QTabWidget *m_tab_widget;
 	QLabel *m_corner_widget;
 	BotLogWidget *m_bot_log_widget;
-	BotConfigWidget *m_bot_config_widget;
+	BotConfigWidget *m_bot_config_widget = nullptr;
 	BotUpdatesWidget *m_bot_updates_widget;
 	BotSettingsWidget *m_bot_settings_widget;
 	QTimer runtimer;

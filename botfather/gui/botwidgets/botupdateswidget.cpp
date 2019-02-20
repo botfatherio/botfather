@@ -48,6 +48,7 @@ void BotUpdatesWidget::updateTheBot()
 	GitProgressDialog *git_progress_dialog = new GitProgressDialog(this);
 	connect(git_progress_dialog, &GitProgressDialog::accepted, this, &BotUpdatesWidget::checkForUpdates);
 	connect(git_progress_dialog, &GitProgressDialog::rejected, this, &BotUpdatesWidget::resetProgressIndicators);
+	connect(git_progress_dialog, &GitProgressDialog::cloned, this, &BotUpdatesWidget::botUpdated);
 	git_progress_dialog->reclone(m_bot->repo(), m_bot->path());
 }
 

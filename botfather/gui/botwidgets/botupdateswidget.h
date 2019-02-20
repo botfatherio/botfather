@@ -23,6 +23,9 @@ public slots:
 	void resetProgressIndicators();
 	void botStatusChanged(const Bot::Status &status);
 
+signals:
+	void botUpdated();
+
 private:
 	Ui::BotUpdatesWidget *ui;
 	QSettings *m_bot_settings;

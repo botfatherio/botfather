@@ -12,7 +12,6 @@ BotWidget::BotWidget(Bot *bot, QSystemTrayIcon *trayicon, QWidget *parent)
 	m_tab_widget = new QTabWidget(this);
 	m_corner_widget = new QLabel(m_tab_widget);
 	m_bot_log_widget = new BotLogWidget(bot, this);
-	m_bot_config_widget = new BotConfigWidget(bot, this);
 	m_bot_updates_widget = new BotUpdatesWidget(bot, this);
 	m_bot_settings_widget = new BotSettingsWidget(bot, this);
 	m_bot_settings = new QSettings(bot->settingsPath(), QSettings::IniFormat);
@@ -24,7 +23,7 @@ BotWidget::BotWidget(Bot *bot, QSystemTrayIcon *trayicon, QWidget *parent)
 
 	m_tab_widget->setCornerWidget(m_corner_widget);
 	m_tab_widget->addTab(m_bot_log_widget, "Log");
-	m_tab_widget->addTab(m_bot_config_widget, "Config");
+	setupConfigTab();
 	m_tab_widget->addTab(m_bot_updates_widget, "Updates");
 	m_tab_widget->addTab(m_bot_settings_widget, "Settings");
 
@@ -34,13 +33,7 @@ BotWidget::BotWidget(Bot *bot, QSystemTrayIcon *trayicon, QWidget *parent)
 		int updates_widget_index = m_tab_widget->indexOf(m_bot_updates_widget);
 		m_tab_widget->setTabEnabled(updates_widget_index, false);
 	}
-
-	if (!bot->manifest().config().isValid())
-	{
-		// Disable the config tab if the bot has no valid config
-		int config_widget_index = m_tab_widget->indexOf(m_bot_config_widget);
-		m_tab_widget->setTabEnabled(config_widget_index, false);
-	}
+	connect(m_bot_updates_widget, &BotUpdatesWidget::botUpdated, this, &BotWidget::setupConfigTab);
 
 	connect(bot, &Bot::nameChanged, this, &BotWidget::updateBotName);
 	connect(bot, &Bot::statusChanged, this, &BotWidget::updateTabIconBasedOnBotStatus);
@@ -207,4 +200,20 @@ void BotWidget::checkPermissions(const QString &script_path)
 		p->waitForFinished();
 	}
 #endif
+}
+
+void BotWidget::setupConfigTab()
+{
+	int index = m_tab_widget->indexOf(m_bot_config_widget);
+
+	if (index != -1) m_tab_widget->removeTab(index);
+	if (m_bot_config_widget) m_bot_config_widget->deleteLater();
+
+	m_bot_config_widget = new BotConfigWidget(m_bot, this);
+
+	if (index == -1) m_tab_widget->addTab(m_bot_config_widget, "Config");
+	else m_tab_widget->insertTab(index, m_bot_config_widget, "Config");
+
+	index = m_tab_widget->indexOf(m_bot_config_widget);
+	m_tab_widget->setTabEnabled(index, m_bot->manifest().config().isValid());
 }
