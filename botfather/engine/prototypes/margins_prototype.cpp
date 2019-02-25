@@ -9,7 +9,7 @@ QScriptValue MarginsPrototype::constructor(QScriptContext *context, QScriptEngin
 		return engine->toScriptValue(QMargins());
 	}
 
-	// new Margins(left, right, top, bottom). Thats different that Qts order...
+	// new Margins(left, right, top, bottom). Thats different that Qts order!
 	if (context->argumentCount() == 4 && context->argument(0).isNumber() && context->argument(1).isNumber()
 		&& context->argument(2).isNumber() && context->argument(3).isNumber())
 	{
@@ -17,7 +17,7 @@ QScriptValue MarginsPrototype::constructor(QScriptContext *context, QScriptEngin
 		int right = context->argument(1).toInt32();
 		int top = context->argument(2).toInt32();
 		int bottom = context->argument(3).toInt32();
-		return engine->toScriptValue(QMargins(left, right, top, bottom));
+		return engine->toScriptValue(QMargins(left, top, right, bottom));
 	}
 
 	NO_MATCHING_CTOR("Margins", MARGINS_PROTOTYPE_DOCS)
