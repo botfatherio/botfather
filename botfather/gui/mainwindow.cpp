@@ -266,11 +266,19 @@ void MainWindow::showAboutDialog()
 
 void MainWindow::notifyAboutUpdate()
 {
+	QMessageBox::information(
+		this,
+		tr("Updates available!"),
+		tr("There are updates available! Install updates to get the latest features and fixes.\n(You can disable automatic update checks in the apps preferences).")
+	);
+
+	/* Seems like this currently doesn't work on win10
 	m_tray_icon->showMessage(
 		tr("Updates available!"),
 		tr("There are Botfather updates available. Install them to get the latest features and fixes."),
 		windowIcon()
 	);
+	*/
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
