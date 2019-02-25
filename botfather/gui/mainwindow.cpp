@@ -71,7 +71,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	{
 		MaintenanceTool *mtool = new MaintenanceTool(this);
 		connect(mtool, &MaintenanceTool::updatesAvailable, this, &MainWindow::notifyAboutUpdate);
-		QTimer::singleShot(15000, mtool, &MaintenanceTool::checkForUpdates);
+		QTimer::singleShot(7000, mtool, &MaintenanceTool::checkForUpdates);
 	}
 
 	connect(QApplication::instance(), &QApplication::aboutToQuit, [this]() {
