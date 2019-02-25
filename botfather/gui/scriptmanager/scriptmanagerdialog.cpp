@@ -56,7 +56,9 @@ ScriptManagerDialog::~ScriptManagerDialog()
 void ScriptManagerDialog::refetchModelData()
 {
 	// Clear the model view
-	m_repos_model->removeRows(0, m_repos_model->rowCount());
+	if (m_repos_model->rowCount() > 0) {
+		m_repos_model->removeRows(0, m_repos_model->rowCount());
+	}
 
 	QThread *sac_thread = new QThread;
 	sac_thread->setObjectName("Scriptlist fetch thread");
