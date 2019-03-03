@@ -1,0 +1,11 @@
+--- a/cmake/cef_variables.cmake	2019-01-11 05:48:13.000000000 +0100
++++ b/cmake/cef_variables.cmake	2019-03-03 18:44:56.191608772 +0100
+@@ -87,7 +87,7 @@
+     -pipe                           # Use pipes rather than temporary files for communication between build stages
+     -pthread                        # Use the pthread library
+     -Wall                           # Enable all warnings
+-    -Werror                         # Treat warnings as errors
++    #-Werror                         # Treat warnings as errors
+     -Wno-missing-field-initializers # Don't warn about missing field initializers
+     -Wno-unused-parameter           # Don't warn about unused parameters
+     -Wno-error=comment              # Don't warn about code in comments
