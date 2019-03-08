@@ -73,7 +73,17 @@
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Pretty empty huh?&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Create as many bots as you want&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Bots can be created from local and online scripts</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -420,8 +430,8 @@
   </action>
  </widget>
  <resources>
-  <include location="../res/botfather.qrc"/>
   <include location="../res/gui.qrc"/>
+  <include location="../res/botfather.qrc"/>
  </resources>
  <connections/>
 </ui>
