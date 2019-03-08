@@ -1,7 +1,7 @@
 #include <QApplication>
 #include <QSettings>
 #include <QTime>
-#include <QMessageBox>
+#include "shared/qsettingsjsonformat.h"
 #include "gui/mainwindow.h"
 #include "engine/modules/browser/browser.h"
 #include <git2.h>
@@ -70,6 +70,8 @@ int main(int argc, char *argv[])
 	QCoreApplication::setOrganizationDomain("botfather.io");
 	QCoreApplication::setApplicationName("Botfather");
 	QCoreApplication::setApplicationVersion("5.2.3");
+
+	QSettingsJsonFormat::setFormat(QSettings::registerFormat("json", &QSettingsJsonFormat::readFunc, &QSettingsJsonFormat::writeFunc));
 	QSettings::setDefaultFormat(QSettings::IniFormat);
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)

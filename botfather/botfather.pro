@@ -144,7 +144,8 @@ HEADERS += \
     gui/models/botmanifestnode.h \
     engine/apis/config_api.h \
     gui/models/botconfigoption.h \
-    gui/maintenancetool/maintenancetool.h
+    gui/maintenancetool/maintenancetool.h \
+    shared/qsettingsjsonformat.h
 SOURCES += \
     ./auth/license_api_client.cpp \
     ./auth/rest_api_client.cpp \
@@ -208,7 +209,8 @@ SOURCES += \
     gui/models/botmanifestnode.cpp \
     engine/apis/config_api.cpp \
     gui/models/botconfigoption.cpp \
-    gui/maintenancetool/maintenancetool.cpp
+    gui/maintenancetool/maintenancetool.cpp \
+    shared/qsettingsjsonformat.cpp
 FORMS += \
     ./gui/androiddialog/android_dialog.ui \
     ./gui/authdialog/auth_dialog.ui \
