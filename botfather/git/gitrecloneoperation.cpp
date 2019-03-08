@@ -68,7 +68,7 @@ void GitRecloneOperation::replaceRepo()
 
 	// Preserve the bots .settings.ini and .config.ini files
 	QStringList files_to_preserve;
-	files_to_preserve << ".settings.ini" << ".config.ini";
+	files_to_preserve << ".settings.ini" << ".config.json";
 
 	for (const QString &file_name : files_to_preserve)
 	{

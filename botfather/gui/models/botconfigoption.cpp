@@ -1,15 +1,16 @@
 #include "botconfigoption.h"
 #include <QSettings>
+#include "../../shared/qsettingsjsonformat.h"
 
 QVariant BotConfigOption::value() const
 {
-	QSettings config(configPath(), QSettings::IniFormat);
+	QSettings config(configPath(), QSettingsJsonFormat::format());
 	return config.value(id(), fallback());
 }
 
 void BotConfigOption::setValue(const QVariant &new_value)
 {
-	QSettings config(configPath(), QSettings::IniFormat);
+	QSettings config(configPath(), QSettingsJsonFormat::format());
 	config.setValue(id(), new_value);
 }
 
@@ -20,7 +21,7 @@ bool BotConfigOption::isValid() const
 
 bool BotConfigOption::isStored() const
 {
-	QSettings config(configPath(), QSettings::IniFormat);
+	QSettings config(configPath(), QSettingsJsonFormat::format());
 
 	// Don't retrive the value using BotConfigSetting::value as it provides a fallback
 	QVariant retrived_value = config.value(id(), QVariant());

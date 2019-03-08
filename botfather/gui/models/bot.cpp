@@ -119,7 +119,7 @@ QString Bot::settingsPath() const
 QString Bot::configPath() const
 {
 	QDir bot_dir(path());
-	return bot_dir.exists() ? bot_dir.filePath(".config.ini") : QString();
+	return bot_dir.exists() ? bot_dir.filePath(".config.json") : QString();
 }
 
 QString Bot::manifestPath() const
