@@ -13,6 +13,11 @@ BotUpdatesWidget::BotUpdatesWidget(Bot *bot, QWidget *parent)
 	ui->setupUi(this);
 	m_bot_settings = new QSettings(bot->settingsPath(), QSettings::IniFormat);
 
+	QSizePolicy progressbar_size_policy = ui->progressBar->sizePolicy();
+	progressbar_size_policy.setRetainSizeWhenHidden(true);
+	ui->progressBar->setSizePolicy(progressbar_size_policy);
+	ui->progressBar->setHidden(true); // hide initially
+
 	connect(ui->check_button, &QPushButton::clicked, this, &BotUpdatesWidget::checkForUpdates);
 	connect(ui->update_button, &QPushButton::clicked, this, &BotUpdatesWidget::updateTheBot);
 
@@ -33,7 +38,7 @@ BotUpdatesWidget::~BotUpdatesWidget()
 
 void BotUpdatesWidget::checkForUpdates()
 {
-	ui->progressBar->setEnabled(true);
+	ui->progressBar->setHidden(false);
 	ui->check_button->setDisabled(true);
 	ui->check_button->clearFocus(); // looks weird otherwise
 	m_bot->checkStatus();
@@ -41,7 +46,7 @@ void BotUpdatesWidget::checkForUpdates()
 
 void BotUpdatesWidget::updateTheBot()
 {
-	ui->progressBar->setEnabled(true);
+	ui->progressBar->setHidden(false);
 	ui->update_button->setDisabled(true);
 	ui->update_button->clearFocus(); // looks weird otherwise
 
@@ -54,7 +59,7 @@ void BotUpdatesWidget::updateTheBot()
 
 void BotUpdatesWidget::resetProgressIndicators()
 {
-	ui->progressBar->setDisabled(true);
+	ui->progressBar->setHidden(true);
 	ui->check_button->setEnabled(true);
 	ui->update_button->setEnabled(true);
 }
