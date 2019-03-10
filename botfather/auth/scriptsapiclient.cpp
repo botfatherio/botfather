@@ -12,7 +12,7 @@ void ScriptsApiClient::requestScripts()
 
 QUrl ScriptsApiClient::provideApiEndpoint()
 {
-	return QUrl("https://botfather.io/api/v2/scripts/");
+	return QUrl("https://botfather.io/api/v3/scripts/");
 }
 
 void ScriptsApiClient::processJsonResponse(QJsonDocument json)
@@ -58,9 +58,11 @@ void ScriptsApiClient::processJsonResponse(QJsonDocument json)
 BotRepo ScriptsApiClient::jsonObjectToRepoData(const QJsonObject &object)
 {
 	return BotRepo(
+		QString::number(object.value("id").toInt()),
 		object.value("name").toString(),
 		object.value("developer").toString(),
 		object.value("description").toString(),
+		object.value("platform").toString(),
 		object.value("git_clone_url").toString()
 	);
 }
