@@ -40,15 +40,9 @@ ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 	connect(more_info_button, &QPushButton::clicked, this, &ScriptManagerDialog::giveMoreInfo);
 	connect(more_info_button, &QPushButton::clicked, more_info_button, &QPushButton::clearFocus);
 
-	m_ui->buttonBox->addButton("Refresh", QDialogButtonBox::ButtonRole::ResetRole);
-	connect(m_ui->buttonBox, &QDialogButtonBox::clicked, [this](QAbstractButton *button)
-	{
-		m_ui->buttonBox->clearFocus(); // Otherwise the reset button will still be highlighted
-		if (m_ui->buttonBox->buttonRole(button) == QDialogButtonBox::ButtonRole::ResetRole)
-		{
-			refetchModelData();
-		}
-	});
+	QPushButton *refresh_button = m_ui->buttonBox->addButton("Refresh", QDialogButtonBox::ButtonRole::ResetRole);
+	connect(refresh_button, &QPushButton::clicked, this, &ScriptManagerDialog::refetchModelData);
+	connect(refresh_button, &QPushButton::clicked, refresh_button, &QPushButton::clearFocus);
 
 	// Load model data initially
 	refetchModelData();
