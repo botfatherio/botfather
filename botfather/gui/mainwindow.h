@@ -31,6 +31,7 @@ public slots:
 	void startSelectedBot();
 	void stopSelectedBot();
 
+	void syncButtonsWithBotState();
 	void setupWidgetForBot(Bot *bot);
 	void focusWidgetForBot(const QString &bot_path);
 	void removeWidgetForBot(const QString &bot_path);

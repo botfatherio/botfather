@@ -95,6 +95,20 @@ void MainWindow::handleRowChange(const QModelIndex &current, const QModelIndex &
 {
 	QString bot_path = m_bot_list_model->data(current, BotListModel::BOT_PATH_ROLE).toString();
 	focusWidgetForBot(bot_path);
+	syncButtonsWithBotState();
+}
+
+void MainWindow::syncButtonsWithBotState()
+{
+	QModelIndex model_index = ui->bot_list_view->selectionModel()->currentIndex();
+	if (!model_index.isValid()) return; // There might not be a single bot listed
+
+	Bot *bot = qvariant_cast<Bot*>(m_bot_list_model->data(model_index, BotListModel::BOT_PTR_ROLE));
+	Q_ASSERT(bot);
+
+	ui->del_bot_action->setDisabled(bot->isRunning());
+	ui->run_bot_action->setDisabled(bot->isRunning());
+	ui->stop_bot_action->setEnabled(bot->isRunning());
 }
 
 void MainWindow::deleteSelectedBot()
@@ -185,6 +199,9 @@ void MainWindow::setupWidgetForBot(Bot *bot)
 	BotWidget *bot_widget = new BotWidget(bot, m_tray_icon);
 	ui->stackedWidget->addWidget(bot_widget); // QtDocs: Ownership of widget is passed on to the QStackedWidget.
 	m_bot_path_to_widget_map.insert(bot->path(), bot_widget);
+
+	connect(bot, &Bot::started, this, &MainWindow::syncButtonsWithBotState);
+	connect(bot, &Bot::stopped, this, &MainWindow::syncButtonsWithBotState);
 }
 
 void MainWindow::focusWidgetForBot(const QString &bot_path)
