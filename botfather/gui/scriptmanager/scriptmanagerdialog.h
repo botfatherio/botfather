@@ -22,6 +22,7 @@ public slots:
 	void refetchModelData();
 	void installSelectedScript();
 	void cloneRepository(const Bot::Data &bot_data);
+	void giveMoreInfo();
 
 signals:
 	void botCreated(const Bot::Data &bot_data);

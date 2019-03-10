@@ -2,11 +2,13 @@
 #include "ui_scriptmanagerdialog.h"
 #include <QMessageBox>
 #include <QStandardPaths>
+#include <QDesktopServices>
 #include <QInputDialog>
 #include <QUuid>
 #include <QDir>
 #include <QThread>
 #include <QAbstractButton>
+#include <QPushButton>
 #include <QDebug>
 #include "gitprogressdialog.h"
 #include "../../auth/scriptsapiclient.h"
@@ -33,6 +35,10 @@ ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 	connect(m_ui->filter, &QLineEdit::textChanged, m_repos_proxy, &QSortFilterProxyModel::setFilterWildcard);
 	connect(m_ui->view, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(accept())); // Will trigger the line below and close the dialog
 	connect(this, SIGNAL(accepted()), this, SLOT(installSelectedScript()));
+
+	QPushButton *more_info_button = m_ui->buttonBox->addButton("More info", QDialogButtonBox::ButtonRole::HelpRole);
+	connect(more_info_button, &QPushButton::clicked, this, &ScriptManagerDialog::giveMoreInfo);
+	connect(more_info_button, &QPushButton::clicked, more_info_button, &QPushButton::clearFocus);
 
 	m_ui->buttonBox->addButton("Refresh", QDialogButtonBox::ButtonRole::ResetRole);
 	connect(m_ui->buttonBox, &QDialogButtonBox::clicked, [this](QAbstractButton *button)
@@ -135,4 +141,13 @@ void ScriptManagerDialog::cloneRepository(const Bot::Data &bot_data)
 		emit botCreated(bot_data);
 	});
 	dialog->clone(bot_data.repo, bot_data.path);
+}
+
+void ScriptManagerDialog::giveMoreInfo()
+{
+	QModelIndex current = m_ui->view->selectionModel()->currentIndex();
+	if (!current.isValid()) return;
+
+	BotRepo bot_repo = qvariant_cast<BotRepo>(m_repos_model->data(current, BotRepoListModel::NativeDataRole));
+	QDesktopServices::openUrl(bot_repo.scriptUrl());
 }
