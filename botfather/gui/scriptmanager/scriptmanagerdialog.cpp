@@ -34,11 +34,13 @@ ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 
 	connect(m_ui->filter, &QLineEdit::textChanged, m_repos_proxy, &QSortFilterProxyModel::setFilterWildcard);
 	connect(m_ui->view, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(accept())); // Will trigger the line below and close the dialog
+	connect(m_ui->view->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &ScriptManagerDialog::handleRowChange);
 	connect(this, SIGNAL(accepted()), this, SLOT(installSelectedScript()));
 
-	QPushButton *more_info_button = m_ui->buttonBox->addButton("More info", QDialogButtonBox::ButtonRole::HelpRole);
-	connect(more_info_button, &QPushButton::clicked, this, &ScriptManagerDialog::giveMoreInfo);
-	connect(more_info_button, &QPushButton::clicked, more_info_button, &QPushButton::clearFocus);
+	m_more_info_button = m_ui->buttonBox->addButton("More info", QDialogButtonBox::ButtonRole::HelpRole);
+	connect(m_more_info_button, &QPushButton::clicked, this, &ScriptManagerDialog::giveMoreInfo);
+	connect(m_more_info_button, &QPushButton::clicked, m_more_info_button, &QPushButton::clearFocus);
+	m_more_info_button->setDisabled(true);
 
 	QPushButton *refresh_button = m_ui->buttonBox->addButton("Refresh", QDialogButtonBox::ButtonRole::ResetRole);
 	connect(refresh_button, &QPushButton::clicked, this, &ScriptManagerDialog::refetchModelData);
@@ -51,6 +53,12 @@ ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 ScriptManagerDialog::~ScriptManagerDialog()
 {
 	delete m_ui;
+}
+
+void ScriptManagerDialog::handleRowChange(const QModelIndex &current, const QModelIndex &previous)
+{
+	Q_UNUSED(previous);
+	m_more_info_button->setEnabled(current.isValid());
 }
 
 void ScriptManagerDialog::refetchModelData()

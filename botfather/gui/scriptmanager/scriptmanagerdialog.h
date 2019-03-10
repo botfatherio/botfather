@@ -19,6 +19,7 @@ public:
 	~ScriptManagerDialog();
 
 public slots:
+	void handleRowChange(const QModelIndex &current, const QModelIndex &previous);
 	void refetchModelData();
 	void installSelectedScript();
 	void cloneRepository(const Bot::Data &bot_data);
@@ -29,6 +30,7 @@ signals:
 
 private:
 	Ui::ScriptManagerDialog *m_ui;
+	QPushButton *m_more_info_button;
 	BotRepoListModel *m_repos_model;
 	QSortFilterProxyModel *m_repos_proxy;
 };
