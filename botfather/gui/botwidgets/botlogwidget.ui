@@ -38,6 +38,9 @@
      <property name="readOnly">
       <bool>true</bool>
      </property>
+     <property name="placeholderText">
+      <string>The bots log and debug messages will be shown here.</string>
+     </property>
     </widget>
    </item>
    <item>
