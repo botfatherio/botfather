@@ -46,9 +46,10 @@ QVariant BotRepoListModel::data(const QModelIndex &index, int role) const
 		switch (index.column())
 		{
 		case 0: return bot_repo.name();
-		case 1: return bot_repo.developer();
-		case 2: return bot_repo.description();
-		case 3: return bot_repo.gitUrl();
+		case 1: return bot_repo.platform();
+		case 2: return bot_repo.developer();
+		case 3: return bot_repo.description();
+		case 4: return bot_repo.gitUrl();
 		}
 	}
 
@@ -64,9 +65,10 @@ QVariant BotRepoListModel::headerData(int section, Qt::Orientation orientation, 
 
 	switch (section) {
 	case 0: return "Name";
-	case 1: return "Developer";
-	case 2: return "Description";
-	case 3: return "Url";
+	case 1: return "Platform";
+	case 2: return "Developer";
+	case 3: return "Description";
+	case 4: return "Url";
 	default: return QVariant();
 	}
 }

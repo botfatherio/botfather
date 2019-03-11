@@ -30,7 +30,7 @@ ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 	m_repos_proxy->setFilterKeyColumn(0);
 
 	m_ui->view->setModel(m_repos_proxy);
-	m_ui->view->hideColumn(3); // Hide the Url column
+	m_ui->view->hideColumn(4); // Hide the Url column
 
 	connect(m_ui->filter, &QLineEdit::textChanged, m_repos_proxy, &QSortFilterProxyModel::setFilterWildcard);
 	connect(m_ui->view, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(accept())); // Will trigger the line below and close the dialog
