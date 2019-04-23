@@ -1,5 +1,6 @@
 #include "botlistmodel.h"
 #include <QFile>
+#include <QDir>
 #include <QIcon>
 #include <QDataStream>
 #include <QStandardPaths>
@@ -177,6 +178,13 @@ void BotListModel::sort(int /*column*/, Qt::SortOrder order)
 
 void BotListModel::save(const QString &filepath)
 {
+	QFileInfo info(filepath);
+	if (!QDir().mkpath(info.absolutePath()))
+	{
+		qDebug() << "Unable to create the dir path for" << filepath;
+		return;
+	}
+
 	QFile file(filepath);
 	if (!file.open(QIODevice::WriteOnly))
 	{
@@ -246,7 +254,6 @@ void BotListModel::list(const Bot::Data &bot_data)
 
 QString BotListModel::defaultLocation() const
 {
-	// TODO: Think about whether this method belongs here or not.
 	return QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/bots.dat";
 }
 
