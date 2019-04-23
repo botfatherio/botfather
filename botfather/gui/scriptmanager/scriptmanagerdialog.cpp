@@ -57,7 +57,7 @@ ScriptManagerDialog::~ScriptManagerDialog()
 
 void ScriptManagerDialog::handleRowChange(const QModelIndex &current, const QModelIndex &previous)
 {
-	Q_UNUSED(previous);
+	Q_UNUSED(previous)
 	m_more_info_button->setEnabled(current.isValid());
 }
 
@@ -98,7 +98,7 @@ void ScriptManagerDialog::installSelectedScript()
 	QModelIndex current = m_ui->view->selectionModel()->currentIndex();
 	if (!current.isValid()) return;
 
-	BotRepo bot_repo = qvariant_cast<BotRepo>(m_repos_model->data(current, BotRepoListModel::NativeDataRole));
+	BotRepo bot_repo = qvariant_cast<BotRepo>(m_repos_proxy->data(current, BotRepoListModel::NativeDataRole));
 
 	QInputDialog *name_dialog = new QInputDialog(this);
 	name_dialog->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
@@ -150,6 +150,6 @@ void ScriptManagerDialog::giveMoreInfo()
 	QModelIndex current = m_ui->view->selectionModel()->currentIndex();
 	if (!current.isValid()) return;
 
-	BotRepo bot_repo = qvariant_cast<BotRepo>(m_repos_model->data(current, BotRepoListModel::NativeDataRole));
+	BotRepo bot_repo = qvariant_cast<BotRepo>(m_repos_proxy->data(current, BotRepoListModel::NativeDataRole));
 	QDesktopServices::openUrl(bot_repo.scriptUrl());
 }
