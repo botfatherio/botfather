@@ -101,7 +101,13 @@ void MainWindow::handleRowChange(const QModelIndex &current, const QModelIndex &
 void MainWindow::syncButtonsWithBotState()
 {
 	QModelIndex model_index = ui->bot_list_view->selectionModel()->currentIndex();
-	if (!model_index.isValid()) return; // There might not be a single bot listed
+	if (!model_index.isValid()) {
+		// Not bot selected
+		ui->del_bot_action->setEnabled(false);
+		ui->run_bot_action->setEnabled(false);
+		ui->stop_bot_action->setEnabled(false);
+		return;
+	}
 
 	Bot *bot = qvariant_cast<Bot*>(m_bot_list_model->data(model_index, BotListModel::BOT_PTR_ROLE));
 	Q_ASSERT(bot);

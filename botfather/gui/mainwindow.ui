@@ -201,6 +201,9 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="windowTitle">
     <string>toolBar</string>
    </property>
@@ -245,6 +248,9 @@
    </property>
   </action>
   <action name="del_bot_action">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="../res/botfather.qrc">
      <normaloff>:/icons/icons/icons8-trash-32.png</normaloff>:/icons/icons/icons8-trash-32.png</iconset>
@@ -260,6 +266,9 @@
    </property>
   </action>
   <action name="run_bot_action">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="../res/botfather.qrc">
      <normaloff>:/icons/icons/icons8-play-32.png</normaloff>:/icons/icons/icons8-play-32.png</iconset>
@@ -290,6 +299,9 @@
    </property>
   </action>
   <action name="stop_bot_action">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="../res/botfather.qrc">
      <normaloff>:/icons/icons/icons8-stop-32.png</normaloff>:/icons/icons/icons8-stop-32.png</iconset>
