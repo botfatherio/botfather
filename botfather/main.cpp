@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 	QCoreApplication::setOrganizationName("botfather.io");
 	QCoreApplication::setOrganizationDomain("botfather.io");
 	QCoreApplication::setApplicationName("Botfather");
-	QCoreApplication::setApplicationVersion("5.4.0");
+	QCoreApplication::setApplicationVersion("5.4.1");
 
 	QSettingsJsonFormat::setFormat(QSettings::registerFormat("json", &QSettingsJsonFormat::readFunc, &QSettingsJsonFormat::writeFunc));
 	QSettings::setDefaultFormat(QSettings::IniFormat);
