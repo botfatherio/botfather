@@ -10,6 +10,7 @@
 #include "botlogwidget.h"
 #include "botconfigwidget.h"
 #include "botupdateswidget.h"
+#include "botbrowserswidget.h"
 #include "botsettingswidget.h"
 #include "../../engine/engine.h"
 
@@ -39,6 +40,7 @@ private:
 	BotLogWidget *m_bot_log_widget;
 	BotConfigWidget *m_bot_config_widget = nullptr;
 	BotUpdatesWidget *m_bot_updates_widget;
+	BotBrowsersWidget *m_bot_browsers_widget;
 	BotSettingsWidget *m_bot_settings_widget;
 	QTimer runtimer;
 	QSettings *m_bot_settings;

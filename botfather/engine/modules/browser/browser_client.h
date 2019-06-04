@@ -20,16 +20,10 @@ class BrowserClient
 	Q_OBJECT
 
 public:
-	explicit BrowserClient(const QString &id, const QSize &size);
-
-	// Used to identify persistent browsers. Anonymous/non-persistent browsers have no name.
-	QString id() const;
+	explicit BrowserClient(const QSize &size);
 
 	// Returns the browser fixed size
 	QSize size() const;
-
-	// Browsers having a name are considered persistent.
-	bool isPersistent() const;
 
 	// Returns the browsers latest frame threadsafe
 	QImage takeScreenshot();
@@ -74,7 +68,7 @@ public:
 	void OnPluginCrashed(CefRefPtr<CefBrowser> browser, const CefString& plugin_path) OVERRIDE;
 	void OnRenderProcessTerminated(CefRefPtr<CefBrowser> browser, CefRequestHandler::TerminationStatus status) OVERRIDE;
 
-signals: // FIXME: rename those signals. and remote the signal suffix
+signals: // FIXME: rename those signals. and remove the signal suffix
 	void paintSignal(QImage browser_image);
 	void pluginCrashedSignal();
 	void rendererCrashedSignal();
@@ -82,7 +76,6 @@ signals: // FIXME: rename those signals. and remote the signal suffix
 	void loadingStateChangedSignal(bool state);
 
 private:
-	QString m_id;
 	QSize m_size;
 	QReadWriteLock m_screenshot_lock;
 	QImage m_screenshot;

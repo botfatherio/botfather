@@ -148,7 +148,9 @@ HEADERS += \
     engine/modules/browser/browser_client.h \
     engine/modules/browser/browser_creator.h \
     engine/modules/browser/browser_host.h \
-    engine/modules/browser/browser_util.h
+    engine/modules/browser/browser_util.h \
+    engine/modules/browser/browser_model.h \
+    gui/botwidgets/botbrowserswidget.h
 SOURCES += \
     ./auth/license_api_client.cpp \
     ./auth/rest_api_client.cpp \
@@ -216,7 +218,9 @@ SOURCES += \
     engine/modules/browser/browser_client.cpp \
     engine/modules/browser/browser_creator.cpp \
     engine/modules/browser/browser_host.cpp \
-    engine/modules/browser/browser_util.cpp
+    engine/modules/browser/browser_util.cpp \
+    engine/modules/browser/browser_model.cpp \
+    gui/botwidgets/botbrowserswidget.cpp
 FORMS += \
     ./gui/androiddialog/android_dialog.ui \
     ./gui/authdialog/auth_dialog.ui \
@@ -228,7 +232,8 @@ FORMS += \
     gui/botwidgets/botlogwidget.ui \
     gui/botwidgets/botsettingswidget.ui \
     gui/botwidgets/botupdateswidget.ui \
-    gui/botwidgets/botconfigwidget.ui
+    gui/botwidgets/botconfigwidget.ui \
+    gui/botwidgets/botbrowserswidget.ui
 RESOURCES += \
     ./res/gui.qrc \
     res/botfather.qrc

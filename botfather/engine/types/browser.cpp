@@ -4,15 +4,32 @@
 #include <QDebug>
 #include "../modules/browser/browser_settings.h"
 
-Browser::Browser(const QString &group, const QSize &size, const QString &id)
+Browser::Browser(const QString &group, const QString &id, CefRefPtr<CefBrowser> cef_browser)
+	: m_group(group)
+	, m_name(id)
+	, m_cef_browser(cef_browser)
 {
-	QSize safe_size(size.isEmpty() ? browser::fallback::SIZE : size);
+	// TODO: figure out who will be parent?
+	// TODO: ^ or decide who is going to delete this
 
-	m_cef_browser = BrowserHost::instance()->createManagedBrowser(group, safe_size, id);
 	CefRefPtr<CefClient> cef_client = m_cef_browser->GetHost()->GetClient();
-
 	m_browser_client = static_cast<BrowserClient*>(cef_client.get());
 	Q_ASSERT(m_browser_client);
+}
+
+CefRefPtr<CefBrowser> Browser::cefBrowser() const
+{
+	return m_cef_browser;
+}
+
+QString Browser::group() const
+{
+	return m_group;
+}
+
+QString Browser::name() const
+{
+	return m_name;
 }
 
 QImage Browser::takeScreenshot()
@@ -28,11 +45,6 @@ QSize Browser::size() const
 QRect Browser::rect() const
 {
 	return QRect(QPoint(0, 0), size());
-}
-
-QString Browser::name() const
-{
-	return m_browser_client->id();
 }
 
 void Browser::blockResource(const QString &resource)

@@ -11,34 +11,21 @@ QScriptValue BrowserPrototype::constructor(QScriptContext *context, QScriptEngin
 	// is the bots ID.
 	Engine *vm = qobject_cast<Engine*>(engine->parent());
 
-	// Validate and cast 'size'
-	QSize size;
-	if (context->argumentCount() >= 1 && isQSize(context->argument(0)))
+	// new Browser(id, size);
+	if (context->argumentCount() == 2 && context->argument(0).isString() && isQSize(context->argument(1)))
 	{
-		size = qscriptvalue_cast<QSize>(context->argument(0));
-		if (size.width() < 400 || size.height() < 400)
-		{
-			return context->throwError(QScriptContext::Error::RangeError, "The browsers size must be at least 400x400");
-		}
-	}
-
-	// Validate and cast 'id'
-	QString id;
-	if (context->argumentCount() >= 2 && context->argument(1).isString())
-	{
-		id = context->argument(1).toString();
+		QString id = context->argument(0).toString();
 		if (id.isEmpty())
 		{
 			return context->throwError(QScriptContext::Error::TypeError, "The browsers id must not be empty");
 		}
-	}
-
-	// new Browser();
-	// new Browser(size);
-	// new Browser(size, id);
-	if (context->argumentCount() >= 0 && context->argumentCount() <= 2)
-	{
-		return engine->toScriptValue(Browser(vm->id(), size, id));
+		QSize size = qscriptvalue_cast<QSize>(context->argument(1));
+		if (size.width() < 400 || size.height() < 400)
+		{
+			return context->throwError(QScriptContext::Error::RangeError, "The browsers size must be at least 400x400");
+		}
+		Browser *browser = BrowserHost::instance()->createBrowser(vm->id(), id, size);
+		return engine->toScriptValue(browser);
 	}
 
 	NO_MATCHING_CTOR("Browser", BROWSER_PROTOTYPE_DOCS)
@@ -204,9 +191,5 @@ void BrowserPrototype::executeJavascript(const QString &javascript_code)
 
 QString BrowserPrototype::toString() const
 {
-	if (THIS_BROWSER_P()->name().isEmpty())
-	{
-		return QString("Browser(size: %0x%1)").arg(THIS_BROWSER_P()->size().width(), THIS_BROWSER_P()->size().height());
-	}
-	return QString("Browser(size: %0x%1, name: %2)").arg(THIS_BROWSER_P()->size().width(), THIS_BROWSER_P()->size().height()).arg(THIS_BROWSER_P()->name());
+	return QString("Browser(id: %0, size: %1x%2)").arg(THIS_BROWSER_P()->name()).arg(THIS_BROWSER_P()->size().width(), THIS_BROWSER_P()->size().height());
 }

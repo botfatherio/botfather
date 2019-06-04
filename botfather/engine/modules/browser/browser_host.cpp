@@ -17,6 +17,17 @@ BrowserHost *BrowserHost::instance()
 	return singleton_instance;
 }
 
+BrowserHost::BrowserHost()
+{
+	// TODO: Maybe thing about a better parent
+	m_model = new BrowserModel(QCoreApplication::instance());
+}
+
+BrowserModel *BrowserHost::model() const
+{
+	return m_model;
+}
+
 bool BrowserHost::init(int argc, char **argv)
 {
 	// We don't use the sandbox thus there is no info.
@@ -60,7 +71,7 @@ void BrowserHost::bind(QCoreApplication *app)
 
 void BrowserHost::quit()
 {
-	closeManagedBrowsers();
+	closeAllBrowsers();
 	CefShutdown();
 }
 
@@ -109,75 +120,38 @@ CefSettings BrowserHost::cefSettings() const
 	return cef_settings;
 }
 
-CefRefPtr<CefBrowser> BrowserHost::createManagedBrowser(const QString &group_name, const QSize &size, const QString &id)
+Browser *BrowserHost::createBrowser(const QString &group_name, const QString &browser_id, const QSize &size)
 {
-	if (!id.isEmpty() && m_permanent_browsers.contains(group_name) && m_permanent_browsers[group_name].contains(id))
-	{
-		qDebug() << "Returning existing persistent browser:" << group_name << id;
-		return m_permanent_browsers[group_name][id];
-	}
+	QModelIndexList matches = m_model->match(
+		m_model->index(0, 0),
+		m_model->BROWSER_UID_ROLE,
+		m_model->createUID(group_name, browser_id),
+		1,
+		Qt::MatchExactly
+	);
 
-	qDebug() << "Creating new browser:" << group_name << id << size;
-	CefRefPtr<CefBrowser> browser = BrowserCreator::createBrowserSync(id, size);
-
-	if (id.isEmpty())
+	if (!matches.isEmpty())
 	{
-		qDebug() << "Storing new temporary browser:" << group_name << size;
-		m_temporary_browsers[group_name].append(browser);
+		QVariant variant = m_model->data(matches.first(), m_model->BROWSER_PTR_ROLE);
+		Browser *browser = qvariant_cast<Browser*>(variant);
+		Q_ASSERT(browser);
+
+		qDebug() << "Returning existing browser" << browser->group() << browser->name();
 		return browser;
 	}
 
-	qDebug() << "Storing new permanent browser:" << group_name << id << size;
-	m_permanent_browsers[group_name][id] = browser;
+	CefRefPtr<CefBrowser> cef_browser = BrowserCreator::createBrowserSync(size);
+	Browser *browser = new Browser(group_name, browser_id, cef_browser);
+
+	m_model->addBrowser(browser);
 	return browser;
 }
 
-void BrowserHost::closeManagedBrowsers()
+void BrowserHost::closeAllBrowsers()
 {
-	QList<QString> group_names = m_permanent_browsers.keys() + m_temporary_browsers.keys();
-	for (QString group_name : group_names)
+	for (Browser *browser : m_model->browsers())
 	{
-		closeManagedBrowsers(group_name);
-	}
-}
-
-void BrowserHost::closeManagedBrowsers(const QString &group_name)
-{
-	closeManagedPermanentBrowsers(group_name);
-	closeManagedTemporaryBrowsers(group_name);
-}
-
-void BrowserHost::closeManagedPermanentBrowsers(const QString &group_name)
-{
-	if (!m_permanent_browsers.contains(group_name))
-	{
-		return;
-	}
-
-	QHash<QString, CefRefPtr<CefBrowser>> browsers = m_permanent_browsers.take(group_name);
-	QHashIterator<QString, CefRefPtr<CefBrowser>> browser_it(browsers);
-
-	while (browser_it.hasNext())
-	{
-		browser_it.next();
-		CefRefPtr<CefBrowser> browser = browsers.take(browser_it.key());
-
-		qDebug() << "Closing permanent browser:" << group_name << browser_it.key();
-		closeCefBrowser(browser);
-	}
-}
-
-void BrowserHost::closeManagedTemporaryBrowsers(const QString &group)
-{
-	if (!m_temporary_browsers.contains(group))
-	{
-		return;
-	}
-
-	while (!m_temporary_browsers[group].isEmpty())
-	{
-		CefRefPtr<CefBrowser> browser = m_temporary_browsers[group].takeLast();
-		closeCefBrowser(browser);
+		closeCefBrowser(browser->cefBrowser());
 	}
 }
 
@@ -189,6 +163,7 @@ void BrowserHost::closeCefBrowser(CefRefPtr<CefBrowser> browser)
 
 	if (!CefCurrentlyOn(TID_UI))
 	{
+		qDebug() << "Returning bla bla browser close";
 		BrowserUtil::runInMainThread([browser](){
 			closeCefBrowser(browser);
 		});
@@ -196,5 +171,7 @@ void BrowserHost::closeCefBrowser(CefRefPtr<CefBrowser> browser)
 	}
 
 	CEF_REQUIRE_UI_THREAD();
+	qDebug() << "Actually closing a browser";
 	browser->GetHost()->CloseBrowser(true);
 }
+

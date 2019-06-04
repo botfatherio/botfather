@@ -11,27 +11,14 @@
 #include "include/wrapper/cef_helpers.h"
 #include "browser_settings.h"
 
-BrowserClient::BrowserClient(const QString &name, const QSize &size)
-	: QObject()
-	, m_id(name)
-	, m_size(size)
+BrowserClient::BrowserClient(const QSize &size) : QObject(), m_size(size)
 {
 
-}
-
-QString BrowserClient::id() const
-{
-	return m_id;
 }
 
 QSize BrowserClient::size() const
 {
 	return m_size;
-}
-
-bool BrowserClient::isPersistent() const
-{
-	return !m_id.isEmpty();
 }
 
 QImage BrowserClient::takeScreenshot()

@@ -9,13 +9,17 @@
 class Browser
 {
 public:
-	Browser(const QString &group, const QSize &size, const QString &id);
+	Browser(const QString &group, const QString &id, CefRefPtr<CefBrowser> cef_browser);
 	Browser() {} // Required for metatype registration. Never use it
+
+	CefRefPtr<CefBrowser> cefBrowser() const;
+	QString group() const;
+
+	QString name() const;
 
 	QImage takeScreenshot();
 	QSize size() const;
 	QRect rect() const;
-	QString name() const;
 
 	void loadUrl(const QString &url);
 	void beOnUrl(const QString &url);
@@ -45,6 +49,8 @@ public:
 	void executeJavascript(const QString &javascript_code);
 
 private:
+	QString m_group;
+	QString m_name;
 	CefRefPtr<CefBrowser> m_cef_browser;
 	BrowserClient *m_browser_client = nullptr;
 };
