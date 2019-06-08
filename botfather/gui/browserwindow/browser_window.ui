@@ -20,7 +20,7 @@
    <string>Browser</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../res/gui.qrc">
+   <iconset resource="../../res/gui.qrc">
     <normaloff>:/gui/logo_v2.png</normaloff>:/gui/logo_v2.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -66,7 +66,7 @@
   </widget>
   <action name="actionHome">
    <property name="icon">
-    <iconset resource="../res/gui.qrc">
+    <iconset resource="../../res/gui.qrc">
      <normaloff>:/gui/icons8-shutdown-64.png</normaloff>:/gui/icons8-shutdown-64.png</iconset>
    </property>
    <property name="text">
@@ -78,7 +78,7 @@
   </action>
   <action name="actionReload">
    <property name="icon">
-    <iconset resource="../res/gui.qrc">
+    <iconset resource="../../res/gui.qrc">
      <normaloff>:/gui/icons8-sync-64.png</normaloff>:/gui/icons8-sync-64.png</iconset>
    </property>
    <property name="text">
@@ -90,7 +90,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../res/gui.qrc">
+    <iconset resource="../../res/gui.qrc">
      <normaloff>:/gui/icons8-back-arrow-64.png</normaloff>:/gui/icons8-back-arrow-64.png</iconset>
    </property>
    <property name="text">
@@ -102,7 +102,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../res/gui.qrc">
+    <iconset resource="../../res/gui.qrc">
      <normaloff>:/gui/icons8-forward-button-64.png</normaloff>:/gui/icons8-forward-button-64.png</iconset>
    </property>
    <property name="text">
@@ -111,7 +111,7 @@
   </action>
   <action name="actionStop">
    <property name="icon">
-    <iconset resource="../res/gui.qrc">
+    <iconset resource="../../res/gui.qrc">
      <normaloff>:/gui/icons8-cancel-64.png</normaloff>:/gui/icons8-cancel-64.png</iconset>
    </property>
    <property name="text">
@@ -120,7 +120,7 @@
   </action>
  </widget>
  <resources>
-  <include location="../res/gui.qrc"/>
+  <include location="../../res/gui.qrc"/>
  </resources>
  <connections/>
 </ui>
