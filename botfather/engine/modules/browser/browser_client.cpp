@@ -136,6 +136,13 @@ void BrowserClient::OnLoadingStateChange(CefRefPtr<CefBrowser> browser, bool isL
 	emit loadingStateChangedSignal(isLoading);
 }
 
+void BrowserClient::OnLoadEnd(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, int httpStatusCode)
+{
+	Q_UNUSED(frame)
+	Q_UNUSED(httpStatusCode)
+	emit finishedLoadingUrl(QString::fromStdString(browser->GetMainFrame()->GetURL()));
+}
+
 CefRequestHandler::ReturnValue BrowserClient::OnBeforeResourceLoad(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request, CefRefPtr<CefRequestCallback> callback)
 {
 	Q_UNUSED(browser)
