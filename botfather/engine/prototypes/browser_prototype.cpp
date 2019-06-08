@@ -25,7 +25,8 @@ QScriptValue BrowserPrototype::constructor(QScriptContext *context, QScriptEngin
 			return context->throwError(QScriptContext::Error::RangeError, "The browsers size must be at least 400x400");
 		}
 		Browser *browser = BrowserManager::instance()->createBrowser(vm->id(), id, size);
-		return engine->toScriptValue(browser);
+		//return engine->toScriptValue(browser);
+		return engine->newQObject(browser, QScriptEngine::QtOwnership);
 	}
 
 	NO_MATCHING_CTOR("Browser", BROWSER_PROTOTYPE_DOCS)
@@ -128,50 +129,50 @@ void BrowserPrototype::goBack()
 
 void BrowserPrototype::leftClick(const QPoint &position)
 {
-	THIS_BROWSER_P()->pressMouse(MBT_LEFT, position);
-	THIS_BROWSER_P()->releaseMouse(MBT_LEFT, position);
+	THIS_BROWSER_P()->pressMouse(position, Qt::LeftButton);
+	THIS_BROWSER_P()->releaseMouse(position, Qt::LeftButton);
 }
 
 void BrowserPrototype::middleClick(const QPoint &position)
 {
-	THIS_BROWSER_P()->pressMouse(MBT_MIDDLE, position);
-	THIS_BROWSER_P()->releaseMouse(MBT_MIDDLE, position);
+	THIS_BROWSER_P()->pressMouse(position, Qt::MiddleButton);
+	THIS_BROWSER_P()->releaseMouse(position, Qt::MiddleButton);
 }
 
 void BrowserPrototype::rightClick(const QPoint &position)
 {
-	THIS_BROWSER_P()->pressMouse(MBT_RIGHT, position);
-	THIS_BROWSER_P()->releaseMouse(MBT_RIGHT, position);
+	THIS_BROWSER_P()->pressMouse(position, Qt::RightButton);
+	THIS_BROWSER_P()->releaseMouse(position, Qt::RightButton);
 }
 
 void BrowserPrototype::pressLeft(const QPoint &position)
 {
-	THIS_BROWSER_P()->pressMouse(MBT_LEFT, position);
+	THIS_BROWSER_P()->pressMouse(position, Qt::LeftButton);
 }
 
 void BrowserPrototype::pressMiddle(const QPoint &position)
 {
-	THIS_BROWSER_P()->pressMouse(MBT_MIDDLE, position);
+	THIS_BROWSER_P()->pressMouse(position, Qt::MiddleButton);
 }
 
 void BrowserPrototype::pressRight(const QPoint &position)
 {
-	THIS_BROWSER_P()->pressMouse(MBT_RIGHT, position);
+	THIS_BROWSER_P()->pressMouse(position, Qt::RightButton);
 }
 
 void BrowserPrototype::releaseLeft(const QPoint &position)
 {
-	THIS_BROWSER_P()->releaseMouse(MBT_LEFT, position);
+	THIS_BROWSER_P()->releaseMouse(position, Qt::LeftButton);
 }
 
 void BrowserPrototype::releaseMiddle(const QPoint &position)
 {
-	THIS_BROWSER_P()->releaseMouse(MBT_MIDDLE, position);
+	THIS_BROWSER_P()->releaseMouse(position, Qt::MiddleButton);
 }
 
 void BrowserPrototype::releaseRight(const QPoint &position)
 {
-	THIS_BROWSER_P()->releaseMouse(MBT_RIGHT, position);
+	THIS_BROWSER_P()->releaseMouse(position, Qt::RightButton);
 }
 
 void BrowserPrototype::moveMouse(const QPoint &position)
@@ -179,9 +180,9 @@ void BrowserPrototype::moveMouse(const QPoint &position)
 	THIS_BROWSER_P()->moveMouse(position);
 }
 
-void BrowserPrototype::scrollWheel(const QPoint &position, int delta_x, int delta_y)
+void BrowserPrototype::scrollWheel(const QPoint &position, const QPoint &delta)
 {
-	THIS_BROWSER_P()->scrollWheel(position, delta_x, delta_y);
+	THIS_BROWSER_P()->scrollWheel(position, delta);
 }
 
 void BrowserPrototype::executeJavascript(const QString &javascript_code)

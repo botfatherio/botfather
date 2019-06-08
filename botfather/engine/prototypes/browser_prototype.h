@@ -49,7 +49,7 @@ public:
 	Q_INVOKABLE void releaseMiddle(const QPoint &position);
 	Q_INVOKABLE void releaseRight(const QPoint &position);
 	Q_INVOKABLE void moveMouse(const QPoint &position);
-	Q_INVOKABLE void scrollWheel(const QPoint &position, int delta_x, int delta_y);
+	Q_INVOKABLE void scrollWheel(const QPoint &position, const QPoint &delta);
 
 	Q_INVOKABLE void executeJavascript(const QString &javascript_code);
 

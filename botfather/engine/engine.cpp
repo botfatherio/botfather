@@ -101,7 +101,16 @@ void Engine::runScript()
 	REGISTER_PROTO(script_engine, SizePrototype, QSize, "Size");
 	REGISTER_PROTO(script_engine, RectPrototype, QRect, "Rect");
 	REGISTER_PROTO(script_engine, UrlPrototype, QUrl, "Url");
-	REGISTER_PROTO(script_engine, BrowserPrototype, Browser, "Browser");
+
+	//REGISTER_PROTO(script_engine, BrowserPrototype, Browser, "Browser");
+	{
+		BrowserPrototype *prototype = new BrowserPrototype(script_engine);
+		QScriptValue js_prototype = script_engine->newQObject(prototype);
+		QScriptValue js_constructor = script_engine->newFunction(BrowserPrototype::constructor, js_prototype);
+		//script_engine->setDefaultPrototype(qMetaTypeId<Browser>(), js_prototype);
+		script_engine->setDefaultPrototype(qMetaTypeId<Browser*>(), js_prototype);
+		script_engine->globalObject().setProperty(QString("Browser"), js_constructor);
+	}
 
 	// Try to open the submitted script file.
 	QFile script_file(script_path);
@@ -130,9 +139,6 @@ void Engine::runScript()
 	} else {
 		emit log("Bot script execution finished.", LogSource::System);
 	}
-
-	// Close all unnamed/non-persistent browsers of this session
-	//BrowserHost::instance()->closeManagedTemporaryBrowsers(id());
 
 	emit stopped(!result.isError());
 }

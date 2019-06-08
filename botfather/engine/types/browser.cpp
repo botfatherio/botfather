@@ -9,9 +9,6 @@ Browser::Browser(const QString &group, const QString &id, CefRefPtr<CefBrowser> 
 	, m_name(id)
 	, m_cef_browser(cef_browser)
 {
-	// TODO: figure out who will be parent?
-	// TODO: ^ or decide who is going to delete this
-
 	CefRefPtr<CefClient> cef_client = m_cef_browser->GetHost()->GetClient();
 	m_browser_client = static_cast<BrowserClient*>(cef_client.get());
 	Q_ASSERT(m_browser_client);
@@ -20,6 +17,11 @@ Browser::Browser(const QString &group, const QString &id, CefRefPtr<CefBrowser> 
 CefRefPtr<CefBrowser> Browser::cefBrowser() const
 {
 	return m_cef_browser;
+}
+
+BrowserClient* Browser::client() const
+{
+	return m_browser_client;
 }
 
 QString Browser::group() const
@@ -32,11 +34,6 @@ QString Browser::name() const
 	return m_name;
 }
 
-QImage Browser::takeScreenshot()
-{
-	return m_browser_client->takeScreenshot();
-}
-
 QSize Browser::size() const
 {
 	return m_browser_client->size();
@@ -45,6 +42,48 @@ QSize Browser::size() const
 QRect Browser::rect() const
 {
 	return QRect(QPoint(0, 0), size());
+}
+
+QUrl Browser::url() const
+{
+	return QString::fromStdString(m_cef_browser->GetMainFrame()->GetURL());
+}
+
+QImage Browser::takeScreenshot()
+{
+	return m_browser_client->takeScreenshot();
+}
+
+bool Browser::isLoading() const
+{
+	return m_cef_browser->IsLoading();
+}
+
+bool Browser::finishLoading(int timeout_in_seconds)
+{
+	QElapsedTimer timer;
+	timer.start();
+
+	while (isLoading())
+	{
+		if (timer.hasExpired(timeout_in_seconds * 1000))
+		{
+			return false;
+		}
+		QThread::sleep(1);
+	}
+
+	return true;
+}
+
+bool Browser::canGoBack() const
+{
+	return m_cef_browser->CanGoBack();
+}
+
+bool Browser::canGoForward() const
+{
+	return m_cef_browser->CanGoForward();
 }
 
 void Browser::blockResource(const QString &resource)
@@ -80,11 +119,6 @@ void Browser::beOnUrl(const QString &the_url)
 	}
 }
 
-QUrl Browser::url() const
-{
-	return QString::fromStdString(m_cef_browser->GetMainFrame()->GetURL());
-}
-
 void Browser::reload()
 {
 	m_cef_browser->Reload();
@@ -95,41 +129,9 @@ void Browser::reloadIgnoringCache()
 	m_cef_browser->ReloadIgnoreCache();
 }
 
-bool Browser::isLoading() const
-{
-	return m_cef_browser->IsLoading();
-}
-
-bool Browser::finishLoading(int timeout_in_seconds)
-{
-	QElapsedTimer timer;
-	timer.start();
-
-	while (isLoading())
-	{
-		if (timer.hasExpired(timeout_in_seconds * 1000))
-		{
-			return false;
-		}
-		QThread::sleep(1);
-	}
-
-	return true;
-}
-
 void Browser::stopLoading()
 {
 	m_cef_browser->StopLoad();
-}
-
-bool Browser::canGoBack() const
-{
-	return m_cef_browser->CanGoBack();
-}
-
-bool Browser::canGoForward() const
-{
-	return m_cef_browser->CanGoForward();
 }
 
 void Browser::goBack()
@@ -142,21 +144,52 @@ void Browser::goForward()
 	m_cef_browser->GoForward();
 }
 
-void Browser::pressMouse(const CefBrowserHost::MouseButtonType &button_type, const QPoint &position)
+void Browser::executeJavascript(const QString &javascript_code)
 {
-	CefMouseEvent event;
-	event.x = position.x();
-	event.y = position.y();
-	m_cef_browser->GetHost()->SendFocusEvent(true);
-	m_cef_browser->GetHost()->SendMouseClickEvent(event, button_type, false, 1);
+	m_cef_browser->GetMainFrame()->ExecuteJavaScript(
+		javascript_code.toStdString(),
+		m_cef_browser->GetMainFrame()->GetURL(),
+		0
+	);
 }
 
-void Browser::releaseMouse(const CefBrowserHost::MouseButtonType &button_type, const QPoint &position)
+static int convertToCefMouseButtonType(int qt_mouse_button)
 {
+	switch (qt_mouse_button) {
+	case Qt::LeftButton:
+		return MBT_LEFT;
+	case Qt::MiddleButton:
+		return MBT_MIDDLE;
+	case Qt::RightButton:
+		return MBT_RIGHT;
+	default:
+		return -1; // Unhandled mouse button type
+	}
+}
+
+void Browser::pressMouse(const QPoint &position, int qt_mouse_button)
+{
+	int button_code = convertToCefMouseButtonType(qt_mouse_button);
+	if (button_code == -1) return;
+
 	CefMouseEvent event;
 	event.x = position.x();
 	event.y = position.y();
-	m_cef_browser->GetHost()->SendMouseClickEvent(event, button_type, true, 1);
+
+	m_cef_browser->GetHost()->SendFocusEvent(true);
+	m_cef_browser->GetHost()->SendMouseClickEvent(event, CefBrowserHost::MouseButtonType(button_code), false, 1);
+}
+
+void Browser::releaseMouse(const QPoint &position, int qt_mouse_button)
+{
+	int button_code = convertToCefMouseButtonType(qt_mouse_button);
+	if (button_code == -1) return;
+
+	CefMouseEvent event;
+	event.x = position.x();
+	event.y = position.y();
+
+	m_cef_browser->GetHost()->SendMouseClickEvent(event, CefBrowserHost::MouseButtonType(button_code), true, 1);
 }
 
 void Browser::moveMouse(const QPoint &position)
@@ -168,19 +201,10 @@ void Browser::moveMouse(const QPoint &position)
 	m_cef_browser->GetHost()->SendMouseMoveEvent(event, mouse_leave);
 }
 
-void Browser::scrollWheel(const QPoint &position, int delta_x, int delta_y)
+void Browser::scrollWheel(const QPoint &position, const QPoint &delta)
 {
 	CefMouseEvent event;
 	event.x = position.x();
 	event.y = position.y();
-	m_cef_browser->GetHost()->SendMouseWheelEvent(event, delta_x, delta_y);
-}
-
-void Browser::executeJavascript(const QString &javascript_code)
-{
-	m_cef_browser->GetMainFrame()->ExecuteJavaScript(
-		javascript_code.toStdString(),
-		m_cef_browser->GetMainFrame()->GetURL(),
-		0
-	);
+	m_cef_browser->GetHost()->SendMouseWheelEvent(event, delta.x(), delta.y());
 }

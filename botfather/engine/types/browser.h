@@ -1,52 +1,58 @@
 #ifndef BROWSER_H
 #define BROWSER_H
 
+#include <QObject>
 #include <QMetaType>
 #include <QUrl>
 #include "../modules/browser/browser_manager.h"
 #include "../modules/browser/browser_client.h"
 
-class Browser
+class Browser : public QObject
 {
+	Q_OBJECT
+
 public:
 	Browser(const QString &group, const QString &id, CefRefPtr<CefBrowser> cef_browser);
 	Browser() {} // Required for metatype registration. Never use it
 
 	CefRefPtr<CefBrowser> cefBrowser() const;
+	BrowserClient *client() const;
+
 	QString group() const;
-
 	QString name() const;
-
-	QImage takeScreenshot();
 	QSize size() const;
 	QRect rect() const;
-
-	void loadUrl(const QString &url);
-	void beOnUrl(const QString &url);
 	QUrl url() const;
 
+	QImage takeScreenshot();
+
+	bool isLoading() const;
+	bool finishLoading(int timeout_in_seconds = 30);
+
+	bool canGoBack() const;
+	bool canGoForward() const;
+
+public slots:
 	void blockResource(const QString &resource_pattern);
 	void replaceResource(const QString &resource_pattern, const QString &replacement_url);
 	void unmodifyResource(const QString &resource_pattern);
 	void unmodifyResources();
 
+	void loadUrl(const QString &url);
+	void beOnUrl(const QString &url);
+
 	void reload();
 	void reloadIgnoringCache();
-	bool isLoading() const;
-	bool finishLoading(int timeout_in_seconds = 30);
 	void stopLoading();
 
-	bool canGoBack() const;
-	bool canGoForward() const;
 	void goForward();
 	void goBack();
-
-	void pressMouse(const CefBrowserHost::MouseButtonType &button_type, const QPoint &position);
-	void releaseMouse(const CefBrowserHost::MouseButtonType &button_type, const QPoint &position);
-	void moveMouse(const QPoint &position);
-	void scrollWheel(const QPoint &position, int delta_x, int delta_y);
-
 	void executeJavascript(const QString &javascript_code);
+
+	void pressMouse(const QPoint &position, int qt_mouse_button);
+	void releaseMouse(const QPoint &position, int qt_mouse_button);
+	void moveMouse(const QPoint &position);
+	void scrollWheel(const QPoint &position, const QPoint &delta);
 
 private:
 	QString m_group;
@@ -55,7 +61,6 @@ private:
 	BrowserClient *m_browser_client = nullptr;
 };
 
-Q_DECLARE_METATYPE(Browser)
 Q_DECLARE_METATYPE(Browser*)
 
 #endif // BROWSER_H
