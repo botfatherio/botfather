@@ -37,4 +37,8 @@ void BotBrowsersWidget::viewBrowser(const QModelIndex &index)
 	connect(browser_window->browserWidget(), &BrowserWidget::keyReleased, browser, &Browser::releaseKey, Qt::DirectConnection);
 
 	browser_window->show();
+
+	// When creating and opening a new BrowserWindow it won't display anything until the BrowserClients OnPaint method sends a new image.
+	// But the webpage is only re-rendered when something changed. To force re-rendering of the webpage we invalidate the browsers view.
+	browser->cefBrowser()->GetHost()->Invalidate(PET_VIEW);
 }
