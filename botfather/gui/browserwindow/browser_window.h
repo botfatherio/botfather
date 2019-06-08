@@ -18,16 +18,16 @@ public:
 	explicit BrowserWindow(QWidget *parent = nullptr);
 	~BrowserWindow();
 
-	BrowserWidget *browserWidget();
+	BrowserWidget *browserWidget() const;
 	
 public slots:
 	void show();
 	void paintSlot(QImage browser_image);
 	
 private:
-	Ui::BrowserWindow *ui;
-	BrowserWidget* pixmap_placeholder;
-	BrowserAddressBar* addressbar;
+	Ui::BrowserWindow *m_ui;
+	BrowserWidget *m_browser_widget;
+	BrowserAddressBar *m_adressbar;
 };
 
 #endif // BFP__GUI__BROWSER_WINDOW_H

@@ -1,7 +1,6 @@
 #include "browser_window.h"
 #include "ui_browser_window.h"
 #include <QDebug>
-#include <QAction>
 #include <QStyle>
 #include <QScreen>
 #include <QSettings>
@@ -9,23 +8,23 @@
 
 BrowserWindow::BrowserWindow(QWidget *parent)
 	: QMainWindow(parent)
-	, ui(new Ui::BrowserWindow)
+	, m_ui(new Ui::BrowserWindow)
 {
-	ui->setupUi(this);
-	pixmap_placeholder = new BrowserWidget(this);
-	addressbar = new BrowserAddressBar(this);
-	ui->centralwidget->layout()->addWidget(pixmap_placeholder);
-	ui->toolBar->addWidget(addressbar);
+	m_ui->setupUi(this);
+	m_browser_widget = new BrowserWidget(this);
+	m_adressbar = new BrowserAddressBar(this);
+	m_ui->centralwidget->layout()->addWidget(m_browser_widget);
+	m_ui->toolBar->addWidget(m_adressbar);
 }
 
 BrowserWindow::~BrowserWindow()
 {
-	delete ui;
+	delete m_ui;
 }
 
-BrowserWidget* BrowserWindow::browserWidget()
+BrowserWidget* BrowserWindow::browserWidget() const
 {
-	return pixmap_placeholder;
+	return m_browser_widget;
 }
 
 void BrowserWindow::show()
@@ -42,5 +41,5 @@ void BrowserWindow::show()
 
 void BrowserWindow::paintSlot(QImage browser_image)
 {
-	pixmap_placeholder->setPixmap(QPixmap::fromImage(browser_image));
+	m_browser_widget->setPixmap(QPixmap::fromImage(browser_image));
 }
