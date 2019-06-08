@@ -9,12 +9,12 @@
 #include "browser_model.h"
 #include "../../types/browser.h"
 
-class BrowserHost // FIXME: maybe call this BrowserManager or BrowserEngine to avoid confusing with CefBrowserHost
+class BrowserManager
 {
 public:
-	static BrowserHost *instance();
-	BrowserHost(BrowserHost const&) = delete;
-	void operator=(BrowserHost const&) = delete;
+	static BrowserManager *instance();
+	BrowserManager(BrowserManager const&) = delete;
+	void operator=(BrowserManager const&) = delete;
 
 	BrowserModel *model() const;
 
@@ -38,7 +38,7 @@ public:
 	static void closeCefBrowser(CefRefPtr<CefBrowser> browser);
 
 private:
-	BrowserHost();
+	BrowserManager();
 	CefSettings cefSettings() const;
 	QTimer *m_cef_message_loop_timer = nullptr;
 	BrowserModel *m_model = nullptr;

@@ -3,7 +3,7 @@
 
 #include <QMetaType>
 #include <QUrl>
-#include "../modules/browser/browser_host.h"
+#include "../modules/browser/browser_manager.h"
 #include "../modules/browser/browser_client.h"
 
 class Browser

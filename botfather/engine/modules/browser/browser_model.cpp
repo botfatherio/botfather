@@ -113,7 +113,7 @@ bool BrowserModel::removeRows(int position, int count, const QModelIndex &parent
 		if (!browser) continue;
 
 		// FIXME: handle deletion / check this approche
-		BrowserHost::closeCefBrowser(browser->cefBrowser());
+		BrowserManager::closeCefBrowser(browser->cefBrowser());
 		delete browser;
 	}
 

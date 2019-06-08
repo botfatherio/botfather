@@ -24,7 +24,7 @@ QScriptValue BrowserPrototype::constructor(QScriptContext *context, QScriptEngin
 		{
 			return context->throwError(QScriptContext::Error::RangeError, "The browsers size must be at least 400x400");
 		}
-		Browser *browser = BrowserHost::instance()->createBrowser(vm->id(), id, size);
+		Browser *browser = BrowserManager::instance()->createBrowser(vm->id(), id, size);
 		return engine->toScriptValue(browser);
 	}
 

@@ -1,4 +1,4 @@
-#include "browser_host.h"
+#include "browser_manager.h"
 #include <QStandardPaths>
 #include <QApplication>
 #include <QThread>
@@ -11,24 +11,24 @@
 	#include <windows.h>
 #endif
 
-BrowserHost *BrowserHost::instance()
+BrowserManager *BrowserManager::instance()
 {
-	static BrowserHost *singleton_instance = new BrowserHost;
+	static BrowserManager *singleton_instance = new BrowserManager;
 	return singleton_instance;
 }
 
-BrowserHost::BrowserHost()
+BrowserManager::BrowserManager()
 {
 	// TODO: Maybe thing about a better parent
 	m_model = new BrowserModel(QCoreApplication::instance());
 }
 
-BrowserModel *BrowserHost::model() const
+BrowserModel *BrowserManager::model() const
 {
 	return m_model;
 }
 
-bool BrowserHost::init(int argc, char **argv)
+bool BrowserManager::init(int argc, char **argv)
 {
 	// We don't use the sandbox thus there is no info.
 	void* sandbox_info = nullptr;
@@ -45,7 +45,7 @@ bool BrowserHost::init(int argc, char **argv)
 	return CefInitialize(main_args, cefSettings(), browser_app.get(), sandbox_info);
 }
 
-void BrowserHost::bind(QCoreApplication *app)
+void BrowserManager::bind(QCoreApplication *app)
 {
 	CEF_REQUIRE_UI_THREAD();
 	Q_ASSERT(m_cef_message_loop_timer == nullptr);
@@ -69,13 +69,13 @@ void BrowserHost::bind(QCoreApplication *app)
 	m_cef_message_loop_timer->start();
 }
 
-void BrowserHost::quit()
+void BrowserManager::quit()
 {
 	closeAllBrowsers();
 	CefShutdown();
 }
 
-CefSettings BrowserHost::cefSettings() const
+CefSettings BrowserManager::cefSettings() const
 {
 	CefSettings cef_settings;
 
@@ -120,7 +120,7 @@ CefSettings BrowserHost::cefSettings() const
 	return cef_settings;
 }
 
-Browser *BrowserHost::createBrowser(const QString &group_name, const QString &browser_id, const QSize &size)
+Browser *BrowserManager::createBrowser(const QString &group_name, const QString &browser_id, const QSize &size)
 {
 	QModelIndexList matches = m_model->match(
 		m_model->index(0, 0),
@@ -147,7 +147,7 @@ Browser *BrowserHost::createBrowser(const QString &group_name, const QString &br
 	return browser;
 }
 
-void BrowserHost::closeAllBrowsers()
+void BrowserManager::closeAllBrowsers()
 {
 	for (Browser *browser : m_model->browsers())
 	{
@@ -155,7 +155,7 @@ void BrowserHost::closeAllBrowsers()
 	}
 }
 
-void BrowserHost::closeCefBrowser(CefRefPtr<CefBrowser> browser)
+void BrowserManager::closeCefBrowser(CefRefPtr<CefBrowser> browser)
 {
 	// If this method is called when the application quits, we can't use the
 	// qapplications instance to check whether we are in the main thread

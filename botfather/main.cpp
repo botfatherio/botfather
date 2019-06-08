@@ -3,7 +3,7 @@
 #include <QTime>
 #include <git2.h>
 #include "shared/qsettingsjsonformat.h"
-#include "engine/modules/browser/browser_host.h"
+#include "engine/modules/browser/browser_manager.h"
 #include "gui/mainwindow.h"
 
 #if defined(_WIN32) || defined(_WIN64)
@@ -82,8 +82,8 @@ int main(int argc, char *argv[])
 #if defined(_WIN32) || defined(_WIN64)
 		Browser::init(__argc, __argv);
 #else
-		BrowserHost::instance()->init(argc, argv);
-		BrowserHost::instance()->bind(&a);
+		BrowserManager::instance()->init(argc, argv);
+		BrowserManager::instance()->bind(&a);
 #endif
 
     // Init libgit2 once and never shut it down. Shutting libgit2 down caused crashes related to multithreading

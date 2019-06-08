@@ -114,6 +114,7 @@ HEADERS += \
     ./engine/apis/algorithm_api.h \
     ./engine/prototypes/margins_prototype.h \
     ./engine/prototypes/url_prototype.h \
+    engine/modules/browser/browser_manager.h \
     engine/prototypes/timer_prototype.h \
     gui/scriptmanager/scriptmanagerdialog.h \
     git/gitfetchoperation.h \
@@ -147,7 +148,6 @@ HEADERS += \
     engine/modules/browser/browser_app.h \
     engine/modules/browser/browser_client.h \
     engine/modules/browser/browser_creator.h \
-    engine/modules/browser/browser_host.h \
     engine/modules/browser/browser_util.h \
     engine/modules/browser/browser_model.h \
     gui/botwidgets/botbrowserswidget.h
@@ -184,6 +184,7 @@ SOURCES += \
     ./engine/apis/algorithm_api.cpp \
     ./engine/prototypes/margins_prototype.cpp \
     ./engine/prototypes/url_prototype.cpp \
+    engine/modules/browser/browser_manager.cpp \
     engine/prototypes/timer_prototype.cpp \
     gui/scriptmanager/scriptmanagerdialog.cpp \
     git/gitfetchoperation.cpp \
@@ -217,7 +218,6 @@ SOURCES += \
     engine/modules/browser/browser_app.cpp \
     engine/modules/browser/browser_client.cpp \
     engine/modules/browser/browser_creator.cpp \
-    engine/modules/browser/browser_host.cpp \
     engine/modules/browser/browser_util.cpp \
     engine/modules/browser/browser_model.cpp \
     gui/botwidgets/botbrowserswidget.cpp
