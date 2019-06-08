@@ -208,3 +208,36 @@ void Browser::scrollWheel(const QPoint &position, const QPoint &delta)
 	event.y = position.y();
 	m_cef_browser->GetHost()->SendMouseWheelEvent(event, delta.x(), delta.y());
 }
+
+void Browser::pressKey(const QKeyEvent &event)
+{
+	if (event.matches(QKeySequence::Copy))
+	{
+		m_cef_browser->GetFocusedFrame()->Copy();
+	}
+	else if (event.matches(QKeySequence::Cut))
+	{
+		m_cef_browser->GetFocusedFrame()->Cut();
+	}
+	else if (event.matches(QKeySequence::Paste))
+	{
+		m_cef_browser->GetFocusedFrame()->Paste();
+	}
+	else if (event.matches(QKeySequence::Undo))
+	{
+		m_cef_browser->GetFocusedFrame()->Undo();
+	}
+	else if (event.matches(QKeySequence::Redo))
+	{
+		m_cef_browser->GetFocusedFrame()->Redo();
+	}
+	else if (event.matches(QKeySequence::SelectAll))
+	{
+		m_cef_browser->GetFocusedFrame()->SelectAll();
+	}
+}
+
+void Browser::releaseKey(const QKeyEvent &event)
+{
+	Q_UNUSED(event)
+}

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QMetaType>
 #include <QUrl>
+#include <QKeyEvent>
 #include "../modules/browser/browser_manager.h"
 #include "../modules/browser/browser_client.h"
 
@@ -53,6 +54,9 @@ public slots:
 	void releaseMouse(const QPoint &position, int qt_mouse_button);
 	void moveMouse(const QPoint &position);
 	void scrollWheel(const QPoint &position, const QPoint &delta);
+
+	void pressKey(const QKeyEvent &event);
+	void releaseKey(const QKeyEvent &event);
 
 private:
 	QString m_group;
