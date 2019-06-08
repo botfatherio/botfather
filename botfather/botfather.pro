@@ -235,5 +235,4 @@ FORMS += \
     gui/botwidgets/botconfigwidget.ui \
     gui/botwidgets/botbrowserswidget.ui
 RESOURCES += \
-    ./res/gui.qrc \
     res/botfather.qrc
