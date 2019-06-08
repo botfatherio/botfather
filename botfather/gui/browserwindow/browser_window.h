@@ -3,9 +3,8 @@
 
 #include <QMainWindow>
 #include <QImage>
-
-class BrowserWidget;
-class BrowserAddressBar;
+#include "browser_widget.h"
+#include "browser_address_bar.h"
 
 namespace Ui {
 	class BrowserWindow;
@@ -18,15 +17,13 @@ class BrowserWindow : public QMainWindow
 public:
 	explicit BrowserWindow(QWidget *parent = nullptr);
 	~BrowserWindow();
+
+	BrowserWidget *browserWidget();
 	
 public slots:
 	void show();
 	void paintSlot(QImage browser_image);
 	
-signals:
-	//void sendClick();
-	//void sendUrl();
-
 private:
 	Ui::BrowserWindow *ui;
 	BrowserWidget* pixmap_placeholder;

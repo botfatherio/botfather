@@ -15,6 +15,9 @@ public:
 	explicit BotBrowsersWidget(QWidget *parent = nullptr);
 	~BotBrowsersWidget();
 
+public slots:
+	void viewBrowser(const QModelIndex &index);
+
 private:
 	Ui::BotBrowsersWidget *ui;
 };

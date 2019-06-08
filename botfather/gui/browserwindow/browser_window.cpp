@@ -5,11 +5,11 @@
 #include <QStyle>
 #include <QScreen>
 #include <QSettings>
-#include "browser_widget.h"
-#include "browser_address_bar.h"
 #include "../../engine/modules/browser/browser_settings.h"
 
-BrowserWindow::BrowserWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::BrowserWindow)
+BrowserWindow::BrowserWindow(QWidget *parent)
+	: QMainWindow(parent)
+	, ui(new Ui::BrowserWindow)
 {
 	ui->setupUi(this);
 	pixmap_placeholder = new BrowserWidget(this);
@@ -21,6 +21,11 @@ BrowserWindow::BrowserWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 BrowserWindow::~BrowserWindow()
 {
 	delete ui;
+}
+
+BrowserWidget* BrowserWindow::browserWidget()
+{
+	return pixmap_placeholder;
 }
 
 void BrowserWindow::show()

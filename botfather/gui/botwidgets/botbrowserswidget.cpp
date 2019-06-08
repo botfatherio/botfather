@@ -1,6 +1,8 @@
 #include "botbrowserswidget.h"
 #include "ui_botbrowserswidget.h"
+#include <QDebug>
 #include "../../engine/modules/browser/browser_manager.h"
+#include "../browserwindow/browser_window.h"
 
 BotBrowsersWidget::BotBrowsersWidget(QWidget *parent) :
 	QWidget(parent),
@@ -8,9 +10,29 @@ BotBrowsersWidget::BotBrowsersWidget(QWidget *parent) :
 {
 	ui->setupUi(this);
 	ui->browser_list_view->setModel(BrowserManager::instance()->model());
+	connect(ui->browser_list_view, &QTableView::doubleClicked, this, &BotBrowsersWidget::viewBrowser);
 }
 
 BotBrowsersWidget::~BotBrowsersWidget()
 {
 	delete ui;
+}
+
+void BotBrowsersWidget::viewBrowser(const QModelIndex &index)
+{
+	Browser *browser = qvariant_cast<Browser*>(BrowserManager::instance()->model()->data(index, BrowserModel::BROWSER_PTR_ROLE));
+	if (!browser) return;
+
+	BrowserClient *browser_client = browser->client();
+	if (!browser_client) return;
+
+	BrowserWindow *browser_window = new BrowserWindow(this);
+
+	connect(browser->client(), &BrowserClient::paintSignal, browser_window, &BrowserWindow::paintSlot);
+	connect(browser_window->browserWidget(), &BrowserWidget::mousePressed, browser, &Browser::pressMouse, Qt::DirectConnection);
+	connect(browser_window->browserWidget(), &BrowserWidget::mouseReleased, browser, &Browser::releaseMouse, Qt::DirectConnection);
+	connect(browser_window->browserWidget(), &BrowserWidget::mouseMoved, browser, &Browser::moveMouse, Qt::DirectConnection);
+	connect(browser_window->browserWidget(), &BrowserWidget::wheelScrolled, browser, &Browser::scrollWheel, Qt::DirectConnection);
+
+	browser_window->show();
 }
