@@ -151,7 +151,9 @@ void BrowserManager::closeAllBrowsers()
 {
 	for (Browser *browser : m_model->browsers())
 	{
-		closeCefBrowser(browser->cefBrowser());
+		CefRefPtr<CefBrowser> cef_browser = browser->cefBrowser();
+		delete browser; // To free its reference to the CefBrowser
+		closeCefBrowser(cef_browser);
 	}
 }
 
