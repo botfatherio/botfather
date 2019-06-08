@@ -8,11 +8,13 @@ class BrowserAddressBar : public QLineEdit
 	Q_OBJECT
 	
 public:
-	BrowserAddressBar(QWidget* parent = 0);
+	explicit BrowserAddressBar(QWidget* parent = nullptr);
 	
 public slots:
 	void navigate();
-	void updateUrl();
+
+signals:
+	void urlEntered(const QString &url);
 };
 
 #endif // BFP__GUI__BROWSER_ADDRESS_BAR_H

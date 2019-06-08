@@ -19,6 +19,7 @@ public:
 	~BrowserWindow();
 
 	BrowserWidget *browserWidget() const;
+	BrowserAddressBar *addressBar() const;
 	
 public slots:
 	void show();

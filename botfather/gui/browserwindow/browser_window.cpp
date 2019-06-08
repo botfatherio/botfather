@@ -27,6 +27,11 @@ BrowserWidget* BrowserWindow::browserWidget() const
 	return m_browser_widget;
 }
 
+BrowserAddressBar* BrowserWindow::addressBar() const
+{
+	return m_adressbar;
+}
+
 void BrowserWindow::show()
 {
     // Center the browser window. On windows 10 the top bar won't be visible initialy otherwise
