@@ -20,7 +20,7 @@
    <string>Browser</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../res/gui.qrc">
+   <iconset>
     <normaloff>:/gui/logo_v2.png</normaloff>:/gui/logo_v2.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -66,8 +66,8 @@
   </widget>
   <action name="actionHome">
    <property name="icon">
-    <iconset resource="../../res/gui.qrc">
-     <normaloff>:/gui/icons8-shutdown-64.png</normaloff>:/gui/icons8-shutdown-64.png</iconset>
+    <iconset resource="../../res/botfather.qrc">
+     <normaloff>:/icons/icons/icons8-home-32.png</normaloff>:/icons/icons/icons8-home-32.png</iconset>
    </property>
    <property name="text">
     <string>Home</string>
@@ -78,8 +78,8 @@
   </action>
   <action name="actionReload">
    <property name="icon">
-    <iconset resource="../../res/gui.qrc">
-     <normaloff>:/gui/icons8-sync-64.png</normaloff>:/gui/icons8-sync-64.png</iconset>
+    <iconset resource="../../res/botfather.qrc">
+     <normaloff>:/icons/icons/icons8-available-updates-32.png</normaloff>:/icons/icons/icons8-available-updates-32.png</iconset>
    </property>
    <property name="text">
     <string>Reload</string>
@@ -90,8 +90,8 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../../res/gui.qrc">
-     <normaloff>:/gui/icons8-back-arrow-64.png</normaloff>:/gui/icons8-back-arrow-64.png</iconset>
+    <iconset resource="../../res/botfather.qrc">
+     <normaloff>:/icons/icons/icons8-left-32.png</normaloff>:/icons/icons/icons8-left-32.png</iconset>
    </property>
    <property name="text">
     <string>Back</string>
@@ -102,8 +102,8 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../../res/gui.qrc">
-     <normaloff>:/gui/icons8-forward-button-64.png</normaloff>:/gui/icons8-forward-button-64.png</iconset>
+    <iconset resource="../../res/botfather.qrc">
+     <normaloff>:/icons/icons/icons8-right-32.png</normaloff>:/icons/icons/icons8-right-32.png</iconset>
    </property>
    <property name="text">
     <string>Forward</string>
@@ -111,8 +111,8 @@
   </action>
   <action name="actionStop">
    <property name="icon">
-    <iconset resource="../../res/gui.qrc">
-     <normaloff>:/gui/icons8-cancel-64.png</normaloff>:/gui/icons8-cancel-64.png</iconset>
+    <iconset resource="../../res/botfather.qrc">
+     <normaloff>:/icons/icons/icons8-delete-32.png</normaloff>:/icons/icons/icons8-delete-32.png</iconset>
    </property>
    <property name="text">
     <string>Stop</string>
@@ -120,7 +120,7 @@
   </action>
  </widget>
  <resources>
-  <include location="../../res/gui.qrc"/>
+  <include location="../../res/botfather.qrc"/>
  </resources>
  <connections/>
 </ui>
