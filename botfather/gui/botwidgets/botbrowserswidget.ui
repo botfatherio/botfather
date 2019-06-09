@@ -62,6 +62,16 @@
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="delete_button">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>Delete</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="open_button">
        <property name="enabled">
         <bool>false</bool>

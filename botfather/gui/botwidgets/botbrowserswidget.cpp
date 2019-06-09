@@ -23,6 +23,7 @@ BotBrowsersWidget::BotBrowsersWidget(Bot *bot, QWidget *parent)
 	connect(ui->browser_list_view->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &BotBrowsersWidget::handleRowChange);
 	connect(ui->browser_list_view, &QTableView::doubleClicked, this, &BotBrowsersWidget::viewBrowser);
 	connect(ui->open_button, &QPushButton::clicked, this, &BotBrowsersWidget::viewCurrentBrowser);
+	connect(ui->delete_button, &QPushButton::clicked, this, &BotBrowsersWidget::deleteCurrentBrowser);
 }
 
 BotBrowsersWidget::~BotBrowsersWidget()
@@ -34,6 +35,25 @@ void BotBrowsersWidget::handleRowChange(const QModelIndex &current, const QModel
 {
 	Q_UNUSED(previus)
 	ui->open_button->setEnabled(current.isValid());
+	ui->delete_button->setEnabled(current.isValid());
+}
+
+void BotBrowsersWidget::deleteCurrentBrowser()
+{
+	deleteBrowser(ui->browser_list_view->selectionModel()->currentIndex());
+}
+
+void BotBrowsersWidget::deleteBrowser(const QModelIndex &index)
+{
+	if (!index.isValid())
+	{
+		return;
+	}
+
+	Browser *browser = qvariant_cast<Browser*>(BrowserManager::instance()->model()->data(index, BrowserListModel::BROWSER_PTR_ROLE));
+	if (!browser) return;
+
+	BrowserManager::instance()->deleteBrowser(browser);
 }
 
 void BotBrowsersWidget::viewCurrentBrowser()
