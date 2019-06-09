@@ -15,6 +15,12 @@ BrowserWindow::BrowserWindow(QWidget *parent)
 	m_adressbar = new BrowserAddressBar(this);
 	m_ui->centralwidget->layout()->addWidget(m_browser_widget);
 	m_ui->toolBar->addWidget(m_adressbar);
+
+	connect(m_ui->actionHome, &QAction::triggered, this, &BrowserWindow::homeTriggered);
+	connect(m_ui->actionReload, &QAction::triggered, this, &BrowserWindow::reloadTriggered);
+	connect(m_ui->actionStop, &QAction::triggered, this, &BrowserWindow::stopTriggered);
+	connect(m_ui->actionBack, &QAction::triggered, this, &BrowserWindow::backTriggered);
+	connect(m_ui->actionForward, &QAction::triggered, this, &BrowserWindow::forwardTriggered);
 }
 
 BrowserWindow::~BrowserWindow()
@@ -47,4 +53,12 @@ void BrowserWindow::show()
 void BrowserWindow::paintSlot(QImage browser_image)
 {
 	m_browser_widget->setPixmap(QPixmap::fromImage(browser_image));
+}
+
+void BrowserWindow::updateNavigationButtons(bool is_loading, bool can_go_back, bool can_go_forward)
+{
+	m_ui->actionBack->setEnabled(can_go_back);
+	m_ui->actionForward->setEnabled(can_go_forward);
+	m_ui->actionReload->setVisible(!is_loading);
+	m_ui->actionStop->setVisible(is_loading);
 }

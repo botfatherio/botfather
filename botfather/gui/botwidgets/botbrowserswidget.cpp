@@ -30,8 +30,14 @@ void BotBrowsersWidget::viewBrowser(const QModelIndex &index)
 
 	connect(browser->client(), &BrowserClient::paintSignal, browser_window, &BrowserWindow::paintSlot);
 	connect(browser->client(), &BrowserClient::finishedLoadingUrl, browser_window->addressBar(), &BrowserAddressBar::setText);
+	connect(browser->client(), &BrowserClient::loadingStateChanged, browser_window, &BrowserWindow::updateNavigationButtons);
 
 	// For some reasons these signals get never received if queued connections are used.
+	connect(browser_window, &BrowserWindow::homeTriggered, browser, &Browser::goHome, Qt::DirectConnection);
+	connect(browser_window, &BrowserWindow::reloadTriggered, browser, &Browser::reload, Qt::DirectConnection);
+	connect(browser_window, &BrowserWindow::stopTriggered, browser, &Browser::stopLoading, Qt::DirectConnection);
+	connect(browser_window, &BrowserWindow::backTriggered, browser, &Browser::goBack, Qt::DirectConnection);
+	connect(browser_window, &BrowserWindow::forwardTriggered, browser, &Browser::goForward, Qt::DirectConnection);
 	connect(browser_window->addressBar(), &BrowserAddressBar::urlEntered, browser, &Browser::loadUrl, Qt::DirectConnection);
 	connect(browser_window->browserWidget(), &BrowserWidget::mousePressed, browser, &Browser::pressMouse, Qt::DirectConnection);
 	connect(browser_window->browserWidget(), &BrowserWidget::mouseReleased, browser, &Browser::releaseMouse, Qt::DirectConnection);

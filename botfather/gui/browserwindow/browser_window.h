@@ -24,6 +24,14 @@ public:
 public slots:
 	void show();
 	void paintSlot(QImage browser_image);
+	void updateNavigationButtons(bool is_loading, bool can_go_back, bool can_go_forward);
+
+signals:
+	void homeTriggered();
+	void reloadTriggered();
+	void stopTriggered();
+	void forwardTriggered();
+	void backTriggered();
 	
 private:
 	Ui::BrowserWindow *m_ui;
