@@ -167,16 +167,6 @@ void MainWindow::startSelectedBot()
 		return;
 	}
 
-	// TODO: Remove this warning once we implemented multi browser support
-	if (m_bot_list_model->numberOfRunningBots() >= 1)
-	{
-		QMessageBox::information(
-			this,
-			tr("Limited functionality"),
-			tr("Current all bots SHARE THE SAME BROWSER and Android device!\n\nSupport for multiple browsers and android devices will come with version 6.0.0")
-		);
-	}
-
 	QString bot_path = m_bot_list_model->data(model_index, BotListModel::BOT_PATH_ROLE).toString();
 	BotWidget *bot_widget = m_bot_path_to_widget_map[bot_path];
 
