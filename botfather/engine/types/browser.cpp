@@ -119,6 +119,11 @@ void Browser::beOnUrl(const QString &the_url)
 	}
 }
 
+void Browser::goHome()
+{
+	loadUrl("about:version");
+}
+
 void Browser::reload()
 {
 	m_cef_browser->Reload();

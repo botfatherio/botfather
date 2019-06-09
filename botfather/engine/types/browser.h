@@ -41,6 +41,7 @@ public slots:
 
 	void loadUrl(const QString &url);
 	void beOnUrl(const QString &url);
+	void goHome();
 
 	void reload();
 	void reloadIgnoringCache();
