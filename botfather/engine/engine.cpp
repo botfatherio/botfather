@@ -23,7 +23,7 @@
 #include "apis/algorithm_api.h"
 #include "apis/config_api.h"
 
-Engine::Engine(const QString &id, QString script_path, const QString &config_ini_path)
+Engine::Engine(const QString &id, const QString &script_path, const QString &config_ini_path)
 	: m_id(id)
 	, script_path(script_path)
 	, m_config_ini_path(config_ini_path)

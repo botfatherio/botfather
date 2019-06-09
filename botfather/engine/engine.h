@@ -12,7 +12,7 @@ class Engine : public QObject
 
 public:
 	// Giving Bot a parent results in: QObject::moveToThread: Cannot move objects with a parent
-	Engine(const QString &id, QString script_path, const QString &config_ini_path);
+	Engine(const QString &id, const QString &script_path, const QString &config_ini_path);
 	~Engine();
 
 	enum LogSource{
