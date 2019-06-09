@@ -5,12 +5,12 @@
 
 class Browser;
 
-class BrowserModel : public QAbstractTableModel
+class BrowserListModel : public QAbstractTableModel
 {
 	Q_OBJECT
 
 public:
-	explicit BrowserModel(QObject *parent = nullptr);
+	explicit BrowserListModel(QObject *parent = nullptr);
 	static const int BROWSER_PTR_ROLE = Qt::UserRole + 1;
 	static const int BROWSER_UID_ROLE = Qt::UserRole + 2;
 

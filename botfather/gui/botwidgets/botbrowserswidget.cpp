@@ -48,7 +48,7 @@ void BotBrowsersWidget::viewBrowser(const QModelIndex &index)
 		return;
 	}
 
-	Browser *browser = qvariant_cast<Browser*>(BrowserManager::instance()->model()->data(index, BrowserModel::BROWSER_PTR_ROLE));
+	Browser *browser = qvariant_cast<Browser*>(BrowserManager::instance()->model()->data(index, BrowserListModel::BROWSER_PTR_ROLE));
 	if (!browser) return;
 
 	BrowserClient *browser_client = browser->client();

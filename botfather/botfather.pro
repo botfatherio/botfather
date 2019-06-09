@@ -114,6 +114,7 @@ HEADERS += \
     ./engine/apis/algorithm_api.h \
     ./engine/prototypes/margins_prototype.h \
     ./engine/prototypes/url_prototype.h \
+    engine/modules/browser/browser_list_model.h \
     engine/modules/browser/browser_manager.h \
     engine/prototypes/timer_prototype.h \
     gui/scriptmanager/scriptmanagerdialog.h \
@@ -149,7 +150,6 @@ HEADERS += \
     engine/modules/browser/browser_client.h \
     engine/modules/browser/browser_creator.h \
     engine/modules/browser/browser_util.h \
-    engine/modules/browser/browser_model.h \
     gui/botwidgets/botbrowserswidget.h
 SOURCES += \
     ./auth/license_api_client.cpp \
@@ -184,6 +184,7 @@ SOURCES += \
     ./engine/apis/algorithm_api.cpp \
     ./engine/prototypes/margins_prototype.cpp \
     ./engine/prototypes/url_prototype.cpp \
+    engine/modules/browser/browser_list_model.cpp \
     engine/modules/browser/browser_manager.cpp \
     engine/prototypes/timer_prototype.cpp \
     gui/scriptmanager/scriptmanagerdialog.cpp \
@@ -219,7 +220,6 @@ SOURCES += \
     engine/modules/browser/browser_client.cpp \
     engine/modules/browser/browser_creator.cpp \
     engine/modules/browser/browser_util.cpp \
-    engine/modules/browser/browser_model.cpp \
     gui/botwidgets/botbrowserswidget.cpp
 FORMS += \
     ./gui/androiddialog/android_dialog.ui \

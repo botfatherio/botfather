@@ -20,10 +20,10 @@ BrowserManager *BrowserManager::instance()
 BrowserManager::BrowserManager()
 {
 	// TODO: Maybe thing about a better parent
-	m_model = new BrowserModel(QCoreApplication::instance());
+	m_model = new BrowserListModel(QCoreApplication::instance());
 }
 
-BrowserModel *BrowserManager::model() const
+BrowserListModel *BrowserManager::model() const
 {
 	return m_model;
 }

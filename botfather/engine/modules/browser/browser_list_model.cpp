@@ -1,29 +1,29 @@
-#include "browser_model.h"
+#include "browser_list_model.h"
 #include <QDebug>
 #include "include/wrapper/cef_helpers.h"
 #include "browser_creator.h"
 #include "browser_util.h"
 #include "../../types/browser.h"
 
-BrowserModel::BrowserModel(QObject *parent)
+BrowserListModel::BrowserListModel(QObject *parent)
 	: QAbstractTableModel(parent)
 {
 
 }
 
-int BrowserModel::rowCount(const QModelIndex &parent) const
+int BrowserListModel::rowCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
 	return m_browsers.size();
 }
 
-int BrowserModel::columnCount(const QModelIndex &parent) const
+int BrowserListModel::columnCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
 	return 3; // Group Name, Browser ID, Current URL
 }
 
-QVariant BrowserModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant BrowserListModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	if (role != Qt::DisplayRole || orientation != Qt::Horizontal)
 	{
@@ -38,7 +38,7 @@ QVariant BrowserModel::headerData(int section, Qt::Orientation orientation, int 
 	}
 }
 
-QVariant BrowserModel::data(const QModelIndex &index, int role) const
+QVariant BrowserListModel::data(const QModelIndex &index, int role) const
 {
 	if (!index.isValid())
 	{
@@ -75,7 +75,7 @@ QVariant BrowserModel::data(const QModelIndex &index, int role) const
 	return QVariant();
 }
 
-bool BrowserModel::setData(const QModelIndex &index, const QVariant &value, int role)
+bool BrowserListModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
 	if (!index.isValid() || role != BROWSER_PTR_ROLE)
 	{
@@ -90,7 +90,7 @@ bool BrowserModel::setData(const QModelIndex &index, const QVariant &value, int 
 	return true;
 }
 
-bool BrowserModel::insertRows(int position, int count, const QModelIndex &parent)
+bool BrowserListModel::insertRows(int position, int count, const QModelIndex &parent)
 {
 	beginInsertRows(parent, position, position + count - 1);
 
@@ -103,7 +103,7 @@ bool BrowserModel::insertRows(int position, int count, const QModelIndex &parent
 	return true;
 }
 
-bool BrowserModel::removeRows(int position, int count, const QModelIndex &parent)
+bool BrowserListModel::removeRows(int position, int count, const QModelIndex &parent)
 {
 	beginRemoveRows(parent, position, position + count - 1);
 
@@ -121,7 +121,7 @@ bool BrowserModel::removeRows(int position, int count, const QModelIndex &parent
 	return true;
 }
 
-void BrowserModel::addBrowser(Browser *browser)
+void BrowserListModel::addBrowser(Browser *browser)
 {
 	insertRows(rowCount(), 1, QModelIndex());
 	QModelIndex row_index = index(rowCount() - 1, 0, QModelIndex());
@@ -129,12 +129,12 @@ void BrowserModel::addBrowser(Browser *browser)
 	qDebug() << "Adding a browser to model:" << browser->group() << browser->name();
 }
 
-QList<Browser*> BrowserModel::browsers() const
+QList<Browser*> BrowserListModel::browsers() const
 {
 	return m_browsers;
 }
 
-QString BrowserModel::createUID(const QString &group, const QString &browser_id)
+QString BrowserListModel::createUID(const QString &group, const QString &browser_id)
 {
 	return group + "--" + browser_id;
 }

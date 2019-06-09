@@ -6,7 +6,7 @@
 #include <QTimer>
 #include <include/cef_base.h>
 #include "browser_app.h"
-#include "browser_model.h"
+#include "browser_list_model.h"
 #include "../../types/browser.h"
 
 class BrowserManager
@@ -16,7 +16,7 @@ public:
 	BrowserManager(BrowserManager const&) = delete;
 	void operator=(BrowserManager const&) = delete;
 
-	BrowserModel *model() const;
+	BrowserListModel *model() const;
 
 	// Spawns required subprocesses. This must be called right after starting the application.
 	// Returns true when the initialisation succeeded otherwise false.
@@ -41,7 +41,7 @@ private:
 	BrowserManager();
 	CefSettings cefSettings() const;
 	QTimer *m_cef_message_loop_timer = nullptr;
-	BrowserModel *m_model = nullptr;
+	BrowserListModel *m_model = nullptr;
 };
 
 #endif // BROWSERHOST_H
