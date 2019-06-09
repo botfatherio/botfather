@@ -17,7 +17,9 @@ public:
 	~BotBrowsersWidget();
 
 public slots:
+	void viewCurrentBrowser();
 	void viewBrowser(const QModelIndex &index);
+	void handleRowChange(const QModelIndex &current, const QModelIndex &previous);
 
 private:
 	Ui::BotBrowsersWidget *ui;
