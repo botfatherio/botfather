@@ -73,7 +73,7 @@ signals: // FIXME: rename those signals. and remove the signal suffix
 	void pluginCrashedSignal();
 	void rendererCrashedSignal();
 	void browserClosedSignal();
-	void loadingStateChangedSignal(bool state);
+	void loadingStateChanged(bool is_loading, bool can_go_back, bool can_go_forward);
 	void finishedLoadingUrl(const QString &url);
 
 private:

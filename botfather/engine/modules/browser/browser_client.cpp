@@ -130,10 +130,8 @@ void BrowserClient::OnLoadError(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFram
 void BrowserClient::OnLoadingStateChange(CefRefPtr<CefBrowser> browser, bool isLoading, bool canGoBack, bool canGoForward)
 {
 	Q_UNUSED(browser)
-	Q_UNUSED(canGoBack)
-	Q_UNUSED(canGoForward)
 	CEF_REQUIRE_UI_THREAD();
-	emit loadingStateChangedSignal(isLoading);
+	emit loadingStateChanged(isLoading, canGoBack, canGoForward);
 }
 
 void BrowserClient::OnLoadEnd(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, int httpStatusCode)
