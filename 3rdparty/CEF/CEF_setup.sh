@@ -1,23 +1,12 @@
 #!/bin/bash
 
 ##
-# Configuration
+# Helper Functions
 ##
 
-SOURCE_DIR_PATH=$HOME/Source
-CEF_DOWNLOAD_URL="http://opensource.spotify.com/cefbuilds/cef_binary_3.3578.1861.g1992780_linux64.tar.bz2"
-CEF_TAR_BZ2_FILE=$(echo $CEF_DOWNLOAD_URL | cut -d "/" -f 5)
-CEF_SRC_DIR_NAME=$(echo $CEF_TAR_BZ2_FILE | rev | cut -f 3- -d '.' | rev)
-CEF_SRC_DIR_PATH=$SOURCE_DIR_PATH/$CEF_SRC_DIR_NAME
-CEF_DEBUG_BUILD_DIR_PATH=$CEF_SRC_DIR_PATH/DebugBuild
-CEF_RELEASE_BUILD_DIR_PATH=$CEF_SRC_DIR_PATH/ReleaseBuild
-NUMBER_OF_MAKE_BUILD_JOBS=$(nproc)
+urldecode() { : "${*//+/ }"; echo -e "${_//%/\\x}"; }
 
-##
-# Functions
-##
-
-function continue_y_or_no {
+function continue_yes_or_no {
 	read -p "Continue? [y/N] " -n 1 -r
 	echo
 	if [[ ! $REPLY =~ ^[Yy]$ ]]
@@ -27,6 +16,23 @@ function continue_y_or_no {
 	    [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1 # handle exits from shell or function but don't exit interactive shell
 	fi
 }
+
+##
+# Configuration
+##
+
+SOURCE_DIR_PATH=$HOME/Source
+CEF_DOWNLOAD_URL="http://opensource.spotify.com/cefbuilds/cef_binary_3.3578.1861.g1992780_linux64.tar.bz2"
+CEF_TAR_BZ2_FILE=$(urldecode $(echo $CEF_DOWNLOAD_URL | cut -d "/" -f 5))
+CEF_SRC_DIR_NAME=$(echo $CEF_TAR_BZ2_FILE | rev | cut -f 3- -d '.' | rev)
+CEF_SRC_DIR_PATH=$SOURCE_DIR_PATH/$CEF_SRC_DIR_NAME
+CEF_DEBUG_BUILD_DIR_PATH=$CEF_SRC_DIR_PATH/DebugBuild
+CEF_RELEASE_BUILD_DIR_PATH=$CEF_SRC_DIR_PATH/ReleaseBuild
+NUMBER_OF_MAKE_BUILD_JOBS=$(nproc)
+
+##
+# Functions
+##
 
 function build_CEF {
 	BUILD_DIR_PATH=$1
@@ -59,7 +65,7 @@ echo "CEF_RELEASE_BUILD_DIR_PATH: " $CEF_RELEASE_BUILD_DIR_PATH
 echo "NUMBER_OF_MAKE_BUILD_JOBS:  " $NUMBER_OF_MAKE_BUILD_JOBS
 echo
 
-continue_y_or_no
+continue_yes_or_no
 
 ##
 # Script | Preperation, CEF download and modification
@@ -94,7 +100,7 @@ echo "#############################################################"
 echo 
 echo "Done. Don't forget to set the following environment variable:"
 echo
-echo "export CEF_ROOT="$SOURCE_DIR_PATH
+echo "export CEF_ROOT="$CEF_SRC_DIR_PATH
 echo
 echo "#############################################################"
 echo
