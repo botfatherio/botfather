@@ -46,9 +46,14 @@ void BotBrowsersWidget::viewBrowser(const QModelIndex &index)
 	connect(browser_window->browserWidget(), &BrowserWidget::keyPressed, browser, &Browser::pressKey, Qt::DirectConnection);
 	connect(browser_window->browserWidget(), &BrowserWidget::keyReleased, browser, &Browser::releaseKey, Qt::DirectConnection);
 
-	browser_window->show();
-
 	// When creating and opening a new BrowserWindow it won't display anything until the BrowserClients OnPaint method sends a new image.
 	// But the webpage is only re-rendered when something changed. To force re-rendering of the webpage we invalidate the browsers view.
 	browser->cefBrowser()->GetHost()->Invalidate(PET_VIEW);
+
+	// The browser windows navigation buttons and the url shown in the address bar are updated when certain signals got emitted.
+	// To prevent an blank addressbar and not working navigation buttons, we call the related slots before showing the browserwindow.
+	browser_window->addressBar()->setText(browser->url().toString());
+	browser_window->updateNavigationButtons(browser->isLoading(), browser->canGoBack(), browser->canGoForward());
+
+	browser_window->show();
 }
