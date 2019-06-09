@@ -94,6 +94,9 @@ void BotBrowsersWidget::viewBrowser(const QModelIndex &index)
 	connect(browser_window->browserWidget(), &BrowserWidget::keyPressed, browser, &Browser::pressKey, Qt::DirectConnection);
 	connect(browser_window->browserWidget(), &BrowserWidget::keyReleased, browser, &Browser::releaseKey, Qt::DirectConnection);
 
+	// Close the BrowserWindow when the presented underlying Browser got deleted.
+	connect(browser, &Browser::destroyed, browser_window, &BrowserWindow::close);
+
 	// When creating and opening a new BrowserWindow it won't display anything until the BrowserClients OnPaint method sends a new image.
 	// But the webpage is only re-rendered when something changed. To force re-rendering of the webpage we invalidate the browsers view.
 	browser->cefBrowser()->GetHost()->Invalidate(PET_VIEW);
