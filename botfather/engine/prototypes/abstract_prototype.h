@@ -49,7 +49,6 @@ public:
 	QScriptValue js_prototype = ENGINE_PTR->newQObject(prototype); \
 	QScriptValue js_constructor = ENGINE_PTR->newFunction(PROTO_CLS::constructor, js_prototype); \
 	ENGINE_PTR->setDefaultPrototype(qMetaTypeId<TYPE_CLS>(), js_prototype); \
-	ENGINE_PTR->setDefaultPrototype(qMetaTypeId<TYPE_CLS*>(), js_prototype); \
 	ENGINE_PTR->globalObject().setProperty(QString(TYPE_CLS_NAME), js_constructor); \
 }
 

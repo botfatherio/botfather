@@ -92,25 +92,26 @@ void Engine::runScript()
 	REGISTER_API(script_engine, this, ConfigAPI, "Config");
 	
 	REGISTER_PROTO(script_engine, TimerPrototype, QElapsedTimer, "Timer");
+	REGISTER_PROTO(script_engine, TimerPrototype, QElapsedTimer*, "Timer");
 	REGISTER_PROTO(script_engine, BlobTplPrototype, BlobTpl, "BlobTpl");
+	REGISTER_PROTO(script_engine, BlobTplPrototype, BlobTpl*, "BlobTpl");
 	REGISTER_PROTO(script_engine, MarginsPrototype, QMargins, "Margins");
+	REGISTER_PROTO(script_engine, MarginsPrototype, QMargins*, "Margins");
 	REGISTER_PROTO(script_engine, PointPrototype, QPoint, "Point");
+	REGISTER_PROTO(script_engine, PointPrototype, QPoint*, "Point");
 	REGISTER_PROTO(script_engine, ImagePrototype, QImage, "Image");
+	REGISTER_PROTO(script_engine, ImagePrototype, QImage*, "Image");
 	REGISTER_PROTO(script_engine, ColorPrototype, QColor, "Color");
+	REGISTER_PROTO(script_engine, ColorPrototype, QColor*, "Color");
 	REGISTER_PROTO(script_engine, MatchPrototype, Match, "Match");
+	REGISTER_PROTO(script_engine, MatchPrototype, Match*, "Match");
 	REGISTER_PROTO(script_engine, SizePrototype, QSize, "Size");
+	REGISTER_PROTO(script_engine, SizePrototype, QSize*, "Size");
 	REGISTER_PROTO(script_engine, RectPrototype, QRect, "Rect");
+	REGISTER_PROTO(script_engine, RectPrototype, QRect*, "Rect");
 	REGISTER_PROTO(script_engine, UrlPrototype, QUrl, "Url");
-
-	//REGISTER_PROTO(script_engine, BrowserPrototype, Browser, "Browser");
-	{
-		BrowserPrototype *prototype = new BrowserPrototype(script_engine);
-		QScriptValue js_prototype = script_engine->newQObject(prototype);
-		QScriptValue js_constructor = script_engine->newFunction(BrowserPrototype::constructor, js_prototype);
-		//script_engine->setDefaultPrototype(qMetaTypeId<Browser>(), js_prototype);
-		script_engine->setDefaultPrototype(qMetaTypeId<Browser*>(), js_prototype);
-		script_engine->globalObject().setProperty(QString("Browser"), js_constructor);
-	}
+	REGISTER_PROTO(script_engine, UrlPrototype, QUrl*, "Url");
+	REGISTER_PROTO(script_engine, BrowserPrototype, Browser*, "Browser");
 
 	// Try to open the submitted script file.
 	QFile script_file(script_path);
