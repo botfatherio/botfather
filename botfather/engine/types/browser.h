@@ -59,6 +59,9 @@ public slots:
 	void pressKey(const QKeyEvent *event);
 	void releaseKey(const QKeyEvent *event);
 
+signals:
+	void aboutToGetDeletedByTheUser();
+
 private:
 	QString m_group;
 	QString m_name;
