@@ -16,6 +16,8 @@ BrowserWindow::BrowserWindow(QWidget *parent)
 	m_ui->centralwidget->layout()->addWidget(m_browser_widget);
 	m_ui->toolBar->addWidget(m_adressbar);
 
+	layout()->setSizeConstraint(QLayout::SetFixedSize);
+
 	connect(m_ui->actionHome, &QAction::triggered, this, &BrowserWindow::homeTriggered);
 	connect(m_ui->actionReload, &QAction::triggered, this, &BrowserWindow::reloadTriggered);
 	connect(m_ui->actionStop, &QAction::triggered, this, &BrowserWindow::stopTriggered);

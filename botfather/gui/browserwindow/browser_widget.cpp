@@ -4,12 +4,6 @@
 
 BrowserWidget::BrowserWidget(QWidget* parent) : QLabel(parent)
 {
-	// Make this widget expand to it's parents size.
-	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-	
-	// Make this widgets content (like the resizing text) be centered.
-	setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-	
 	// Attract mouse and keyboard events.
 	setMouseTracking(true);
 	setFocusPolicy(Qt::ClickFocus);
