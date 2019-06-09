@@ -202,8 +202,8 @@ void Browser::moveMouse(const QPoint &position)
 	CefMouseEvent event;
 	event.x = position.x();
 	event.y = position.y();
-	bool mouse_leave = rect().contains(position);
-	m_cef_browser->GetHost()->SendMouseMoveEvent(event, mouse_leave);
+	bool mouse_leaves = !rect().contains(position);
+	m_cef_browser->GetHost()->SendMouseMoveEvent(event, mouse_leaves);
 }
 
 void Browser::scrollWheel(const QPoint &position, const QPoint &delta)
