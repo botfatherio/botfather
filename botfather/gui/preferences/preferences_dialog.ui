@@ -14,8 +14,8 @@
    <string>Preferences</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../res/gui.qrc">
-    <normaloff>:/gui/logo_v2.png</normaloff>:/gui/logo_v2.png</iconset>
+   <iconset resource="../../res/botfather.qrc">
+    <normaloff>:/logo_v2.png</normaloff>:/logo_v2.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -327,7 +327,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../res/gui.qrc"/>
+  <include location="../../res/botfather.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -14,8 +14,8 @@
    <string>Authentication</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../res/gui.qrc">
-    <normaloff>:/gui/logo_v2.png</normaloff>:/gui/logo_v2.png</iconset>
+   <iconset resource="../../res/botfather.qrc">
+    <normaloff>:/logo_v2.png</normaloff>:/logo_v2.png</iconset>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -154,7 +154,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../res/gui.qrc"/>
+  <include location="../../res/botfather.qrc"/>
  </resources>
  <connections/>
 </ui>

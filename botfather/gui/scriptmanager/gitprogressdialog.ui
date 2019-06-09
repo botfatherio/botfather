@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../../res/botfather.qrc">
+    <normaloff>:/logo_v2.png</normaloff>:/logo_v2.png</iconset>
+  </property>
   <property name="modal">
    <bool>true</bool>
   </property>
@@ -52,6 +56,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../res/botfather.qrc"/>
+ </resources>
  <connections/>
 </ui>

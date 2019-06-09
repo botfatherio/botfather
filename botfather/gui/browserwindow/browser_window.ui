@@ -20,8 +20,8 @@
    <string>Browser</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>:/gui/logo_v2.png</normaloff>:/gui/logo_v2.png</iconset>
+   <iconset resource="../../res/botfather.qrc">
+    <normaloff>:/logo_v2.png</normaloff>:/logo_v2.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">

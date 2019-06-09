@@ -27,4 +27,7 @@
         <file>icons/icons8-home-32.png</file>
         <file>icons/icons8-right-32.png</file>
     </qresource>
+    <qresource prefix="/">
+        <file>logo_v2.png</file>
+    </qresource>
 </RCC>
