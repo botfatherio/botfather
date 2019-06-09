@@ -13,7 +13,7 @@ BotWidget::BotWidget(Bot *bot, QSystemTrayIcon *trayicon, QWidget *parent)
 	m_corner_widget = new QLabel(m_tab_widget);
 	m_bot_log_widget = new BotLogWidget(bot, this);
 	m_bot_updates_widget = new BotUpdatesWidget(bot, this);
-	m_bot_browsers_widget = new BotBrowsersWidget(this);
+	m_bot_browsers_widget = new BotBrowsersWidget(bot, this);
 	m_bot_settings_widget = new BotSettingsWidget(bot, this);
 	m_bot_settings = new QSettings(bot->settingsPath(), QSettings::IniFormat);
 	m_stop_hotkey = new QHotkey();

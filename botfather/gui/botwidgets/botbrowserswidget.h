@@ -2,6 +2,7 @@
 #define BOTBROWSERSWIDGET_H
 
 #include <QWidget>
+#include "../models/bot.h"
 
 namespace Ui {
 class BotBrowsersWidget;
@@ -12,7 +13,7 @@ class BotBrowsersWidget : public QWidget
 	Q_OBJECT
 
 public:
-	explicit BotBrowsersWidget(QWidget *parent = nullptr);
+	explicit BotBrowsersWidget(Bot *bot, QWidget *parent = nullptr);
 	~BotBrowsersWidget();
 
 public slots:

@@ -1,15 +1,25 @@
 #include "botbrowserswidget.h"
 #include "ui_botbrowserswidget.h"
+#include <QSortFilterProxyModel>
 #include <QDebug>
 #include "../../engine/modules/browser/browser_manager.h"
 #include "../browserwindow/browser_window.h"
 
-BotBrowsersWidget::BotBrowsersWidget(QWidget *parent) :
-	QWidget(parent),
-	ui(new Ui::BotBrowsersWidget)
+BotBrowsersWidget::BotBrowsersWidget(Bot *bot, QWidget *parent)
+	: QWidget(parent)
+	, ui(new Ui::BotBrowsersWidget)
 {
 	ui->setupUi(this);
-	ui->browser_list_view->setModel(BrowserManager::instance()->model());
+
+	QSortFilterProxyModel *browser_model_proxy = new QSortFilterProxyModel(this);
+	browser_model_proxy->setSourceModel(BrowserManager::instance()->model());
+	browser_model_proxy->setFilterRole(Qt::DisplayRole);
+	browser_model_proxy->setFilterKeyColumn(0); // Group
+	browser_model_proxy->setFilterFixedString(bot->scriptPath()); // The bots script path is used as its id
+
+	ui->browser_list_view->setModel(browser_model_proxy);
+	ui->browser_list_view->hideColumn(0); // Group
+
 	connect(ui->browser_list_view, &QTableView::doubleClicked, this, &BotBrowsersWidget::viewBrowser);
 }
 
@@ -50,7 +60,7 @@ void BotBrowsersWidget::viewBrowser(const QModelIndex &index)
 	// But the webpage is only re-rendered when something changed. To force re-rendering of the webpage we invalidate the browsers view.
 	browser->cefBrowser()->GetHost()->Invalidate(PET_VIEW);
 
-	// The browser windows navigation buttons and the url shown in the address bar are updated when certain signals got emitted.
+	// The browser window navigation buttons and the url shown in the address bar are updated when certain signals got emitted.
 	// To prevent an blank addressbar and not working navigation buttons, we call the related slots before showing the browserwindow.
 	browser_window->addressBar()->setText(browser->url().toString());
 	browser_window->updateNavigationButtons(browser->isLoading(), browser->canGoBack(), browser->canGoForward());
