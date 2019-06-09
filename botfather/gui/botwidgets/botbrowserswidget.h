@@ -17,7 +17,7 @@ public:
 	~BotBrowsersWidget();
 
 public slots:
-	void handleRowChange(const QModelIndex &current, const QModelIndex &previous);
+	void updateButtonStates();
 	void deleteCurrentBrowser();
 	void deleteBrowser(const QModelIndex &index);
 	void viewCurrentBrowser();
@@ -25,6 +25,7 @@ public slots:
 
 private:
 	Ui::BotBrowsersWidget *ui;
+	Bot *m_bot = nullptr;
 };
 
 #endif // BOTBROWSERSWIDGET_H

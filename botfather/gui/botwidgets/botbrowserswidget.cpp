@@ -8,6 +8,7 @@
 BotBrowsersWidget::BotBrowsersWidget(Bot *bot, QWidget *parent)
 	: QWidget(parent)
 	, ui(new Ui::BotBrowsersWidget)
+	, m_bot(bot)
 {
 	ui->setupUi(this);
 
@@ -20,7 +21,10 @@ BotBrowsersWidget::BotBrowsersWidget(Bot *bot, QWidget *parent)
 	ui->browser_list_view->setModel(browser_model_proxy);
 	ui->browser_list_view->hideColumn(0); // Group
 
-	connect(ui->browser_list_view->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &BotBrowsersWidget::handleRowChange);
+	connect(bot, &Bot::started, this, &BotBrowsersWidget::updateButtonStates);
+	connect(bot, &Bot::stopped, this, &BotBrowsersWidget::updateButtonStates);
+	connect(ui->browser_list_view->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &BotBrowsersWidget::updateButtonStates);
+
 	connect(ui->browser_list_view, &QTableView::doubleClicked, this, &BotBrowsersWidget::viewBrowser);
 	connect(ui->open_button, &QPushButton::clicked, this, &BotBrowsersWidget::viewCurrentBrowser);
 	connect(ui->delete_button, &QPushButton::clicked, this, &BotBrowsersWidget::deleteCurrentBrowser);
@@ -31,11 +35,11 @@ BotBrowsersWidget::~BotBrowsersWidget()
 	delete ui;
 }
 
-void BotBrowsersWidget::handleRowChange(const QModelIndex &current, const QModelIndex &previus)
+void BotBrowsersWidget::updateButtonStates()
 {
-	Q_UNUSED(previus)
+	QModelIndex current = ui->browser_list_view->selectionModel()->currentIndex();
 	ui->open_button->setEnabled(current.isValid());
-	ui->delete_button->setEnabled(current.isValid());
+	ui->delete_button->setEnabled(current.isValid() && !m_bot->isRunning());
 }
 
 void BotBrowsersWidget::deleteCurrentBrowser()
@@ -45,7 +49,7 @@ void BotBrowsersWidget::deleteCurrentBrowser()
 
 void BotBrowsersWidget::deleteBrowser(const QModelIndex &index)
 {
-	if (!index.isValid())
+	if (!index.isValid() || m_bot->isRunning())
 	{
 		return;
 	}
