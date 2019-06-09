@@ -15,7 +15,7 @@ class BrowserWindow : public QMainWindow
 	Q_OBJECT
 	
 public:
-	explicit BrowserWindow(QWidget *parent = nullptr);
+	explicit BrowserWindow(const QString &title, QWidget *parent = nullptr);
 	~BrowserWindow();
 
 	BrowserWidget *browserWidget() const;

@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Browser</string>
+   <string>Unnamed Browser</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../../res/botfather.qrc">

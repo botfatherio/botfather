@@ -6,7 +6,7 @@
 #include <QSettings>
 #include "../../engine/modules/browser/browser_settings.h"
 
-BrowserWindow::BrowserWindow(QWidget *parent)
+BrowserWindow::BrowserWindow(const QString &title, QWidget *parent)
 	: QMainWindow(parent)
 	, m_ui(new Ui::BrowserWindow)
 {
@@ -17,6 +17,7 @@ BrowserWindow::BrowserWindow(QWidget *parent)
 	m_ui->toolBar->addWidget(m_adressbar);
 
 	layout()->setSizeConstraint(QLayout::SetFixedSize);
+	setWindowTitle(title);
 
 	connect(m_ui->actionHome, &QAction::triggered, this, &BrowserWindow::homeTriggered);
 	connect(m_ui->actionReload, &QAction::triggered, this, &BrowserWindow::reloadTriggered);

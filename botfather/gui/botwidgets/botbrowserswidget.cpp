@@ -54,7 +54,7 @@ void BotBrowsersWidget::viewBrowser(const QModelIndex &index)
 	BrowserClient *browser_client = browser->client();
 	if (!browser_client) return;
 
-	BrowserWindow *browser_window = new BrowserWindow(this);
+	BrowserWindow *browser_window = new BrowserWindow(browser->name(), this);
 
 	connect(browser->client(), &BrowserClient::paintSignal, browser_window, &BrowserWindow::paintSlot);
 	connect(browser->client(), &BrowserClient::finishedLoadingUrl, browser_window->addressBar(), &BrowserAddressBar::setText);
