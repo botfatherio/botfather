@@ -14,8 +14,8 @@ signals:
 	void mouseReleased(const QPoint &position, int qt_mouse_button);
 	void mouseMoved(const QPoint &position);
 	void wheelScrolled(const QPoint &position, const QPoint &delta);
-	void keyPressed(const QKeyEvent &event);
-	void keyReleased(const QKeyEvent &event);
+	void keyPressed(const QKeyEvent *event);
+	void keyReleased(const QKeyEvent *event);
 
 private:
 	void mousePressEvent(QMouseEvent *event);

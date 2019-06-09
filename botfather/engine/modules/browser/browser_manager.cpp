@@ -60,7 +60,7 @@ void BrowserManager::bind(QCoreApplication *app)
 		}
 	});
 	QObject::connect(app, &QCoreApplication::destroyed, [this](){
-		this->quit(); // TODO: eventually make the BrowserHost a QObject
+		this->quit(); // TODO: eventually make the BrowserManager a QObject
 	});
 
 	m_cef_message_loop_timer = new QTimer();
@@ -92,7 +92,10 @@ CefSettings BrowserManager::cefSettings() const
 
 	// This option is recommended for use in combination with the DoMessageLoopWork() function
 	// in cases where the CEF message loop must be integrated into an existing application message loop
-	cef_settings.external_message_pump = true;
+	//cef_settings.external_message_pump = true;
+	// While this option is the recommended way in our case, it cause the problems described in the following
+	// issue: https://bitbucket.org/chromiumembedded/cef/issues/2340/x11-3239-paste-from-system-clipboard-does
+	// However, not setting this option to true, did not cause any problems so far.
 
 	// Windows only option. Turn it off, we have our own message loop
 	cef_settings.multi_threaded_message_loop = false;

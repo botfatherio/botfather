@@ -31,10 +31,10 @@ void BrowserWidget::wheelEvent(QWheelEvent *event)
 
 void BrowserWidget::keyPressEvent(QKeyEvent *event)
 {
-	emit keyPressed(*event);
+	emit keyPressed(event);
 }
 
 void BrowserWidget::keyReleaseEvent(QKeyEvent *event)
 {
-	emit keyReleased(*event);
+	emit keyReleased(event);
 }

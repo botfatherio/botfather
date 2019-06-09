@@ -56,8 +56,8 @@ public slots:
 	void moveMouse(const QPoint &position);
 	void scrollWheel(const QPoint &position, const QPoint &delta);
 
-	void pressKey(const QKeyEvent &event);
-	void releaseKey(const QKeyEvent &event);
+	void pressKey(const QKeyEvent *event);
+	void releaseKey(const QKeyEvent *event);
 
 private:
 	QString m_group;
