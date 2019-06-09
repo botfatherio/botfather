@@ -71,7 +71,7 @@ void BrowserManager::bind(QCoreApplication *app)
 
 void BrowserManager::quit()
 {
-	closeAllBrowsers();
+	deleteBrowsers();
 	CefShutdown();
 }
 
@@ -147,13 +147,19 @@ Browser *BrowserManager::createBrowser(const QString &group_name, const QString 
 	return browser;
 }
 
-void BrowserManager::closeAllBrowsers()
+void BrowserManager::deleteBrowser(Browser *browser)
+{
+	m_model->removeBrowser(browser);
+	CefRefPtr<CefBrowser> cef_browser = browser->cefBrowser();
+	delete browser; // To free its reference to the CefBrowser
+	closeCefBrowser(cef_browser);
+}
+
+void BrowserManager::deleteBrowsers()
 {
 	for (Browser *browser : m_model->browsers())
 	{
-		CefRefPtr<CefBrowser> cef_browser = browser->cefBrowser();
-		delete browser; // To free its reference to the CefBrowser
-		closeCefBrowser(cef_browser);
+		deleteBrowser(browser);
 	}
 }
 
@@ -165,7 +171,6 @@ void BrowserManager::closeCefBrowser(CefRefPtr<CefBrowser> browser)
 
 	if (!CefCurrentlyOn(TID_UI))
 	{
-		qDebug() << "Returning bla bla browser close";
 		BrowserUtil::runInMainThread([browser](){
 			closeCefBrowser(browser);
 		});
@@ -173,7 +178,6 @@ void BrowserManager::closeCefBrowser(CefRefPtr<CefBrowser> browser)
 	}
 
 	CEF_REQUIRE_UI_THREAD();
-	qDebug() << "Actually closing a browser";
 	browser->GetHost()->CloseBrowser(true);
 }
 

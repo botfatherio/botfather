@@ -25,9 +25,13 @@ public:
 	bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
 	void addBrowser(Browser *browser);
-	QList<Browser*> browsers() const; // TODO: maybe remove this method, its just to quickyl implement the closeAllBrowsers method to prevent crashes
+	void removeBrowser(Browser *browser);
+
+	QList<Browser*> browsers() const;
+	QModelIndex findBrowser(Browser *browser);
 
 	static QString createUID(const QString &group, const QString &browser_id);
+
 
 private:
 	QList<Browser*> m_browsers;

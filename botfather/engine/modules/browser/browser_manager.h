@@ -32,9 +32,14 @@ public:
 	// which thread this method is called from.
 	Browser *createBrowser(const QString &group_name, const QString &browser_id, const QSize &size);
 
-	// Closes all browsers created using .createBrowser()
-	void closeAllBrowsers();
+	// Deletes a Browser created using the .createBrowser() method after removing it from the BrowserListModel
+	// and correctly freeing the underlying CefBrowser pointer.
+	void deleteBrowser(Browser *browser);
 
+	// Closes all browsers created using .createBrowser()
+	void deleteBrowsers();
+
+protected:
 	static void closeCefBrowser(CefRefPtr<CefBrowser> browser);
 
 private:

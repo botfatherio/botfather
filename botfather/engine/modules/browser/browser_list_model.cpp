@@ -84,7 +84,6 @@ bool BrowserListModel::setData(const QModelIndex &index, const QVariant &value, 
 
 	Browser *browser = qvariant_cast<Browser*>(value);
 	m_browsers.replace(index.row(), browser);
-	// FIXME: make sure the replaced browser gets deleted
 
 	emit dataChanged(index, index);
 	return true;
@@ -109,12 +108,7 @@ bool BrowserListModel::removeRows(int position, int count, const QModelIndex &pa
 
 	for (int row = 0; row < count; ++row)
 	{
-		Browser *browser = m_browsers.takeAt(position);
-		if (!browser) continue;
-
-		// FIXME: handle deletion / check this approche
-		BrowserManager::closeCefBrowser(browser->cefBrowser());
-		delete browser;
+		m_browsers.removeAt(position);
 	}
 
 	endRemoveRows();
@@ -129,9 +123,27 @@ void BrowserListModel::addBrowser(Browser *browser)
 	qDebug() << "Adding a browser to model:" << browser->group() << browser->name();
 }
 
+void BrowserListModel::removeBrowser(Browser *browser)
+{
+	QModelIndex match = findBrowser(browser);
+	if (!match.isValid()) return;
+	removeRow(match.row());
+}
+
 QList<Browser*> BrowserListModel::browsers() const
 {
 	return m_browsers;
+}
+
+QModelIndex BrowserListModel::findBrowser(Browser *browser)
+{
+	return match(
+		index(0, 0),
+		BROWSER_UID_ROLE,
+		createUID(browser->group(), browser->name()),
+		1,
+		Qt::MatchExactly
+	).first();
 }
 
 QString BrowserListModel::createUID(const QString &group, const QString &browser_id)
