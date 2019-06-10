@@ -53,6 +53,7 @@ public:
 	bool OnBeforePopup(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, const CefString& target_url, const CefString& target_frame_name, CefLifeSpanHandler::WindowOpenDisposition target_disposition, bool user_gesture, const CefPopupFeatures& popupFeatures, CefWindowInfo& windowInfo, CefRefPtr<CefClient>& client, CefBrowserSettings& settings, bool* no_javascript_access) OVERRIDE;
 
 	// CefRenderHandler methods:
+	bool GetScreenPoint(CefRefPtr<CefBrowser> browser, int viewX, int viewY, int& screenX, int& screenY) OVERRIDE;
 	void GetViewRect(CefRefPtr<CefBrowser> browser, CefRect& rect) OVERRIDE;
 	void OnPaint(CefRefPtr<CefBrowser> browser, PaintElementType type, const RectList& dirtyRects, const void* buffer, int width, int height) OVERRIDE;
 	//void OnAcceleratedPaint(CefRefPtr<CefBrowser> browser, PaintElementType type, const RectList &dirty_rects, void *share_handle) OVERRIDE; // FIXME: take a look at accelerated paint
@@ -68,6 +69,9 @@ public:
 	void OnPluginCrashed(CefRefPtr<CefBrowser> browser, const CefString& plugin_path) OVERRIDE;
 	void OnRenderProcessTerminated(CefRefPtr<CefBrowser> browser, CefRequestHandler::TerminationStatus status) OVERRIDE;
 
+public slots:
+	void setScreenPointOffset(const QPoint &offset);
+
 signals: // FIXME: rename those signals. and remove the signal suffix
 	void paintSignal(QImage browser_image);
 	void pluginCrashedSignal();
@@ -80,6 +84,13 @@ private:
 	QSize m_size;
 	QReadWriteLock m_screenshot_lock;
 	QImage m_screenshot;
+
+	// GetScreenPoint translates view coordinates to actual screen coordinates.
+	// The BrowserClient does not know were its Browser is displayed and thus
+	// can't provide the offset by itself.
+	// This value need to be updated everytime the associated BrowserWindow gets
+	// moved or becomes focused. (Multiple BrowserWindows can display the same Browser).
+	QPoint m_screen_point_offset;
 
 	// Contains all redirected urls. The first item of a pair is a regex pattern matching
 	// the original url.

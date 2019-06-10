@@ -19,6 +19,9 @@ BrowserWindow::BrowserWindow(const QString &title, QWidget *parent)
 	layout()->setSizeConstraint(QLayout::SetFixedSize);
 	setWindowTitle(title);
 
+	connect(this, &BrowserWindow::windowMoved, m_browser_widget, &BrowserWidget::emitGlobalPosition);
+	connect(this, &BrowserWindow::windowActivated, m_browser_widget, &BrowserWidget::emitGlobalPosition);
+
 	connect(m_ui->actionHome, &QAction::triggered, this, &BrowserWindow::homeTriggered);
 	connect(m_ui->actionReload, &QAction::triggered, this, &BrowserWindow::reloadTriggered);
 	connect(m_ui->actionStop, &QAction::triggered, this, &BrowserWindow::stopTriggered);
@@ -64,4 +67,18 @@ void BrowserWindow::updateNavigationButtons(bool is_loading, bool can_go_back, b
 	m_ui->actionForward->setEnabled(can_go_forward);
 	m_ui->actionReload->setVisible(!is_loading);
 	m_ui->actionStop->setVisible(is_loading);
+}
+
+bool BrowserWindow::event(QEvent *e)
+{
+	switch (e->type()) {
+	case QEvent::WindowActivate:
+		emit windowActivated();
+		break;
+	case QEvent::Move:
+		emit windowMoved();
+	default:
+		break;
+	}
+	return QMainWindow::event(e);
 }

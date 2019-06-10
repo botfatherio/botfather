@@ -9,7 +9,11 @@ class BrowserWidget : public QLabel {
 public:
 	explicit BrowserWidget(QWidget* parent = nullptr);
 
+public slots:
+	void emitGlobalPosition();
+
 signals:
+	void globalPositionChanged(const QPoint &new_position);
 	void mousePressed(const QPoint &position, int qt_mouse_button);
 	void mouseReleased(const QPoint &position, int qt_mouse_button);
 	void mouseMoved(const QPoint &position);
@@ -17,7 +21,7 @@ signals:
 	void keyPressed(const QKeyEvent *event);
 	void keyReleased(const QKeyEvent *event);
 
-private:
+protected:
 	void mousePressEvent(QMouseEvent *event);
 	void mouseReleaseEvent(QMouseEvent *event);
 	void mouseMoveEvent(QMouseEvent *event);

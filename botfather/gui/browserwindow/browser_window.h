@@ -32,7 +32,14 @@ signals:
 	void stopTriggered();
 	void forwardTriggered();
 	void backTriggered();
-	
+	void globalWidgetPositionChanged(const QPoint &new_position);
+
+	void windowMoved();
+	void windowActivated();
+
+protected:
+	bool event(QEvent *event);
+
 private:
 	Ui::BrowserWindow *m_ui;
 	BrowserWidget *m_browser_widget;

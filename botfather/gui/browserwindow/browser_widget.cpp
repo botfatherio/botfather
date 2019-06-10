@@ -9,6 +9,12 @@ BrowserWidget::BrowserWidget(QWidget* parent) : QLabel(parent)
 	setFocusPolicy(Qt::ClickFocus);
 }
 
+void BrowserWidget::emitGlobalPosition()
+{
+	// Emit the the global coordinates of the top-left pixel of the BrowserWidget.
+	emit globalPositionChanged(mapToGlobal(QPoint(0, 0)));
+}
+
 void BrowserWidget::mousePressEvent(QMouseEvent *event)
 {
 	emit mousePressed(event->pos(), event->button());

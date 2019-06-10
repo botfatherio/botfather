@@ -114,5 +114,8 @@ void BotBrowsersWidget::viewBrowser(const QModelIndex &index)
 	browser_window->addressBar()->setText(browser->url().toString());
 	browser_window->updateNavigationButtons(browser->isLoading(), browser->canGoBack(), browser->canGoForward());
 
+	// Inform the BrowserClient about the BrowserWidgets global position. This will ensure context menues are placed correctly.
+	connect(browser_window->browserWidget(), &BrowserWidget::globalPositionChanged, browser_client, &BrowserClient::setScreenPointOffset);
+
 	browser_window->show();
 }

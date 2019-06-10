@@ -87,6 +87,18 @@ bool BrowserClient::OnBeforePopup(CefRefPtr<CefBrowser>, CefRefPtr<CefFrame>, co
 	return true; // Prevent all popups from opening.
 }
 
+bool BrowserClient::GetScreenPoint(CefRefPtr<CefBrowser> browser, int viewX, int viewY, int &screenX, int &screenY)
+{
+	if (m_screen_point_offset.isNull())
+	{
+		return false;
+	}
+
+	screenX = viewX + m_screen_point_offset.x();
+	screenY = viewY + m_screen_point_offset.y();
+	return true;
+}
+
 void BrowserClient::GetViewRect(CefRefPtr<CefBrowser>, CefRect& rect)
 {
 	CEF_REQUIRE_UI_THREAD();
@@ -205,4 +217,9 @@ void BrowserClient::OnRenderProcessTerminated(CefRefPtr<CefBrowser> browser, Cef
 		break;
 	}
 	emit rendererCrashedSignal();
+}
+
+void BrowserClient::setScreenPointOffset(const QPoint &offset)
+{
+	m_screen_point_offset = offset;
 }
