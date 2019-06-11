@@ -96,7 +96,7 @@ void BotBrowsersWidget::viewBrowser(const QModelIndex &index)
 	connect(browser_window->browserWidget(), &BrowserWidget::mouseReleased, browser, &Browser::releaseMouse, Qt::DirectConnection);
 	connect(browser_window->browserWidget(), &BrowserWidget::mouseMoved, browser, &Browser::moveMouse, Qt::DirectConnection);
 	connect(browser_window->browserWidget(), &BrowserWidget::wheelScrolled, browser, &Browser::scrollWheel, Qt::DirectConnection);
-	connect(browser_window->browserWidget(), &BrowserWidget::keyPressed, browser, &Browser::pressKey, Qt::DirectConnection);
+	connect(browser_window->browserWidget(), &BrowserWidget::keyPressed, browser, &Browser::holdKey, Qt::DirectConnection);
 	connect(browser_window->browserWidget(), &BrowserWidget::keyReleased, browser, &Browser::releaseKey, Qt::DirectConnection);
 
 	// Close the BrowserWindow when the presented underlying Browser got deleted.

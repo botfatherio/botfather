@@ -56,8 +56,10 @@ public slots:
 	void moveMouse(const QPoint &position);
 	void scrollWheel(const QPoint &position, const QPoint &delta);
 
-	void pressKey(const QKeyEvent *event);
+	void holdKey(const QKeyEvent *event);
 	void releaseKey(const QKeyEvent *event);
+	void sendKeyEvent(const QKeyEvent *event, bool is_key_down);
+	void sendKeyEvent(const CefKeyEvent &event, bool is_key_down);
 
 signals:
 	void aboutToGetDeletedByTheUser();

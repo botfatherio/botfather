@@ -3,6 +3,7 @@
 #include <QThread>
 #include <QDebug>
 #include "../modules/browser/browser_settings.h"
+#include "../modules/browser/adapters/cef_key_event_adapter.h"
 
 Browser::Browser(const QString &group, const QString &id, CefRefPtr<CefBrowser> cef_browser)
 	: m_group(group)
@@ -214,7 +215,7 @@ void Browser::scrollWheel(const QPoint &position, const QPoint &delta)
 	m_cef_browser->GetHost()->SendMouseWheelEvent(event, delta.x(), delta.y());
 }
 
-void Browser::pressKey(const QKeyEvent *event)
+void Browser::holdKey(const QKeyEvent *event)
 {
 	if (event->matches(QKeySequence::Copy))
 	{
@@ -240,9 +241,36 @@ void Browser::pressKey(const QKeyEvent *event)
 	{
 		m_cef_browser->GetFocusedFrame()->SelectAll();
 	}
+	else
+	{
+		sendKeyEvent(event, true);
+	}
 }
 
 void Browser::releaseKey(const QKeyEvent *event)
 {
-	Q_UNUSED(event)
+	sendKeyEvent(event, false);
+}
+
+void Browser::sendKeyEvent(const QKeyEvent *event, bool is_key_down)
+{
+	CefKeyEventAdapter key_event(event);
+	sendKeyEvent(key_event, is_key_down);
+}
+
+void Browser::sendKeyEvent(const CefKeyEvent &event, bool is_key_down)
+{
+	CefKeyEvent key_event(event);
+	if (is_key_down)
+	{
+		key_event.type = KEYEVENT_RAWKEYDOWN;
+		m_cef_browser->GetHost()->SendKeyEvent(key_event);
+		key_event.type = KEYEVENT_CHAR;
+		m_cef_browser->GetHost()->SendKeyEvent(key_event);
+	}
+	else
+	{
+		key_event.type = KEYEVENT_KEYUP;
+		m_cef_browser->GetHost()->SendKeyEvent(key_event);
+	}
 }

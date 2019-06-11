@@ -105,6 +105,8 @@ HEADERS += \
     ./gui/browserwindow/browser_address_bar.h \
     ./gui/browserwindow/browser_widget.h \
     ./gui/browserwindow/browser_window.h \
+    engine/modules/browser/adapters/cef_key_event_adapter.h \
+    engine/modules/browser/adapters/windows_keyboard_codes.h \
     gui/preferences/preferences_dialog.h \
     ./gui/authdialog/auth_dialog.h \
     ./settings.h \
@@ -175,6 +177,7 @@ SOURCES += \
     ./gui/browserwindow/browser_address_bar.cpp \
     ./gui/browserwindow/browser_widget.cpp \
     ./gui/browserwindow/browser_window.cpp \
+    engine/modules/browser/adapters/cef_key_event_adapter.cpp \
     gui/preferences/preferences_dialog.cpp \
     ./gui/authdialog/auth_dialog.cpp \
     ./main.cpp \
