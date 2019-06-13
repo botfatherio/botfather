@@ -106,7 +106,6 @@ HEADERS += \
     ./gui/browserwindow/browser_widget.h \
     ./gui/browserwindow/browser_window.h \
     engine/modules/browser/adapters/cef_key_event_adapter.h \
-    engine/modules/browser/adapters/windows_keyboard_codes.h \
     engine/modules/common/bf_key_mapper.h \
     engine/modules/common/bf_key_traits.h \
     engine/modules/common/bf_keymap.h \
