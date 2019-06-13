@@ -187,6 +187,12 @@ void BrowserPrototype::scrollWheel(const QPoint &position, const QPoint &delta)
 
 void BrowserPrototype::pressKey(const QString &keycode)
 {
+	if (!THIS_BROWSER_P()->canPressKey(keycode))
+	{
+		QString message = QString("Unsupported keycode. Check the keymap in the Browser documentation");
+		context()->throwError(QScriptContext::TypeError, message);
+		return void();
+	}
 	THIS_BROWSER_P()->pressKey(keycode);
 }
 
@@ -202,6 +208,12 @@ void BrowserPrototype::releaseKey(const QString &keycode)
 
 void BrowserPrototype::enterText(const QString &text)
 {
+	if (!THIS_BROWSER_P()->canEnterText(text))
+	{
+		QString message = QString("text contains unsupported characters. Check the keymap in the Browser documentation");
+		context()->throwError(QScriptContext::TypeError, message);
+		return void();
+	}
 	THIS_BROWSER_P()->enterText(text);
 }
 
