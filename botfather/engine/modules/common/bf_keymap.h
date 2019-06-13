@@ -74,24 +74,24 @@ static const QHash<const QString, BFKeyTraits> BF_KEYMAP = {
 	{"9", {Qt::Key_9, QChar('9')}},
 
 	// Modifiers
-	{"CTRL", BFKeyTraits(Qt::Key_Control, QChar(), Qt::ControlModifier)},
-	{"ALT", BFKeyTraits(Qt::Key_Alt, QChar(), Qt::AltModifier)},
-	{"META", BFKeyTraits(Qt::Key_Meta, QChar(), Qt::MetaModifier)},
-	{"SHIFT", BFKeyTraits(Qt::Key_Shift, QChar(), Qt::ShiftModifier)},
+	{"Ctrl", BFKeyTraits(Qt::Key_Control, QChar(), Qt::ControlModifier)},
+	{"Alt", BFKeyTraits(Qt::Key_Alt, QChar(), Qt::AltModifier)},
+	{"Meta", BFKeyTraits(Qt::Key_Meta, QChar(), Qt::MetaModifier)},
+	{"Shift", BFKeyTraits(Qt::Key_Shift, QChar(), Qt::ShiftModifier)},
 
 	// Directions
-	{"LEFT", BFKeyTraits(Qt::Key_Left, QChar())},
-	{"RIGHT", BFKeyTraits(Qt::Key_Right, QChar())},
-	{"UP", BFKeyTraits(Qt::Key_Up, QChar())},
-	{"DOWN", BFKeyTraits(Qt::Key_Down, QChar())},
+	{"Left", BFKeyTraits(Qt::Key_Left, QChar())},
+	{"Right", BFKeyTraits(Qt::Key_Right, QChar())},
+	{"Up", BFKeyTraits(Qt::Key_Up, QChar())},
+	{"Down", BFKeyTraits(Qt::Key_Down, QChar())},
 
 	// Misc
-	{"SPACE", {Qt::Key_Space, QChar(' ')}},
-	{"TAB", {Qt::Key_Tab, QChar('\t')}},
-	{"ESC", {Qt::Key_Escape, QChar('\u001B')}},
-	{"ENTER", {Qt::Key_Enter, QChar('\r')}},
-	{"BACKSPACE", {Qt::Key_Backspace, QChar('\b')}},
-	{"DEL", {Qt::Key_Delete, QChar('\u007F')}}
+	{"Space", {Qt::Key_Space, QChar(' ')}},
+	{"Tab", {Qt::Key_Tab, QChar('\t')}},
+	{"Escape", {Qt::Key_Escape, QChar('\u001B')}},
+	{"Enter", {Qt::Key_Enter, QChar('\r')}},
+	{"Backspace", {Qt::Key_Backspace, QChar('\b')}},
+	{"Delete", {Qt::Key_Delete, QChar('\u007F')}}
 };
 
 #endif // BF_KEYMAP_H
