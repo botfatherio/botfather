@@ -200,6 +200,11 @@ void BrowserPrototype::releaseKey(const QString &keycode)
 	THIS_BROWSER_P()->releaseKey(keycode);
 }
 
+void BrowserPrototype::enterText(const QString &text)
+{
+	THIS_BROWSER_P()->enterText(text);
+}
+
 void BrowserPrototype::executeJavascript(const QString &javascript_code)
 {
 	THIS_BROWSER_P()->executeJavascript(javascript_code);

@@ -300,3 +300,11 @@ void Browser::releaseKey(const CefKeyEvent &event)
 	event_copy.type = KEYEVENT_KEYUP;
 	m_cef_browser->GetHost()->SendKeyEvent(event_copy);
 }
+
+void Browser::enterText(const QString &text)
+{
+	for (int i = 0; i < text.length(); ++i)
+	{
+		pressKey(text.at(i));
+	}
+}

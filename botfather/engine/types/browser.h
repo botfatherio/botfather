@@ -59,12 +59,12 @@ public slots:
 	void pressKey(const QString &bf_keycode);
 	void holdKey(const QString &bf_keycode);
 	void releaseKey(const QString &bf_keycode);
-
 	void holdKey(const QKeyEvent *event);
 	void releaseKey(const QKeyEvent *event);
-
 	void holdKey(const CefKeyEvent &event);
 	void releaseKey(const CefKeyEvent &event);
+
+	void enterText(const QString &text);
 
 signals:
 	void aboutToGetDeletedByTheUser();

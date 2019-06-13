@@ -54,6 +54,7 @@ public:
 	Q_INVOKABLE void pressKey(const QString &keycode);
 	Q_INVOKABLE void holdKey(const QString &keycode);
 	Q_INVOKABLE void releaseKey(const QString &keycode);
+	Q_INVOKABLE void enterText(const QString &text);
 
 	Q_INVOKABLE void executeJavascript(const QString &javascript_code);
 
