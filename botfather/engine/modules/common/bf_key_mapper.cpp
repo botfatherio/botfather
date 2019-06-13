@@ -9,20 +9,18 @@
 
 Qt::KeyboardModifier BFKeyMapper::mapBFKeycodeToQtKeyboardModifier(const QString &bf_keycode)
 {
-	const QString upper_keycode(bf_keycode.toUpper());
-	if (BF_KEYMAP.contains(upper_keycode))
+	if (BF_KEYMAP.contains(bf_keycode))
 	{
-		return BF_KEYMAP[upper_keycode].qt_keyboard_modifier;
+		return BF_KEYMAP[bf_keycode].qt_keyboard_modifier;
 	}
 	return Qt::NoModifier;
 }
 
 Qt::Key BFKeyMapper::mapBFKeycodeToQtKey(const QString &bf_keycode)
 {
-	const QString upper_keycode(bf_keycode.toUpper());
-	if (BF_KEYMAP.contains(upper_keycode))
+	if (BF_KEYMAP.contains(bf_keycode))
 	{
-		return BF_KEYMAP[upper_keycode].qt_key;
+		return BF_KEYMAP[bf_keycode].qt_key;
 	}
 	return Qt::Key();
 }

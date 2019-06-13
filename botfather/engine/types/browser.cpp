@@ -5,6 +5,7 @@
 #include "../modules/browser/browser_settings.h"
 #include "../modules/browser/adapters/cef_key_event_adapter.h"
 #include "../modules/common/bf_key_mapper.h"
+#include "../modules/common/bf_keymap.h"
 
 Browser::Browser(const QString &group, const QString &id, CefRefPtr<CefBrowser> cef_browser)
 	: m_group(group)
@@ -214,6 +215,23 @@ void Browser::scrollWheel(const QPoint &position, const QPoint &delta)
 	event.x = position.x();
 	event.y = position.y();
 	m_cef_browser->GetHost()->SendMouseWheelEvent(event, delta.x(), delta.y());
+}
+
+bool Browser::canPressKey(const QString &bf_keycode) const
+{
+	return BF_KEYMAP.contains(bf_keycode);
+}
+
+bool Browser::canEnterText(const QString &text) const
+{
+	for (int i = 0; i < text.length(); ++i)
+	{
+		if (!canPressKey(text.at(i)))
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 void Browser::pressKey(const QString &bf_keycode)

@@ -56,6 +56,9 @@ public slots:
 	void moveMouse(const QPoint &position);
 	void scrollWheel(const QPoint &position, const QPoint &delta);
 
+	bool canPressKey(const QString &bf_keycode) const;
+	bool canEnterText(const QString &text) const;
+
 	void pressKey(const QString &bf_keycode);
 	void holdKey(const QString &bf_keycode);
 	void releaseKey(const QString &bf_keycode);

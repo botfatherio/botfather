@@ -6,9 +6,9 @@
 
 struct BFKeyTraits
 {
-	Qt::Key qt_key;
-	QChar q_char;
-	Qt::KeyboardModifier qt_keyboard_modifier;
+	Qt::Key qt_key = Qt::Key_unknown;
+	QChar q_char = QChar();
+	Qt::KeyboardModifier qt_keyboard_modifier = Qt::NoModifier;
 
 	BFKeyTraits() {}
 
