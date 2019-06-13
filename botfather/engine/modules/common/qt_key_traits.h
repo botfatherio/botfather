@@ -9,6 +9,7 @@ struct QtKeyTraits
 	int windows_key_code = VK_UNKNOWN;
 	int linux11_key_code = XK_VoidSymbol;
 
+	QtKeyTraits() {}
 	QtKeyTraits(int windows_key_code, int linux11_key_code)
 		: windows_key_code(windows_key_code), linux11_key_code(linux11_key_code)
 	{}
