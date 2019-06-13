@@ -236,6 +236,7 @@ bool Browser::canEnterText(const QString &text) const
 
 void Browser::pressKey(const QString &bf_keycode)
 {
+	qDebug() << "pressKey called directly";
 	holdKey(bf_keycode);
 	releaseKey(bf_keycode);
 }
