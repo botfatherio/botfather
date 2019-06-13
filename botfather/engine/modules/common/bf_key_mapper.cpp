@@ -1,7 +1,7 @@
 #include "bf_key_mapper.h"
 #include <QHash>
 #include "windows_keyboard_codes.h"
-#include "x11_keyboard_codes.h"
+#include "linux11_keyboard_codes.h"
 #include "include/cef_base.h"
 #include "bf_keymap.h"
 

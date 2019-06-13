@@ -110,6 +110,8 @@ HEADERS += \
     engine/modules/common/bf_key_mapper.h \
     engine/modules/common/bf_key_traits.h \
     engine/modules/common/bf_keymap.h \
+    engine/modules/common/qt_key_traits.h \
+    engine/modules/common/qt_keymaps.h \
     engine/modules/common/windows_keyboard_codes.h \
     gui/preferences/preferences_dialog.h \
     ./gui/authdialog/auth_dialog.h \
