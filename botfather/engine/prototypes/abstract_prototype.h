@@ -45,8 +45,9 @@ public:
 
 #define REGISTER_PROTO(ENGINE_PTR, PROTO_CLS, TYPE_CLS, TYPE_CLS_NAME) \
 { \
+	static const QScriptEngine::QObjectWrapOptions wrap_options = QScriptEngine::ExcludeSuperClassContents|QScriptEngine::ExcludeDeleteLater|QScriptEngine::ExcludeSlots|QScriptEngine::PreferExistingWrapperObject|QScriptEngine::SkipMethodsInEnumeration; \
 	PROTO_CLS *prototype = new PROTO_CLS(ENGINE_PTR); \
-	QScriptValue js_prototype = ENGINE_PTR->newQObject(prototype); \
+	QScriptValue js_prototype = ENGINE_PTR->newQObject(prototype, QScriptEngine::QtOwnership, wrap_options); \
 	QScriptValue js_constructor = ENGINE_PTR->newFunction(PROTO_CLS::constructor, js_prototype); \
 	ENGINE_PTR->setDefaultPrototype(qMetaTypeId<TYPE_CLS>(), js_prototype); \
 	ENGINE_PTR->globalObject().setProperty(QString(TYPE_CLS_NAME), js_constructor); \
