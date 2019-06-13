@@ -75,7 +75,9 @@ private:
 	CefRefPtr<CefBrowser> m_cef_browser;
 	BrowserClient *m_browser_client = nullptr;
 
-	// Browser keyboard
+	// A real keyboard provides us with all currently active modifiers on every key event.
+	// A script controlling the browser via keyboard input doesn't.
+	// Thus we have to store all previously applied keyboard modifiers.
 	Qt::KeyboardModifiers m_unreleased_keyboard_modifiers;
 };
 

@@ -225,9 +225,9 @@ void Browser::pressKey(const QString &bf_keycode)
 void Browser::holdKey(const QString &bf_keycode)
 {
 	Qt::KeyboardModifier modifier = BFKeyMapper::mapBFKeycodeToQtKeyboardModifier(bf_keycode);
-	if (!(m_unreleased_keyboard_modifiers & modifier))
+	if (!m_unreleased_keyboard_modifiers.testFlag(modifier))
 	{
-		m_unreleased_keyboard_modifiers |= modifier;
+		m_unreleased_keyboard_modifiers = m_unreleased_keyboard_modifiers.setFlag(modifier, true);
 	}
 
 	CefKeyEventAdapter key_event(bf_keycode, m_unreleased_keyboard_modifiers);
@@ -237,9 +237,9 @@ void Browser::holdKey(const QString &bf_keycode)
 void Browser::releaseKey(const QString &bf_keycode)
 {
 	Qt::KeyboardModifier modifier = BFKeyMapper::mapBFKeycodeToQtKeyboardModifier(bf_keycode);
-	if (!(m_unreleased_keyboard_modifiers & modifier))
+	if (m_unreleased_keyboard_modifiers.testFlag(modifier))
 	{
-		m_unreleased_keyboard_modifiers &= modifier;
+		m_unreleased_keyboard_modifiers = m_unreleased_keyboard_modifiers.setFlag(modifier, false);
 	}
 
 	CefKeyEventAdapter key_event(bf_keycode, m_unreleased_keyboard_modifiers);
