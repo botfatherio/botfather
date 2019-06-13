@@ -3,101 +3,35 @@
 #include "windows_keyboard_codes.h"
 #include "x11_keyboard_codes.h"
 #include "include/cef_base.h"
+#include "bf_keymap.h"
 
 Qt::KeyboardModifier BFKeyMapper::mapBFKeycodeToQtKeyboardModifier(const QString &bf_keycode)
 {
-	static const QHash<const QString, Qt::KeyboardModifier> MODIFIER_MAP = {
-		{"CTRL", Qt::ControlModifier},
-		{"ALT", Qt::AltModifier},
-		{"META", Qt::MetaModifier},
-		{"SHIFT", Qt::ShiftModifier}
-	};
 	const QString upper_keycode(bf_keycode.toUpper());
-	return MODIFIER_MAP.value(upper_keycode, Qt::NoModifier);
+	if (BF_KEYMAP.contains(upper_keycode))
+	{
+		return BF_KEYMAP[upper_keycode].qt_keyboard_modifier;
+	}
+	return Qt::NoModifier;
 }
 
 Qt::Key BFKeyMapper::mapBFKeycodeToQtKey(const QString &bf_keycode)
 {
-	static const QHash<const QString, Qt::Key> BF_TO_QT_KEYMAP = {
-		// Letters
-		{"A", Qt::Key_A},
-		{"B", Qt::Key_B},
-		{"C", Qt::Key_C},
-		{"D", Qt::Key_D},
-		{"E", Qt::Key_E},
-		{"F", Qt::Key_F},
-		{"G", Qt::Key_G},
-		{"H", Qt::Key_H},
-		{"I", Qt::Key_I},
-		{"J", Qt::Key_J},
-		{"K", Qt::Key_K},
-		{"L", Qt::Key_L},
-		{"M", Qt::Key_M},
-		{"N", Qt::Key_N},
-		{"O", Qt::Key_O},
-		{"P", Qt::Key_P},
-		{"Q", Qt::Key_Q},
-		{"R", Qt::Key_R},
-		{"S", Qt::Key_S},
-		{"T", Qt::Key_T},
-		{"U", Qt::Key_U},
-		{"V", Qt::Key_V},
-		{"W", Qt::Key_W},
-		{"X", Qt::Key_X},
-		{"Y", Qt::Key_Y},
-		{"Z", Qt::Key_Z},
-
-		// Numbers
-		{"0", Qt::Key_0},
-		{"1", Qt::Key_1},
-		{"2", Qt::Key_2},
-		{"3", Qt::Key_3},
-		{"4", Qt::Key_4},
-		{"5", Qt::Key_5},
-		{"6", Qt::Key_6},
-		{"7", Qt::Key_7},
-		{"8", Qt::Key_8},
-		{"9", Qt::Key_9},
-
-		// Modifiers
-		{"CTRL", Qt::Key_Control},
-		{"ALT", Qt::Key_Alt},
-		{"META", Qt::Key_Meta},
-		{"SHIFT", Qt::Key_Shift},
-
-		// Directions
-		{"LEFT", Qt::Key_Left},
-		{"RIGHT", Qt::Key_Right},
-		{"UP", Qt::Key_Up},
-		{"DOWN", Qt::Key_Down},
-
-		// Misc
-		{"SPACE", Qt::Key_Space},
-		{"TAB", Qt::Key_Tab},
-		{"ESC", Qt::Key_Escape},
-		{"ENTER", Qt::Key_Enter},
-		{"BACKSPACE", Qt::Key_Backspace},
-		{"DEL", Qt::Key_Delete}
-	};
 	const QString upper_keycode(bf_keycode.toUpper());
-	return BF_TO_QT_KEYMAP.value(upper_keycode, Qt::Key());
+	if (BF_KEYMAP.contains(upper_keycode))
+	{
+		return BF_KEYMAP[upper_keycode].qt_key;
+	}
+	return Qt::Key();
 }
 
 QChar BFKeyMapper::mapBFKeycodeToQChar(const QString &bf_keycode)
 {
-	static const QHash<const QString, QChar> MAPPING = {
-		{"ESC", QChar('\u001B')},
-		{"ENTER", QChar('\r')},
-		{"BACKSPACE", QChar('\b')},
-		{"DEL", QChar('\u007F')}
-	};
-
-	if (bf_keycode.length() == 1)
+	if (BF_KEYMAP.contains(bf_keycode))
 	{
-		return bf_keycode.at(0).unicode();
+		return BF_KEYMAP[bf_keycode].q_char;
 	}
-
-	return MAPPING.value(bf_keycode, QChar());
+	return QChar();
 }
 
 int BFKeyMapper::mapQtKeyToWindowsKeyCode(const Qt::Key &qt_key, bool is_keypad_key)
