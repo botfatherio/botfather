@@ -8,6 +8,7 @@ class CefKeyEventAdapter : public CefKeyEvent
 {
 public:
 	explicit CefKeyEventAdapter(const QKeyEvent *event);
+	CefKeyEventAdapter(const QString &bf_keycode, const Qt::KeyboardModifiers &qt_keyboard_modifiers);
 
 	// Properties inherited from CefKeyEvent:
 

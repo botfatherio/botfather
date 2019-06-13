@@ -1,8 +1,9 @@
 #include "cef_key_event_adapter.h"
 #include <QDebug>
 #include "windows_keyboard_codes.h"
+#include "../../common/bf_key_mapper.h"
 
-static int windowsKeyCodeForKeyEvent(unsigned int key_code, bool is_keypad)
+static int windowsKeyCodeFromQtKey(unsigned int key_code, bool is_keypad)
 {
 	if (is_keypad)
 	{
@@ -371,7 +372,7 @@ static int windowsKeyCodeForKeyEvent(unsigned int key_code, bool is_keypad)
 	}
 }
 
-static int getKeyModifiers(const QKeyEvent *event)
+static int cefKeyModifiersFromQtKeyEvent(const QKeyEvent *event)
 {
 	int cef_modifiers = 0;
 	if (event->modifiers() & Qt::ShiftModifier)
@@ -397,16 +398,33 @@ CefKeyEventAdapter::CefKeyEventAdapter(const QKeyEvent *event)
 {
 	bool from_keypad = event->modifiers() & Qt::KeypadModifier;
 
-	modifiers = getKeyModifiers(event);
+	modifiers = cefKeyModifiersFromQtKeyEvent(event);
 	native_key_code = event->nativeVirtualKey();
-	windows_key_code = windowsKeyCodeForKeyEvent(event->key(), from_keypad);
+	windows_key_code = windowsKeyCodeFromQtKey(event->key(), from_keypad);
 
 	if (!event->text().isEmpty())
 	{
 		character = event->text().at(0).unicode();
-		unmodified_character = event->text().at(0).unicode(); // Not quite correct
+		unmodified_character = event->text().at(0).unicode(); // Not quite correct I guess
 	}
 
 	// This value will always be false on non-Windows platforms.
 	is_system_key = false;
+}
+
+CefKeyEventAdapter::CefKeyEventAdapter(const QString &bf_keycode, const Qt::KeyboardModifiers &qt_keyboard_modifiers)
+{
+	Qt::Key qt_key = BFKeyMapper::mapBFKeycodeToQtKey(bf_keycode);
+	bool is_keypad_key = qt_keyboard_modifiers & Qt::KeypadModifier;
+
+	modifiers = BFKeyMapper::mapQtKeyboardModifiersToCefKeyModifiers(qt_keyboard_modifiers);
+	native_key_code = BFKeyMapper::mapQtKeyToNativeKeyCode(qt_key, is_keypad_key);
+	windows_key_code = BFKeyMapper::mapQtKeyToWindowsKeyCode(qt_key, is_keypad_key);
+
+	QChar corresponding_char = BFKeyMapper::mapBFKeycodeToQChar(bf_keycode);
+	if (!corresponding_char.isNull())
+	{
+		character = corresponding_char.unicode();
+		unmodified_character = corresponding_char.unicode();
+	}
 }

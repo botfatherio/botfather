@@ -51,6 +51,10 @@ public:
 	Q_INVOKABLE void moveMouse(const QPoint &position);
 	Q_INVOKABLE void scrollWheel(const QPoint &position, const QPoint &delta);
 
+	Q_INVOKABLE void pressKey(const QString &keycode);
+	Q_INVOKABLE void holdKey(const QString &keycode);
+	Q_INVOKABLE void releaseKey(const QString &keycode);
+
 	Q_INVOKABLE void executeJavascript(const QString &javascript_code);
 
 	Q_INVOKABLE QString toString() const;

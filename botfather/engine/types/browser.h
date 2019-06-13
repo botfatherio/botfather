@@ -56,10 +56,15 @@ public slots:
 	void moveMouse(const QPoint &position);
 	void scrollWheel(const QPoint &position, const QPoint &delta);
 
+	void pressKey(const QString &bf_keycode);
+	void holdKey(const QString &bf_keycode);
+	void releaseKey(const QString &bf_keycode);
+
 	void holdKey(const QKeyEvent *event);
 	void releaseKey(const QKeyEvent *event);
-	void sendKeyEvent(const QKeyEvent *event, bool is_key_down);
-	void sendKeyEvent(const CefKeyEvent &event, bool is_key_down);
+
+	void holdKey(const CefKeyEvent &event);
+	void releaseKey(const CefKeyEvent &event);
 
 signals:
 	void aboutToGetDeletedByTheUser();
@@ -69,6 +74,9 @@ private:
 	QString m_name;
 	CefRefPtr<CefBrowser> m_cef_browser;
 	BrowserClient *m_browser_client = nullptr;
+
+	// Browser keyboard
+	Qt::KeyboardModifiers m_unreleased_keyboard_modifiers;
 };
 
 Q_DECLARE_METATYPE(Browser*)

@@ -4,6 +4,7 @@
 #include <QDebug>
 #include "../modules/browser/browser_settings.h"
 #include "../modules/browser/adapters/cef_key_event_adapter.h"
+#include "../modules/common/bf_key_mapper.h"
 
 Browser::Browser(const QString &group, const QString &id, CefRefPtr<CefBrowser> cef_browser)
 	: m_group(group)
@@ -215,6 +216,36 @@ void Browser::scrollWheel(const QPoint &position, const QPoint &delta)
 	m_cef_browser->GetHost()->SendMouseWheelEvent(event, delta.x(), delta.y());
 }
 
+void Browser::pressKey(const QString &bf_keycode)
+{
+	holdKey(bf_keycode);
+	releaseKey(bf_keycode);
+}
+
+void Browser::holdKey(const QString &bf_keycode)
+{
+	Qt::KeyboardModifier modifier = BFKeyMapper::mapBFKeycodeToQtKeyboardModifier(bf_keycode);
+	if (!(m_unreleased_keyboard_modifiers & modifier))
+	{
+		m_unreleased_keyboard_modifiers |= modifier;
+	}
+
+	CefKeyEventAdapter key_event(bf_keycode, m_unreleased_keyboard_modifiers);
+	holdKey(key_event);
+}
+
+void Browser::releaseKey(const QString &bf_keycode)
+{
+	Qt::KeyboardModifier modifier = BFKeyMapper::mapBFKeycodeToQtKeyboardModifier(bf_keycode);
+	if (!(m_unreleased_keyboard_modifiers & modifier))
+	{
+		m_unreleased_keyboard_modifiers &= modifier;
+	}
+
+	CefKeyEventAdapter key_event(bf_keycode, m_unreleased_keyboard_modifiers);
+	releaseKey(key_event);
+}
+
 void Browser::holdKey(const QKeyEvent *event)
 {
 	if (event->matches(QKeySequence::Copy))
@@ -243,34 +274,29 @@ void Browser::holdKey(const QKeyEvent *event)
 	}
 	else
 	{
-		sendKeyEvent(event, true);
+		CefKeyEventAdapter key_event(event);
+		holdKey(key_event);
 	}
 }
 
 void Browser::releaseKey(const QKeyEvent *event)
 {
-	sendKeyEvent(event, false);
-}
-
-void Browser::sendKeyEvent(const QKeyEvent *event, bool is_key_down)
-{
 	CefKeyEventAdapter key_event(event);
-	sendKeyEvent(key_event, is_key_down);
+	releaseKey(key_event);
 }
 
-void Browser::sendKeyEvent(const CefKeyEvent &event, bool is_key_down)
+void Browser::holdKey(const CefKeyEvent &event)
 {
-	CefKeyEvent key_event(event);
-	if (is_key_down)
-	{
-		key_event.type = KEYEVENT_RAWKEYDOWN;
-		m_cef_browser->GetHost()->SendKeyEvent(key_event);
-		key_event.type = KEYEVENT_CHAR;
-		m_cef_browser->GetHost()->SendKeyEvent(key_event);
-	}
-	else
-	{
-		key_event.type = KEYEVENT_KEYUP;
-		m_cef_browser->GetHost()->SendKeyEvent(key_event);
-	}
+	CefKeyEvent event_copy(event);
+	event_copy.type = KEYEVENT_RAWKEYDOWN;
+	m_cef_browser->GetHost()->SendKeyEvent(event_copy);
+	event_copy.type = KEYEVENT_CHAR;
+	m_cef_browser->GetHost()->SendKeyEvent(event_copy);
+}
+
+void Browser::releaseKey(const CefKeyEvent &event)
+{
+	CefKeyEvent event_copy(event);
+	event_copy.type = KEYEVENT_KEYUP;
+	m_cef_browser->GetHost()->SendKeyEvent(event_copy);
 }

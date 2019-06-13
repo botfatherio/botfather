@@ -185,6 +185,21 @@ void BrowserPrototype::scrollWheel(const QPoint &position, const QPoint &delta)
 	THIS_BROWSER_P()->scrollWheel(position, delta);
 }
 
+void BrowserPrototype::pressKey(const QString &keycode)
+{
+	THIS_BROWSER_P()->pressKey(keycode);
+}
+
+void BrowserPrototype::holdKey(const QString &keycode)
+{
+	THIS_BROWSER_P()->holdKey(keycode);
+}
+
+void BrowserPrototype::releaseKey(const QString &keycode)
+{
+	THIS_BROWSER_P()->releaseKey(keycode);
+}
+
 void BrowserPrototype::executeJavascript(const QString &javascript_code)
 {
 	THIS_BROWSER_P()->executeJavascript(javascript_code);
