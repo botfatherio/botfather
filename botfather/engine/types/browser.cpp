@@ -219,7 +219,8 @@ void Browser::scrollWheel(const QPoint &position, const QPoint &delta)
 
 bool Browser::canPressKey(const QString &bf_keycode) const
 {
-	return BF_KEYMAP.contains(bf_keycode);
+	// CefKeyEvents can be easily created from single characters. Though they might get interpreted wrong.
+	return bf_keycode.length() == 1 || BF_KEYMAP.contains(bf_keycode);
 }
 
 bool Browser::canEnterText(const QString &text) const

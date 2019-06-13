@@ -427,4 +427,11 @@ CefKeyEventAdapter::CefKeyEventAdapter(const QString &bf_keycode, const Qt::Keyb
 		character = corresponding_char.unicode();
 		unmodified_character = corresponding_char.unicode();
 	}
+	else if (bf_keycode.length() == 1)
+	{
+		// These characters are not mapped and might get interpreted wrong.
+		// Most times interpreting them works. We could even stop mapping Qt::Keys to QChars completely.
+		character = bf_keycode.at(0).unicode();
+		unmodified_character = bf_keycode.at(0).unicode();
+	}
 }
