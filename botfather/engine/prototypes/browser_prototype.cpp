@@ -198,11 +198,23 @@ void BrowserPrototype::pressKey(const QString &keycode)
 
 void BrowserPrototype::holdKey(const QString &keycode)
 {
+	if (!THIS_BROWSER_P()->canPressKey(keycode))
+	{
+		QString message = QString("Unsupported keycode. Check the keymap in the Browser documentation");
+		context()->throwError(QScriptContext::TypeError, message);
+		return void();
+	}
 	THIS_BROWSER_P()->holdKey(keycode);
 }
 
 void BrowserPrototype::releaseKey(const QString &keycode)
 {
+	if (!THIS_BROWSER_P()->canPressKey(keycode))
+	{
+		QString message = QString("Unsupported keycode. Check the keymap in the Browser documentation");
+		context()->throwError(QScriptContext::TypeError, message);
+		return void();
+	}
 	THIS_BROWSER_P()->releaseKey(keycode);
 }
 
