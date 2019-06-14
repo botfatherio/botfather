@@ -51,7 +51,9 @@ public:
 	void executeJavascript(const QString &javascript_code);
 
 	void pressMouse(const QPoint &position, int qt_mouse_button);
+	void holdMouse(const QPoint &position, int qt_mouse_button);
 	void releaseMouse(const QPoint &position, int qt_mouse_button);
+
 	void moveMouse(const QPoint &position);
 	void scrollWheel(const QPoint &position, const QPoint &delta);
 

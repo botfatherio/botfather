@@ -41,13 +41,14 @@ public:
 	Q_INVOKABLE void middleClick(const QPoint &position);
 	Q_INVOKABLE void rightClick(const QPoint &position);
 
-	Q_INVOKABLE void pressLeft(const QPoint &position);
-	Q_INVOKABLE void pressMiddle(const QPoint &position);
-	Q_INVOKABLE void pressRight(const QPoint &position);
+	Q_INVOKABLE void holdLeft(const QPoint &position);
+	Q_INVOKABLE void holdMiddle(const QPoint &position);
+	Q_INVOKABLE void holdRight(const QPoint &position);
 
 	Q_INVOKABLE void releaseLeft(const QPoint &position);
 	Q_INVOKABLE void releaseMiddle(const QPoint &position);
 	Q_INVOKABLE void releaseRight(const QPoint &position);
+
 	Q_INVOKABLE void moveMouse(const QPoint &position);
 	Q_INVOKABLE void scrollWheel(const QPoint &position, const QPoint &delta);
 

@@ -130,34 +130,31 @@ void BrowserPrototype::goBack()
 void BrowserPrototype::leftClick(const QPoint &position)
 {
 	THIS_BROWSER_P()->pressMouse(position, Qt::LeftButton);
-	THIS_BROWSER_P()->releaseMouse(position, Qt::LeftButton);
 }
 
 void BrowserPrototype::middleClick(const QPoint &position)
 {
 	THIS_BROWSER_P()->pressMouse(position, Qt::MiddleButton);
-	THIS_BROWSER_P()->releaseMouse(position, Qt::MiddleButton);
 }
 
 void BrowserPrototype::rightClick(const QPoint &position)
 {
 	THIS_BROWSER_P()->pressMouse(position, Qt::RightButton);
-	THIS_BROWSER_P()->releaseMouse(position, Qt::RightButton);
 }
 
-void BrowserPrototype::pressLeft(const QPoint &position)
+void BrowserPrototype::holdLeft(const QPoint &position)
 {
-	THIS_BROWSER_P()->pressMouse(position, Qt::LeftButton);
+	THIS_BROWSER_P()->holdMouse(position, Qt::LeftButton);
 }
 
-void BrowserPrototype::pressMiddle(const QPoint &position)
+void BrowserPrototype::holdMiddle(const QPoint &position)
 {
-	THIS_BROWSER_P()->pressMouse(position, Qt::MiddleButton);
+	THIS_BROWSER_P()->holdMouse(position, Qt::MiddleButton);
 }
 
-void BrowserPrototype::pressRight(const QPoint &position)
+void BrowserPrototype::holdRight(const QPoint &position)
 {
-	THIS_BROWSER_P()->pressMouse(position, Qt::RightButton);
+	THIS_BROWSER_P()->holdMouse(position, Qt::RightButton);
 }
 
 void BrowserPrototype::releaseLeft(const QPoint &position)

@@ -177,6 +177,12 @@ static int convertToCefMouseButtonType(int qt_mouse_button)
 
 void Browser::pressMouse(const QPoint &position, int qt_mouse_button)
 {
+	holdMouse(position, qt_mouse_button);
+	releaseMouse(position, qt_mouse_button);
+}
+
+void Browser::holdMouse(const QPoint &position, int qt_mouse_button)
+{
 	int button_code = convertToCefMouseButtonType(qt_mouse_button);
 	if (button_code == -1) return;
 
