@@ -2,6 +2,7 @@
 #define BOTBROWSERSWIDGET_H
 
 #include <QWidget>
+#include <QSortFilterProxyModel>
 #include "../models/bot.h"
 
 namespace Ui {
@@ -26,6 +27,7 @@ public slots:
 private:
 	Ui::BotBrowsersWidget *ui;
 	Bot *m_bot = nullptr;
+	QSortFilterProxyModel *m_browser_model_proxy;
 };
 
 #endif // BOTBROWSERSWIDGET_H

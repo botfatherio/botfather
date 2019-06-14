@@ -1,6 +1,5 @@
 #include "botbrowserswidget.h"
 #include "ui_botbrowserswidget.h"
-#include <QSortFilterProxyModel>
 #include <QDebug>
 #include "../../engine/modules/browser/browser_manager.h"
 #include "../browserwindow/browser_window.h"
@@ -9,16 +8,16 @@ BotBrowsersWidget::BotBrowsersWidget(Bot *bot, QWidget *parent)
 	: QWidget(parent)
 	, ui(new Ui::BotBrowsersWidget)
 	, m_bot(bot)
+	, m_browser_model_proxy(new QSortFilterProxyModel(this))
 {
 	ui->setupUi(this);
 
-	QSortFilterProxyModel *browser_model_proxy = new QSortFilterProxyModel(this);
-	browser_model_proxy->setSourceModel(BrowserManager::instance()->model());
-	browser_model_proxy->setFilterRole(Qt::DisplayRole);
-	browser_model_proxy->setFilterKeyColumn(0); // Group
-	browser_model_proxy->setFilterFixedString(bot->scriptPath()); // The bots script path is used as its id
+	m_browser_model_proxy->setSourceModel(BrowserManager::instance()->model());
+	m_browser_model_proxy->setFilterRole(Qt::DisplayRole);
+	m_browser_model_proxy->setFilterKeyColumn(0); // Group
+	m_browser_model_proxy->setFilterFixedString(bot->scriptPath()); // The bots script path is used as its id
 
-	ui->browser_list_view->setModel(browser_model_proxy);
+	ui->browser_list_view->setModel(m_browser_model_proxy);
 	ui->browser_list_view->hideColumn(0); // Group
 
 	connect(bot, &Bot::started, this, &BotBrowsersWidget::updateButtonStates);
@@ -54,7 +53,7 @@ void BotBrowsersWidget::deleteBrowser(const QModelIndex &index)
 		return;
 	}
 
-	Browser *browser = qvariant_cast<Browser*>(BrowserManager::instance()->model()->data(index, BrowserListModel::BROWSER_PTR_ROLE));
+	Browser *browser = qvariant_cast<Browser*>(m_browser_model_proxy->data(index, BrowserListModel::BROWSER_PTR_ROLE));
 	if (!browser) return;
 
 	emit browser->aboutToGetDeletedByTheUser();
@@ -73,7 +72,7 @@ void BotBrowsersWidget::viewBrowser(const QModelIndex &index)
 		return;
 	}
 
-	Browser *browser = qvariant_cast<Browser*>(BrowserManager::instance()->model()->data(index, BrowserListModel::BROWSER_PTR_ROLE));
+	Browser *browser = qvariant_cast<Browser*>(m_browser_model_proxy->data(index, BrowserListModel::BROWSER_PTR_ROLE));
 	if (!browser) return;
 
 	BrowserClient *browser_client = browser->client();
