@@ -1,6 +1,6 @@
 #ifndef BROWSER_PROTOTYPE_H
 #define BROWSER_PROTOTYPE_H
-#define BROWSER_PROTOTYPE_DOCS QString("https://botfather.io/docs/apiref/match/")
+#define BROWSER_PROTOTYPE_DOCS QString("https://botfather.io/docs/apiref/browser/")
 
 #include "abstract_prototype.h"
 #include "../types/browser.h"
