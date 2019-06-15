@@ -22,6 +22,10 @@ BrowserWindow::BrowserWindow(const QString &title, QWidget *parent)
 	connect(this, &BrowserWindow::windowMoved, m_browser_widget, &BrowserWidget::emitGlobalPosition);
 	connect(this, &BrowserWindow::windowActivated, m_browser_widget, &BrowserWidget::emitGlobalPosition);
 
+	// After entering a URL the user expects the addressbar to loos focus and the browser widget to gain focus,
+	// so he may start typing/navigating on the loaded website immediately.
+	connect(m_adressbar, &BrowserAddressBar::returnPressed, m_browser_widget, QOverload<>::of(&BrowserWidget::setFocus));
+
 	connect(m_ui->actionHome, &QAction::triggered, this, &BrowserWindow::homeTriggered);
 	connect(m_ui->actionReload, &QAction::triggered, this, &BrowserWindow::reloadTriggered);
 	connect(m_ui->actionStop, &QAction::triggered, this, &BrowserWindow::stopTriggered);
