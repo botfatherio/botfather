@@ -44,9 +44,8 @@ public:
 	// http://doc.qt.io/archives/qt-5.10/qpoint.html#dotProduct
 	Q_INVOKABLE int dotProduct(const QPoint &other_point) const;
 	
-	// Returns the sum of the absolute values of x() and y(), traditionally known as the "Manhattan length" of the vector from the origin to the point
-	// http://doc.qt.io/archives/qt-5.10/qpoint.html#manhattanLength
-	Q_INVOKABLE int manhattanDistance() const;
+	// Returns the distance to another point
+	Q_INVOKABLE int distanceTo(const QPoint &other_point) const;
 	
 	Q_INVOKABLE QString toString() const;
 };

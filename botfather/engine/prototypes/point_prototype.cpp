@@ -1,4 +1,5 @@
 #include "point_prototype.hpp"
+#include <QtMath>
 
 #define THIS_POINT() qscriptvalue_cast<QPoint>(thisObject())
 #define THIS_POINT_P() qscriptvalue_cast<QPoint*>(thisObject())
@@ -54,9 +55,11 @@ int PointPrototype::dotProduct(const QPoint &other_point) const
 	return QPoint::dotProduct(THIS_POINT(), other_point);
 }
 
-int PointPrototype::manhattanDistance() const
+int PointPrototype::distanceTo(const QPoint &other_point) const
 {
-	return THIS_POINT().manhattanLength();
+	int diff_x = other_point.x() - THIS_POINT().x();
+	int diff_y = other_point.y() - THIS_POINT().y();
+	return qSqrt(qPow(diff_x, 2) + qPow(diff_y, 2));
 }
 
 QString PointPrototype::toString() const
