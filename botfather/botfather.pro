@@ -114,7 +114,6 @@ HEADERS += \
     engine/modules/common/windows_keyboard_codes.h \
     gui/preferences/preferences_dialog.h \
     ./gui/authdialog/auth_dialog.h \
-    ./settings.h \
     ./engine/apis/abstract_api.h \
     ./engine/types/blob_tpl.h \
     ./engine/prototypes/blob_tpl_prototype.h \

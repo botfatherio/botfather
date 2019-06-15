@@ -6,7 +6,6 @@
 #include "../maintenancetool/maintenancetool.h"
 #include "../../engine/modules/android/android_settings.h"
 #include "../../engine/modules/browser/browser_settings.h"
-#include "../../settings.h"
 
 PreferencesDialog::PreferencesDialog(QWidget *parent)
 	: QDialog(parent)
