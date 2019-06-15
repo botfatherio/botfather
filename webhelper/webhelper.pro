@@ -3,7 +3,7 @@ CONFIG += c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
-TARGET = botfather_helper
+TARGET = webhelper
 DESTDIR = ./BuildOutput
 OBJECTS_DIR += ./CompiledObjects
 SOURCES += ./main.cpp
@@ -28,5 +28,5 @@ win32 {
 
     # Add app manifest required by CEF. See botfather.pro for details
     CONFIG += embed_manifest_exe
-    QMAKE_MANIFEST = $$PWD/botfather_helper.exe.manifest
+    QMAKE_MANIFEST = $$PWD/webhelper.exe.manifest
 }

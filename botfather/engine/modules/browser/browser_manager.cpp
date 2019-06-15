@@ -79,7 +79,7 @@ CefSettings BrowserManager::cefSettings() const
 {
 	CefSettings cef_settings;
 
-	QString subprocess_path = QStandardPaths::findExecutable("botfather_helper", { QApplication::applicationDirPath() });
+	QString subprocess_path = QStandardPaths::findExecutable("webhelper", { QApplication::applicationDirPath() });
 	CefString(&cef_settings.browser_subprocess_path).FromASCII(subprocess_path.toUtf8());
 
 	CefString(&cef_settings.resources_dir_path) = CefString(); // cef.pak devtools_resources.pak

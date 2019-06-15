@@ -33,6 +33,6 @@
 
 ### Deploy Botfather
 
-- The contents of `botfather/BuildOutput` and `botfather_helper/BuildOutput` must be combined before shipping (or running)
+- The contents of `botfather/BuildOutput` and `webhelper/BuildOutput` must be combined before shipping (or running)
 - Get the latest precompiled openssl dlls from https://indy.fulgan.com/SSL/ (scroll down) and ship them with botfather 
 - [Install python 3](https://www.digitalocean.com/community/tutorials/how-to-install-python-3-and-set-up-a-local-programming-environment-on-windows-10) to use the tools in the `botfather-repo` repository

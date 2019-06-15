@@ -3,7 +3,7 @@
 This needs to be done after [building on linux}(building-on-linux.md).
 
 - [Download linuxdeploqt](https://github.com/probonopd/linuxdeployqt/releases) and make it executable
-- Place both the botfather and botfather_helper build outputs in an `appdir` directory
+- Place both the botfather and webhelper build outputs in an `appdir` directory
 - `repoquery -l nss-softokn | grep '.so\|.chk' | xargs -i cp -R {} ./appdir/lib`
 - `export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:appdir/`
 - `./linuxdeployqt-continuous-x86_64.AppImage appdir/botfather -appimage`

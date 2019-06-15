@@ -45,7 +45,7 @@ modules:
     builddir: true
     build-commands:
       - cp -R botfather/BuildOutput/* /app/bin
-      - cp -R botfather_helper/BuildOutput/* /app/bin
+      - cp -R webhelper/BuildOutput/* /app/bin
     sources:
       - type: dir
         path: "../"

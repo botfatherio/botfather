@@ -59,7 +59,7 @@ win32 {
     LIBS += -lUser32 -lGdi32
 
     # CEF requires us to include an app manifest. If the manifest isn't included correctly, CEF will crash (atleast in debug mode).
-    # Both the main application and the helper application (botfather_helper) must have their own manifests.
+    # Both the main application and the helper application (webhelper) must have their own manifests.
     # In case the solution below stops working for some reason, here are two alternative methods:
     # 1. Alternative:
     #    Add this to qmake: CONFIG -= embed_manifest_exe

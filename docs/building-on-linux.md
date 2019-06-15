@@ -44,25 +44,25 @@ On Centos 7 `libXScrnSaver` is installed as workaround for the following error d
 - `sudo make install`
 - `export LIBGIT2_ROOT=/path/to/libgit2/build` (put this in ~/.bashrc or ~/.xsession)
 
-### Step 5: Build botfather_helper and botfather
+### Step 5: Build webhelper and botfather
 
 - `mkdir package-build`
 - `qmake-qt5 "CONFIG+=release" ../package.pro`
 - `make -j $nproc` (`nproc` returns the number of CPU cores you have)
-- `make install` (creates a `package` directory and puts `botfather` and `botfather_helper` in it)
+- `make install` (creates a `package` directory and puts `botfather` and `webhelper` in it)
 
 *or use qtcreator...*
 
 ## Troubleshooting
 
-##### LaunchProcess: failed to execvp: ./botfather_helper
+##### LaunchProcess: failed to execvp: ./webhelper
 
-This means that there is no `botfather_helper` binary next to the `botfather` binary.
-Place a `botfather_helper` binary matching platform and build type (release/debug) next to your bots binary to fix the problem.
+This means that there is no `webhelper` binary next to the `botfather` binary.
+Place a `webhelper` binary matching platform and build type (release/debug) next to your bots binary to fix the problem.
 
 ##### Browser is blank / nothing works after CEF Update
 
-Rebuild(!) the both `botfather_helper` and(!) `botfather`.
+Rebuild(!) the both `webhelper` and(!) `botfather`.
 
 ##### How to choose a new CEF version
 
