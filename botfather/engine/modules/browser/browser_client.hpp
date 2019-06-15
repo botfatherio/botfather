@@ -22,6 +22,9 @@ class BrowserClient
 public:
 	explicit BrowserClient(const QSize &size);
 
+	bool isAllowedToClose() const;
+	void setAllowedToClose(bool allowed);
+
 	// Returns the browser fixed size
 	QSize size() const;
 
@@ -84,6 +87,8 @@ private:
 	QSize m_size;
 	QReadWriteLock m_screenshot_lock;
 	QImage m_screenshot;
+
+	bool m_is_allowed_to_close = false;
 
 	// GetScreenPoint translates view coordinates to actual screen coordinates.
 	// The BrowserClient does not know were its Browser is displayed and thus

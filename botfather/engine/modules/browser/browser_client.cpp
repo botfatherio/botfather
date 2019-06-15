@@ -16,6 +16,16 @@ BrowserClient::BrowserClient(const QSize &size) : QObject(), m_size(size)
 
 }
 
+bool BrowserClient::isAllowedToClose() const
+{
+	return m_is_allowed_to_close;
+}
+
+void BrowserClient::setAllowedToClose(bool allowed)
+{
+	m_is_allowed_to_close = allowed;
+}
+
 QSize BrowserClient::size() const
 {
 	return m_size;
@@ -59,14 +69,16 @@ void BrowserClient::unmodifyResources()
 
 bool BrowserClient::DoClose(CefRefPtr<CefBrowser> browser)
 {
-	Q_UNUSED(browser)
 	CEF_REQUIRE_UI_THREAD();
 
-	// Closing the main window requires special handling. See the DoClose()
-	// documentation in the CEF header for a detailed destription of this
-	// process.
+	if (isAllowedToClose())
+	{
+		// Allow the browser to close
+		return false;
+	}
 
-	return false; // Allow the browser to close
+	browser->GetMainFrame()->LoadURL("chrome://version/");
+	return true;
 }
 
 void BrowserClient::OnAfterCreated(CefRefPtr<CefBrowser> browser)

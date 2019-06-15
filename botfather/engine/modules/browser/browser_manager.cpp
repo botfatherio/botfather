@@ -181,6 +181,11 @@ void BrowserManager::closeCefBrowser(CefRefPtr<CefBrowser> browser)
 	}
 
 	CEF_REQUIRE_UI_THREAD();
+
+	CefRefPtr<CefClient> cef_client = browser->GetHost()->GetClient();
+	BrowserClient *browser_client = static_cast<BrowserClient*>(cef_client.get());
+
+	browser_client->setAllowedToClose(true);
 	browser->GetHost()->CloseBrowser(true);
 }
 

@@ -56,6 +56,9 @@ void BotBrowsersWidget::deleteBrowser(const QModelIndex &index)
 	Browser *browser = qvariant_cast<Browser*>(m_browser_model_proxy->data(index, BrowserListModel::BROWSER_PTR_ROLE));
 	if (!browser) return;
 
+	// Allow the browser to be closed by its BrowserClient
+	browser->client()->setAllowedToClose(true);
+
 	emit browser->aboutToGetDeletedByTheUser();
 	BrowserManager::instance()->deleteBrowser(browser);
 }
