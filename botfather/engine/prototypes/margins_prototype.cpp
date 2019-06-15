@@ -1,4 +1,4 @@
-#include "margins_prototype.h"
+#include "margins_prototype.hpp"
 
 #define THIS_MARGINS() qscriptvalue_cast<QMargins>(thisObject())
 #define THIS_MARGINS_P() qscriptvalue_cast<QMargins*>(thisObject())

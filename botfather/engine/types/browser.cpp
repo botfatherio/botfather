@@ -1,11 +1,11 @@
-#include "browser.h"
+#include "browser.hpp"
 #include <QElapsedTimer>
 #include <QThread>
 #include <QDebug>
-#include "../modules/browser/browser_settings.h"
-#include "../modules/browser/adapters/cef_key_event_adapter.h"
-#include "../modules/common/bf_key_mapper.h"
-#include "../modules/common/bf_keymap.h"
+#include "../modules/browser/browser_settings.hpp"
+#include "../modules/browser/adapters/cef_key_event_adapter.hpp"
+#include "../modules/common/bf_key_mapper.hpp"
+#include "../modules/common/bf_keymap.hpp"
 
 Browser::Browser(const QString &group, const QString &id, CefRefPtr<CefBrowser> cef_browser)
 	: m_group(group)

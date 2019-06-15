@@ -1,4 +1,4 @@
-#include "blob_tpl_prototype.h"
+#include "blob_tpl_prototype.hpp"
 
 #define THIS_BLOB_TPL() qscriptvalue_cast<BlobTpl>(context()->thisObject())
 #define THIS_BLOB_TPL_P() qscriptvalue_cast<BlobTpl*>(context()->thisObject())

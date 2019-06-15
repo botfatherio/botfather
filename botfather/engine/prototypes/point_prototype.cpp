@@ -1,4 +1,4 @@
-#include "point_prototype.h"
+#include "point_prototype.hpp"
 
 #define THIS_POINT() qscriptvalue_cast<QPoint>(thisObject())
 #define THIS_POINT_P() qscriptvalue_cast<QPoint*>(thisObject())

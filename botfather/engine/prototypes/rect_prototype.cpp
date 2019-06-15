@@ -1,4 +1,4 @@
-#include "rect_prototype.h"
+#include "rect_prototype.hpp"
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
 #include <QRandomGenerator>

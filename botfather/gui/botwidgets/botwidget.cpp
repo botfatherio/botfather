@@ -1,4 +1,4 @@
-#include "botwidget.h"
+#include "botwidget.hpp"
 #include <QVBoxLayout>
 #include <QMessageBox>
 #include <QFileInfo>

@@ -1,10 +1,10 @@
-#include "gitprogressdialog.h"
+#include "gitprogressdialog.hpp"
 #include "ui_gitprogressdialog.h"
 #include <QThread>
 #include <QPushButton>
 #include <QDebug>
-#include "../../git/gitcloneoperation.h"
-#include "../../git/gitrecloneoperation.h"
+#include "../../git/gitcloneoperation.hpp"
+#include "../../git/gitrecloneoperation.hpp"
 
 GitProgressDialog::GitProgressDialog(QWidget *parent) :
 	QDialog(parent),

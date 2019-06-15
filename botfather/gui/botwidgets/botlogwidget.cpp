@@ -1,4 +1,4 @@
-#include "botlogwidget.h"
+#include "botlogwidget.hpp"
 #include "ui_botlogwidget.h"
 #include <QDateTime>
 #include <QFileDialog>

@@ -1,4 +1,4 @@
-#include "botsettingswidget.h"
+#include "botsettingswidget.hpp"
 #include "ui_botsettingswidget.h"
 #include <QDesktopServices>
 #include <QUrl>

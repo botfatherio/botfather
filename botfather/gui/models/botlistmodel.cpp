@@ -1,4 +1,4 @@
-#include "botlistmodel.h"
+#include "botlistmodel.hpp"
 #include <QFile>
 #include <QDir>
 #include <QIcon>

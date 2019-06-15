@@ -43,10 +43,10 @@ unix {
     # Dramatically reduces shared libary file size after linking
     CONFIG(release, debug|release):QMAKE_POST_LINK += find $${DESTDIR} -type f -name \*.so | xargs strip --strip-all
 
-    SOURCES += ./engine/modules/desktop/desktop_x11.cpp
+    SOURCES += engine/modules/desktop/desktop_x11.cpp
     HEADERS += \
-        ./engine/modules/desktop/linux/input-event-codes.h \
-        ./engine/modules/desktop/linux/uinput.h
+        engine/modules/desktop/linux/input-event-codes.hpp \
+        engine/modules/desktop/linux/uinput.hpp
 }
 
 win32 {
@@ -71,127 +71,128 @@ win32 {
     CONFIG += embed_manifest_exe
     QMAKE_MANIFEST = $$PWD/res/botfather.exe.manifest
 
-    RC_FILE = ./res/botfather.rc
-    HEADERS += ./res/resource.h
-    SOURCES += ./engine/modules/desktop/desktop_win.cpp
+    RC_FILE = res/botfather.rc
+    HEADERS += res/resource.hpp
+    SOURCES += engine/modules/desktop/desktop_win.cpp
 }
 
 HEADERS += \
-    ./auth/auth_settings.h \
-    ./auth/license_api_client.h \
-    ./auth/rest_api_client.h \
-    ./engine/apis/android_api.h \
-    ./engine/apis/desktop_api.h \
-    ./engine/apis/helper_api.h \
-    ./engine/apis/vision_api.h \
-    ./engine/engine.h \
-    ./engine/modules/algorithm/dijkstra.h \
-    ./engine/modules/android/adb_device_info.h \
-    ./engine/modules/android/adb_wrapper.h \
-    ./engine/modules/android/android_settings.h \
-    ./engine/modules/browser/browser_settings.h \
-    ./engine/modules/desktop/desktop.h \
-    ./engine/modules/desktop/keymap.h \
-    ./engine/modules/vision/vision.h \
-    ./engine/prototypes/abstract_prototype.h \
-    ./engine/prototypes/color_prototype.h \
-    ./engine/prototypes/image_prototype.h \
-    ./engine/prototypes/match_prototype.h \
-    ./engine/prototypes/point_prototype.h \
-    ./engine/prototypes/rect_prototype.h \
-    ./engine/prototypes/size_prototype.h \
-    ./engine/types/match.h \
-    ./gui/androiddialog/android_dialog.h \
-    ./gui/browserwindow/browser_address_bar.h \
-    ./gui/browserwindow/browser_widget.h \
-    ./gui/browserwindow/browser_window.h \
-    engine/modules/browser/adapters/cef_key_event_adapter.h \
-    engine/modules/common/bf_key_mapper.h \
-    engine/modules/common/bf_key_traits.h \
-    engine/modules/common/bf_keymap.h \
-    engine/modules/common/qt_key_traits.h \
-    engine/modules/common/qt_keymaps.h \
-    engine/modules/common/windows_keyboard_codes.h \
-    gui/preferences/preferences_dialog.h \
-    ./gui/authdialog/auth_dialog.h \
-    ./engine/apis/abstract_api.h \
-    ./engine/types/blob_tpl.h \
-    ./engine/prototypes/blob_tpl_prototype.h \
-    ./engine/apis/algorithm_api.h \
-    ./engine/prototypes/margins_prototype.h \
-    ./engine/prototypes/url_prototype.h \
-    engine/modules/browser/browser_list_model.h \
-    engine/modules/browser/browser_manager.h \
-    engine/prototypes/timer_prototype.h \
-    gui/scriptmanager/scriptmanagerdialog.h \
-    git/gitfetchoperation.h \
-    git/abstractgitoperation.h \
-    git/gitcloneoperation.h \
-    git/gitbehindoperation.h \
-    git/gitrecloneoperation.h \
-    gui/scriptmanager/gitprogressdialog.h \
-    auth/scriptsapiclient.h \
-    gui/mainwindow.h \
-    gui/models/botlistmodel.h \
-    gui/models/bot.h \
-    gui/models/botrepo.h \
-    gui/models/botrepolistmodel.h \
-    gui/botwidgets/botwidget.h \
-    gui/botwidgets/botlogwidget.h \
-    gui/botwidgets/botsettingswidget.h \
-    gui/botwidgets/abstractbotwidget.h \
-    gui/botwidgets/botupdateswidget.h \
-    gui/models/botmanifest.h \
-    gui/models/botconfig.h \
-    gui/models/botconfiggroup.h \
-    gui/botwidgets/botconfigwidget.h \
-    gui/models/botmanifestnode.h \
-    engine/apis/config_api.h \
-    gui/models/botconfigoption.h \
-    gui/maintenancetool/maintenancetool.h \
-    shared/qsettingsjsonformat.h \
-    engine/prototypes/browser_prototype.h \
-    engine/types/browser.h \
-    engine/modules/browser/browser_app.h \
-    engine/modules/browser/browser_client.h \
-    engine/modules/browser/browser_creator.h \
-    engine/modules/browser/browser_util.h \
-    gui/botwidgets/botbrowserswidget.h
+    auth/auth_settings.hpp \
+    auth/license_api_client.hpp \
+    auth/rest_api_client.hpp \
+    engine/apis/android_api.hpp \
+    engine/apis/desktop_api.hpp \
+    engine/apis/helper_api.hpp \
+    engine/apis/vision_api.hpp \
+    engine/engine.hpp \
+    engine/modules/algorithm/dijkstra.hpp \
+    engine/modules/android/adb_device_info.hpp \
+    engine/modules/android/adb_wrapper.hpp \
+    engine/modules/android/android_settings.hpp \
+    engine/modules/browser/browser_settings.hpp \
+    engine/modules/desktop/desktop.hpp \
+    engine/modules/desktop/keymap.hpp \
+    engine/modules/vision/vision.hpp \
+    engine/prototypes/abstract_prototype.hpp \
+    engine/prototypes/color_prototype.hpp \
+    engine/prototypes/image_prototype.hpp \
+    engine/prototypes/match_prototype.hpp \
+    engine/prototypes/point_prototype.hpp \
+    engine/prototypes/rect_prototype.hpp \
+    engine/prototypes/size_prototype.hpp \
+    engine/types/match.hpp \
+    gui/androiddialog/android_dialog.hpp \
+    gui/browserwindow/browser_address_bar.hpp \
+    gui/browserwindow/browser_widget.hpp \
+    gui/browserwindow/browser_window.hpp \
+    auth/scriptsapiclient.hpp \
+    engine/apis/config_api.hpp \
+    engine/modules/browser/adapters/cef_key_event_adapter.hpp \
+    engine/modules/browser/browser_app.hpp \
+    engine/modules/browser/browser_client.hpp \
+    engine/modules/browser/browser_creator.hpp \
+    engine/modules/browser/browser_list_model.hpp \
+    engine/modules/browser/browser_manager.hpp \
+    engine/modules/browser/browser_util.hpp \
+    engine/modules/common/bf_key_mapper.hpp \
+    engine/modules/common/bf_key_traits.hpp \
+    engine/modules/common/bf_keymap.hpp \
+    engine/modules/common/qt_key_traits.hpp \
+    engine/modules/common/qt_keymaps.hpp \
+    engine/modules/common/windows_keyboard_codes.hpp \
+    engine/prototypes/browser_prototype.hpp \
+    engine/prototypes/timer_prototype.hpp \
+    engine/types/browser.hpp \
+    git/abstractgitoperation.hpp \
+    git/gitbehindoperation.hpp \
+    git/gitcloneoperation.hpp \
+    git/gitfetchoperation.hpp \
+    git/gitrecloneoperation.hpp \
+    gui/botwidgets/abstractbotwidget.hpp \
+    gui/botwidgets/botbrowserswidget.hpp \
+    gui/botwidgets/botconfigwidget.hpp \
+    gui/botwidgets/botlogwidget.hpp \
+    gui/botwidgets/botsettingswidget.hpp \
+    gui/botwidgets/botupdateswidget.hpp \
+    gui/botwidgets/botwidget.hpp \
+    gui/maintenancetool/maintenancetool.hpp \
+    gui/mainwindow.hpp \
+    gui/models/bot.hpp \
+    gui/models/botconfig.hpp \
+    gui/models/botconfiggroup.hpp \
+    gui/models/botconfigoption.hpp \
+    gui/models/botlistmodel.hpp \
+    gui/models/botmanifest.hpp \
+    gui/models/botmanifestnode.hpp \
+    gui/models/botrepo.hpp \
+    gui/models/botrepolistmodel.hpp \
+    gui/authdialog/auth_dialog.hpp \
+    engine/apis/abstract_api.hpp \
+    engine/types/blob_tpl.hpp \
+    engine/prototypes/blob_tpl_prototype.hpp \
+    engine/apis/algorithm_api.hpp \
+    engine/prototypes/margins_prototype.hpp \
+    engine/prototypes/url_prototype.hpp \
+    gui/preferences/preferences_dialog.hpp \
+    gui/scriptmanager/gitprogressdialog.hpp \
+    gui/scriptmanager/scriptmanagerdialog.hpp \
+    res/resource.hpp \
+    shared/qsettingsjsonformat.hpp
 SOURCES += \
-    ./auth/license_api_client.cpp \
-    ./auth/rest_api_client.cpp \
-    ./engine/apis/android_api.cpp \
-    ./engine/apis/desktop_api.cpp \
-    ./engine/apis/helper_api.cpp \
-    ./engine/apis/vision_api.cpp \
-    ./engine/engine.cpp \
-    ./engine/modules/algorithm/dijkstra.cpp \
-    ./engine/modules/android/adb_device_info.cpp \
-    ./engine/modules/android/adb_wrapper.cpp \
-    ./engine/modules/vision/vision.cpp \
-    ./engine/prototypes/abstract_prototype.cpp \
-    ./engine/prototypes/color_prototype.cpp \
-    ./engine/prototypes/image_prototype.cpp \
-    ./engine/prototypes/match_prototype.cpp \
-    ./engine/prototypes/point_prototype.cpp \
-    ./engine/prototypes/rect_prototype.cpp \
-    ./engine/prototypes/size_prototype.cpp \
-    ./engine/types/match.cpp \
-    ./gui/androiddialog/android_dialog.cpp \
-    ./gui/browserwindow/browser_address_bar.cpp \
-    ./gui/browserwindow/browser_widget.cpp \
-    ./gui/browserwindow/browser_window.cpp \
+    auth/license_api_client.cpp \
+    auth/rest_api_client.cpp \
+    engine/apis/android_api.cpp \
+    engine/apis/desktop_api.cpp \
+    engine/apis/helper_api.cpp \
+    engine/apis/vision_api.cpp \
+    engine/engine.cpp \
+    engine/modules/algorithm/dijkstra.cpp \
+    engine/modules/android/adb_device_info.cpp \
+    engine/modules/android/adb_wrapper.cpp \
+    engine/modules/vision/vision.cpp \
+    engine/prototypes/abstract_prototype.cpp \
+    engine/prototypes/color_prototype.cpp \
+    engine/prototypes/image_prototype.cpp \
+    engine/prototypes/match_prototype.cpp \
+    engine/prototypes/point_prototype.cpp \
+    engine/prototypes/rect_prototype.cpp \
+    engine/prototypes/size_prototype.cpp \
+    engine/types/match.cpp \
+    gui/androiddialog/android_dialog.cpp \
+    gui/browserwindow/browser_address_bar.cpp \
+    gui/browserwindow/browser_widget.cpp \
+    gui/browserwindow/browser_window.cpp \
     engine/modules/browser/adapters/cef_key_event_adapter.cpp \
     engine/modules/common/bf_key_mapper.cpp \
     gui/preferences/preferences_dialog.cpp \
-    ./gui/authdialog/auth_dialog.cpp \
-    ./main.cpp \
-    ./engine/apis/abstract_api.cpp \
-    ./engine/types/blob_tpl.cpp \
-    ./engine/prototypes/blob_tpl_prototype.cpp \
-    ./engine/apis/algorithm_api.cpp \
-    ./engine/prototypes/margins_prototype.cpp \
-    ./engine/prototypes/url_prototype.cpp \
+    gui/authdialog/auth_dialog.cpp \
+    main.cpp \
+    engine/apis/abstract_api.cpp \
+    engine/types/blob_tpl.cpp \
+    engine/prototypes/blob_tpl_prototype.cpp \
+    engine/apis/algorithm_api.cpp \
+    engine/prototypes/margins_prototype.cpp \
+    engine/prototypes/url_prototype.cpp \
     engine/modules/browser/browser_list_model.cpp \
     engine/modules/browser/browser_manager.cpp \
     engine/prototypes/timer_prototype.cpp \
@@ -230,9 +231,9 @@ SOURCES += \
     engine/modules/browser/browser_util.cpp \
     gui/botwidgets/botbrowserswidget.cpp
 FORMS += \
-    ./gui/androiddialog/android_dialog.ui \
-    ./gui/authdialog/auth_dialog.ui \
-    ./gui/browserwindow/browser_window.ui \
+    gui/androiddialog/android_dialog.ui \
+    gui/authdialog/auth_dialog.ui \
+    gui/browserwindow/browser_window.ui \
     gui/preferences/preferences_dialog.ui \
     gui/scriptmanager/scriptmanagerdialog.ui \
     gui/scriptmanager/gitprogressdialog.ui \

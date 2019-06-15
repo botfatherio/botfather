@@ -1,4 +1,4 @@
-#include "url_prototype.h"
+#include "url_prototype.hpp"
 
 #define THIS_URL() qscriptvalue_cast<QUrl>(thisObject())
 #define THIS_URL_P() qscriptvalue_cast<QUrl*>(thisObject())

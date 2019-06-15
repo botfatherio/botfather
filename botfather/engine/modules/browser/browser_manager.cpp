@@ -1,11 +1,11 @@
-#include "browser_manager.h"
+#include "browser_manager.hpp"
 #include <QStandardPaths>
 #include <QApplication>
 #include <QThread>
 #include <QDebug>
 #include "include/wrapper/cef_helpers.h"
-#include "browser_creator.h"
-#include "browser_util.h"
+#include "browser_creator.hpp"
+#include "browser_util.hpp"
 
 #if defined(_WIN32) || defined(_WIN64)
 	#include <windows.h>

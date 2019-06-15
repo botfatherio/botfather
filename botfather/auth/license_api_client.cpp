@@ -1,4 +1,4 @@
-#include "license_api_client.h"
+#include "license_api_client.hpp"
 #include <QUrlQuery>
 #include <QJsonDocument>
 #include <QJsonObject>

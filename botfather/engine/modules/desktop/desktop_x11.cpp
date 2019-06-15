@@ -1,5 +1,5 @@
-#include "desktop.h"
-#include "keymap.h"
+#include "desktop.hpp"
+#include "keymap.hpp"
 #include <QThread>
 #include <QPoint>
 #include <QSize>
@@ -7,7 +7,7 @@
 #include <string.h> // memset, strcpy
 #include <fcntl.h> // open
 #include <ctime> // time
-#include "linux/uinput.h"
+#include "linux/uinput.hpp"
 #include <X11/Xlib.h> // Import X11 stuff always last. Otherwise compilation fails.
 #include <X11/Xutil.h>
 

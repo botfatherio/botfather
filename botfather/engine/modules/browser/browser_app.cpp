@@ -1,9 +1,9 @@
-#include "browser_app.h"
+#include "browser_app.hpp"
 #include <QFileInfo>
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QSettings>
-#include "browser_settings.h"
+#include "browser_settings.hpp"
 
 static QString parseFlashVersionFromManifest(QString flash_manifest_path)
 {

@@ -1,4 +1,4 @@
-#include "timer_prototype.h"
+#include "timer_prototype.hpp"
 
 #define THIS_TIMER() qscriptvalue_cast<QElapsedTimer>(thisObject())
 #define THIS_TIMER_P() qscriptvalue_cast<QElapsedTimer*>(thisObject())

@@ -1,4 +1,4 @@
-#include "botconfig.h"
+#include "botconfig.hpp"
 #include <QJsonArray>
 
 bool BotConfig::isValid() const

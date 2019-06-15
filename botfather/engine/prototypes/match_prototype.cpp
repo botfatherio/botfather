@@ -1,4 +1,4 @@
-#include "match_prototype.h"
+#include "match_prototype.hpp"
 
 #define THIS_MATCH() qscriptvalue_cast<Match>(thisObject())
 #define THIS_MATCH_P() qscriptvalue_cast<Match*>(thisObject())

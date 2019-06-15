@@ -1,8 +1,8 @@
-#include "bot.h"
+#include "bot.hpp"
 #include <QDir>
 #include <git2.h>
-#include "../../git/gitfetchoperation.h"
-#include "../../git/gitbehindoperation.h"
+#include "../../git/gitfetchoperation.hpp"
+#include "../../git/gitbehindoperation.hpp"
 
 Bot::Bot(QObject *parent) : QObject(parent)
 {

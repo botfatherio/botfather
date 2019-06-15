@@ -1,4 +1,4 @@
-#include "abstractgitoperation.h"
+#include "abstractgitoperation.hpp"
 #include <QCoreApplication>
 #include <QDebug>
 

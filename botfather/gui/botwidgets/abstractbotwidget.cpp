@@ -1,4 +1,4 @@
-#include "abstractbotwidget.h"
+#include "abstractbotwidget.hpp"
 
 AbstractBotWidget::AbstractBotWidget(Bot *bot, QSystemTrayIcon *trayicon, QWidget *parent)
 	: QWidget(parent)

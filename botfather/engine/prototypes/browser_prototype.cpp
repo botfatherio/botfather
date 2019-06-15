@@ -1,5 +1,5 @@
-#include "browser_prototype.h"
-#include "../engine.h"
+#include "browser_prototype.hpp"
+#include "../engine.hpp"
 
 // We must cast to Browser* otherwise the browsers pointers won't be valid.
 #define THIS_BROWSER_P() qscriptvalue_cast<Browser*>(thisObject())

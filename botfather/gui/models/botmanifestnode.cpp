@@ -1,4 +1,4 @@
-#include "botmanifestnode.h"
+#include "botmanifestnode.hpp"
 
 BotManifestNode::BotManifestNode()
 {

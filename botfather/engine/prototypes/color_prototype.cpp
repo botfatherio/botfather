@@ -1,4 +1,4 @@
-#include "color_prototype.h"
+#include "color_prototype.hpp"
 #include <QHash>
 
 #define THIS_COLOR() qscriptvalue_cast<QColor>(thisObject())

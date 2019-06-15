@@ -1,11 +1,11 @@
-#include "bf_key_mapper.h"
+#include "bf_key_mapper.hpp"
 #include <QHash>
 #include <QDebug>
-#include "windows_keyboard_codes.h"
-#include "linux11_keyboard_codes.h"
+#include "windows_keyboard_codes.hpp"
+#include "linux11_keyboard_codes.hpp"
 #include "include/cef_base.h"
-#include "bf_keymap.h"
-#include "qt_keymaps.h"
+#include "bf_keymap.hpp"
+#include "qt_keymaps.hpp"
 
 Qt::KeyboardModifier BFKeyMapper::mapBFKeycodeToQtKeyboardModifier(const QString &bf_keycode)
 {

@@ -1,4 +1,4 @@
-#include "android_dialog.h"
+#include "android_dialog.hpp"
 #include "ui_android_dialog.h"
 #include <QRadioButton>
 #include <QDebug>
@@ -8,8 +8,8 @@
 #include <QSettings>
 #include <QStandardPaths>
 #include <QDir>
-#include "../../engine/modules/android/android_settings.h"
-#include "../../engine/modules/android/adb_wrapper.h"
+#include "../../engine/modules/android/android_settings.hpp"
+#include "../../engine/modules/android/adb_wrapper.hpp"
 
 AndroidDialog::AndroidDialog(QWidget *parent) :
 	QDialog(parent),

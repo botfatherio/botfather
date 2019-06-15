@@ -1,4 +1,4 @@
-#include "botrepo.h"
+#include "botrepo.hpp"
 #include <QUrl>
 #include <QDebug>
 

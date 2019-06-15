@@ -1,9 +1,9 @@
-#include "desktop.h"
+#include "desktop.hpp"
 #include <windows.h>
 #include <QSize>
 #include <QPixmap>
 #include <QtWin>
-#include "keymap.h"
+#include "keymap.hpp"
 
 class DesktopPrivate {
 public:

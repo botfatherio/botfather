@@ -1,15 +1,15 @@
-#include "android_api.h"
+#include "android_api.hpp"
 #include <QApplication>
 #include <QStandardPaths>
 #include <QDir>
 #include <QTimer>
-#include "../modules/android/adb_wrapper.h"
-#include "../modules/android/android_settings.h"
-#include "../modules/vision/vision.h"
-#include "../prototypes/image_prototype.h"
-#include "../types/match.h"
-#include "../engine.h"
-#include "vision_api.h"
+#include "../modules/android/adb_wrapper.hpp"
+#include "../modules/android/android_settings.hpp"
+#include "../modules/vision/vision.hpp"
+#include "../prototypes/image_prototype.hpp"
+#include "../types/match.hpp"
+#include "../engine.hpp"
+#include "vision_api.hpp"
 
 AndroidAPI::AndroidAPI(Engine *bot, QObject *parent) : AbstractAPI(bot, parent)
 {

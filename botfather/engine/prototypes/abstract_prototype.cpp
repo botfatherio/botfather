@@ -1,4 +1,4 @@
-#include "abstract_prototype.h"
+#include "abstract_prototype.hpp"
 #include <QColor>
 #include <QSize>
 

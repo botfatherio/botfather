@@ -1,4 +1,4 @@
-#include "scriptmanagerdialog.h"
+#include "scriptmanagerdialog.hpp"
 #include "ui_scriptmanagerdialog.h"
 #include <QMessageBox>
 #include <QStandardPaths>
@@ -10,8 +10,8 @@
 #include <QAbstractButton>
 #include <QPushButton>
 #include <QDebug>
-#include "gitprogressdialog.h"
-#include "../../auth/scriptsapiclient.h"
+#include "gitprogressdialog.hpp"
+#include "../../auth/scriptsapiclient.hpp"
 
 ScriptManagerDialog::ScriptManagerDialog(QWidget *parent) :
 	QDialog(parent),

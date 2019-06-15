@@ -1,7 +1,7 @@
-#include "image_prototype.h"
+#include "image_prototype.hpp"
 #include <QDebug>
-#include "../modules/vision/vision.h"
-#include "../engine.h"
+#include "../modules/vision/vision.hpp"
+#include "../engine.hpp"
 
 #define THIS_IMAGE() qscriptvalue_cast<QImage>(thisObject())
 #define THIS_IMAGE_P() qscriptvalue_cast<QImage*>(thisObject())

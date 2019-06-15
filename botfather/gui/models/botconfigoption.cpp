@@ -1,6 +1,6 @@
-#include "botconfigoption.h"
+#include "botconfigoption.hpp"
 #include <QSettings>
-#include "../../shared/qsettingsjsonformat.h"
+#include "../../shared/qsettingsjsonformat.hpp"
 
 QVariant BotConfigOption::value() const
 {

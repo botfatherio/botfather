@@ -1,4 +1,4 @@
-#include "botconfigwidget.h"
+#include "botconfigwidget.hpp"
 #include "ui_botconfigwidget.h"
 #include <QCheckBox>
 #include <QSpinBox>

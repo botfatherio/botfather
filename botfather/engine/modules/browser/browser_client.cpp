@@ -1,4 +1,4 @@
-#include "browser_client.h"
+#include "browser_client.hpp"
 #include <QUrl>
 #include <QUrlQuery>
 #include <QRegularExpression>
@@ -9,7 +9,7 @@
 #include "include/views/cef_window.h"
 #include "include/wrapper/cef_closure_task.h"
 #include "include/wrapper/cef_helpers.h"
-#include "browser_settings.h"
+#include "browser_settings.hpp"
 
 BrowserClient::BrowserClient(const QSize &size) : QObject(), m_size(size)
 {

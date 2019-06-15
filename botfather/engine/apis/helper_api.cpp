@@ -1,4 +1,4 @@
-#include "helper_api.h"
+#include "helper_api.hpp"
 #include <QFileInfo>
 #include <QThread>
 #include <QInputDialog>

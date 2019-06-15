@@ -1,4 +1,4 @@
-#include "size_prototype.h"
+#include "size_prototype.hpp"
 
 #define THIS_SIZE() qscriptvalue_cast<QSize>(thisObject())
 #define THIS_SIZE_P() qscriptvalue_cast<QSize*>(thisObject())

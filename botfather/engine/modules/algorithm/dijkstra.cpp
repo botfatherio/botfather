@@ -1,4 +1,4 @@
-#include "dijkstra.h"
+#include "dijkstra.hpp"
 #include <QDebug>
 
 Dijkstra::Dijkstra(const QMap<QString, QMap<QString, int>> &data)

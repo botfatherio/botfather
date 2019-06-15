@@ -1,10 +1,10 @@
-#include "auth_dialog.h"
+#include "auth_dialog.hpp"
 #include "ui_auth_dialog.h"
 #include <QHash>
 #include <QMessageBox>
 #include <QDebug>
 #include <QSettings>
-#include "../../auth/auth_settings.h"
+#include "../../auth/auth_settings.hpp"
 
 AuthDialog::AuthDialog(LicenseApiClient *license_api, QWidget *parent)
 	: QDialog(parent)

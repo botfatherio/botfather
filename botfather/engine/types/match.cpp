@@ -1,4 +1,4 @@
-#include "match.h"
+#include "match.hpp"
 
 Match::Match() : QRect()
 {

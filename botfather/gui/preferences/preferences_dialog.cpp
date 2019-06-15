@@ -1,11 +1,11 @@
-#include "preferences_dialog.h"
+#include "preferences_dialog.hpp"
 #include "ui_preferences_dialog.h"
 #include <QFileDialog>
 #include <QDebug>
 #include <QSettings>
-#include "../maintenancetool/maintenancetool.h"
-#include "../../engine/modules/android/android_settings.h"
-#include "../../engine/modules/browser/browser_settings.h"
+#include "../maintenancetool/maintenancetool.hpp"
+#include "../../engine/modules/android/android_settings.hpp"
+#include "../../engine/modules/browser/browser_settings.hpp"
 
 PreferencesDialog::PreferencesDialog(QWidget *parent)
 	: QDialog(parent)

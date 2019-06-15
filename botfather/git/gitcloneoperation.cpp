@@ -1,4 +1,4 @@
-#include "gitcloneoperation.h"
+#include "gitcloneoperation.hpp"
 #include <QCoreApplication>
 #include <QDebug>
 

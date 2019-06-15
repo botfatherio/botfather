@@ -1,4 +1,4 @@
-#include "scriptsapiclient.h"
+#include "scriptsapiclient.hpp"
 #include <QUrlQuery>
 #include <QJsonDocument>
 #include <QJsonObject>

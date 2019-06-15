@@ -1,4 +1,4 @@
-#include "browser_widget.h"
+#include "browser_widget.hpp"
 #include <QMouseEvent>
 #include <QDebug>
 

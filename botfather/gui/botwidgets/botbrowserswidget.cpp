@@ -1,8 +1,8 @@
-#include "botbrowserswidget.h"
+#include "botbrowserswidget.hpp"
 #include "ui_botbrowserswidget.h"
 #include <QDebug>
-#include "../../engine/modules/browser/browser_manager.h"
-#include "../browserwindow/browser_window.h"
+#include "../../engine/modules/browser/browser_manager.hpp"
+#include "../browserwindow/browser_window.hpp"
 
 BotBrowsersWidget::BotBrowsersWidget(Bot *bot, QWidget *parent)
 	: QWidget(parent)

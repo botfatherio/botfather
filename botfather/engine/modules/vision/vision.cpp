@@ -1,9 +1,9 @@
-#include "vision.h"
+#include "vision.hpp"
 #include <opencv2/opencv.hpp>
 #include <QDebug>
 #include <QPainter>
-#include "../../types/match.h"
-#include "../../types/blob_tpl.h"
+#include "../../types/match.hpp"
+#include "../../types/blob_tpl.hpp"
 
 cv::Mat Vision::isolateColor(const cv::Mat &image, const cv::Scalar &min_hsv, const cv::Scalar &max_hsv, bool keep_color)
 {

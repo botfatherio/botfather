@@ -1,4 +1,4 @@
-#include "botconfiggroup.h"
+#include "botconfiggroup.hpp"
 #include <QJsonArray>
 
 QString BotConfigGroup::name() const

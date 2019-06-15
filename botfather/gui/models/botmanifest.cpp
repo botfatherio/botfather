@@ -1,4 +1,4 @@
-#include "botmanifest.h"
+#include "botmanifest.hpp"
 #include <QFile>
 #include <QJsonDocument>
 

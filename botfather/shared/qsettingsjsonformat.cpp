@@ -1,4 +1,4 @@
-#include "qsettingsjsonformat.h"
+#include "qsettingsjsonformat.hpp"
 #include <QIODevice>
 #include <QJsonDocument>
 #include <QJsonObject>

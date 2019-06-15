@@ -1,4 +1,4 @@
-#include "abstract_api.h"
+#include "abstract_api.hpp"
 
 AbstractAPI::AbstractAPI(Engine *bot, QObject *parent)
 	: QObject(parent)

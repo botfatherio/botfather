@@ -1,4 +1,4 @@
-#include "botrepolistmodel.h"
+#include "botrepolistmodel.hpp"
 #include <QDataStream>
 #include <QFile>
 #include <QDebug>

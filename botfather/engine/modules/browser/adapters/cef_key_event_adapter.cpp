@@ -1,6 +1,6 @@
-#include "cef_key_event_adapter.h"
+#include "cef_key_event_adapter.hpp"
 #include <QDebug>
-#include "../../common/bf_key_mapper.h"
+#include "../../common/bf_key_mapper.hpp"
 
 CefKeyEventAdapter::CefKeyEventAdapter(const QKeyEvent *event)
 {

@@ -1,4 +1,4 @@
-#include "adb_device_info.h"
+#include "adb_device_info.hpp"
 
 AdbDeviceInfo::AdbDeviceInfo()
 {

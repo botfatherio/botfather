@@ -1,10 +1,10 @@
-#include "browser_window.h"
+#include "browser_window.hpp"
 #include "ui_browser_window.h"
 #include <QDebug>
 #include <QStyle>
 #include <QScreen>
 #include <QSettings>
-#include "../../engine/modules/browser/browser_settings.h"
+#include "../../engine/modules/browser/browser_settings.hpp"
 
 BrowserWindow::BrowserWindow(const QString &title, QWidget *parent)
 	: QMainWindow(parent)

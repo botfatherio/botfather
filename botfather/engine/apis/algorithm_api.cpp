@@ -1,8 +1,8 @@
-#include "algorithm_api.h"
+#include "algorithm_api.hpp"
 #include <QScriptValueIterator>
 #include <QMapIterator>
 #include <QDebug>
-#include "../modules/algorithm/dijkstra.h"
+#include "../modules/algorithm/dijkstra.hpp"
 
 QScriptValue AlgorithmAPI::dijkstra(const QScriptValue &graph_object, const QString &start, const QString &dest)
 {

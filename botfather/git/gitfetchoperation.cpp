@@ -1,4 +1,4 @@
-#include "gitfetchoperation.h"
+#include "gitfetchoperation.hpp"
 #include <QDebug>
 
 GitFetchOperation::GitFetchOperation(const QString &repo_path)

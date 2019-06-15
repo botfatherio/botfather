@@ -1,4 +1,4 @@
-#include "rest_api_client.h"
+#include "rest_api_client.hpp"
 #include <QNetworkReply>
 #include <QJsonDocument>
 #include <QJsonArray>

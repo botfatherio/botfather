@@ -1,4 +1,4 @@
-#include "browser_util.h"
+#include "browser_util.hpp"
 
 void BrowserUtil::runInMainThread(std::function<void()> callback)
 {

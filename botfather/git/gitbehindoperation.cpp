@@ -1,4 +1,4 @@
-#include "gitbehindoperation.h"
+#include "gitbehindoperation.hpp"
 #include <QDebug>
 
 GitBehindOperation::GitBehindOperation(const QString &repo_path)

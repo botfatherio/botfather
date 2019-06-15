@@ -1,5 +1,5 @@
-#include "gitrecloneoperation.h"
-#include "gitcloneoperation.h"
+#include "gitrecloneoperation.hpp"
+#include "gitcloneoperation.hpp"
 #include <QDir>
 #include <QFileInfo>
 #include <QDebug>
