@@ -19,6 +19,9 @@ BrowserWindow::BrowserWindow(const QString &title, QWidget *parent)
 	layout()->setSizeConstraint(QLayout::SetFixedSize);
 	setWindowTitle(title);
 
+	// Focus the BrowserWidget. (Default would be the AddressBar)
+	m_browser_widget->setFocus();
+
 	connect(this, &BrowserWindow::windowMoved, m_browser_widget, &BrowserWidget::emitGlobalPosition);
 	connect(this, &BrowserWindow::windowActivated, m_browser_widget, &BrowserWidget::emitGlobalPosition);
 
