@@ -148,5 +148,8 @@ QModelIndex BrowserListModel::findBrowser(Browser *browser)
 
 QString BrowserListModel::createUID(const QString &group, const QString &browser_id)
 {
-	return group + "--" + browser_id;
+	// Using a seperator sequence that will unlikely occure in a Bots path.
+	// (Since the bots path is used as group id of the Browser and we want
+	// to prevent naming collisions).
+	return group + "{////}" + browser_id;
 }
