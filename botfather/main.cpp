@@ -47,7 +47,7 @@ int handleXError(Display *display, XErrorEvent *event)
 
 int handleXIOError(Display *)
 {
-	qDebug() << "QIOError handled.";
+	qDebug() << "XIOError handled.";
 	return 0;
 }
 
@@ -80,11 +80,11 @@ int main(int argc, char *argv[])
 #endif
 
 #if defined(_WIN32) || defined(_WIN64)
-		Browser::init(__argc, __argv);
+	BrowserManager::instance()->init(__argc, __argv);
 #else
-		BrowserManager::instance()->init(argc, argv);
-		BrowserManager::instance()->bind(&a);
+	BrowserManager::instance()->init(argc, argv);
 #endif
+	BrowserManager::instance()->bind(&a);
 
     // Init libgit2 once and never shut it down. Shutting libgit2 down caused crashes related to multithreading
     // even when compiling libgit2 to be thread safe. The libgit2 docs state some interesting things:
