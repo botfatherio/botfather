@@ -74,6 +74,7 @@ static const QHash<const QString, BFKeyTraits> BF_KEYMAP = {
 	{"9", {Qt::Key_9, QChar('9')}},
 
 	// Special Characters
+	{" ", {Qt::Key_Space, QChar(' ')}},
 	{"!", {Qt::Key_unknown, QChar('!')}},
 	{"$", {Qt::Key_unknown, QChar('$')}},
 	{"%", {Qt::Key_unknown, QChar('%')}},
@@ -118,7 +119,6 @@ static const QHash<const QString, BFKeyTraits> BF_KEYMAP = {
 	{"Down", BFKeyTraits(Qt::Key_Down, QChar())},
 
 	// Misc
-	{"Space", {Qt::Key_Space, QChar(' ')}},
 	{"Tab", {Qt::Key_Tab, QChar('\t')}},
 	{"Escape", {Qt::Key_Escape, QChar('\u001B')}},
 	{"Enter", {Qt::Key_Enter, QChar('\r')}},
