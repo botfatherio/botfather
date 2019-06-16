@@ -1,5 +1,5 @@
 #include "bot_log_widget.hpp"
-#include "ui_botlogwidget.h"
+#include "ui_bot_log_widget.h"
 #include <QDateTime>
 #include <QFileDialog>
 #include <QDebug>

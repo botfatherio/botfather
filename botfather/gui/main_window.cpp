@@ -1,5 +1,5 @@
 #include "main_window.hpp"
-#include "ui_mainwindow.h"
+#include "ui_main_window.h"
 #include <QCloseEvent>
 #include <QMessageBox>
 #include <QTimer>

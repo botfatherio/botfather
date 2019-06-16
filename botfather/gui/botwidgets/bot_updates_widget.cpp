@@ -1,5 +1,5 @@
 #include "bot_updates_widget.hpp"
-#include "ui_botupdateswidget.h"
+#include "ui_bot_updates_widget.h"
 #include "../scriptmanager/git_progress_dialog.hpp"
 #include <QTimer>
 #include <QDateTime>

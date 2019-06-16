@@ -1,5 +1,5 @@
 #include "git_progress_dialog.hpp"
-#include "ui_gitprogressdialog.h"
+#include "ui_git_progress_dialog.h"
 #include <QThread>
 #include <QPushButton>
 #include <QDebug>

@@ -1,5 +1,5 @@
 #include "bot_browsers_widget.hpp"
-#include "ui_botbrowserswidget.h"
+#include "ui_bot_browsers_widget.h"
 #include <QDebug>
 #include "../../engine/modules/browser/browser_manager.hpp"
 #include "../browserwindow/browser_window.hpp"

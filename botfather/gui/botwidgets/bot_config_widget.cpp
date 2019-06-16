@@ -1,5 +1,5 @@
 #include "bot_config_widget.hpp"
-#include "ui_botconfigwidget.h"
+#include "ui_bot_config_widget.h"
 #include <QCheckBox>
 #include <QSpinBox>
 #include <QDoubleSpinBox>

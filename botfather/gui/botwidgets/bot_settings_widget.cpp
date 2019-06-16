@@ -1,5 +1,5 @@
 #include "bot_settings_widget.hpp"
-#include "ui_botsettingswidget.h"
+#include "ui_bot_settings_widget.h"
 #include <QDesktopServices>
 #include <QUrl>
 #include <QDebug>

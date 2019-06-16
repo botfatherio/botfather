@@ -1,5 +1,5 @@
 #include "script_manager_dialog.hpp"
-#include "ui_scriptmanagerdialog.h"
+#include "ui_script_manager_dialog.h"
 #include <QMessageBox>
 #include <QStandardPaths>
 #include <QDesktopServices>
