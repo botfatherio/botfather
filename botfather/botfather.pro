@@ -89,6 +89,10 @@ HEADERS += \
     engine/modules/android/adb_device_info.hpp \
     engine/modules/android/adb_wrapper.hpp \
     engine/modules/android/android_settings.hpp \
+    engine/modules/browser/browser_life_span_handler.hpp \
+    engine/modules/browser/browser_load_handler.hpp \
+    engine/modules/browser/browser_render_handler.hpp \
+    engine/modules/browser/browser_request_handler.hpp \
     engine/modules/browser/browser_settings.hpp \
     engine/modules/desktop/desktop.hpp \
     engine/modules/desktop/keymap.hpp \
@@ -169,6 +173,10 @@ SOURCES += \
     engine/modules/algorithm/dijkstra.cpp \
     engine/modules/android/adb_device_info.cpp \
     engine/modules/android/adb_wrapper.cpp \
+    engine/modules/browser/browser_life_span_handler.cpp \
+    engine/modules/browser/browser_load_handler.cpp \
+    engine/modules/browser/browser_render_handler.cpp \
+    engine/modules/browser/browser_request_handler.cpp \
     engine/modules/vision/vision.cpp \
     engine/prototypes/abstract_prototype.cpp \
     engine/prototypes/color_prototype.cpp \
