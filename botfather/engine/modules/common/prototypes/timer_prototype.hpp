@@ -42,7 +42,7 @@ public:
 	// Returns the number of milliseconds since this QElapsedTimer was last started.
 	// The return value is 0 if this object is invalidated.
 	// http://doc.qt.io/qt-5/qelapsedtimer.html#elapsed
-	Q_INVOKABLE qint64 elapsed() const;
+	Q_INVOKABLE qint64 getElapsedTime() const;
 
 	// Returns true if this QElapsedTimer has already expired by timeout milliseconds (that is, more than timeout milliseconds have elapsed).
 	// The value of timeout can be -1 to indicate that this timer does not expire, in which case this function will always return false.

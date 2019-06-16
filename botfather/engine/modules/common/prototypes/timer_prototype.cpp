@@ -38,7 +38,7 @@ void TimerPrototype::stop()
 	THIS_TIMER_P()->invalidate();
 }
 
-qint64 TimerPrototype::elapsed() const
+qint64 TimerPrototype::getElapsedTime() const
 {
 	QElapsedTimer timer(THIS_TIMER());
 	if (timer.isValid())
@@ -66,5 +66,5 @@ qint64 TimerPrototype::msecsTo(const QElapsedTimer &other) const
 
 QString TimerPrototype::toString() const
 {
-	return QString("Timer(running: %1, elapsed: %2)").arg(isRunning() ? "true" : "false").arg(elapsed());
+	return QString("Timer(running: %1, elapsed: %2)").arg(isRunning() ? "true" : "false").arg(getElapsedTime());
 }
