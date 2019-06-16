@@ -11,6 +11,10 @@ Q_DECLARE_METATYPE(QMargins*)
 class MarginsPrototype : public AbstractPrototype
 {
 	Q_OBJECT
+	Q_PROPERTY(int top READ getTop WRITE setTop)
+	Q_PROPERTY(int left READ getLeft WRITE setLeft)
+	Q_PROPERTY(int right READ getRight WRITE setRight)
+	Q_PROPERTY(int bottom READ getBottom WRITE setBottom)
 
 public:
 	static QScriptValue constructor(QScriptContext *context, QScriptEngine *engine);

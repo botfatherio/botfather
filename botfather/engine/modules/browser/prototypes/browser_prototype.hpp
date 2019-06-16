@@ -8,6 +8,9 @@
 class BrowserPrototype : public AbstractPrototype
 {
 	Q_OBJECT
+	Q_PROPERTY(QSize size READ getSize)
+	Q_PROPERTY(QRect rect READ getRect)
+	Q_PROPERTY(QUrl url READ getUrl)
 
 public:
 	static QScriptValue constructor(QScriptContext *context, QScriptEngine *engine);

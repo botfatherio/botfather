@@ -11,6 +11,7 @@ Q_DECLARE_METATYPE(QElapsedTimer*)
 class TimerPrototype : public AbstractPrototype
 {
 	Q_OBJECT
+	Q_PROPERTY(qint64 elapsed_time READ getElapsedTime)
 
 public:
 	static QScriptValue constructor(QScriptContext *context, QScriptEngine *engine);

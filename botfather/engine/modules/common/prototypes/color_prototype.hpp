@@ -11,6 +11,12 @@ Q_DECLARE_METATYPE(QColor*)
 class ColorPrototype : public AbstractPrototype
 {
 	Q_OBJECT
+	Q_PROPERTY(int red READ getRed WRITE setRed)
+	Q_PROPERTY(int green READ getGreen WRITE setGreen)
+	Q_PROPERTY(int blue READ getBlue WRITE setBlue)
+	Q_PROPERTY(int hue READ getHue)
+	Q_PROPERTY(int saturation READ getSaturation)
+	Q_PROPERTY(int value READ getValue)
 	
 public:
 	static QScriptValue constructor(QScriptContext *context, QScriptEngine *engine);

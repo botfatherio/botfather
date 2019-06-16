@@ -17,6 +17,9 @@ Q_DECLARE_METATYPE(QImage*)
 class ImagePrototype : public AbstractPrototype
 {
 	Q_OBJECT
+	Q_PROPERTY(int width READ getWidth)
+	Q_PROPERTY(int height READ getHeight)
+	Q_PROPERTY(QSize size READ getSize)
 	
 public:
 	static QScriptValue constructor(QScriptContext *context, QScriptEngine *engine);

@@ -11,6 +11,8 @@ Q_DECLARE_METATYPE(QPoint*)
 class PointPrototype : public AbstractPrototype
 {
 	Q_OBJECT
+	Q_PROPERTY(int x READ getX WRITE setX)
+	Q_PROPERTY(int y READ getY WRITE setY)
 	
 public:
 	static QScriptValue constructor(QScriptContext *context, QScriptEngine *engine);

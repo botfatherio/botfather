@@ -23,6 +23,16 @@ Q_DECLARE_METATYPE(QUrl*)
 class UrlPrototype : public AbstractPrototype
 {
 	Q_OBJECT
+	Q_PROPERTY(QString scheme READ getScheme WRITE setScheme)
+	Q_PROPERTY(QString username READ getUsername WRITE setUsername)
+	Q_PROPERTY(QString password READ getPassword WRITE setPassword)
+	Q_PROPERTY(QString host READ getHost WRITE setHost)
+	Q_PROPERTY(int port READ getPort WRITE setPort)
+	Q_PROPERTY(QString path READ getPath WRITE setPath)
+	Q_PROPERTY(QString query READ getQuery WRITE setQuery)
+	Q_PROPERTY(QString fragment READ getFragment WRITE setFragment)
+	Q_PROPERTY(QString top_level_domain READ getTopLevelDomain)
+	Q_PROPERTY(QString authority READ getAuthority)
 
 public:
 	static QScriptValue constructor(QScriptContext *context, QScriptEngine *engine);

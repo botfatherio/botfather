@@ -12,6 +12,18 @@ Q_DECLARE_METATYPE(QRect*)
 class RectPrototype : public AbstractPrototype
 {
 	Q_OBJECT
+	Q_PROPERTY(int top READ getTop WRITE moveTop)
+	Q_PROPERTY(int left READ getLeft WRITE moveLeft)
+	Q_PROPERTY(int right READ getRight WRITE moveRight)
+	Q_PROPERTY(int bottom READ getBottom WRITE moveBottom)
+	Q_PROPERTY(int width READ getWidth WRITE setWidth)
+	Q_PROPERTY(int height READ getHeight WRITE setHeight)
+	Q_PROPERTY(QPoint center READ getCenter)
+	Q_PROPERTY(QPoint top_left READ getTopLeft)
+	Q_PROPERTY(QPoint top_right READ getTopRight)
+	Q_PROPERTY(QPoint bottom_left READ getBottomLeft)
+	Q_PROPERTY(QPoint bottom_right READ getBottomRight)
+	Q_PROPERTY(QSize size READ getSize)
 	
 public:
 	static QScriptValue constructor(QScriptContext *context, QScriptEngine *engine);

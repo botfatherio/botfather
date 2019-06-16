@@ -11,6 +11,8 @@ Q_DECLARE_METATYPE(QSize*)
 class SizePrototype : public AbstractPrototype
 {
 	Q_OBJECT
+	Q_PROPERTY(int width READ getWidth WRITE setWidth)
+	Q_PROPERTY(int height READ getHeight WRITE setHeight)
 	
 public:
 	static QScriptValue constructor(QScriptContext *context, QScriptEngine *engine);

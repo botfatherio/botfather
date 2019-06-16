@@ -8,6 +8,17 @@
 class BlobTplPrototype : public AbstractPrototype
 {
 	Q_OBJECT
+	Q_PROPERTY(int min_area READ getMinArea WRITE setMinArea)
+	Q_PROPERTY(int max_area READ getMaxArea WRITE setMaxArea)
+	Q_PROPERTY(double min_circularity READ getMinCircularity WRITE setMinCircularity)
+	Q_PROPERTY(double max_circularity READ getMaxCircularity WRITE setMaxCircularity)
+	Q_PROPERTY(double min_convexity READ getMinConvexity WRITE setMinConvexity)
+	Q_PROPERTY(double max_convexity READ getMaxConvexity WRITE setMaxConvexity)
+	Q_PROPERTY(double min_inertia READ getMinInertia WRITE setMinInertia)
+	Q_PROPERTY(double max_inertia READ getMaxInertia WRITE setMaxInertia)
+	Q_PROPERTY(int min_threshold READ getMinThreshold WRITE setMinThreshold)
+	Q_PROPERTY(int max_threshold READ getMaxThreshold WRITE setMaxThreshold)
+	Q_PROPERTY(int threshold_step READ getThresholdStep WRITE setThresholdStep)
 	
 public:
 	static QScriptValue constructor(QScriptContext *context, QScriptEngine *engine);
