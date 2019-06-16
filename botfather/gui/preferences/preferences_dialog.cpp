@@ -3,7 +3,7 @@
 #include <QFileDialog>
 #include <QDebug>
 #include <QSettings>
-#include "../maintenancetool/maintenancetool.hpp"
+#include "../maintenancetool/maintenance_tool.hpp"
 #include "../../engine/modules/android/android_settings.hpp"
 #include "../../engine/modules/browser/browser_settings.hpp"
 

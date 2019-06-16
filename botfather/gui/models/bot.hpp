@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QThread>
-#include "botmanifest.hpp"
+#include "bot_manifest.hpp"
 #include "../../engine/engine.hpp"
 
 class Bot : public QObject

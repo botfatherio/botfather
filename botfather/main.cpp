@@ -2,9 +2,9 @@
 #include <QSettings>
 #include <QTime>
 #include <git2.h>
-#include "shared/qsettingsjsonformat.hpp"
+#include "shared/q_settings_json_format.hpp"
 #include "engine/modules/browser/browser_manager.hpp"
-#include "gui/mainwindow.hpp"
+#include "gui/main_window.hpp"
 
 #if defined(_WIN32) || defined(_WIN64)
 #include <Windows.h>

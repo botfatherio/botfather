@@ -80,6 +80,7 @@ HEADERS += \
     auth/auth_settings.hpp \
     auth/license_api_client.hpp \
     auth/rest_api_client.hpp \
+    auth/scripts_api_client.hpp \
     engine/modules/android/apis/android_api.hpp \
     engine/modules/desktop/apis/desktop_api.hpp \
     engine/modules/common/apis/helper_api.hpp \
@@ -105,11 +106,22 @@ HEADERS += \
     engine/modules/common/prototypes/rect_prototype.hpp \
     engine/modules/common/prototypes/size_prototype.hpp \
     engine/modules/vision/types/match.hpp \
+    git/abstract_git_operation.hpp \
+    git/git_behind_operation.hpp \
+    git/git_clone_operation.hpp \
+    git/git_fetch_operation.hpp \
+    git/git_reclone_operation.hpp \
     gui/androiddialog/android_dialog.hpp \
+    gui/botwidgets/abstract_bot_widget.hpp \
+    gui/botwidgets/bot_browsers_widget.hpp \
+    gui/botwidgets/bot_config_widget.hpp \
+    gui/botwidgets/bot_log_widget.hpp \
+    gui/botwidgets/bot_settings_widget.hpp \
+    gui/botwidgets/bot_updates_widget.hpp \
+    gui/botwidgets/bot_widget.hpp \
     gui/browserwindow/browser_address_bar.hpp \
     gui/browserwindow/browser_widget.hpp \
     gui/browserwindow/browser_window.hpp \
-    auth/scriptsapiclient.hpp \
     engine/modules/common/apis/config_api.hpp \
     engine/modules/browser/adapters/cef_key_event_adapter.hpp \
     engine/modules/browser/browser_app.hpp \
@@ -127,29 +139,16 @@ HEADERS += \
     engine/modules/browser/prototypes/browser_prototype.hpp \
     engine/modules/common/prototypes/timer_prototype.hpp \
     engine/modules/browser/types/browser.hpp \
-    git/abstractgitoperation.hpp \
-    git/gitbehindoperation.hpp \
-    git/gitcloneoperation.hpp \
-    git/gitfetchoperation.hpp \
-    git/gitrecloneoperation.hpp \
-    gui/botwidgets/abstractbotwidget.hpp \
-    gui/botwidgets/botbrowserswidget.hpp \
-    gui/botwidgets/botconfigwidget.hpp \
-    gui/botwidgets/botlogwidget.hpp \
-    gui/botwidgets/botsettingswidget.hpp \
-    gui/botwidgets/botupdateswidget.hpp \
-    gui/botwidgets/botwidget.hpp \
-    gui/maintenancetool/maintenancetool.hpp \
-    gui/mainwindow.hpp \
+    gui/main_window.hpp \
+    gui/maintenancetool/maintenance_tool.hpp \
     gui/models/bot.hpp \
-    gui/models/botconfig.hpp \
-    gui/models/botconfiggroup.hpp \
-    gui/models/botconfigoption.hpp \
-    gui/models/botlistmodel.hpp \
-    gui/models/botmanifest.hpp \
-    gui/models/botmanifestnode.hpp \
-    gui/models/botrepo.hpp \
-    gui/models/botrepolistmodel.hpp \
+    gui/models/bot_config.hpp \
+    gui/models/bot_config_group.hpp \
+    gui/models/bot_config_option.hpp \
+    gui/models/bot_list_model.hpp \
+    gui/models/bot_manifest.hpp \
+    gui/models/bot_manifest_node.hpp \
+    gui/models/bot_repo.hpp \
     gui/authdialog/auth_dialog.hpp \
     engine/modules/common/apis/abstract_api.hpp \
     engine/modules/vision/types/blob_tpl.hpp \
@@ -157,14 +156,16 @@ HEADERS += \
     engine/modules/algorithm/apis/algorithm_api.hpp \
     engine/modules/common/prototypes/margins_prototype.hpp \
     engine/modules/common/prototypes/url_prototype.hpp \
+    gui/models/bot_repo_list_model.hpp \
     gui/preferences/preferences_dialog.hpp \
-    gui/scriptmanager/gitprogressdialog.hpp \
-    gui/scriptmanager/scriptmanagerdialog.hpp \
+    gui/scriptmanager/git_progress_dialog.hpp \
+    gui/scriptmanager/script_manager_dialog.hpp \
     res/resource.hpp \
-    shared/qsettingsjsonformat.hpp
+    shared/q_settings_json_format.hpp
 SOURCES += \
     auth/license_api_client.cpp \
     auth/rest_api_client.cpp \
+    auth/scripts_api_client.cpp \
     engine/modules/android/apis/android_api.cpp \
     engine/modules/desktop/apis/desktop_api.cpp \
     engine/modules/common/apis/helper_api.cpp \
@@ -186,14 +187,38 @@ SOURCES += \
     engine/modules/common/prototypes/rect_prototype.cpp \
     engine/modules/common/prototypes/size_prototype.cpp \
     engine/modules/vision/types/match.cpp \
+    git/abstract_git_operation.cpp \
+    git/git_behind_operation.cpp \
+    git/git_clone_operation.cpp \
+    git/git_fetch_operation.cpp \
+    git/git_reclone_operation.cpp \
     gui/androiddialog/android_dialog.cpp \
+    gui/botwidgets/abstract_bot_widget.cpp \
+    gui/botwidgets/bot_browsers_widget.cpp \
+    gui/botwidgets/bot_config_widget.cpp \
+    gui/botwidgets/bot_log_widget.cpp \
+    gui/botwidgets/bot_settings_widget.cpp \
+    gui/botwidgets/bot_updates_widget.cpp \
+    gui/botwidgets/bot_widget.cpp \
     gui/browserwindow/browser_address_bar.cpp \
     gui/browserwindow/browser_widget.cpp \
     gui/browserwindow/browser_window.cpp \
     engine/modules/browser/adapters/cef_key_event_adapter.cpp \
     engine/modules/common/bf_key_mapper.cpp \
+    gui/main_window.cpp \
+    gui/maintenancetool/maintenance_tool.cpp \
+    gui/models/bot_config.cpp \
+    gui/models/bot_config_group.cpp \
+    gui/models/bot_config_option.cpp \
+    gui/models/bot_list_model.cpp \
+    gui/models/bot_manifest.cpp \
+    gui/models/bot_manifest_node.cpp \
+    gui/models/bot_repo.cpp \
+    gui/models/bot_repo_list_model.cpp \
     gui/preferences/preferences_dialog.cpp \
     gui/authdialog/auth_dialog.cpp \
+    gui/scriptmanager/git_progress_dialog.cpp \
+    gui/scriptmanager/script_manager_dialog.cpp \
     main.cpp \
     engine/modules/common/apis/abstract_api.cpp \
     engine/modules/vision/types/blob_tpl.cpp \
@@ -204,52 +229,27 @@ SOURCES += \
     engine/modules/browser/browser_list_model.cpp \
     engine/modules/browser/browser_manager.cpp \
     engine/modules/common/prototypes/timer_prototype.cpp \
-    gui/scriptmanager/scriptmanagerdialog.cpp \
-    git/gitfetchoperation.cpp \
-    git/abstractgitoperation.cpp \
-    git/gitcloneoperation.cpp \
-    git/gitbehindoperation.cpp \
-    git/gitrecloneoperation.cpp \
-    gui/scriptmanager/gitprogressdialog.cpp \
-    auth/scriptsapiclient.cpp \
-    gui/mainwindow.cpp \
-    gui/models/botlistmodel.cpp \
     gui/models/bot.cpp \
-    gui/models/botrepo.cpp \
-    gui/models/botrepolistmodel.cpp \
-    gui/botwidgets/botwidget.cpp \
-    gui/botwidgets/botlogwidget.cpp \
-    gui/botwidgets/botsettingswidget.cpp \
-    gui/botwidgets/abstractbotwidget.cpp \
-    gui/botwidgets/botupdateswidget.cpp \
-    gui/models/botmanifest.cpp \
-    gui/models/botconfig.cpp \
-    gui/models/botconfiggroup.cpp \
-    gui/botwidgets/botconfigwidget.cpp \
-    gui/models/botmanifestnode.cpp \
     engine/modules/common/apis/config_api.cpp \
-    gui/models/botconfigoption.cpp \
-    gui/maintenancetool/maintenancetool.cpp \
-    shared/qsettingsjsonformat.cpp \
     engine/modules/browser/prototypes/browser_prototype.cpp \
     engine/modules/browser/types/browser.cpp \
     engine/modules/browser/browser_app.cpp \
     engine/modules/browser/browser_client.cpp \
     engine/modules/browser/browser_creator.cpp \
     engine/modules/browser/browser_util.cpp \
-    gui/botwidgets/botbrowserswidget.cpp
+    shared/q_settings_json_format.cpp
 FORMS += \
     gui/androiddialog/android_dialog.ui \
     gui/authdialog/auth_dialog.ui \
+    gui/botwidgets/bot_browsers_widget.ui \
+    gui/botwidgets/bot_config_widget.ui \
+    gui/botwidgets/bot_log_widget.ui \
+    gui/botwidgets/bot_settings_widget.ui \
+    gui/botwidgets/bot_updates_widget.ui \
     gui/browserwindow/browser_window.ui \
+    gui/main_window.ui \
     gui/preferences/preferences_dialog.ui \
-    gui/scriptmanager/scriptmanagerdialog.ui \
-    gui/scriptmanager/gitprogressdialog.ui \
-    gui/mainwindow.ui \
-    gui/botwidgets/botlogwidget.ui \
-    gui/botwidgets/botsettingswidget.ui \
-    gui/botwidgets/botupdateswidget.ui \
-    gui/botwidgets/botconfigwidget.ui \
-    gui/botwidgets/botbrowserswidget.ui
+    gui/scriptmanager/git_progress_dialog.ui \
+    gui/scriptmanager/script_manager_dialog.ui
 RESOURCES += \
     res/botfather.qrc
