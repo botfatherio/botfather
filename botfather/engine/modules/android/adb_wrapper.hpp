@@ -12,7 +12,7 @@ class AdbWrapper : public QObject
 {
 	Q_OBJECT
 public:
-	explicit AdbWrapper(QObject *parent = nullptr, QString adb_binary = QString());
+	explicit AdbWrapper(QObject *parent = nullptr, const QString &adb_binary = QString());
 	
 public slots:
 	bool startAdbServer();

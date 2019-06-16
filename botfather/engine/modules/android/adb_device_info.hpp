@@ -7,7 +7,7 @@ class AdbDeviceInfo
 {
 public:
 	AdbDeviceInfo();
-	AdbDeviceInfo(QString serial_number, QString state, QString product, QString model);
+	AdbDeviceInfo(const QString &serial_number, const QString &state, const QString &product, const QString &model);
 	
 	QString getSerialNumber() const;
 	void setSerialNumber(const QString &serial_number);

@@ -6,9 +6,8 @@
 #include <QImage>
 #include <QString>
 #include <QSettings>
-#include "abstract_api.hpp"
-
-class AdbWrapper;
+#include "../../common/apis/abstract_api.hpp"
+#include "../../android/adb_wrapper.hpp"
 
 class AndroidAPI : public AbstractAPI
 {

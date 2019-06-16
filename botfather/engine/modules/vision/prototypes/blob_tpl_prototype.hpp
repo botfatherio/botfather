@@ -2,7 +2,7 @@
 #define BFP_ENGINE_PROTOTYPES_BLOB_TPL_PROTOTYPE_H
 #define BLOB_TPL_PROTOTYPE_DOCS QString("https://botfather.io/docs/apiref/blobtpl/")
 
-#include "abstract_prototype.hpp"
+#include "../../common/prototypes/abstract_prototype.hpp"
 #include "../types/blob_tpl.hpp"
 
 class BlobTplPrototype : public AbstractPrototype

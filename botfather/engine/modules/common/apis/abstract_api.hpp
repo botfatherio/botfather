@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QScriptable>
 #include <QScriptEngine>
-#include "../engine.hpp"
+#include "../../../engine.hpp"
 
 class AbstractAPI : public QObject, public QScriptable
 {

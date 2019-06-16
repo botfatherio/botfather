@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QScriptEngine>
 #include <QImage>
-#include "abstract_api.hpp"
+#include "../../common/apis/abstract_api.hpp"
 
 class Desktop;
 

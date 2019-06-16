@@ -2,7 +2,7 @@
 #define BFP_ENGINE_PROTOTYPES_MATCH_PROTOTYPE_H
 #define MATCH_PROTOTYPE_DOCS QString("https://botfather.io/docs/apiref/match/")
 
-#include "abstract_prototype.hpp"
+#include "../../common/prototypes/abstract_prototype.hpp"
 #include "../types/match.hpp"
 
 class MatchPrototype : public AbstractPrototype

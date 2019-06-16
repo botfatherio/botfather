@@ -2,7 +2,7 @@
 #include <QScriptValueIterator>
 #include <QMapIterator>
 #include <QDebug>
-#include "../modules/algorithm/dijkstra.hpp"
+#include "../dijkstra.hpp"
 
 QScriptValue AlgorithmAPI::dijkstra(const QScriptValue &graph_object, const QString &start, const QString &dest)
 {

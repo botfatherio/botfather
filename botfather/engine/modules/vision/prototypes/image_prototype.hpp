@@ -2,7 +2,7 @@
 #define BFP_ENGINE_PROTOTYPES_IMAGE_PROTOTYPE_H
 #define IMAGE_PROTOTYPE_DOCS "https://botfather.io/docs/apiref/image/"
 
-#include "abstract_prototype.hpp"
+#include "../../common/prototypes/abstract_prototype.hpp"
 #include <QImage>
 
 Q_DECLARE_METATYPE(QImage)

@@ -1,9 +1,9 @@
 #include "dijkstra.hpp"
 #include <QDebug>
 
-Dijkstra::Dijkstra(const QMap<QString, QMap<QString, int>> &data)
+Dijkstra::Dijkstra(const QMap<QString, QMap<QString, int>> &data) : graph(data)
 {
-	graph = data;
+
 }
 
 void Dijkstra::addNode(const QString &node_name, const QMap<QString, int> &edges)

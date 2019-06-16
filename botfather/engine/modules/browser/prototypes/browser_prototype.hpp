@@ -2,7 +2,7 @@
 #define BROWSER_PROTOTYPE_H
 #define BROWSER_PROTOTYPE_DOCS QString("https://botfather.io/docs/apiref/browser/")
 
-#include "abstract_prototype.hpp"
+#include "../../common/prototypes/abstract_prototype.hpp"
 #include "../types/browser.hpp"
 
 class BrowserPrototype : public AbstractPrototype

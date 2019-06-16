@@ -80,10 +80,10 @@ HEADERS += \
     auth/auth_settings.hpp \
     auth/license_api_client.hpp \
     auth/rest_api_client.hpp \
-    engine/apis/android_api.hpp \
-    engine/apis/desktop_api.hpp \
-    engine/apis/helper_api.hpp \
-    engine/apis/vision_api.hpp \
+    engine/modules/android/apis/android_api.hpp \
+    engine/modules/desktop/apis/desktop_api.hpp \
+    engine/modules/common/apis/helper_api.hpp \
+    engine/modules/vision/apis/vision_api.hpp \
     engine/engine.hpp \
     engine/modules/algorithm/dijkstra.hpp \
     engine/modules/android/adb_device_info.hpp \
@@ -97,20 +97,20 @@ HEADERS += \
     engine/modules/desktop/desktop.hpp \
     engine/modules/desktop/keymap.hpp \
     engine/modules/vision/vision.hpp \
-    engine/prototypes/abstract_prototype.hpp \
-    engine/prototypes/color_prototype.hpp \
-    engine/prototypes/image_prototype.hpp \
-    engine/prototypes/match_prototype.hpp \
-    engine/prototypes/point_prototype.hpp \
-    engine/prototypes/rect_prototype.hpp \
-    engine/prototypes/size_prototype.hpp \
-    engine/types/match.hpp \
+    engine/modules/common/prototypes/abstract_prototype.hpp \
+    engine/modules/common/prototypes/color_prototype.hpp \
+    engine/modules/vision/prototypes/image_prototype.hpp \
+    engine/modules/vision/prototypes/match_prototype.hpp \
+    engine/modules/common/prototypes/point_prototype.hpp \
+    engine/modules/common/prototypes/rect_prototype.hpp \
+    engine/modules/common/prototypes/size_prototype.hpp \
+    engine/modules/vision/types/match.hpp \
     gui/androiddialog/android_dialog.hpp \
     gui/browserwindow/browser_address_bar.hpp \
     gui/browserwindow/browser_widget.hpp \
     gui/browserwindow/browser_window.hpp \
     auth/scriptsapiclient.hpp \
-    engine/apis/config_api.hpp \
+    engine/modules/common/apis/config_api.hpp \
     engine/modules/browser/adapters/cef_key_event_adapter.hpp \
     engine/modules/browser/browser_app.hpp \
     engine/modules/browser/browser_client.hpp \
@@ -124,9 +124,9 @@ HEADERS += \
     engine/modules/common/qt_key_traits.hpp \
     engine/modules/common/qt_keymaps.hpp \
     engine/modules/common/windows_keyboard_codes.hpp \
-    engine/prototypes/browser_prototype.hpp \
-    engine/prototypes/timer_prototype.hpp \
-    engine/types/browser.hpp \
+    engine/modules/browser/prototypes/browser_prototype.hpp \
+    engine/modules/common/prototypes/timer_prototype.hpp \
+    engine/modules/browser/types/browser.hpp \
     git/abstractgitoperation.hpp \
     git/gitbehindoperation.hpp \
     git/gitcloneoperation.hpp \
@@ -151,12 +151,12 @@ HEADERS += \
     gui/models/botrepo.hpp \
     gui/models/botrepolistmodel.hpp \
     gui/authdialog/auth_dialog.hpp \
-    engine/apis/abstract_api.hpp \
-    engine/types/blob_tpl.hpp \
-    engine/prototypes/blob_tpl_prototype.hpp \
-    engine/apis/algorithm_api.hpp \
-    engine/prototypes/margins_prototype.hpp \
-    engine/prototypes/url_prototype.hpp \
+    engine/modules/common/apis/abstract_api.hpp \
+    engine/modules/vision/types/blob_tpl.hpp \
+    engine/modules/vision/prototypes/blob_tpl_prototype.hpp \
+    engine/modules/algorithm/apis/algorithm_api.hpp \
+    engine/modules/common/prototypes/margins_prototype.hpp \
+    engine/modules/common/prototypes/url_prototype.hpp \
     gui/preferences/preferences_dialog.hpp \
     gui/scriptmanager/gitprogressdialog.hpp \
     gui/scriptmanager/scriptmanagerdialog.hpp \
@@ -165,10 +165,10 @@ HEADERS += \
 SOURCES += \
     auth/license_api_client.cpp \
     auth/rest_api_client.cpp \
-    engine/apis/android_api.cpp \
-    engine/apis/desktop_api.cpp \
-    engine/apis/helper_api.cpp \
-    engine/apis/vision_api.cpp \
+    engine/modules/android/apis/android_api.cpp \
+    engine/modules/desktop/apis/desktop_api.cpp \
+    engine/modules/common/apis/helper_api.cpp \
+    engine/modules/vision/apis/vision_api.cpp \
     engine/engine.cpp \
     engine/modules/algorithm/dijkstra.cpp \
     engine/modules/android/adb_device_info.cpp \
@@ -178,14 +178,14 @@ SOURCES += \
     engine/modules/browser/browser_render_handler.cpp \
     engine/modules/browser/browser_request_handler.cpp \
     engine/modules/vision/vision.cpp \
-    engine/prototypes/abstract_prototype.cpp \
-    engine/prototypes/color_prototype.cpp \
-    engine/prototypes/image_prototype.cpp \
-    engine/prototypes/match_prototype.cpp \
-    engine/prototypes/point_prototype.cpp \
-    engine/prototypes/rect_prototype.cpp \
-    engine/prototypes/size_prototype.cpp \
-    engine/types/match.cpp \
+    engine/modules/common/prototypes/abstract_prototype.cpp \
+    engine/modules/common/prototypes/color_prototype.cpp \
+    engine/modules/vision/prototypes/image_prototype.cpp \
+    engine/modules/vision/prototypes/match_prototype.cpp \
+    engine/modules/common/prototypes/point_prototype.cpp \
+    engine/modules/common/prototypes/rect_prototype.cpp \
+    engine/modules/common/prototypes/size_prototype.cpp \
+    engine/modules/vision/types/match.cpp \
     gui/androiddialog/android_dialog.cpp \
     gui/browserwindow/browser_address_bar.cpp \
     gui/browserwindow/browser_widget.cpp \
@@ -195,15 +195,15 @@ SOURCES += \
     gui/preferences/preferences_dialog.cpp \
     gui/authdialog/auth_dialog.cpp \
     main.cpp \
-    engine/apis/abstract_api.cpp \
-    engine/types/blob_tpl.cpp \
-    engine/prototypes/blob_tpl_prototype.cpp \
-    engine/apis/algorithm_api.cpp \
-    engine/prototypes/margins_prototype.cpp \
-    engine/prototypes/url_prototype.cpp \
+    engine/modules/common/apis/abstract_api.cpp \
+    engine/modules/vision/types/blob_tpl.cpp \
+    engine/modules/vision/prototypes/blob_tpl_prototype.cpp \
+    engine/modules/algorithm/apis/algorithm_api.cpp \
+    engine/modules/common/prototypes/margins_prototype.cpp \
+    engine/modules/common/prototypes/url_prototype.cpp \
     engine/modules/browser/browser_list_model.cpp \
     engine/modules/browser/browser_manager.cpp \
-    engine/prototypes/timer_prototype.cpp \
+    engine/modules/common/prototypes/timer_prototype.cpp \
     gui/scriptmanager/scriptmanagerdialog.cpp \
     git/gitfetchoperation.cpp \
     git/abstractgitoperation.cpp \
@@ -227,12 +227,12 @@ SOURCES += \
     gui/models/botconfiggroup.cpp \
     gui/botwidgets/botconfigwidget.cpp \
     gui/models/botmanifestnode.cpp \
-    engine/apis/config_api.cpp \
+    engine/modules/common/apis/config_api.cpp \
     gui/models/botconfigoption.cpp \
     gui/maintenancetool/maintenancetool.cpp \
     shared/qsettingsjsonformat.cpp \
-    engine/prototypes/browser_prototype.cpp \
-    engine/types/browser.cpp \
+    engine/modules/browser/prototypes/browser_prototype.cpp \
+    engine/modules/browser/types/browser.cpp \
     engine/modules/browser/browser_app.cpp \
     engine/modules/browser/browser_client.cpp \
     engine/modules/browser/browser_creator.cpp \

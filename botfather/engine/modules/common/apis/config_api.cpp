@@ -1,5 +1,5 @@
 #include "config_api.hpp"
-#include "../../shared/qsettingsjsonformat.hpp"
+#include "../../../../shared/qsettingsjsonformat.hpp"
 #include <QSettings>
 #include <QDebug>
 

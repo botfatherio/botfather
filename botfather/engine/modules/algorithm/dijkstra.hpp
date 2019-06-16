@@ -11,7 +11,7 @@ class Dijkstra
 {
 public:
         Dijkstra() {}
-        Dijkstra(const QMap<QString, QMap<QString, int>> &data);
+		explicit Dijkstra(const QMap<QString, QMap<QString, int>> &data);
 
         void addNode(const QString &node_name, const QMap<QString, int> &edges);
         void removeNode(const QString &node_name);

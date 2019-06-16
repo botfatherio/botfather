@@ -5,12 +5,13 @@ AdbDeviceInfo::AdbDeviceInfo()
 	
 }
 
-AdbDeviceInfo::AdbDeviceInfo(QString serial_number, QString state, QString product, QString model)
+AdbDeviceInfo::AdbDeviceInfo(const QString &serial_number, const QString &state, const QString &product, const QString &model)
+	: serial_number(serial_number)
+	, state(state)
+	, product(product)
+	, model(model)
 {
-	this->serial_number = serial_number;
-	this->state = state;
-	this->product = product;
-	this->model = model;
+
 }
 
 QString AdbDeviceInfo::getSerialNumber() const

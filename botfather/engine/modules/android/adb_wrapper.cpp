@@ -5,9 +5,11 @@
 #include <QDir>
 #include <QPixmap>
 
-AdbWrapper::AdbWrapper(QObject *parent, QString adb_binary) : QObject(parent)
+AdbWrapper::AdbWrapper(QObject *parent, const QString &adb_binary)
+	: QObject(parent)
+	, adb_binary(adb_binary)
 {
-	this->adb_binary = adb_binary;
+
 }
 
 bool AdbWrapper::startAdbServer()

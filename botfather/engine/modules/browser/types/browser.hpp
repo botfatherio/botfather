@@ -5,8 +5,8 @@
 #include <QMetaType>
 #include <QUrl>
 #include <QKeyEvent>
-#include "../modules/browser/browser_manager.hpp"
-#include "../modules/browser/browser_client.hpp"
+#include "../browser_manager.hpp"
+#include "../browser_client.hpp"
 
 class Browser : public QObject
 {

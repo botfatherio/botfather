@@ -2,7 +2,7 @@
 #define BFP_ENGINE_APIS_VISION_API_H
 
 #include <QImage>
-#include "abstract_api.hpp"
+#include "../../common/apis/abstract_api.hpp"
 #include "../types/match.hpp"
 #include "../types/blob_tpl.hpp"
 

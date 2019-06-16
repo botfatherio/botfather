@@ -3,13 +3,12 @@
 #include <QStandardPaths>
 #include <QDir>
 #include <QTimer>
-#include "../modules/android/adb_wrapper.hpp"
-#include "../modules/android/android_settings.hpp"
-#include "../modules/vision/vision.hpp"
-#include "../prototypes/image_prototype.hpp"
-#include "../types/match.hpp"
-#include "../engine.hpp"
-#include "vision_api.hpp"
+#include "../../android/android_settings.hpp"
+#include "../../vision/prototypes/image_prototype.hpp"
+#include "../../vision/apis/vision_api.hpp"
+#include "../../vision/types/match.hpp"
+#include "../../vision/vision.hpp"
+#include "../../../engine.hpp"
 
 AndroidAPI::AndroidAPI(Engine *bot, QObject *parent) : AbstractAPI(bot, parent)
 {

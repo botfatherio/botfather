@@ -1,8 +1,8 @@
 #include "vision_api.hpp"
 #include <QDebug>
 #include <QFileInfo>
-#include "../modules/vision/vision.hpp"
-#include "../prototypes/image_prototype.hpp"
+#include "../../vision/vision.hpp"
+#include "../../vision/prototypes/image_prototype.hpp"
 
 QImage VisionAPI::withoutAlphaChannel(const QImage &image)
 {

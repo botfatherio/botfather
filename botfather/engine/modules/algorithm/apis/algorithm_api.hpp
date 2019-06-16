@@ -1,7 +1,7 @@
 #ifndef BFP_ENGINE_APIS_ALGORITHM_API_H
 #define BFP_ENGINE_APIS_ALGORITHM_API_H
 
-#include "abstract_api.hpp"
+#include "../../common/apis/abstract_api.hpp"
 
 class AlgorithmAPI : public AbstractAPI
 {

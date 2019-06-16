@@ -7,7 +7,7 @@
 #include <include/cef_base.h>
 #include "browser_app.hpp"
 #include "browser_list_model.hpp"
-#include "../../types/browser.hpp"
+#include "types/browser.hpp"
 
 class BrowserManager
 {

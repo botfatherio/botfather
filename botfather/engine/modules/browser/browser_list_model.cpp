@@ -3,7 +3,7 @@
 #include "include/wrapper/cef_helpers.h"
 #include "browser_creator.hpp"
 #include "browser_util.hpp"
-#include "../../types/browser.hpp"
+#include "types/browser.hpp"
 
 BrowserListModel::BrowserListModel(QObject *parent)
 	: QAbstractTableModel(parent)

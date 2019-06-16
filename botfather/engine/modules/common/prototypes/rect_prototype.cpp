@@ -4,7 +4,6 @@
 #include <QRandomGenerator>
 #define GenerateRandomIntInRange(MIN, MAX) QRandomGenerator::global()->bounded(MIN, MAX);
 #else
-#define ImageSizeInBytes(qimage) static_cast<int>(qimage.sizeInBytes())
 #define GenerateRandomIntInRange(MIN, MAX) qrand() % ((MAX + 1) - MIN) + MIN
 #endif
 

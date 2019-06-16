@@ -1,11 +1,11 @@
 #include "desktop_api.hpp"
 #include <QPoint>
 #include <QDebug>
-#include "../modules/desktop/desktop.hpp"
-#include "../modules/vision/vision.hpp"
-#include "../prototypes/image_prototype.hpp"
-#include "../types/match.hpp"
-#include "vision_api.hpp"
+#include "../../vision/prototypes/image_prototype.hpp"
+#include "../../vision/apis/vision_api.hpp"
+#include "../../vision/types/match.hpp"
+#include "../../vision/vision.hpp"
+#include "../desktop.hpp"
 
 DesktopAPI::DesktopAPI(Engine *bot, QObject *parent) : AbstractAPI(bot, parent)
 {

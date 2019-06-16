@@ -2,10 +2,10 @@
 #include <QElapsedTimer>
 #include <QThread>
 #include <QDebug>
-#include "../modules/browser/browser_settings.hpp"
-#include "../modules/browser/adapters/cef_key_event_adapter.hpp"
-#include "../modules/common/bf_key_mapper.hpp"
-#include "../modules/common/bf_keymap.hpp"
+#include "../../common/bf_key_mapper.hpp"
+#include "../../common/bf_keymap.hpp"
+#include "../adapters/cef_key_event_adapter.hpp"
+#include "../browser_settings.hpp"
 
 Browser::Browser(const QString &group, const QString &id, CefRefPtr<CefBrowser> cef_browser)
 	: m_group(group)

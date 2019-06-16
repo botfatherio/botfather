@@ -3,7 +3,6 @@
 #define THIS_URL() qscriptvalue_cast<QUrl>(thisObject())
 #define THIS_URL_P() qscriptvalue_cast<QUrl*>(thisObject())
 
-
 QScriptValue UrlPrototype::constructor(QScriptContext *context, QScriptEngine *engine)
 {
 	if (context->argumentCount() == 0) {
