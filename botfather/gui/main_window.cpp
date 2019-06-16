@@ -59,6 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->logout_action, &QAction::triggered, m_auth_dialog, &AuthDialog::logout);
 	connect(ui->logout_action, &QAction::triggered, m_license_api_client, &LicenseApiClient::resetLicense);
 	connect(ui->logout_action, &QAction::triggered, this, &MainWindow::updateLicenseInfo);
+	connect(ui->status_action, &QAction::triggered, m_auth_dialog, &AuthDialog::viewPlans);
 	connect(m_auth_dialog, &AuthDialog::authenticated, this, &MainWindow::updateLicenseInfo);
 	connect(m_auth_dialog, &AuthDialog::triedAutoLogin, [this](){ ui->menuAccount->setEnabled(true); });
 	updateLicenseInfo();
@@ -239,8 +240,6 @@ void MainWindow::updateLicenseInfo()
 	{
 		QString status_info = tr("Status: unlimited bots, no time limit");
 		ui->status_action->setText(status_info);
-		ui->logout_action->setVisible(true);
-		ui->login_action->setVisible(false);
 	}
 	else
 	{
@@ -248,9 +247,9 @@ void MainWindow::updateLicenseInfo()
 		int runtime_in_min = qRound(m_license_api_client->allowedBotRuntimeInSecs() / 60.0);
 		QString status_info = tr("Status: %0 bot(s), %1min sessions per bot").arg(number_of_bots).arg(runtime_in_min);
 		ui->status_action->setText(status_info);
-		ui->logout_action->setVisible(false);
-		ui->login_action->setVisible(true);
 	}
+	ui->logout_action->setVisible(m_license_api_client->isLicenseActive());
+	ui->login_action->setVisible(!m_license_api_client->isLicenseActive());
 }
 
 void MainWindow::showAboutDialog()

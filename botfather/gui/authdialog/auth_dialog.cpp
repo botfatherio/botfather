@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QSettings>
+#include <QDesktopServices>
 #include "../../auth/auth_settings.hpp"
 
 AuthDialog::AuthDialog(LicenseApiClient *license_api, QWidget *parent)
@@ -141,4 +142,9 @@ void AuthDialog::onLicenseReceived(int curtime, int premend)
 	emit authenticated(curtime < premend);
 	allowInput(true);
 	accept();
+}
+
+void AuthDialog::viewPlans() const
+{
+	QDesktopServices::openUrl(QUrl("https://botfather.io/plans/"));
 }

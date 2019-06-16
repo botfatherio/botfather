@@ -34,6 +34,8 @@ public slots:
 	void onErrorsReceived(QJsonArray error_codes);
 	void onLicenseReceived(int curtime, int premend);
 
+	void viewPlans() const;
+
 private:
 	Ui::AuthDialog *ui;
 	LicenseApiClient *m_license_api;
