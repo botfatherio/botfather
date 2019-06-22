@@ -35,17 +35,8 @@ bool HelperApp::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProce
 
 		result_msg_args->SetInt(0, callback_id);
 
-		{
-			QByteArray byte_array;
-			QDataStream data_stream(&byte_array, QIODevice::WriteOnly);
-
-			data_stream << BFSerializer::CefV8ValueToQVariant(retval);
-			const void* cvp = static_cast<const void*>(byte_array.data());
-
-			CefRefPtr<CefBinaryValue> cef_binary_value = CefBinaryValue::Create(cvp, (size_t)byte_array.length());
-			result_msg_args->SetBinary(1, cef_binary_value);
-		}
-
+		CefRefPtr<CefBinaryValue> binary_value = BFSerializer::CefV8ValueToCefBinaryValue(retval);
+		result_msg_args->SetBinary(1, binary_value);
 
 		// Debug message
 		result_msg_args->SetString(2, CefString("Debug message"));

@@ -10,6 +10,8 @@ namespace BFSerializer
 	QJsonValue CefV8ValueToQJsonValue(CefRefPtr<CefV8Value> cef_v8_value);
 	QString CefV8ValueToCompactJsonQString(CefRefPtr<CefV8Value> cef_v8_value);
 	QVariant CefV8ValueToQVariant(CefRefPtr<CefV8Value> cef_v8_value);
+	CefRefPtr<CefBinaryValue> QVariantToCefBinaryValue(const QVariant &variant);
+	CefRefPtr<CefBinaryValue> CefV8ValueToCefBinaryValue(CefRefPtr<CefV8Value> cef_v8_value);
 }
 
 #endif // BF_SERIALIZER_HPP

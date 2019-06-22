@@ -3,6 +3,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QDataStream>
 
 QJsonValue BFSerializer::CefV8ValueToQJsonValue(CefRefPtr<CefV8Value> cef_v8_value)
 {
@@ -209,4 +210,21 @@ QVariant BFSerializer::CefV8ValueToQVariant(CefRefPtr<CefV8Value> cef_v8_value)
 	}
 
 	return QVariant(QJsonValue(QJsonValue::Undefined)); // Fallback
+}
+
+CefRefPtr<CefBinaryValue> BFSerializer::QVariantToCefBinaryValue(const QVariant &variant)
+{
+	QByteArray byte_array;
+	QDataStream data_stream(&byte_array, QIODevice::WriteOnly);
+
+	data_stream << variant;
+
+	const void* cvp = static_cast<const void*>(byte_array.data());
+	return CefBinaryValue::Create(cvp, (size_t)byte_array.length());
+}
+
+CefRefPtr<CefBinaryValue> BFSerializer::CefV8ValueToCefBinaryValue(CefRefPtr<CefV8Value> cef_v8_value)
+{
+	QVariant variant = BFSerializer::CefV8ValueToQVariant(cef_v8_value);
+	return BFSerializer::QVariantToCefBinaryValue(variant);
 }
