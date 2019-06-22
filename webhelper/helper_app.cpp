@@ -1,6 +1,6 @@
 #include "helper_app.hpp"
-#include <iostream>
-#include <string>
+#include <QDataStream>
+#include <QBuffer>
 #include "bf_serializer.hpp"
 
 HelperApp::HelperApp()
@@ -13,6 +13,7 @@ bool HelperApp::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProce
 	if (message->GetName() == "eval_javascript")
 	{
 		CefRefPtr<CefV8Context> context = browser->GetMainFrame()->GetV8Context();
+		//CefRefPtr<CefV8Context> context = browser->GetFocusedFrame()->GetV8Context();
 		context->Enter();
 
 		CefRefPtr<CefV8Value> retval = CefRefPtr<CefV8Value>();
@@ -29,12 +30,22 @@ bool HelperApp::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProce
 		CefRefPtr<CefProcessMessage> result_msg = CefProcessMessage::Create("eval_javascript_result");
 		CefRefPtr<CefListValue> result_msg_args = result_msg->GetArgumentList();
 
-		QString serializedJson(BFSerializer::CefV8ValueToCompactJsonQString(retval));
 		result_msg_args->SetInt(0, callback_id);
-		result_msg_args->SetString(1, CefString(serializedJson.toStdString()));
 
-		// FIXME: remove this. its for debugging
-		result_msg_args->SetString(2, retval->GetStringValue());
+		{
+			QByteArray byte_array;
+			QDataStream data_stream(&byte_array, QIODevice::WriteOnly);
+
+			data_stream << BFSerializer::CefV8ValueToQVariant(retval);
+			const void* cvp = static_cast<const void*>(byte_array.data());
+
+			CefRefPtr<CefBinaryValue> cef_binary_value = CefBinaryValue::Create(cvp, (size_t)byte_array.length());
+			result_msg_args->SetBinary(1, cef_binary_value);
+		}
+
+
+		// Debug message
+		result_msg_args->SetString(2, CefString("Debug message"));
 
 		browser->SendProcessMessage(PID_BROWSER, result_msg);
 		return true;

@@ -23,18 +23,28 @@ bool BrowserClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefP
 	if (message->GetName() == "eval_javascript_result")
 	{
 		int callback_id(message->GetArgumentList()->GetInt(0));
-		QString json(QString::fromStdString(message->GetArgumentList()->GetString(1).ToString()));
-		QJsonDocument json_document(QJsonDocument::fromJson(json.toUtf8()));
+		QVariant value;
 
-		qDebug() << "Received code and json:" << callback_id << json;
-		qDebug() << "Received string:" << QString::fromStdString(message->GetArgumentList()->GetString(2).ToString());
-		qDebug() << "Created document:" << json_document;
-		qDebug() << "Is object?" << json_document.isObject();
+		{
+			CefRefPtr<CefBinaryValue> binary_value = message->GetArgumentList()->GetBinary(1);
+			size_t buffer_size = binary_value->GetSize();
 
-		QJsonValue root_value = json_document.object().value("ROOT");
-		QVariant root_variant = root_value.toVariant();
+			char *buffer = new char[buffer_size];
+			binary_value->GetData(buffer, buffer_size, 0);
 
-		emit evalJavascriptResultReady(callback_id, root_variant);
+			QByteArray byte_array(buffer, buffer_size);
+			QDataStream data_stream(byte_array);
+
+			QVariant variant;
+			data_stream >> variant;
+
+			value = variant;
+			delete[] buffer;
+
+			qDebug() << "Received casted variant:" << variant;
+		}
+
+		emit evalJavascriptResultReady(callback_id, value);
 		return true;
 	}
 
