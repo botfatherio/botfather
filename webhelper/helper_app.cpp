@@ -2,6 +2,7 @@
 #include <QDataStream>
 #include <QBuffer>
 #include "bf_serializer.hpp"
+#include "bf_debug_tools.hpp"
 
 HelperApp::HelperApp()
 {
@@ -13,8 +14,10 @@ bool HelperApp::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProce
 	if (message->GetName() == "eval_javascript")
 	{
 		CefRefPtr<CefV8Context> context = browser->GetMainFrame()->GetV8Context();
-		//CefRefPtr<CefV8Context> context = browser->GetFocusedFrame()->GetV8Context();
-		context->Enter();
+		if (context->Enter())
+		{
+			BFDebugTools::debug(browser, "Context entered.");
+		}
 
 		CefRefPtr<CefV8Value> retval = CefRefPtr<CefV8Value>();
 		CefRefPtr<CefV8Exception> exception = CefRefPtr<CefV8Exception>();

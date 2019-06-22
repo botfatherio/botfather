@@ -20,6 +20,12 @@ void BrowserClient::setScreenPointOffset(const QPoint &offset)
 
 bool BrowserClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProcessId source_process, CefRefPtr<CefProcessMessage> message)
 {
+	if (message->GetName() == "print_debug_message")
+	{
+		qDebug() << "[Renderer Debug Message]" << QString::fromStdString(message->GetArgumentList()->GetString(0));
+		return true;
+	}
+
 	if (message->GetName() == "eval_javascript_result")
 	{
 		int callback_id(message->GetArgumentList()->GetInt(0));

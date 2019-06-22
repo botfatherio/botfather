@@ -31,9 +31,11 @@ win32 {
 }
 
 HEADERS += \
+    bf_debug_tools.hpp \
     bf_serializer.hpp \
     helper_app.hpp
 
 SOURCES += ./main.cpp \
+    bf_debug_tools.cpp \
     bf_serializer.cpp \
     helper_app.cpp
