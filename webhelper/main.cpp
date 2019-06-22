@@ -1,6 +1,7 @@
 #include <iostream>
 #include <include/cef_app.h>
 #include <include/cef_client.h>
+#include "helper_app.hpp"
 
 #ifdef _WIN64
 #include <windows.h>
@@ -11,15 +12,13 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR lpCmdL
     UNREFERENCED_PARAMETER(lpCmdLine);
     UNREFERENCED_PARAMETER(nCmdShow);
     CefMainArgs main_args(hInstance);
-    return CefExecuteProcess(main_args, CefRefPtr<CefApp>(), nullptr);
-}
-
 #else
 
 int main(int argc, char* argv[])
 {
 	CefMainArgs main_args(argc, argv);
-	return CefExecuteProcess(main_args, CefRefPtr<CefApp>(), nullptr);
-}
-
 #endif
+
+	CefRefPtr<HelperApp> helper_app = new HelperApp;
+	return CefExecuteProcess(main_args, helper_app.get(), nullptr);
+}

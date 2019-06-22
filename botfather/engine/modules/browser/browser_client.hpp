@@ -7,12 +7,14 @@
 #include "browser_render_handler.hpp"
 #include "browser_load_handler.hpp"
 #include "browser_request_handler.hpp"
+#include "browser_render_process_handler.hpp"
 
 class BrowserClient
 	: public QObject
 	, public CefClient
 	, public BrowserLifeSpanHandler
 	, public BrowserRenderHandler
+	, public BrowserRenderProcessHandler
 	, public BrowserLoadHandler
 	, public BrowserRequestHandler
 {
@@ -25,6 +27,8 @@ public:
 	CefRefPtr<CefLoadHandler> GetLoadHandler() OVERRIDE { return this;}
 	CefRefPtr<CefRequestHandler> GetRequestHandler() OVERRIDE { return this;}
 
+	bool OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProcessId source_process, CefRefPtr<CefProcessMessage> message) override;
+
 public slots:
 	void setScreenPointOffset(const QPoint &offset);
 
@@ -35,6 +39,7 @@ signals:
 	void browserClosedSignal();
 	void loadingStateChanged(bool is_loading, bool can_go_back, bool can_go_forward);
 	void finishedLoadingUrl(const QString &url);
+	void evalJavascriptResultReady(int callback_id, const QVariant &result);
 
 private:
 	IMPLEMENT_REFCOUNTING(BrowserClient)

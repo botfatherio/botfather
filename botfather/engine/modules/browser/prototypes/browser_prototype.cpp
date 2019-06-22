@@ -231,6 +231,11 @@ void BrowserPrototype::executeJavascript(const QString &javascript_code)
 	THIS_BROWSER_P()->executeJavascript(javascript_code);
 }
 
+QScriptValue BrowserPrototype::evaluateJavascript(const QString &javascript_code)
+{
+	return engine()->newVariant(THIS_BROWSER_P()->evaluateJavascript(javascript_code));
+}
+
 QString BrowserPrototype::toString() const
 {
 	return QString("Browser(id: %0, size: %1x%2)").arg(THIS_BROWSER_P()->name()).arg(THIS_BROWSER_P()->size().width(), THIS_BROWSER_P()->size().height());

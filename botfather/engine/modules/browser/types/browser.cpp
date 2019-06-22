@@ -1,11 +1,14 @@
 #include "browser.hpp"
 #include <QElapsedTimer>
+#include <QTimer>
 #include <QThread>
 #include <QDebug>
-#include "../../common/bf_key_mapper.hpp"
-#include "../../common/bf_keymap.hpp"
+#include "include/base/cef_bind.h"
+#include "include/wrapper/cef_closure_task.h"
 #include "../adapters/cef_key_event_adapter.hpp"
 #include "../browser_settings.hpp"
+#include "../../common/bf_key_mapper.hpp"
+#include "../../common/bf_keymap.hpp"
 
 Browser::Browser(const QString &group, const QString &id, CefRefPtr<CefBrowser> cef_browser)
 	: m_group(group)
@@ -161,6 +164,44 @@ void Browser::executeJavascript(const QString &javascript_code)
 	);
 }
 
+static void send_eval_javascript_message(CefRefPtr<CefBrowser> cef_browser, const QString &javascript_code)
+{
+	CefRefPtr<CefProcessMessage> msg= CefProcessMessage::Create("eval_javascript");
+	CefRefPtr<CefListValue> args = msg->GetArgumentList();
+	args->SetInt(0, 42);
+	args->SetString(1, CefString(javascript_code.toStdString()));
+	cef_browser->SendProcessMessage(PID_RENDERER, msg);
+}
+
+QVariant Browser::evaluateJavascript(const QString &javascript_code)
+{
+	QVariant variant;
+	QEventLoop loop;
+	QTimer timer;
+
+	timer.setSingleShot(true);
+	connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
+
+	connect(m_browser_client, &BrowserClient::evalJavascriptResultReady, &timer, &QTimer::stop);
+	connect(m_browser_client, &BrowserClient::evalJavascriptResultReady, [&variant, &loop](int callback_id, const QVariant &result)
+	{
+		variant = result;
+	});
+
+	// Calling QEventLoop::quit from within the lambda will occasionally cause crashes.
+	// Connecting the signals in the given order works perfectly.
+	connect(m_browser_client, &BrowserClient::evalJavascriptResultReady, &loop, &QEventLoop::quit);
+
+	timer.start(10 * 1000);
+
+	// CefBrowser::SendProcessMessage must be send from the main thread of the browser process.
+	// TID_UI thread is the main thread in the browser process.
+	CefPostTask(TID_UI, base::Bind(&send_eval_javascript_message, m_cef_browser, javascript_code));
+
+	loop.exec();
+	return variant;
+}
+
 static int convertToCefMouseButtonType(int qt_mouse_button)
 {
 	switch (qt_mouse_button) {
@@ -271,6 +312,30 @@ void Browser::releaseKey(const QString &bf_keycode)
 	releaseKey(key_event);
 }
 
+void Browser::holdKey(const CefKeyEvent &event)
+{
+	CefKeyEvent event_copy(event);
+	event_copy.type = KEYEVENT_RAWKEYDOWN;
+	m_cef_browser->GetHost()->SendKeyEvent(event_copy);
+	event_copy.type = KEYEVENT_CHAR;
+	m_cef_browser->GetHost()->SendKeyEvent(event_copy);
+}
+
+void Browser::releaseKey(const CefKeyEvent &event)
+{
+	CefKeyEvent event_copy(event);
+	event_copy.type = KEYEVENT_KEYUP;
+	m_cef_browser->GetHost()->SendKeyEvent(event_copy);
+}
+
+void Browser::enterText(const QString &text)
+{
+	for (int i = 0; i < text.length(); ++i)
+	{
+		pressKey(text.at(i));
+	}
+}
+
 void Browser::holdKey(const QKeyEvent *event)
 {
 	if (event->matches(QKeySequence::Copy))
@@ -308,28 +373,4 @@ void Browser::releaseKey(const QKeyEvent *event)
 {
 	CefKeyEventAdapter key_event(event);
 	releaseKey(key_event);
-}
-
-void Browser::holdKey(const CefKeyEvent &event)
-{
-	CefKeyEvent event_copy(event);
-	event_copy.type = KEYEVENT_RAWKEYDOWN;
-	m_cef_browser->GetHost()->SendKeyEvent(event_copy);
-	event_copy.type = KEYEVENT_CHAR;
-	m_cef_browser->GetHost()->SendKeyEvent(event_copy);
-}
-
-void Browser::releaseKey(const CefKeyEvent &event)
-{
-	CefKeyEvent event_copy(event);
-	event_copy.type = KEYEVENT_KEYUP;
-	m_cef_browser->GetHost()->SendKeyEvent(event_copy);
-}
-
-void Browser::enterText(const QString &text)
-{
-	for (int i = 0; i < text.length(); ++i)
-	{
-		pressKey(text.at(i));
-	}
 }

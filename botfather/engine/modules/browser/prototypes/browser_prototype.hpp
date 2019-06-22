@@ -61,6 +61,7 @@ public:
 	Q_INVOKABLE void enterText(const QString &text);
 
 	Q_INVOKABLE void executeJavascript(const QString &javascript_code);
+	Q_INVOKABLE QScriptValue evaluateJavascript(const QString &javascript_code);
 
 	Q_INVOKABLE QString toString() const;
 };

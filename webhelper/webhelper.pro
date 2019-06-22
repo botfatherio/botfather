@@ -1,12 +1,11 @@
 TEMPLATE = app
 CONFIG += c++11
 CONFIG -= app_bundle
-CONFIG -= qt
+QT += core
 
 TARGET = webhelper
 DESTDIR = ./BuildOutput
 OBJECTS_DIR += ./CompiledObjects
-SOURCES += ./main.cpp
 
 include(../3rdparty/CEF/CEF.pri)
 
@@ -30,3 +29,11 @@ win32 {
     CONFIG += embed_manifest_exe
     QMAKE_MANIFEST = $$PWD/webhelper.exe.manifest
 }
+
+HEADERS += \
+    bf_serializer.hpp \
+    helper_app.hpp
+
+SOURCES += ./main.cpp \
+    bf_serializer.cpp \
+    helper_app.cpp
