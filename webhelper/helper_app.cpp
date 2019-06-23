@@ -14,10 +14,7 @@ bool HelperApp::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProce
 	if (message->GetName() == "eval_javascript")
 	{
 		CefRefPtr<CefV8Context> context = browser->GetMainFrame()->GetV8Context();
-		if (context->Enter())
-		{
-			BFDebugTools::debug(browser, "Context entered.");
-		}
+		context->Enter();
 
 		CefRefPtr<CefV8Value> retval = CefRefPtr<CefV8Value>();
 		CefRefPtr<CefV8Exception> exception = CefRefPtr<CefV8Exception>();
@@ -28,7 +25,6 @@ bool HelperApp::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProce
 		int start_line = message->GetArgumentList()->GetInt(3);
 
 		context->Eval(code, script_url, start_line, retval, exception);
-		context->Exit();
 
 		CefRefPtr<CefProcessMessage> result_msg = CefProcessMessage::Create("eval_javascript_result");
 		CefRefPtr<CefListValue> result_msg_args = result_msg->GetArgumentList();
@@ -38,8 +34,9 @@ bool HelperApp::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProce
 		CefRefPtr<CefBinaryValue> binary_value = BFSerializer::CefV8ValueToCefBinaryValue(retval);
 		result_msg_args->SetBinary(1, binary_value);
 
-		// Debug message
-		result_msg_args->SetString(2, CefString("Debug message"));
+		// We must stay in context while parsing/accessing any V8 values, otherwise the renderer
+		// process will crash with "Check failed: Currently not in a V8 context".
+		context->Exit();
 
 		browser->SendProcessMessage(PID_BROWSER, result_msg);
 		return true;
