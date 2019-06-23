@@ -81,6 +81,7 @@ HEADERS += \
     auth/license_api_client.hpp \
     auth/rest_api_client.hpp \
     auth/scripts_api_client.hpp \
+    engine/engine_utils.hpp \
     engine/modules/android/apis/android_api.hpp \
     engine/modules/browser/browser_render_process_handler.hpp \
     engine/modules/desktop/apis/desktop_api.hpp \
@@ -167,6 +168,7 @@ SOURCES += \
     auth/license_api_client.cpp \
     auth/rest_api_client.cpp \
     auth/scripts_api_client.cpp \
+    engine/engine_utils.cpp \
     engine/modules/android/apis/android_api.cpp \
     engine/modules/browser/browser_render_process_handler.cpp \
     engine/modules/desktop/apis/desktop_api.cpp \
