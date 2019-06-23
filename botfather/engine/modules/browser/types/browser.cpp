@@ -173,9 +173,9 @@ static void send_eval_javascript_message(CefRefPtr<CefBrowser> cef_browser, cons
 	cef_browser->SendProcessMessage(PID_RENDERER, msg);
 }
 
-QVariant Browser::evaluateJavascript(const QString &javascript_code)
+QCborValue Browser::evaluateJavascript(const QString &javascript_code)
 {
-	QVariant variant;
+	QCborValue retval;
 	QEventLoop loop;
 	QTimer timer;
 
@@ -183,9 +183,9 @@ QVariant Browser::evaluateJavascript(const QString &javascript_code)
 	connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
 
 	connect(m_browser_client, &BrowserClient::evalJavascriptResultReady, &timer, &QTimer::stop);
-	connect(m_browser_client, &BrowserClient::evalJavascriptResultReady, [&variant, &loop](int callback_id, const QVariant &result)
+	connect(m_browser_client, &BrowserClient::evalJavascriptResultReady, [&retval, &loop](int callback_id, const QCborValue &result)
 	{
-		variant = result;
+		retval = result;
 	});
 
 	// Calling QEventLoop::quit from within the lambda will occasionally cause crashes.
@@ -199,7 +199,7 @@ QVariant Browser::evaluateJavascript(const QString &javascript_code)
 	CefPostTask(TID_UI, base::Bind(&send_eval_javascript_message, m_cef_browser, javascript_code));
 
 	loop.exec();
-	return variant;
+	return retval;
 }
 
 static int convertToCefMouseButtonType(int qt_mouse_button)

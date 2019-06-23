@@ -39,7 +39,7 @@ signals:
 	void browserClosedSignal();
 	void loadingStateChanged(bool is_loading, bool can_go_back, bool can_go_forward);
 	void finishedLoadingUrl(const QString &url);
-	void evalJavascriptResultReady(int callback_id, const QVariant &result);
+	void evalJavascriptResultReady(int callback_id, const QCborValue &result);
 
 private:
 	IMPLEMENT_REFCOUNTING(BrowserClient)

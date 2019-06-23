@@ -31,7 +31,8 @@ bool HelperApp::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProce
 
 		result_msg_args->SetInt(0, callback_id);
 
-		CefRefPtr<CefBinaryValue> binary_value = BFSerializer::CefV8ValueToCefBinaryValue(retval);
+		QCborValue cbor_value = BFSerializer::CefV8ValueToQCborValue(retval);
+		CefRefPtr<CefBinaryValue> binary_value = BFSerializer::QCborValueToCefBinaryValue(cbor_value);
 		result_msg_args->SetBinary(1, binary_value);
 
 		// We must stay in context while parsing/accessing any V8 values, otherwise the renderer

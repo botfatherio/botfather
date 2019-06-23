@@ -233,7 +233,7 @@ void BrowserPrototype::executeJavascript(const QString &javascript_code)
 
 QScriptValue BrowserPrototype::evaluateJavascript(const QString &javascript_code)
 {
-	return engine()->newVariant(THIS_BROWSER_P()->evaluateJavascript(javascript_code));
+	return engine()->newVariant(THIS_BROWSER_P()->evaluateJavascript(javascript_code).toVariant());
 }
 
 QString BrowserPrototype::toString() const

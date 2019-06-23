@@ -6,6 +6,7 @@
 #include <QUrl>
 #include <QKeyEvent>
 #include <QScriptValue>
+#include <QCborValue>
 #include "../browser_manager.hpp"
 #include "../browser_client.hpp"
 
@@ -51,7 +52,7 @@ public:
 	void goBack();
 
 	void executeJavascript(const QString &javascript_code);
-	QVariant evaluateJavascript(const QString &javascript_code);
+	QCborValue evaluateJavascript(const QString &javascript_code);
 
 	void pressMouse(const QPoint &position, int qt_mouse_button);
 	void holdMouse(const QPoint &position, int qt_mouse_button);

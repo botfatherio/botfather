@@ -1,7 +1,8 @@
 #include "browser_client.hpp"
-#include <QJsonDocument>
-#include <QJsonObject>
+#include <QCborValue>
+#include <QCborStreamReader>
 #include <QDebug>
+
 
 BrowserClient::BrowserClient(const QSize &size)
 	: QObject()
@@ -29,28 +30,25 @@ bool BrowserClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefP
 	if (message->GetName() == "eval_javascript_result")
 	{
 		int callback_id(message->GetArgumentList()->GetInt(0));
-		QVariant value;
+		QCborValue cbor_value;
 
 		{
 			CefRefPtr<CefBinaryValue> binary_value = message->GetArgumentList()->GetBinary(1);
 			size_t buffer_size = binary_value->GetSize();
 
 			char *buffer = new char[buffer_size];
-			binary_value->GetData(buffer, buffer_size, 0);
+			binary_value->GetData(buffer, buffer_size, 0);			
 
 			QByteArray byte_array(buffer, buffer_size);
-			QDataStream data_stream(byte_array);
+			QCborStreamReader cbor_stream_reader(byte_array);
 
-			QVariant variant;
-			data_stream >> variant;
-
-			value = variant;
+			cbor_value = QCborValue::fromCbor(cbor_stream_reader);
 			delete[] buffer;
 
-			qDebug() << "Received casted variant:" << variant;
+			qDebug() << "Received casted cbor_value:" << cbor_value;
 		}
 
-		emit evalJavascriptResultReady(callback_id, value);
+		emit evalJavascriptResultReady(callback_id, cbor_value);
 		return true;
 	}
 
