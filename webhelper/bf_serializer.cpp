@@ -4,6 +4,8 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QDataStream>
+#include <QCborArray>
+#include <QCborMap>
 
 QJsonValue BFSerializer::CefV8ValueToQJsonValue(CefRefPtr<CefV8Value> cef_v8_value)
 {
@@ -223,8 +225,106 @@ CefRefPtr<CefBinaryValue> BFSerializer::QVariantToCefBinaryValue(const QVariant 
 	return CefBinaryValue::Create(cvp, (size_t)byte_array.length());
 }
 
-CefRefPtr<CefBinaryValue> BFSerializer::CefV8ValueToCefBinaryValue(CefRefPtr<CefV8Value> cef_v8_value)
+QCborValue BFSerializer::CefV8ValueToQCborValue(const CefRefPtr<CefV8Value> &cef_v8_value)
 {
-	QVariant variant = BFSerializer::CefV8ValueToQVariant(cef_v8_value);
-	return BFSerializer::QVariantToCefBinaryValue(variant);
+	if (!cef_v8_value->IsValid())
+	{
+		return QCborValue(QCborValue::Invalid);
+	}
+
+	// Special
+
+	if (cef_v8_value->IsNull())
+	{
+		return QCborValue(QCborValue::Null);
+	}
+
+	if (cef_v8_value->IsUndefined())
+	{
+		return QCborValue(QCborValue::Undefined);
+	}
+
+	// Primitive
+
+	if (cef_v8_value->IsBool())
+	{
+		return QCborValue(cef_v8_value->GetBoolValue());
+	}
+
+	if (cef_v8_value->IsDouble())
+	{
+		return QCborValue(cef_v8_value->GetDoubleValue());
+	}
+
+	if (cef_v8_value->IsInt())
+	{
+		return QCborValue(cef_v8_value->GetIntValue());
+	}
+
+	if (cef_v8_value->IsUInt())
+	{
+		return QCborValue(cef_v8_value->GetUIntValue());
+	}
+
+	if (cef_v8_value->IsString())
+	{
+		return QCborValue(QString::fromStdString(cef_v8_value->GetStringValue().ToString()));
+	}
+
+	// Complex
+
+	if (cef_v8_value->IsDate())
+	{
+		CefTime cef_time = cef_v8_value->GetDateValue();
+		QDate date(cef_time.year, cef_time.month, cef_time.day_of_month);
+		QTime time(cef_time.hour, cef_time.minute, cef_time.second, cef_time.millisecond);
+		return QCborValue(QDateTime(date, time));
+	}
+
+	if (cef_v8_value->IsArray())
+	{
+		QCborArray array;
+		for (int i = 0; i < cef_v8_value->GetArrayLength(); ++i)
+		{
+			array.append(BFSerializer::CefV8ValueToQCborValue(cef_v8_value->GetValue(i)));
+		}
+		return array;
+	}
+
+	if (cef_v8_value->IsObject())
+	{
+		QCborMap object;
+		std::vector<CefString> keys;
+
+		if (!cef_v8_value->GetKeys(keys))
+		{
+			return object;
+		}
+
+		for (const CefString &key : keys)
+		{
+			QString q_string_key = QString::fromStdString(key.ToString());
+			object.insert(q_string_key, BFSerializer::CefV8ValueToQCborValue(cef_v8_value->GetValue(key)));
+		}
+		return object;
+	}
+
+	if (cef_v8_value->IsArrayBuffer())
+	{
+		return QCborValue(QCborValue::Undefined);
+	}
+
+	if (cef_v8_value->IsFunction())
+	{
+		return QCborValue(QString::fromStdString(cef_v8_value->GetFunctionName().ToString()));
+	}
+
+	return QCborValue(QCborValue::Undefined); // Fallback
+}
+
+CefRefPtr<CefBinaryValue> BFSerializer::QCborValueToCefBinaryValue(QCborValue cbor_value)
+{
+	QByteArray byte_array = cbor_value.toCbor();
+	const void* cvp = static_cast<const void*>(byte_array.data());
+	return CefBinaryValue::Create(cvp, (size_t)byte_array.length());
 }
