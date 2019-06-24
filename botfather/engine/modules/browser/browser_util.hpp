@@ -4,10 +4,14 @@
 #include <QThread>
 #include <QTimer>
 #include <QApplication>
+#include <QByteArray>
+#include "include/cef_values.h"
 
 namespace BrowserUtil {
 
 void runInMainThread(std::function<void()> callback);
+
+QByteArray convertCefBinaryValueToQByteArray(const CefRefPtr<CefBinaryValue> &cef_binary_value);
 
 }
 

@@ -15,3 +15,15 @@ void BrowserUtil::runInMainThread(std::function<void()> callback)
 
 	QMetaObject::invokeMethod(timer, "start", Qt::QueuedConnection, Q_ARG(int, 0));
 }
+
+QByteArray BrowserUtil::convertCefBinaryValueToQByteArray(const CefRefPtr<CefBinaryValue> &cef_binary_value)
+{
+	size_t buffer_size = cef_binary_value->GetSize();
+	char *buffer = new char[buffer_size];
+
+	cef_binary_value->GetData(buffer, buffer_size, 0);
+	QByteArray byte_array(buffer, buffer_size);
+
+	delete[] buffer;
+	return byte_array;
+}
