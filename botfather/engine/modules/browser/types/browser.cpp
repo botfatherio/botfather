@@ -173,9 +173,16 @@ static void send_eval_javascript_message(CefRefPtr<CefBrowser> cef_browser, cons
 	cef_browser->SendProcessMessage(PID_RENDERER, msg);
 }
 
-QCborValue Browser::evaluateJavascript(const QString &javascript_code)
+bool Browser::evaluateJavascript(const QString &javascript_code, QCborValue &result, QVariantMap &exception)
 {
-	QCborValue retval;
+	bool success = false;
+
+	// Directly populating the reentrant |result| and |exception| caused crashes from time to time in
+	// the QCborValue == operator. Using QMutex around all usages didn't help, neither did having a local
+	// version of the result. Using local pointer seems to work.
+	QCborValue *local_result = nullptr;
+	QVariantMap *local_exception = nullptr;
+
 	QEventLoop loop;
 	QTimer timer;
 
@@ -183,9 +190,16 @@ QCborValue Browser::evaluateJavascript(const QString &javascript_code)
 	connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
 
 	connect(m_browser_client, &BrowserClient::evalJavascriptResultReady, &timer, &QTimer::stop);
-	connect(m_browser_client, &BrowserClient::evalJavascriptResultReady, [&retval, &loop](int callback_id, const QCborValue &result)
-	{
-		retval = result;
+	connect(m_browser_client, &BrowserClient::evalJavascriptResultReady, [this, &success, &local_result, &local_exception](bool s, const QCborValue &r, const QVariantMap &e) {
+		success = s;
+		if (s)
+		{
+			local_result = new QCborValue(r);
+		}
+		else
+		{
+			local_exception = new QVariantMap(e);
+		}
 	});
 
 	// Calling QEventLoop::quit from within the lambda will occasionally cause crashes.
@@ -198,8 +212,19 @@ QCborValue Browser::evaluateJavascript(const QString &javascript_code)
 	// TID_UI thread is the main thread in the browser process.
 	CefPostTask(TID_UI, base::Bind(&send_eval_javascript_message, m_cef_browser, javascript_code));
 
+	// Run the event loop (blocking)
 	loop.exec();
-	return retval;
+
+	if (local_result)
+	{
+		result = *local_result;
+	}
+	if (local_exception)
+	{
+		exception = *local_exception;
+	}
+
+	return success;
 }
 
 static int convertToCefMouseButtonType(int qt_mouse_button)

@@ -234,8 +234,23 @@ void BrowserPrototype::executeJavascript(const QString &javascript_code)
 
 QScriptValue BrowserPrototype::evaluateJavascript(const QString &javascript_code)
 {
-	QCborValue cbor_value = THIS_BROWSER_P()->evaluateJavascript(javascript_code);
-	return EngineUtils::convertToQScriptValue(engine(), cbor_value);
+	QCborValue result;
+	QVariantMap exception;
+
+	if (THIS_BROWSER_P()->evaluateJavascript(javascript_code, result, exception))
+	{
+		return EngineUtils::convertToQScriptValue(engine(), result);
+	}
+	else if (!exception.isEmpty())
+	{
+		qDebug() << "EXCEPTION" << exception;
+		return context()->throwError("Woops");
+	}
+	else
+	{
+		QString msg("Evaluation timed out, more that 10 seconds passed.");
+		return context()->throwError(QScriptContext::UnknownError, msg);
+	}
 }
 
 QString BrowserPrototype::toString() const

@@ -2,6 +2,7 @@
 #define BROWSERCLIENT_H
 
 #include <QObject>
+#include <QCborValue>
 #include "include/cef_client.h"
 #include "browser_life_span_handler.hpp"
 #include "browser_render_handler.hpp"
@@ -39,7 +40,7 @@ signals:
 	void browserClosedSignal();
 	void loadingStateChanged(bool is_loading, bool can_go_back, bool can_go_forward);
 	void finishedLoadingUrl(const QString &url);
-	void evalJavascriptResultReady(int callback_id, const QCborValue &result);
+	void evalJavascriptResultReady(bool success, const QCborValue &result, const QVariantMap &exception);
 
 private:
 	IMPLEMENT_REFCOUNTING(BrowserClient)

@@ -1,8 +1,7 @@
 #include "browser_client.hpp"
-#include <QCborValue>
 #include <QCborStreamReader>
 #include <QDebug>
-
+#include "browser_util.hpp"
 
 BrowserClient::BrowserClient(const QSize &size)
 	: QObject()
@@ -29,26 +28,34 @@ bool BrowserClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefP
 
 	if (message->GetName() == "eval_javascript_result")
 	{
-		int callback_id(message->GetArgumentList()->GetInt(0));
-		QCborValue cbor_value;
+		bool success = message->GetArgumentList()->GetBool(0);
 
+		// Not initialising these caused segmentation faults in slots receiving the evalJavascriptResultReady signal.
+		// When they copied the uninitialised values they caused the application to crash from time to time.
+		QCborValue result = QCborValue();
+		QVariantMap exception = QVariantMap();
+
+		if (success)
 		{
-			CefRefPtr<CefBinaryValue> binary_value = message->GetArgumentList()->GetBinary(1);
-			size_t buffer_size = binary_value->GetSize();
+			CefRefPtr<CefBinaryValue> binary_result = message->GetArgumentList()->GetBinary(1);
+			QCborStreamReader cbor_stream_reader(BrowserUtil::convertCefBinaryValueToQByteArray(binary_result));
 
-			char *buffer = new char[buffer_size];
-			binary_value->GetData(buffer, buffer_size, 0);			
+			result = QCborValue::fromCbor(cbor_stream_reader);
+			qDebug() << "Received casted result:" << result;
+		}
+		else
+		{
+			CefRefPtr<CefBinaryValue> binary_exception = message->GetArgumentList()->GetBinary(2);
+			QDataStream data_stream(BrowserUtil::convertCefBinaryValueToQByteArray(binary_exception));
 
-			QByteArray byte_array(buffer, buffer_size);
-			QCborStreamReader cbor_stream_reader(byte_array);
+			QVariant variant;
+			data_stream >> variant;
 
-			cbor_value = QCborValue::fromCbor(cbor_stream_reader);
-			delete[] buffer;
-
-			qDebug() << "Received casted cbor_value:" << cbor_value;
+			exception = variant.toMap();
+			qDebug() << "Received casted exception:" << exception;
 		}
 
-		emit evalJavascriptResultReady(callback_id, cbor_value);
+		emit evalJavascriptResultReady(success, result, exception);
 		return true;
 	}
 

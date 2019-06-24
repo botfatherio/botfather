@@ -52,7 +52,7 @@ public:
 	void goBack();
 
 	void executeJavascript(const QString &javascript_code);
-	QCborValue evaluateJavascript(const QString &javascript_code);
+	bool evaluateJavascript(const QString &javascript_code, QCborValue &result, QVariantMap &exception);
 
 	void pressMouse(const QPoint &position, int qt_mouse_button);
 	void holdMouse(const QPoint &position, int qt_mouse_button);
