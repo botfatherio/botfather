@@ -12,21 +12,34 @@ QScriptValue BrowserPrototype::constructor(QScriptContext *context, QScriptEngin
 	// is the bots ID.
 	Engine *vm = qobject_cast<Engine*>(engine->parent());
 
-	// new Browser(id, size);
-	if (context->argumentCount() == 2 && context->argument(0).isString() && isQSize(context->argument(1)))
+	// Validate the browsers id
+	QString id;
+	if (context->argumentCount() >= 1 && context->argument(0).isString())
 	{
-		QString id = context->argument(0).toString();
+		id = context->argument(0).toString();
 		if (id.isEmpty())
 		{
 			return context->throwError(QScriptContext::Error::TypeError, "The browsers id must not be empty");
 		}
+	}
+
+	// new Browser(id) with default size of 1366x768
+	if (context->argumentCount() == 1 && context->argument(0).isString())
+	{
+		QSize default_size(1366, 768);
+		Browser *browser = BrowserManager::instance()->createBrowser(vm->id(), id, default_size);
+		return engine->newQObject(browser, QScriptEngine::QtOwnership);
+	}
+
+	// new Browser(id, size);
+	if (context->argumentCount() == 2 && context->argument(0).isString() && isQSize(context->argument(1)))
+	{
 		QSize size = qscriptvalue_cast<QSize>(context->argument(1));
 		if (size.width() < 400 || size.height() < 400)
 		{
 			return context->throwError(QScriptContext::Error::RangeError, "The browsers size must be at least 400x400");
 		}
 		Browser *browser = BrowserManager::instance()->createBrowser(vm->id(), id, size);
-		//return engine->toScriptValue(browser);
 		return engine->newQObject(browser, QScriptEngine::QtOwnership);
 	}
 
