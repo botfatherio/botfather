@@ -61,9 +61,9 @@ QSize BrowserPrototype::getSize() const
 	return THIS_BROWSER_P()->size();
 }
 
-void BrowserPrototype::setSize(const QSize &size)
+void BrowserPrototype::resize(const QSize &size)
 {
-	THIS_BROWSER_P()->setSize(size);
+	THIS_BROWSER_P()->resize(size);
 }
 
 void BrowserPrototype::blockResource(const QString &resource_pattern)

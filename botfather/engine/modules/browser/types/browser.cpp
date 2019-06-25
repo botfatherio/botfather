@@ -57,7 +57,7 @@ QSize Browser::size() const
 	return m_browser_client->size();
 }
 
-void Browser::setSize(const QSize &size)
+void Browser::resize(const QSize &size)
 {
 	m_browser_client->setSize(size);
 }

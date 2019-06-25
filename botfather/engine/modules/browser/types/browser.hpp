@@ -27,7 +27,7 @@ public:
 	QUrl url() const;
 
 	QSize size() const;
-	void setSize(const QSize &size);
+	void resize(const QSize &size);
 
 	QImage takeScreenshot();
 
