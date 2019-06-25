@@ -46,9 +46,6 @@ PreferencesDialog::~PreferencesDialog()
 void PreferencesDialog::saveConfig()
 {
 	QSettings s;
-	s.setValue(browser::options::WIDTH, ui->browser_width->value());
-	s.setValue(browser::options::HEIGHT, ui->browser_height->value());
-
 	s.setValue(browser::options::FLASH_SO, ui->flash_so->text());
 	s.setValue(browser::options::FLASH_MANIFEST, ui->flash_manifest->text());
 	s.setValue(browser::options::USE_SYSTEM_FLASH, ui->use_system_flash->isChecked());
@@ -67,11 +64,6 @@ void PreferencesDialog::saveConfig()
 void PreferencesDialog::loadConfig()
 {
 	QSettings s;
-
-	// Put the defaults last. If the config is broken they will be set last and thus used.
-
-	ui->browser_width->setValue(s.value(browser::options::WIDTH, browser::fallback::WIDTH).toInt());
-	ui->browser_height->setValue(s.value(browser::options::HEIGHT, browser::fallback::HEIGHT).toInt());
 
 	ui->flash_so->setText(s.value(browser::options::FLASH_SO).toString());
 	ui->flash_manifest->setText(s.value(browser::options::FLASH_MANIFEST).toString());

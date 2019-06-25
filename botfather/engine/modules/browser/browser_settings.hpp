@@ -7,8 +7,6 @@
 namespace browser
 {
 	namespace options {
-		static const QString WIDTH = "browser/width";
-		static const QString HEIGHT = "browser/height";
 		static const QString FLASH_SO = "browser/flash_so";
 		static const QString FLASH_MANIFEST = "browser/flash_manifest";
 		static const QString USE_SYSTEM_FLASH = "browser/use_system_flash";
@@ -17,14 +15,9 @@ namespace browser
 	}
 	namespace fallback
 	{
-		static const int WIDTH = 1366;
-		static const int HEIGHT = 768;
 		static const bool USE_SYSTEM_FLASH = true;
 		static const bool USE_BUNDLED_FLASH = true;
 		static const bool USE_CUSTOM_FLASH = !USE_BUNDLED_FLASH;
-
-		static const QSize SIZE(WIDTH, HEIGHT);
-
 		static const QString BUNDLED_FLASH_SO_PATH = "/app/extra/flash/libpepflashplayer.so";
 		static const QString BUNDLED_FLASH_MANIFEST_PATH = "/app/extra/flash/manifest.json";
 	}
