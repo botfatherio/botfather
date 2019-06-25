@@ -232,14 +232,14 @@ void BrowserPrototype::executeJavascript(const QString &javascript_code)
 	THIS_BROWSER_P()->executeJavascript(javascript_code);
 }
 
-QScriptValue BrowserPrototype::evaluateJavascript(const QString &javascript_code)
+QScriptValue BrowserPrototype::evaluateJavascript(const QString &javascript_code, int timeout_in_ms)
 {
 	QCborValue result;
 	QVariantMap exception;
 	bool timed_out;
 	QString script_url("inline script");
 
-	if (THIS_BROWSER_P()->evaluateJavascript(javascript_code, result, exception, timed_out))
+	if (THIS_BROWSER_P()->evaluateJavascript(javascript_code, timeout_in_ms, result, exception, timed_out))
 	{
 		return EngineUtils::convertToQScriptValue(engine(), result);
 	}
@@ -252,7 +252,7 @@ QScriptValue BrowserPrototype::evaluateJavascript(const QString &javascript_code
 	}
 	else if (timed_out)
 	{
-		QString msg("Evaluation timed out, more that 10 seconds passed.");
+		QString msg(QString("Evaluation timed out, more that %0 milliseconds passed.").arg(timeout_in_ms));
 		return context()->throwError(QScriptContext::UnknownError, msg);
 	}
 	else

@@ -173,7 +173,7 @@ static void send_eval_javascript_message(CefRefPtr<CefBrowser> cef_browser, cons
 	cef_browser->SendProcessMessage(PID_RENDERER, msg);
 }
 
-bool Browser::evaluateJavascript(const QString &javascript_code, QCborValue &result, QVariantMap &exception, bool &timed_out)
+bool Browser::evaluateJavascript(const QString &javascript_code, int timeout_in_ms, QCborValue &result, QVariantMap &exception, bool &timed_out)
 {
 	bool success = false;
 
@@ -206,7 +206,7 @@ bool Browser::evaluateJavascript(const QString &javascript_code, QCborValue &res
 	// Connecting the signals in the given order works perfectly.
 	connect(m_browser_client, &BrowserClient::evalJavascriptResultReady, &loop, &QEventLoop::quit);
 
-	timer.start(10 * 1000);
+	timer.start(timeout_in_ms);
 
 	// CefBrowser::SendProcessMessage must be send from the main thread of the browser process.
 	// TID_UI thread is the main thread in the browser process.
