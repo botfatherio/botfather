@@ -8,7 +8,7 @@
 class BrowserPrototype : public AbstractPrototype
 {
 	Q_OBJECT
-	Q_PROPERTY(QSize size READ getSize WRITE resize)
+	Q_PROPERTY(QSize size READ getSize)
 	Q_PROPERTY(QRect rect READ getRect)
 	Q_PROPERTY(QUrl url READ getUrl)
 
