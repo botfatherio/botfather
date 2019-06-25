@@ -1,4 +1,4 @@
-#include "bf_serializer.hpp"
+#include "bf_converter.hpp"
 #include <QDateTime>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -7,7 +7,7 @@
 #include <QCborArray>
 #include <QCborMap>
 
-QJsonValue BFSerializer::CefV8ValueToQJsonValue(const CefRefPtr<CefV8Value> &cef_v8_value)
+QJsonValue BFConverter::CefV8ValueToQJsonValue(const CefRefPtr<CefV8Value> &cef_v8_value)
 {
 	if (!cef_v8_value->IsValid())
 	{
@@ -71,7 +71,7 @@ QJsonValue BFSerializer::CefV8ValueToQJsonValue(const CefRefPtr<CefV8Value> &cef
 		QJsonArray array;
 		for (int i = 0; i < cef_v8_value->GetArrayLength(); ++i)
 		{
-			array.append(BFSerializer::CefV8ValueToQJsonValue(cef_v8_value->GetValue(i)));
+			array.append(BFConverter::CefV8ValueToQJsonValue(cef_v8_value->GetValue(i)));
 		}
 		return QJsonValue(array);
 	}
@@ -89,7 +89,7 @@ QJsonValue BFSerializer::CefV8ValueToQJsonValue(const CefRefPtr<CefV8Value> &cef
 		for (const CefString &key : keys)
 		{
 			QString q_string_key = QString::fromStdString(key.ToString());
-			object.insert(q_string_key, BFSerializer::CefV8ValueToQJsonValue(cef_v8_value->GetValue(key)));
+			object.insert(q_string_key, BFConverter::CefV8ValueToQJsonValue(cef_v8_value->GetValue(key)));
 		}
 		return QJsonValue(object);
 	}
@@ -107,9 +107,9 @@ QJsonValue BFSerializer::CefV8ValueToQJsonValue(const CefRefPtr<CefV8Value> &cef
 	return QJsonValue(QJsonValue::Undefined); // Fallback
 }
 
-QString BFSerializer::CefV8ValueToCompactJsonQString(const CefRefPtr<CefV8Value> &cef_v8_value)
+QString BFConverter::CefV8ValueToCompactJsonQString(const CefRefPtr<CefV8Value> &cef_v8_value)
 {
-	QJsonValue json_value(BFSerializer::CefV8ValueToQJsonValue(cef_v8_value));
+	QJsonValue json_value(BFConverter::CefV8ValueToQJsonValue(cef_v8_value));
 	QJsonObject root_object;
 	root_object.insert("ROOT", json_value);
 
@@ -117,7 +117,7 @@ QString BFSerializer::CefV8ValueToCompactJsonQString(const CefRefPtr<CefV8Value>
 	return QString(json_document.toJson(QJsonDocument::Compact));
 }
 
-QVariant BFSerializer::CefV8ValueToQVariant(const CefRefPtr<CefV8Value> &cef_v8_value)
+QVariant BFConverter::CefV8ValueToQVariant(const CefRefPtr<CefV8Value> &cef_v8_value)
 {
 	if (!cef_v8_value->IsValid())
 	{
@@ -178,7 +178,7 @@ QVariant BFSerializer::CefV8ValueToQVariant(const CefRefPtr<CefV8Value> &cef_v8_
 		QVariantList array;
 		for (int i = 0; i < cef_v8_value->GetArrayLength(); ++i)
 		{
-			array.append(BFSerializer::CefV8ValueToQJsonValue(cef_v8_value->GetValue(i)));
+			array.append(BFConverter::CefV8ValueToQJsonValue(cef_v8_value->GetValue(i)));
 		}
 		return array;
 	}
@@ -196,7 +196,7 @@ QVariant BFSerializer::CefV8ValueToQVariant(const CefRefPtr<CefV8Value> &cef_v8_
 		for (const CefString &key : keys)
 		{
 			QString q_string_key = QString::fromStdString(key.ToString());
-			object.insert(q_string_key, BFSerializer::CefV8ValueToQVariant(cef_v8_value->GetValue(key)));
+			object.insert(q_string_key, BFConverter::CefV8ValueToQVariant(cef_v8_value->GetValue(key)));
 		}
 		return object;
 	}
@@ -214,7 +214,7 @@ QVariant BFSerializer::CefV8ValueToQVariant(const CefRefPtr<CefV8Value> &cef_v8_
 	return QVariant(QJsonValue(QJsonValue::Undefined)); // Fallback
 }
 
-CefRefPtr<CefBinaryValue> BFSerializer::QVariantToCefBinaryValue(const QVariant &variant)
+CefRefPtr<CefBinaryValue> BFConverter::QVariantToCefBinaryValue(const QVariant &variant)
 {
 	QByteArray byte_array;
 	QDataStream data_stream(&byte_array, QIODevice::WriteOnly);
@@ -225,7 +225,7 @@ CefRefPtr<CefBinaryValue> BFSerializer::QVariantToCefBinaryValue(const QVariant 
 	return CefBinaryValue::Create(cvp, (size_t)byte_array.length());
 }
 
-QCborValue BFSerializer::CefV8ValueToQCborValue(const CefRefPtr<CefV8Value> &cef_v8_value)
+QCborValue BFConverter::CefV8ValueToQCborValue(const CefRefPtr<CefV8Value> &cef_v8_value)
 {
 	if (!cef_v8_value->IsValid())
 	{
@@ -286,7 +286,7 @@ QCborValue BFSerializer::CefV8ValueToQCborValue(const CefRefPtr<CefV8Value> &cef
 		QCborArray array;
 		for (int i = 0; i < cef_v8_value->GetArrayLength(); ++i)
 		{
-			array.append(BFSerializer::CefV8ValueToQCborValue(cef_v8_value->GetValue(i)));
+			array.append(BFConverter::CefV8ValueToQCborValue(cef_v8_value->GetValue(i)));
 		}
 		return array;
 	}
@@ -304,7 +304,7 @@ QCborValue BFSerializer::CefV8ValueToQCborValue(const CefRefPtr<CefV8Value> &cef
 		for (const CefString &key : keys)
 		{
 			QString q_string_key = QString::fromStdString(key.ToString());
-			object.insert(q_string_key, BFSerializer::CefV8ValueToQCborValue(cef_v8_value->GetValue(key)));
+			object.insert(q_string_key, BFConverter::CefV8ValueToQCborValue(cef_v8_value->GetValue(key)));
 		}
 		return object;
 	}
@@ -322,7 +322,7 @@ QCborValue BFSerializer::CefV8ValueToQCborValue(const CefRefPtr<CefV8Value> &cef
 	return QCborValue(QCborValue::Undefined); // Fallback
 }
 
-CefRefPtr<CefBinaryValue> BFSerializer::QCborValueToCefBinaryValue(QCborValue cbor_value)
+CefRefPtr<CefBinaryValue> BFConverter::QCborValueToCefBinaryValue(QCborValue cbor_value)
 {
 	QByteArray byte_array = cbor_value.toCbor();
 	const void* cvp = static_cast<const void*>(byte_array.data());

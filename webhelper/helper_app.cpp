@@ -1,7 +1,7 @@
 #include "helper_app.hpp"
 #include <QDataStream>
 #include <QBuffer>
-#include "bf_serializer.hpp"
+#include "bf_converter.hpp"
 #include "bf_debug_tools.hpp"
 
 HelperApp::HelperApp()
@@ -46,8 +46,8 @@ bool HelperApp::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProce
 
 		if (success)
 		{
-			QCborValue cbor_result = BFSerializer::CefV8ValueToQCborValue(cef_v8_result_value);
-			CefRefPtr<CefBinaryValue> binary_result = BFSerializer::QCborValueToCefBinaryValue(cbor_result);
+			QCborValue cbor_result = BFConverter::CefV8ValueToQCborValue(cef_v8_result_value);
+			CefRefPtr<CefBinaryValue> binary_result = BFConverter::QCborValueToCefBinaryValue(cbor_result);
 			result_msg_args->SetBinary(1, binary_result);
 		}
 		else
@@ -62,7 +62,7 @@ bool HelperApp::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProce
 			map["start_column"] = cef_v8_exception->GetStartColumn();
 			map["start_position"] = cef_v8_exception->GetStartPosition();
 
-			CefRefPtr<CefBinaryValue> binary_exception = BFSerializer::QVariantToCefBinaryValue(map);
+			CefRefPtr<CefBinaryValue> binary_exception = BFConverter::QVariantToCefBinaryValue(map);
 			result_msg_args->SetBinary(2, binary_exception);
 		}
 

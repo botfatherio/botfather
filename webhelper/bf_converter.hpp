@@ -1,12 +1,12 @@
-#ifndef BF_SERIALIZER_HPP
-#define BF_SERIALIZER_HPP
+#ifndef BF_CONVERTER_HPP
+#define BF_CONVERTER_HPP
 
 #include <QVariant>
 #include <QCborValue>
 #include "include/cef_values.h"
 #include "include/cef_v8.h"
 
-namespace BFSerializer
+namespace BFConverter
 {
 	QJsonValue CefV8ValueToQJsonValue(const CefRefPtr<CefV8Value> &cef_v8_value);
 	QString CefV8ValueToCompactJsonQString(const CefRefPtr<CefV8Value> &cef_v8_value);
@@ -16,4 +16,4 @@ namespace BFSerializer
 	CefRefPtr<CefBinaryValue> QCborValueToCefBinaryValue(QCborValue cbor_value);
 }
 
-#endif // BF_SERIALIZER_HPP
+#endif // BF_CONVERTER_HPP
