@@ -7,7 +7,7 @@
 #include <QCborArray>
 #include <QCborMap>
 
-QJsonValue BFSerializer::CefV8ValueToQJsonValue(CefRefPtr<CefV8Value> cef_v8_value)
+QJsonValue BFSerializer::CefV8ValueToQJsonValue(const CefRefPtr<CefV8Value> &cef_v8_value)
 {
 	if (!cef_v8_value->IsValid())
 	{
@@ -107,7 +107,7 @@ QJsonValue BFSerializer::CefV8ValueToQJsonValue(CefRefPtr<CefV8Value> cef_v8_val
 	return QJsonValue(QJsonValue::Undefined); // Fallback
 }
 
-QString BFSerializer::CefV8ValueToCompactJsonQString(CefRefPtr<CefV8Value> cef_v8_value)
+QString BFSerializer::CefV8ValueToCompactJsonQString(const CefRefPtr<CefV8Value> &cef_v8_value)
 {
 	QJsonValue json_value(BFSerializer::CefV8ValueToQJsonValue(cef_v8_value));
 	QJsonObject root_object;
@@ -117,7 +117,7 @@ QString BFSerializer::CefV8ValueToCompactJsonQString(CefRefPtr<CefV8Value> cef_v
 	return QString(json_document.toJson(QJsonDocument::Compact));
 }
 
-QVariant BFSerializer::CefV8ValueToQVariant(CefRefPtr<CefV8Value> cef_v8_value)
+QVariant BFSerializer::CefV8ValueToQVariant(const CefRefPtr<CefV8Value> &cef_v8_value)
 {
 	if (!cef_v8_value->IsValid())
 	{
