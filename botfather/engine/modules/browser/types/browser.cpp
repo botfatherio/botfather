@@ -168,7 +168,6 @@ static void send_eval_javascript_message(CefRefPtr<CefBrowser> cef_browser, cons
 {
 	CefRefPtr<CefProcessMessage> msg= CefProcessMessage::Create("eval_javascript");
 	CefRefPtr<CefListValue> args = msg->GetArgumentList();
-	args->SetInt(0, 42);
 	args->SetString(1, CefString(javascript_code.toStdString()));
 	args->SetString(2, CefString("test.js"));
 	cef_browser->SendProcessMessage(PID_RENDERER, msg);
