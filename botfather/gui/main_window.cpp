@@ -81,6 +81,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	QTimer::singleShot(1, this, [this]() {
 		// Don't block the constructor while loading model data
 		m_bot_list_model->load(m_bot_list_model->defaultLocation());
+
+		// Select the first bot in the list. (looks better visually)
+		ui->bot_list_view->setCurrentIndex(m_bot_list_model->index(0));
 	});
 }
 
