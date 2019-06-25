@@ -1,6 +1,14 @@
 #ifndef BOTCONFIGOPTION_H
 #define BOTCONFIGOPTION_H
 
+// Unregister windows macros clashing with this classes method names
+#ifdef min
+#undef min
+#endif
+#ifdef max
+#undef max
+#endif
+
 #include <QVariant>
 #include <QMap>
 #include "bot_manifest_node.hpp"
