@@ -237,9 +237,9 @@ QScriptValue BrowserPrototype::evaluateJavascript(const QString &javascript_code
 	QCborValue result;
 	QVariantMap exception;
 	bool timed_out;
-	QString script_url("inline script");
+	QString script_url("inline");
 
-	if (THIS_BROWSER_P()->evaluateJavascript(javascript_code, timeout_in_ms, result, exception, timed_out))
+	if (THIS_BROWSER_P()->evaluateJavascript(script_url, javascript_code, timeout_in_ms, result, exception, timed_out))
 	{
 		return EngineUtils::convertToQScriptValue(engine(), result);
 	}

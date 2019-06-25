@@ -164,16 +164,16 @@ void Browser::executeJavascript(const QString &javascript_code)
 	);
 }
 
-static void send_eval_javascript_message(CefRefPtr<CefBrowser> cef_browser, const QString &javascript_code)
+static void send_eval_javascript_message(CefRefPtr<CefBrowser> cef_browser, const QString &script_name, const QString &javascript_code)
 {
 	CefRefPtr<CefProcessMessage> msg= CefProcessMessage::Create("eval_javascript");
 	CefRefPtr<CefListValue> args = msg->GetArgumentList();
 	args->SetString(1, CefString(javascript_code.toStdString()));
-	args->SetString(2, CefString("test.js"));
+	args->SetString(2, CefString(script_name.toStdString()));
 	cef_browser->SendProcessMessage(PID_RENDERER, msg);
 }
 
-bool Browser::evaluateJavascript(const QString &javascript_code, int timeout_in_ms, QCborValue &result, QVariantMap &exception, bool &timed_out)
+bool Browser::evaluateJavascript(const QString &script_name, const QString &javascript_code, int timeout_in_ms, QCborValue &result, QVariantMap &exception, bool &timed_out)
 {
 	bool success = false;
 
@@ -210,7 +210,7 @@ bool Browser::evaluateJavascript(const QString &javascript_code, int timeout_in_
 
 	// CefBrowser::SendProcessMessage must be send from the main thread of the browser process.
 	// TID_UI thread is the main thread in the browser process.
-	CefPostTask(TID_UI, base::Bind(&send_eval_javascript_message, m_cef_browser, javascript_code));
+	CefPostTask(TID_UI, base::Bind(&send_eval_javascript_message, m_cef_browser, script_name, javascript_code));
 
 	// Run the event loop (blocking)
 	loop.exec();
