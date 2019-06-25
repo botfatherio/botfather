@@ -23,9 +23,11 @@ public:
 
 	QString group() const;
 	QString name() const;
-	QSize size() const;
 	QRect rect() const;
 	QUrl url() const;
+
+	QSize size() const;
+	void setSize(const QSize &size);
 
 	QImage takeScreenshot();
 

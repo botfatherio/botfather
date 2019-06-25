@@ -22,7 +22,9 @@ public:
 	// moved or becomes focused. (Multiple BrowserWindows can display the same Browser).
 	void setScreenPointOffset(const QPoint &offset);
 
-	QSize size() const;
+	QSize size();
+	void setSize(const QSize &size);
+
 	QImage takeScreenshot();
 
 	// Called to retrieve the root window rectangle in screen coordinates.
@@ -43,6 +45,7 @@ public:
 private:
 	BrowserClient *m_parent;
 	QPoint m_screen_point_offset;
+	QReadWriteLock m_size_lock;
 	QSize m_size;
 	QReadWriteLock m_screenshot_lock;
 	QImage m_screenshot;

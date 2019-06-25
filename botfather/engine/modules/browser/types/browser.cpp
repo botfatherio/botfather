@@ -42,11 +42,6 @@ QString Browser::name() const
 	return m_name;
 }
 
-QSize Browser::size() const
-{
-	return m_browser_client->size();
-}
-
 QRect Browser::rect() const
 {
 	return QRect(QPoint(0, 0), size());
@@ -55,6 +50,16 @@ QRect Browser::rect() const
 QUrl Browser::url() const
 {
 	return QString::fromStdString(m_cef_browser->GetMainFrame()->GetURL());
+}
+
+QSize Browser::size() const
+{
+	return m_browser_client->size();
+}
+
+void Browser::setSize(const QSize &size)
+{
+	m_browser_client->setSize(size);
 }
 
 QImage Browser::takeScreenshot()

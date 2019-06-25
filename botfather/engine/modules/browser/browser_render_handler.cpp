@@ -14,9 +14,19 @@ void BrowserRenderHandler::setScreenPointOffset(const QPoint &offset)
 	m_screen_point_offset = offset;
 }
 
-QSize BrowserRenderHandler::size() const
+QSize BrowserRenderHandler::size()
 {
-	return m_size;
+	m_size_lock.lockForRead();
+	QSize copy = m_size;
+	m_size_lock.unlock();
+	return copy;
+}
+
+void BrowserRenderHandler::setSize(const QSize &size)
+{
+	m_size_lock.lockForWrite();
+	m_size = size;
+	m_size_lock.unlock();
 }
 
 QImage BrowserRenderHandler::takeScreenshot()
@@ -53,7 +63,9 @@ bool BrowserRenderHandler::GetScreenPoint(CefRefPtr<CefBrowser> browser, int vie
 
 void BrowserRenderHandler::GetViewRect(CefRefPtr<CefBrowser>, CefRect& rect)
 {
+	m_size_lock.lockForRead();
 	rect.Set(m_screen_point_offset.x(), m_screen_point_offset.y(), m_size.width(), m_size.height());
+	m_size_lock.unlock();
 }
 
 void BrowserRenderHandler::OnPaint(CefRefPtr<CefBrowser> browser, PaintElementType type, const RectList& dirty_rects, const void *buffer, int width, int height)

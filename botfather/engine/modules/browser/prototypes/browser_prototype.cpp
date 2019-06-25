@@ -51,14 +51,19 @@ QImage BrowserPrototype::takeScreenshot()
 	return THIS_BROWSER_P()->takeScreenshot();
 }
 
+QRect BrowserPrototype::getRect() const
+{
+	return THIS_BROWSER_P()->rect();
+}
+
 QSize BrowserPrototype::getSize() const
 {
 	return THIS_BROWSER_P()->size();
 }
 
-QRect BrowserPrototype::getRect() const
+void BrowserPrototype::setSize(const QSize &size)
 {
-	return THIS_BROWSER_P()->rect();
+	THIS_BROWSER_P()->setSize(size);
 }
 
 void BrowserPrototype::blockResource(const QString &resource_pattern)

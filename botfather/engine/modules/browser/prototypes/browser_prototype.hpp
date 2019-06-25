@@ -8,7 +8,7 @@
 class BrowserPrototype : public AbstractPrototype
 {
 	Q_OBJECT
-	Q_PROPERTY(QSize size READ getSize)
+	Q_PROPERTY(QSize size READ getSize WRITE setSize)
 	Q_PROPERTY(QRect rect READ getRect)
 	Q_PROPERTY(QUrl url READ getUrl)
 
@@ -17,8 +17,10 @@ public:
 	using AbstractPrototype::AbstractPrototype;
 
 	Q_INVOKABLE QImage takeScreenshot();
-	Q_INVOKABLE QSize getSize() const;
 	Q_INVOKABLE QRect getRect() const;
+
+	Q_INVOKABLE QSize getSize() const;
+	Q_INVOKABLE void setSize(const QSize &size);
 
 	Q_INVOKABLE void blockResource(const QString &resource_pattern);
 	Q_INVOKABLE void replaceResource(const QString &resource_pattern, const QString &replacement_url);
