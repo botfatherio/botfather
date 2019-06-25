@@ -135,7 +135,7 @@ void Engine::runScript()
 	// Check whether the script ended due to errors. If so print them to the users log.
 	if (result.isError()) {
 		QString error_msg = replaceQtWithEngineTypeNames(result.toString());
-		QString debug_msg = QString("<b>Uncaught exception</b> at line %1 : %2").arg(result.property("lineNumber").toString()).arg(error_msg);
+		QString debug_msg = QString("Line %1, %2").arg(result.property("lineNumber").toString()).arg(error_msg);
 		emit log(debug_msg, LogSource::Error);
 	} else {
 		emit log("Bot script execution finished.", LogSource::System);

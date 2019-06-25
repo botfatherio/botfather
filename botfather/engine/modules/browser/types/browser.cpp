@@ -170,10 +170,11 @@ static void send_eval_javascript_message(CefRefPtr<CefBrowser> cef_browser, cons
 	CefRefPtr<CefListValue> args = msg->GetArgumentList();
 	args->SetInt(0, 42);
 	args->SetString(1, CefString(javascript_code.toStdString()));
+	args->SetString(2, CefString("test.js"));
 	cef_browser->SendProcessMessage(PID_RENDERER, msg);
 }
 
-bool Browser::evaluateJavascript(const QString &javascript_code, QCborValue &result, QVariantMap &exception)
+bool Browser::evaluateJavascript(const QString &javascript_code, QCborValue &result, QVariantMap &exception, bool &timed_out)
 {
 	bool success = false;
 
@@ -218,12 +219,15 @@ bool Browser::evaluateJavascript(const QString &javascript_code, QCborValue &res
 	if (local_result)
 	{
 		result = *local_result;
+		delete local_result;
 	}
 	if (local_exception)
 	{
 		exception = *local_exception;
+		delete local_exception;
 	}
 
+	timed_out = !timer.isActive();
 	return success;
 }
 

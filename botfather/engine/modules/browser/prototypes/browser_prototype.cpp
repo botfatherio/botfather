@@ -236,19 +236,28 @@ QScriptValue BrowserPrototype::evaluateJavascript(const QString &javascript_code
 {
 	QCborValue result;
 	QVariantMap exception;
+	bool timed_out;
+	QString script_url("inline script");
 
-	if (THIS_BROWSER_P()->evaluateJavascript(javascript_code, result, exception))
+	if (THIS_BROWSER_P()->evaluateJavascript(javascript_code, result, exception, timed_out))
 	{
 		return EngineUtils::convertToQScriptValue(engine(), result);
 	}
 	else if (!exception.isEmpty())
 	{
-		qDebug() << "EXCEPTION" << exception;
-		return context()->throwError("Woops");
+		int line_number = exception["line_number"].toInt();
+		QString message = exception["message"].toString();
+		QString msg = QString("[%1] Line %2, %3").arg(script_url).arg(line_number).arg(message);
+		return context()->throwError(QScriptContext::UnknownError, msg);
+	}
+	else if (timed_out)
+	{
+		QString msg("Evaluation timed out, more that 10 seconds passed.");
+		return context()->throwError(QScriptContext::UnknownError, msg);
 	}
 	else
 	{
-		QString msg("Evaluation timed out, more that 10 seconds passed.");
+		QString msg("Script execution failed.");
 		return context()->throwError(QScriptContext::UnknownError, msg);
 	}
 }
