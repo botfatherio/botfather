@@ -26,6 +26,9 @@ public:
 	QRect rect() const;
 	QUrl url() const;
 
+	static const int MIN_WIDTH = 400;
+	static const int MIN_HEIGHT = 400;
+
 	QSize size() const;
 	void resize(const QSize &size);
 

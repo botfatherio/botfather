@@ -59,6 +59,8 @@ QSize Browser::size() const
 
 void Browser::resize(const QSize &size)
 {
+	Q_ASSERT(size.width() >= MIN_WIDTH);
+	Q_ASSERT(size.height() >= MIN_HEIGHT);
 	m_browser_client->setSize(size);
 }
 

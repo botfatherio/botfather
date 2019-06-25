@@ -35,7 +35,7 @@ QScriptValue BrowserPrototype::constructor(QScriptContext *context, QScriptEngin
 	if (context->argumentCount() == 2 && context->argument(0).isString() && isQSize(context->argument(1)))
 	{
 		QSize size = qscriptvalue_cast<QSize>(context->argument(1));
-		if (size.width() < 400 || size.height() < 400)
+		if (size.width() < Browser::MIN_WIDTH || size.height() < Browser::MIN_HEIGHT)
 		{
 			return context->throwError(QScriptContext::Error::RangeError, "The browsers size must be at least 400x400");
 		}
@@ -63,6 +63,11 @@ QSize BrowserPrototype::getSize() const
 
 void BrowserPrototype::resize(const QSize &size)
 {
+	if (size.width() < Browser::MIN_WIDTH || size.height() < Browser::MIN_HEIGHT)
+	{
+		context()->throwError(QScriptContext::Error::RangeError, "The browsers size must be at least 400x400");
+		return;
+	}
 	THIS_BROWSER_P()->resize(size);
 }
 
