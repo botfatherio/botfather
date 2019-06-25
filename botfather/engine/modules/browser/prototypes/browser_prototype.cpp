@@ -1,6 +1,6 @@
 #include "browser_prototype.hpp"
 #include "../../../engine.hpp"
-#include "../../../engine_utils.hpp"
+#include "../browser_util.hpp"
 
 // We must cast to Browser* otherwise the browsers pointers won't be valid.
 #define THIS_BROWSER_P() qscriptvalue_cast<Browser*>(thisObject())
@@ -241,7 +241,7 @@ QScriptValue BrowserPrototype::evaluateJavascript(const QString &javascript_code
 
 	if (THIS_BROWSER_P()->evaluateJavascript(script_url, javascript_code, timeout_in_ms, result, exception, timed_out))
 	{
-		return EngineUtils::convertToQScriptValue(engine(), result);
+		return BrowserUtil::convertToQScriptValue(engine(), result);
 	}
 	else if (!exception.isEmpty())
 	{

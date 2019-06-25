@@ -5,6 +5,8 @@
 #include <QTimer>
 #include <QApplication>
 #include <QByteArray>
+#include <QCborValue>
+#include <QScriptValue>
 #include "include/cef_values.h"
 
 namespace BrowserUtil {
@@ -12,6 +14,8 @@ namespace BrowserUtil {
 void runInMainThread(std::function<void()> callback);
 
 QByteArray convertCefBinaryValueToQByteArray(const CefRefPtr<CefBinaryValue> &cef_binary_value);
+
+QScriptValue convertToQScriptValue(QScriptEngine *engine, const QCborValue &cbor_value);
 
 }
 
