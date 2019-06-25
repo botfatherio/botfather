@@ -82,7 +82,6 @@ HEADERS += \
     auth/rest_api_client.hpp \
     auth/scripts_api_client.hpp \
     engine/modules/android/apis/android_api.hpp \
-    engine/modules/browser/browser_render_process_handler.hpp \
     engine/modules/desktop/apis/desktop_api.hpp \
     engine/modules/common/apis/helper_api.hpp \
     engine/modules/vision/apis/vision_api.hpp \
@@ -168,7 +167,6 @@ SOURCES += \
     auth/rest_api_client.cpp \
     auth/scripts_api_client.cpp \
     engine/modules/android/apis/android_api.cpp \
-    engine/modules/browser/browser_render_process_handler.cpp \
     engine/modules/desktop/apis/desktop_api.cpp \
     engine/modules/common/apis/helper_api.cpp \
     engine/modules/vision/apis/vision_api.cpp \

@@ -8,14 +8,12 @@
 #include "browser_render_handler.hpp"
 #include "browser_load_handler.hpp"
 #include "browser_request_handler.hpp"
-#include "browser_render_process_handler.hpp"
 
 class BrowserClient
 	: public QObject
 	, public CefClient
 	, public BrowserLifeSpanHandler
 	, public BrowserRenderHandler
-	, public BrowserRenderProcessHandler
 	, public BrowserLoadHandler
 	, public BrowserRequestHandler
 {
