@@ -2,7 +2,9 @@
 #include <QElapsedTimer>
 #include <QTimer>
 #include <QThread>
+#include <QUuid>
 #include <QDebug>
+#include <functional>
 #include "include/base/cef_bind.h"
 #include "include/wrapper/cef_closure_task.h"
 #include "../adapters/cef_key_event_adapter.hpp"
@@ -164,10 +166,11 @@ void Browser::executeJavascript(const QString &javascript_code)
 	);
 }
 
-static void send_eval_javascript_message(CefRefPtr<CefBrowser> cef_browser, const QString &script_name, const QString &javascript_code)
+static void send_eval_javascript_message(CefRefPtr<CefBrowser> cef_browser, const QString &script_name, const QString &javascript_code, const QString &result_id)
 {
 	CefRefPtr<CefProcessMessage> msg= CefProcessMessage::Create("eval_javascript");
 	CefRefPtr<CefListValue> args = msg->GetArgumentList();
+	args->SetString(0, CefString(result_id.toStdString()));
 	args->SetString(1, CefString(javascript_code.toStdString()));
 	args->SetString(2, CefString(script_name.toStdString()));
 	cef_browser->SendProcessMessage(PID_RENDERER, msg);
@@ -177,11 +180,11 @@ bool Browser::evaluateJavascript(const QString &script_name, const QString &java
 {
 	bool success = false;
 
-	// Directly populating the reentrant |result| and |exception| caused crashes from time to time in
-	// the QCborValue == operator. Using QMutex around all usages didn't help, neither did having a local
-	// version of the result. Using local pointer seems to work.
-	QCborValue *local_result = nullptr;
-	QVariantMap *local_exception = nullptr;
+	// Generate a UUID to identify the result that belongs to this call to Browser::evaluateJavascript.
+	// Evaluating a script with a short |timeout_in_ms| followed by evaluating another script could
+	// result in the second script receiving the result of the first evaluation.
+	// Giving each result a UUID allows us to ignore results which do not belong to this method call.
+	QString result_id = QUuid::createUuid().toString();
 
 	QEventLoop loop;
 	QTimer timer;
@@ -189,18 +192,25 @@ bool Browser::evaluateJavascript(const QString &script_name, const QString &java
 	timer.setSingleShot(true);
 	connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
 
-	connect(m_browser_client, &BrowserClient::evalJavascriptResultReady, &timer, &QTimer::stop);
-	connect(m_browser_client, &BrowserClient::evalJavascriptResultReady, [this, &success, &local_result, &local_exception](bool s, const QCborValue &r, const QVariantMap &e) {
+	QSharedPointer<QMetaObject::Connection> conn(new QMetaObject::Connection);
+
+	auto slot = [result_id, conn, &timer, &success, &result, &exception](const QString &id, const bool &s, const QCborValue &r, const QVariantMap &e)
+	{
+		// Ignore results which do not correspond to this call to evaluateJavascript
+		if (result_id != id) return;
+
+		// Disconnect this lambda slot from the evalJavascriptResultReady signal, to prevent more signals from arriving
+		QObject::disconnect(*conn);
+
+		// Stop the timer to prevent the call from timing out
+		QMetaObject::invokeMethod(&timer, "stop", Qt::QueuedConnection);
+
 		success = s;
-		if (s)
-		{
-			local_result = new QCborValue(r);
-		}
-		else
-		{
-			local_exception = new QVariantMap(e);
-		}
-	});
+		result = r;
+		exception = e;
+	};
+
+	*conn = connect(m_browser_client, &BrowserClient::evalJavascriptResultReady, slot);
 
 	// Calling QEventLoop::quit from within the lambda will occasionally cause crashes.
 	// Connecting the signals in the given order works perfectly.
@@ -210,21 +220,10 @@ bool Browser::evaluateJavascript(const QString &script_name, const QString &java
 
 	// CefBrowser::SendProcessMessage must be send from the main thread of the browser process.
 	// TID_UI thread is the main thread in the browser process.
-	CefPostTask(TID_UI, base::Bind(&send_eval_javascript_message, m_cef_browser, script_name, javascript_code));
+	CefPostTask(TID_UI, base::Bind(&send_eval_javascript_message, m_cef_browser, script_name, javascript_code, result_id));
 
 	// Run the event loop (blocking)
 	loop.exec();
-
-	if (local_result)
-	{
-		result = *local_result;
-		delete local_result;
-	}
-	if (local_exception)
-	{
-		exception = *local_exception;
-		delete local_exception;
-	}
 
 	timed_out = !timer.isActive();
 	return success;

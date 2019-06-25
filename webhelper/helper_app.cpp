@@ -15,14 +15,16 @@ bool HelperApp::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProce
 	 ** browser process.
 	 **
 	 ** Expects:
-	 ** - Index 0: (CefString) javascript code
-	 ** - Index 1: (CefString) script url
-	 ** - Index 2: (int) start line
+	 ** - Index 0: (CefString) result id
+	 ** - Index 1: (CefString) javascript code
+	 ** - Index 2: (CefString) script url
+	 ** - Index 3: (int) start line
 	 **
 	 ** Returns:
-	 ** - Index 0: (bool) success
-	 ** - Index 1: (CefBinaryValue(QCborValue)) return value
-	 ** - Index 2: (CefBinaryValue(QVariant(QVariantMap)) exception
+	 ** - Index 0: (CefString) result id
+	 ** - Index 1: (bool) success
+	 ** - Index 2: (CefBinaryValue(QCborValue)) return value
+	 ** - Index 3: (CefBinaryValue(QVariant(QVariantMap)) exception
 	 **/
 	if (message->GetName() == "eval_javascript")
 	{
@@ -30,6 +32,7 @@ bool HelperApp::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProce
 		context->Enter();
 
 		// Expected paramters
+		CefString result_id = message->GetArgumentList()->GetString(0);
 		CefString javascript_code = message->GetArgumentList()->GetString(1);
 		CefString script_url = message->GetArgumentList()->GetString(2);
 		int start_line = message->GetArgumentList()->GetInt(3);
@@ -42,13 +45,14 @@ bool HelperApp::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProce
 		// Prepare the result process message
 		CefRefPtr<CefProcessMessage> result_msg = CefProcessMessage::Create("eval_javascript_result");
 		CefRefPtr<CefListValue> result_msg_args = result_msg->GetArgumentList();
-		result_msg_args->SetBool(0, success);
+		result_msg_args->SetString(0, result_id);
+		result_msg_args->SetBool(1, success);
 
 		if (success)
 		{
 			QCborValue cbor_result = BFConverter::CefV8ValueToQCborValue(cef_v8_result_value);
 			CefRefPtr<CefBinaryValue> binary_result = BFConverter::QCborValueToCefBinaryValue(cbor_result);
-			result_msg_args->SetBinary(1, binary_result);
+			result_msg_args->SetBinary(2, binary_result);
 		}
 		else
 		{
@@ -63,7 +67,7 @@ bool HelperApp::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProce
 			map["start_position"] = cef_v8_exception->GetStartPosition();
 
 			CefRefPtr<CefBinaryValue> binary_exception = BFConverter::QVariantToCefBinaryValue(map);
-			result_msg_args->SetBinary(2, binary_exception);
+			result_msg_args->SetBinary(3, binary_exception);
 		}
 
 		// We must stay in context while parsing/accessing any V8 values, otherwise the renderer

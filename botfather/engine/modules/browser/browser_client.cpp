@@ -28,7 +28,8 @@ bool BrowserClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefP
 
 	if (message->GetName() == "eval_javascript_result")
 	{
-		bool success = message->GetArgumentList()->GetBool(0);
+		QString result_id = QString::fromStdString(message->GetArgumentList()->GetString(0).ToString());
+		bool success = message->GetArgumentList()->GetBool(1);
 
 		// Not initialising these caused segmentation faults in slots receiving the evalJavascriptResultReady signal.
 		// When they copied the uninitialised values they caused the application to crash from time to time.
@@ -37,7 +38,7 @@ bool BrowserClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefP
 
 		if (success)
 		{
-			CefRefPtr<CefBinaryValue> binary_result = message->GetArgumentList()->GetBinary(1);
+			CefRefPtr<CefBinaryValue> binary_result = message->GetArgumentList()->GetBinary(2);
 			QCborStreamReader cbor_stream_reader(BrowserUtil::convertCefBinaryValueToQByteArray(binary_result));
 
 			result = QCborValue::fromCbor(cbor_stream_reader);
@@ -45,7 +46,7 @@ bool BrowserClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefP
 		}
 		else
 		{
-			CefRefPtr<CefBinaryValue> binary_exception = message->GetArgumentList()->GetBinary(2);
+			CefRefPtr<CefBinaryValue> binary_exception = message->GetArgumentList()->GetBinary(3);
 			QDataStream data_stream(BrowserUtil::convertCefBinaryValueToQByteArray(binary_exception));
 
 			QVariant variant;
@@ -55,7 +56,7 @@ bool BrowserClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefP
 			qDebug() << "Received casted exception:" << exception;
 		}
 
-		emit evalJavascriptResultReady(success, result, exception);
+		emit evalJavascriptResultReady(result_id, success, result, exception);
 		return true;
 	}
 

@@ -40,7 +40,7 @@ signals:
 	void browserClosedSignal();
 	void loadingStateChanged(bool is_loading, bool can_go_back, bool can_go_forward);
 	void finishedLoadingUrl(const QString &url);
-	void evalJavascriptResultReady(bool success, const QCborValue &result, const QVariantMap &exception);
+	void evalJavascriptResultReady(QString result_id, bool success, QCborValue result, QVariantMap exception);
 
 private:
 	IMPLEMENT_REFCOUNTING(BrowserClient)
