@@ -9,7 +9,8 @@
 BotListModel::BotListModel(QObject *parent)
 	: QAbstractListModel(parent)
 {
-
+	// Required by the QAbstractItemModel::dataChanged signal
+	qRegisterMetaType<QVector<int> >("QVector<int>");
 }
 
 int BotListModel::rowCount(const QModelIndex &parent) const
