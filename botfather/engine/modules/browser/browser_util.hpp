@@ -13,6 +13,8 @@ namespace BrowserUtil {
 
 void runInMainThread(std::function<void()> callback);
 
+void runAfterQtEventLoopStarted(std::function<void()> callback);
+
 QByteArray convertCefBinaryValueToQByteArray(const CefRefPtr<CefBinaryValue> &cef_binary_value);
 
 QScriptValue convertToQScriptValue(QScriptEngine *engine, const QCborValue &cbor_value);

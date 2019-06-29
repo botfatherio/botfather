@@ -19,13 +19,20 @@ void BrowserUtil::runInMainThread(std::function<void()> callback)
 	QMetaObject::invokeMethod(timer, "start", Qt::QueuedConnection, Q_ARG(int, 0));
 }
 
+void BrowserUtil::runAfterQtEventLoopStarted(std::function<void()> callback)
+{
+	// This singleShot timers start will be scheduled in the apps Qt message loop.
+	// Thus, as soon as the message loop starts the callback will be called.
+	QTimer::singleShot(0, callback);
+}
+
 QByteArray BrowserUtil::convertCefBinaryValueToQByteArray(const CefRefPtr<CefBinaryValue> &cef_binary_value)
 {
 	size_t buffer_size = cef_binary_value->GetSize();
 	char *buffer = new char[buffer_size];
 
 	cef_binary_value->GetData(buffer, buffer_size, 0);
-	QByteArray byte_array(buffer, buffer_size);
+	QByteArray byte_array(buffer, static_cast<int>(buffer_size));
 
 	delete[] buffer;
 	return byte_array;
@@ -65,7 +72,7 @@ QScriptValue BrowserUtil::convertToQScriptValue(QScriptEngine *engine, const QCb
 	if (cbor_value.isInteger())
 	{
 		// QScriptValue(qint64) is ambigious
-		return QScriptValue((double)cbor_value.toInteger());
+		return QScriptValue(static_cast<double>(cbor_value.toInteger()));
 	}
 
 	if (cbor_value.isString())
@@ -83,9 +90,9 @@ QScriptValue BrowserUtil::convertToQScriptValue(QScriptEngine *engine, const QCb
 	if (cbor_value.isArray())
 	{
 		QCborArray cbor_array = cbor_value.toArray();
-		QScriptValue array = engine->newArray(cbor_array.size());
+		QScriptValue array = engine->newArray(static_cast<uint>(cbor_array.size()));
 
-		for (int i = 0; i < cbor_array.size(); ++i)
+		for (quint32 i = 0; i < cbor_array.size(); ++i)
 		{
 			array.setProperty(i, BrowserUtil::convertToQScriptValue(engine, cbor_array[i]));
 		}
@@ -97,7 +104,7 @@ QScriptValue BrowserUtil::convertToQScriptValue(QScriptEngine *engine, const QCb
 		QCborMap cbor_map = cbor_value.toMap();
 		QScriptValue object = engine->newObject();
 
-		for (const QCborValue key : cbor_map.keys())
+		for (QCborValue key : cbor_map.keys())
 		{
 			if (!key.isString()) continue;
 			object.setProperty(key.toString(), BrowserUtil::convertToQScriptValue(engine, cbor_map[key]));

@@ -8,7 +8,7 @@
 #include "browser_util.hpp"
 
 #if defined(_WIN32) || defined(_WIN64)
-	#include <windows.h>
+	#include <Windows.h>
 #endif
 
 BrowserManager *BrowserManager::instance()
@@ -35,7 +35,9 @@ bool BrowserManager::init(int argc, char **argv)
 
 	// Pass command-line arguments
 #if defined(_WIN32) || defined(_WIN64)
-	HINSTANCE hInstance = (HINSTANCE)GetModuleHandle(nullptr);
+	Q_UNUSED(argc)
+	Q_UNUSED(argv)
+	HINSTANCE hInstance = static_cast<HINSTANCE>(GetModuleHandle(nullptr));
 	CefMainArgs main_args(hInstance);
 #else
 	CefMainArgs main_args(argc, argv);
@@ -47,26 +49,21 @@ bool BrowserManager::init(int argc, char **argv)
 
 void BrowserManager::bind(QCoreApplication *app)
 {
-	CEF_REQUIRE_UI_THREAD();
-	Q_ASSERT(m_cef_message_loop_timer == nullptr);
-
-	QObject::connect(app, &QCoreApplication::aboutToQuit, [this]()
+	BrowserUtil::runAfterQtEventLoopStarted([app, this]()
 	{
-		if (m_cef_message_loop_timer)
-		{
-			m_cef_message_loop_timer->stop();
-			m_cef_message_loop_timer->deleteLater();
-			m_cef_message_loop_timer = nullptr;
-		}
-	});
-	QObject::connect(app, &QCoreApplication::destroyed, [this](){
-		this->quit(); // TODO: eventually make the BrowserManager a QObject
-	});
+		CEF_REQUIRE_UI_THREAD();
+		Q_ASSERT(m_cef_message_loop_timer == nullptr);
 
-	m_cef_message_loop_timer = new QTimer();
-	m_cef_message_loop_timer->setInterval(1);
-	QObject::connect(m_cef_message_loop_timer, &QTimer::timeout, CefDoMessageLoopWork);
-	m_cef_message_loop_timer->start();
+		m_cef_message_loop_timer = new QTimer();
+		m_cef_message_loop_timer->setInterval(1);
+
+		QObject::connect(m_cef_message_loop_timer, &QTimer::timeout, CefDoMessageLoopWork);
+		QObject::connect(app, &QCoreApplication::aboutToQuit, [this](){ this->quit(); });
+		QObject::connect(app, &QCoreApplication::aboutToQuit, m_cef_message_loop_timer, &QTimer::stop);
+		QObject::connect(app, &QCoreApplication::aboutToQuit, m_cef_message_loop_timer, &QTimer::deleteLater);
+
+		m_cef_message_loop_timer->start();
+	});
 }
 
 void BrowserManager::quit()
