@@ -201,13 +201,14 @@ bool Browser::evaluateJavascript(const QString &script_name, const QString &java
 
 	QSharedPointer<QMetaObject::Connection> conn(new QMetaObject::Connection);
 
-	auto slot = [result_id, conn, &timer, &success, &result, &exception](const QString &id, const bool &s, const QCborValue &r, const QVariantMap &e)
+	auto slot = [this, result_id, conn, &timer, &success, &result, &exception](const QString &id, const bool &s, const QCborValue &r, const QVariantMap &e)
 	{
 		// Ignore results which do not correspond to this call to evaluateJavascript
 		if (result_id != id) return;
 
 		// Disconnect this lambda slot from the evalJavascriptResultReady signal, to prevent more signals from arriving
-		QObject::disconnect(*conn);
+		//QObject::disconnect(*conn);
+		this->disconnect(*conn); // FIXME: UNTESTED UNDER WINDOWS
 
 		// Stop the timer to prevent the call from timing out
 		QMetaObject::invokeMethod(&timer, "stop", Qt::QueuedConnection);
@@ -348,10 +349,36 @@ void Browser::releaseKey(const QString &bf_keycode)
 
 void Browser::holdKey(const CefKeyEvent &event)
 {
+	// Analyzing the cefclient osr windows example generates the following CefKeyEvents when a "(" is entered:
+	//
+	// - windows_key_code: 16, type: 0, modifiers: 1026 <-> Shift RawKeyDown Event, 16 being the VK of the shift key.
+	// - windows_key_code: 56, type: 0, modifiers: 2    <-> 8-Key RawKeyDown Event, 56 being the VK of the 8 key.
+	// - windows_key_code: 40, type: 3, modifiers: 514  <-> '(' Char Event, 40 being the unicode value of '('.
+	// - windows_key_code: 56, type: 2, modifiers: 2    <-> 8-key KeyUp Event
+	// - windows_key_code: 16, type: 2, modifiers: 0    <-> Shift KeyUp Event
+	//
+	// The first 4 events have shift modifiers. The 5th event releases the shift key, thus there is no shift modifier anymore.
+	// The native_key_code was either uninizialized or some high number. As the native key code is specific
+	// to the keyboard used, setting it does not make a difference in our scenario.
+	//
+	// The Windows Keyboard Input Documentation describes a similar behaviour:
+	// https://docs.microsoft.com/en-us/windows/desktop/learnwin32/keyboard-input
+	//
+	// The CefKeyEvent character property was always set to '\0' under windows. However we set it to the unicode value
+	// of the entered character (if any) and use it to generate an CHAR event as described below.
+	//
+	// Qt however does only generate 2 QKeyEvents in the same situation. One KeyPress and a KeyRelease.
+	// To make it work we generate a CHAR event from the KeyPress event, by overriding the windows_key_code (and the
+	// native_key_code) with the characters unicode value and adjusting the type.
+
 	CefKeyEvent event_copy(event);
+
 	event_copy.type = KEYEVENT_RAWKEYDOWN;
 	m_cef_browser->GetHost()->SendKeyEvent(event_copy);
+
 	event_copy.type = KEYEVENT_CHAR;
+	event_copy.native_key_code = event_copy.character;
+	event_copy.windows_key_code = event_copy.character;
 	m_cef_browser->GetHost()->SendKeyEvent(event_copy);
 }
 

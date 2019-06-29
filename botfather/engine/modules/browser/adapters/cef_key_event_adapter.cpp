@@ -6,9 +6,13 @@ CefKeyEventAdapter::CefKeyEventAdapter(const QKeyEvent *event)
 {
 	bool is_keypad_key = event->modifiers() & Qt::KeypadModifier;
 
-	modifiers = BFKeyMapper::mapQtKeyboardModifiersToCefKeyModifiers(event->modifiers());
-	native_key_code = event->nativeVirtualKey();
+	modifiers = static_cast<uint32>(BFKeyMapper::mapQtKeyboardModifiersToCefKeyModifiers(event->modifiers()));
+	native_key_code = static_cast<int>(event->nativeScanCode());
 	windows_key_code = BFKeyMapper::mapQtKeyToWindowsKeyCode(Qt::Key(event->key()), is_keypad_key);
+
+	// Even though the following code works perfectly under windows, I decided to use the same code
+	// used under linux for consitency.
+	// windows_key_code = static_cast<int>(event->nativeVirtualKey());
 
 	if (!event->text().isEmpty())
 	{
@@ -17,6 +21,8 @@ CefKeyEventAdapter::CefKeyEventAdapter(const QKeyEvent *event)
 	}
 
 	// This value will always be false on non-Windows platforms.
+	// Under windows Alt+AnyKey and F10 are considered system keys. But there is no need for
+	// us to handle them different than other key events.
 	is_system_key = false;
 }
 
@@ -25,7 +31,7 @@ CefKeyEventAdapter::CefKeyEventAdapter(const QString &bf_keycode, const Qt::Keyb
 	Qt::Key qt_key = BFKeyMapper::mapBFKeycodeToQtKey(bf_keycode);
 	bool is_keypad_key = qt_keyboard_modifiers & Qt::KeypadModifier;
 
-	modifiers = BFKeyMapper::mapQtKeyboardModifiersToCefKeyModifiers(qt_keyboard_modifiers);
+	modifiers = static_cast<uint32>(BFKeyMapper::mapQtKeyboardModifiersToCefKeyModifiers(qt_keyboard_modifiers));
 	native_key_code = BFKeyMapper::mapQtKeyToNativeKeyCode(qt_key, is_keypad_key);
 	windows_key_code = BFKeyMapper::mapQtKeyToWindowsKeyCode(qt_key, is_keypad_key);
 
