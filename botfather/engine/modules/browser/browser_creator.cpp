@@ -67,7 +67,11 @@ void BrowserCreator::process()
 	browser_settings.web_security = STATE_DISABLED;
 
 	CefWindowInfo window_info;
+#ifdef OS_WIN
 	window_info.SetAsWindowless(nullptr);
+#else
+	window_info.SetAsWindowless(0);
+#endif
 
 	m_browser = CefBrowserHost::CreateBrowserSync(
 		window_info,
