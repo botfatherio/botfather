@@ -1,5 +1,5 @@
 #include "desktop.hpp"
-#include <windows.h>
+#include <Windows.h>
 #include <QSize>
 #include <QPixmap>
 #include <QtWin>
@@ -137,8 +137,8 @@ bool Desktop::getCursorPosition(int *x, int *y)
 {
 	POINT cursor_position;
 	if (GetCursorPos(&cursor_position)) {
-        x = (int *)cursor_position.x;
-        y = (int *)cursor_position.y;
+		*x = static_cast<int>(cursor_position.x);
+		*y = static_cast<int>(cursor_position.y);
 		return true;
 	}
 	return false;
