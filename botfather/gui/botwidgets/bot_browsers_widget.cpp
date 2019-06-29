@@ -83,6 +83,10 @@ void BotBrowsersWidget::viewBrowser(const QModelIndex &index)
 
 	// Not giving the BrowserWindow the MainWindow as parent allows the user to put the MainWindow
 	// in front of the BrowserWindow under Windows.
+	// Not setting a parent puts us in charge of deleting the BrowserWindows. We do so using a signal.
+	// Another problem is, that the BrowserWindows won't be closed when the MainWindow is closed.
+	// Under linux giving the BrowserWindow a parent already had the desired behaviour.
+	// Read MainWindow::closeEvent to learn how this issue was solved.
 	BrowserWindow *browser_window = new BrowserWindow(browser->name(), nullptr);
 	connect(this, &BotBrowsersWidget::destroyed, browser_window, &QMainWindow::deleteLater);
 

@@ -297,4 +297,13 @@ void MainWindow::closeEvent(QCloseEvent *event)
 {
 	m_tray_icon->hide();
 	event->accept();
+
+	// The application quits by default when all parentless windows are closed.
+	// Usually we only have one parentless window, the MainWindow. However, under
+	// MS Windows we need the BrowserWindows also to be parentless, otherwise
+	// they are always displayed in front of the MainWindow. Thus closing the
+	// MainWindow would not result in the application quitting. To restore this
+	// behavious we explicitly close all windows when the MainWindow closes.
+	// Note that explicitly quitting the application sometimes caused crashes.
+	QApplication::closeAllWindows();
 }
