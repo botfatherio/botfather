@@ -49,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->preferences_action, &QAction::triggered, m_preferences_dialog, &PreferencesDialog::exec);
 	connect(ui->about_qt_action, &QAction::triggered, [this](){ QMessageBox::aboutQt(this); });
 	connect(ui->about_action, &QAction::triggered, this, &MainWindow::showAboutDialog);
-	connect(ui->quit_action, &QAction::triggered, QApplication::instance(), &QApplication::quit);
+	connect(ui->quit_action, &QAction::triggered, QApplication::instance(), &QApplication::closeAllWindows);
 
 	ui->update_action->setEnabled(MaintenanceTool::exists());
 	connect(m_maintenance_tool, &MaintenanceTool::updaterStarted, QApplication::instance(), &QApplication::quit);
