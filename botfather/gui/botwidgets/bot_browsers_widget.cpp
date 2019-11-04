@@ -101,7 +101,7 @@ void BotBrowsersWidget::viewBrowser(const QModelIndex &index)
 	connect(browser_window, &BrowserWindow::backTriggered, browser, &Browser::goBack, Qt::DirectConnection);
 	connect(browser_window, &BrowserWindow::forwardTriggered, browser, &Browser::goForward, Qt::DirectConnection);
 	connect(browser_window->addressBar(), &BrowserAddressBar::urlEntered, browser, &Browser::loadUrl, Qt::DirectConnection);
-	connect(browser_window->browserWidget(), &BrowserWidget::mousePressed, browser, &Browser::pressMouse, Qt::DirectConnection);
+    connect(browser_window->browserWidget(), &BrowserWidget::mousePressed, browser, &Browser::holdMouse, Qt::DirectConnection);
 	connect(browser_window->browserWidget(), &BrowserWidget::mouseReleased, browser, &Browser::releaseMouse, Qt::DirectConnection);
 	connect(browser_window->browserWidget(), &BrowserWidget::mouseMoved, browser, &Browser::moveMouse, Qt::DirectConnection);
 	connect(browser_window->browserWidget(), &BrowserWidget::wheelScrolled, browser, &Browser::scrollWheel, Qt::DirectConnection);
