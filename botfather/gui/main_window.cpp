@@ -138,7 +138,7 @@ void MainWindow::deleteSelectedBot()
 	QMessageBox::StandardButton clicked_button = QMessageBox::question(
 		this,
 		tr("Delete bot files?"),
-		tr("Do you wan to delete the bots files, settings and config?\nNote: You can remove the bot without deleting its files."),
+        tr("Do you want to delete the bots files, settings and config?\nNote, you can remove the bot without deleting its files."),
 		QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel,
 		QMessageBox::No
 	);
