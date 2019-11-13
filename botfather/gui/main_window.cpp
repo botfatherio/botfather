@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QTimer>
 #include <QFileDialog>
+#include <QDesktopServices>
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -47,6 +48,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	connect(ui->open_android_action, &QAction::triggered, m_android_dialog, &AndroidDialog::show);
 	connect(ui->preferences_action, &QAction::triggered, m_preferences_dialog, &PreferencesDialog::exec);
+    connect(ui->donate_action, &QAction::triggered, this, &MainWindow::openDonateLink);
 	connect(ui->about_qt_action, &QAction::triggered, [this](){ QMessageBox::aboutQt(this); });
 	connect(ui->about_action, &QAction::triggered, this, &MainWindow::showAboutDialog);
 	connect(ui->quit_action, &QAction::triggered, QApplication::instance(), &QApplication::closeAllWindows);
@@ -59,7 +61,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->logout_action, &QAction::triggered, m_auth_dialog, &AuthDialog::logout);
 	connect(ui->logout_action, &QAction::triggered, m_license_api_client, &LicenseApiClient::resetLicense);
 	connect(ui->logout_action, &QAction::triggered, this, &MainWindow::updateLicenseInfo);
-	connect(ui->status_action, &QAction::triggered, m_auth_dialog, &AuthDialog::viewPlans);
+    //connect(ui->status_action, &QAction::triggered, m_auth_dialog, &AuthDialog::viewPlans);
 	connect(m_auth_dialog, &AuthDialog::authenticated, this, &MainWindow::updateLicenseInfo);
 	connect(m_auth_dialog, &AuthDialog::triedAutoLogin, [this](){ ui->menuAccount->setEnabled(true); });
 	updateLicenseInfo();
@@ -253,6 +255,11 @@ void MainWindow::updateLicenseInfo()
 	}
 	ui->logout_action->setVisible(m_license_api_client->isLicenseActive());
 	ui->login_action->setVisible(!m_license_api_client->isLicenseActive());
+}
+
+void MainWindow::openDonateLink()
+{
+    QDesktopServices::openUrl(QUrl("https://buymeacoffee.com/je"));
 }
 
 void MainWindow::showAboutDialog()

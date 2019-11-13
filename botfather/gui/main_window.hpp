@@ -37,6 +37,7 @@ public slots:
 
 	void addLocalBot();
 	void updateLicenseInfo();
+    void openDonateLink();
 	void showAboutDialog();
 	void notifyAboutUpdate();
 

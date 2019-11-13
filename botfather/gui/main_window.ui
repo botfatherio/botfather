@@ -194,6 +194,7 @@
     <property name="title">
      <string>Help</string>
     </property>
+    <addaction name="donate_action"/>
     <addaction name="about_qt_action"/>
     <addaction name="about_action"/>
    </widget>
@@ -401,6 +402,9 @@
    </property>
   </action>
   <action name="status_action">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="../res/botfather.qrc">
      <normaloff>:/icons/icons/icons8-heart-outline-32.png</normaloff>:/icons/icons/icons8-heart-outline-32.png</iconset>
@@ -422,6 +426,15 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Alt+N</string>
+   </property>
+  </action>
+  <action name="donate_action">
+   <property name="icon">
+    <iconset resource="../res/botfather.qrc">
+     <normaloff>:/icons/icons/icons8-heart-outline-32.png</normaloff>:/icons/icons/icons8-heart-outline-32.png</iconset>
+   </property>
+   <property name="text">
+    <string>Buy me a coffe</string>
    </property>
   </action>
  </widget>
