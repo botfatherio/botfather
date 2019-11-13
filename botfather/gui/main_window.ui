@@ -407,7 +407,7 @@
    </property>
    <property name="icon">
     <iconset resource="../res/botfather.qrc">
-     <normaloff>:/icons/icons/icons8-heart-outline-32.png</normaloff>:/icons/icons/icons8-heart-outline-32.png</iconset>
+     <normaloff>:/icons/icons/icons8-online-32.png</normaloff>:/icons/icons/icons8-online-32.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Status</string>
