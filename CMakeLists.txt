@@ -22,13 +22,18 @@ option(QHOTKEY_EXAMPLES OFF)
 add_subdirectory(3rdparty/QHotkey)
 include_directories(3rdparty/QHotkey/QHotkey)
 
-# Include system wide installed third party libraries
+# Include and config libgit2
 find_package(libgit2 REQUIRED)
 include_directories(${LIBGIT2_INCLUDE_DIR})
 
+# Include and config OpenCV
 find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
+# Include and config CEF
+set(CEF_RUNTIME_LIBRARY_FLAG "/MD" CACHE STRING "")
+option(USE_ATL OFF)
+option(USE_SANDBOX OFF)
 find_package(CEF REQUIRED)
 
 # Include the libcef_dll_wrapper target.
