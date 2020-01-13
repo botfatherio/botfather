@@ -209,8 +209,10 @@ set(BOTFATHER_SRCS
 ADD_LOGICAL_TARGET("libcef_lib" "${CEF_LIB_DEBUG}" "${CEF_LIB_RELEASE}")
 
 # Override otherwise breaking settings set by CEF
-list(REMOVE_ITEM CEF_CXX_COMPILER_FLAGS -fno-rttii -fno-exceptions)
-list(APPEND CEF_CXX_COMPILER_FLAGS -frtti -fexceptions)
+if (OS_LINUX)
+	list(REMOVE_ITEM CEF_CXX_COMPILER_FLAGS -fno-rttii -fno-exceptions)
+	list(APPEND CEF_CXX_COMPILER_FLAGS -frtti -fexceptions)
+endif()
 
 #
 # Shared Qt5 configuration.
@@ -260,7 +262,7 @@ endif()
 #
 
 if(OS_WINDOWS)
-    find_package(Qt5WineExtras REQUIRED)
+    find_package(Qt5WinExtras REQUIRED)
 
     # Executable target.
     add_executable(${PROJECT_NAME} WIN32 ${BOTFATHER_SRCS})
@@ -268,7 +270,7 @@ if(OS_WINDOWS)
     add_dependencies(${PROJECT_NAME} libcef_dll_wrapper qhotkey)
     target_link_libraries(${PROJECT_NAME} libcef_lib libcef_dll_wrapper ${CEF_STANDARD_LIBS})
     target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Widgets Qt5::Script Qt5::Gui Qt5::Multimedia Qt5::Network)
-    target_link_libraries(${PROJECT_NAME} Qt5::WineExtras)
+    target_link_libraries(${PROJECT_NAME} Qt5::WinExtras)
     target_link_libraries(${PROJECT_NAME} qhotkey)
     target_link_libraries(${PROJECT_NAME} git2)
     target_link_libraries(${PROJECT_NAME} opencv_features2d opencv_flann opencv_imgcodecs opencv_imgproc opencv_core opencv_highgui)
