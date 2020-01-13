@@ -214,6 +214,9 @@ if (OS_LINUX)
 	list(APPEND CEF_CXX_COMPILER_FLAGS -frtti -fexceptions)
 endif()
 
+# Determine the target output directory.
+SET_CEF_TARGET_OUT_DIR()
+
 #
 # Shared Qt5 configuration.
 #
@@ -250,11 +253,11 @@ if(OS_LINUX)
     # Set rpath so that libraries can be placed next to the executable.
     set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "$ORIGIN")
     set_target_properties(${PROJECT_NAME} PROPERTIES BUILD_WITH_INSTALL_RPATH TRUE)
-    set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${BOTFATHER_BIN_OUT_DIR})
+    set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CEF_TARGET_OUT_DIR})
 
     # Copy binary and resource files to the target output directory.
-    COPY_FILES("${PROJECT_NAME}" "${CEF_BINARY_FILES}" "${CEF_BINARY_DIR}" "${BOTFATHER_BIN_OUT_DIR}")
-    COPY_FILES("${PROJECT_NAME}" "${CEF_RESOURCE_FILES}" "${CEF_RESOURCE_DIR}" "${BOTFATHER_BIN_OUT_DIR}")
+    COPY_FILES("${PROJECT_NAME}" "${CEF_BINARY_FILES}" "${CEF_BINARY_DIR}" "${CEF_TARGET_OUT_DIR}")
+    COPY_FILES("${PROJECT_NAME}" "${CEF_RESOURCE_FILES}" "${CEF_RESOURCE_DIR}" "${CEF_TARGET_OUT_DIR}")
 endif()
 
 #
@@ -279,9 +282,9 @@ if(OS_WINDOWS)
 	target_compile_options(${PROJECT_NAME} PRIVATE /WX-)
 
     # Add the custom manifest files to the executable.
-    ADD_WINDOWS_MANIFEST("${CMAKE_CURRENT_SOURCE_DIR}" "${PROJECT_NAME}" "exe")
+    ADD_WINDOWS_MANIFEST("${CMAKE_CURRENT_SOURCE_DIR}/res" "${PROJECT_NAME}" "exe")
 
     # Copy binary and resource files to the target output directory.
-    COPY_FILES("${PROJECT_NAME}" "${CEF_BINARY_FILES}" "${CEF_BINARY_DIR}" "${BOTFATHER_BIN_OUT_DIR}")
-    COPY_FILES("${PROJECT_NAME}" "${CEF_RESOURCE_FILES}" "${CEF_RESOURCE_DIR}" "${BOTFATHER_BIN_OUT_DIR}")
+    COPY_FILES("${PROJECT_NAME}" "${CEF_BINARY_FILES}" "${CEF_BINARY_DIR}" "${CEF_TARGET_OUT_DIR}")
+    COPY_FILES("${PROJECT_NAME}" "${CEF_RESOURCE_FILES}" "${CEF_RESOURCE_DIR}" "${CEF_TARGET_OUT_DIR}")
 endif()
