@@ -22,12 +22,16 @@ function(WinDeployQt)
 	cmake_parse_arguments(_deploy
 		"COMPILER_RUNTIME;FORCE"
 		"TARGET"
+		"OUTPUT"
 		"INCLUDE_MODULES;EXCLUDE_MODULES"
 		${ARGN}
 		)
 
 	if(NOT _deploy_TARGET)
 		message(FATAL_ERROR "A TARGET must be specified")
+	endif()
+	if(NOT _deploy_OUTPUT)
+		message(FATAL_ERROR "A OUTPUT directory must be specified")
 	endif()
 	if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 		list(APPEND _ARGS --debug)
@@ -66,7 +70,7 @@ function(WinDeployQt)
 		message(STATUS "not set, the VC++ redistributable installer will NOT be bundled")
 	endif()
 
-	add_custom_target(windeployqt_${_deploy_TARGET} ALL ${_deploy_PROGRAM} --dir ${PROJECT_BINARY_DIR}/windeployqt ${_ARGS}
+	add_custom_target(windeployqt_${_deploy_TARGET} ALL ${_deploy_PROGRAM} --dir ${_deploy_OUTPUT} ${_ARGS}
 		$<TARGET_FILE:${_deploy_TARGET}>
 		DEPENDS ${_deploy_TARGET}
 		COMMENT "Preparing Qt runtime dependencies")

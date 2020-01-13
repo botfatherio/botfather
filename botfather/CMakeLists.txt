@@ -215,7 +215,8 @@ if (OS_LINUX)
 endif()
 
 # Determine the target output directory.
-SET_CEF_TARGET_OUT_DIR()
+#SET_CEF_TARGET_OUT_DIR()
+set(CEF_TARGET_OUT_DIR ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
 #
 # Shared Qt5 configuration.
@@ -291,5 +292,5 @@ if(OS_WINDOWS)
 	
 	# Deploy Qt DLLs and resources
 	include(WinDeployQt)
-	WinDeployQt(TARGET ${PROJECT_NAME} COMPILER_RUNTIME INCLUDE_MODULES ${QTLIBS})
+	WinDeployQt(TARGET ${PROJECT_NAME} OUTPUT ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} COMPILER_RUNTIME INCLUDE_MODULES ${QTLIBS})
 endif()
