@@ -274,6 +274,9 @@ if(OS_WINDOWS)
     target_link_libraries(${PROJECT_NAME} qhotkey)
     target_link_libraries(${PROJECT_NAME} git2)
     target_link_libraries(${PROJECT_NAME} opencv_features2d opencv_flann opencv_imgcodecs opencv_imgproc opencv_core opencv_highgui)
+	
+	# Do not tread warnings as errors
+	target_compile_options(${PROJECT_NAME} PRIVATE /WX-)
 
     # Add the custom manifest files to the executable.
     ADD_WINDOWS_MANIFEST("${CMAKE_CURRENT_SOURCE_DIR}" "${PROJECT_NAME}" "exe")
