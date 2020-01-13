@@ -17,9 +17,6 @@ set_property(GLOBAL PROPERTY OS_FOLDERS ON)
 # Add local cmake modules
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-# Turn off attribute warnings
-add_definitions(-Wno-attributes)
-
 # Include QHotkey
 option(QHOTKEY_EXAMPLES OFF)
 add_subdirectory(3rdparty/QHotkey)
