@@ -37,6 +37,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt5Core)
+set(QTLIBS Qt5::Core)
 
 #
 # Linux configuration.
@@ -48,7 +49,7 @@ if(OS_LINUX)
     SET_EXECUTABLE_TARGET_PROPERTIES(${PROJECT_NAME})
     add_dependencies(${PROJECT_NAME} libcef_dll_wrapper)
     target_link_libraries(${PROJECT_NAME} libcef_dll_wrapper libcef_lib ${CEF_STANDARD_LIBS})
-    target_link_libraries(${PROJECT_NAME} Qt5::Core)
+    target_link_libraries(${PROJECT_NAME} ${QTLIBS})
 
     set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "$ORIGIN")
     set_target_properties(${PROJECT_NAME} PROPERTIES BUILD_WITH_INSTALL_RPATH TRUE)
@@ -72,7 +73,7 @@ if(OS_WINDOWS)
     SET_EXECUTABLE_TARGET_PROPERTIES(${PROJECT_NAME})
     add_dependencies(${PROJECT_NAME} libcef_dll_wrapper)
     target_link_libraries(${PROJECT_NAME} libcef_dll_wrapper libcef_lib ${CEF_STANDARD_LIBS})
-    target_link_libraries(${PROJECT_NAME} Qt5::Core)
+    target_link_libraries(${PROJECT_NAME} ${QTLIBS})
 
     if(USE_SANDBOX)
         # Logical target used to link the cef_sandbox library.
@@ -86,4 +87,8 @@ if(OS_WINDOWS)
     # Copy binary and resource files to the target output directory.
     COPY_FILES("${PROJECT_NAME}" "${CEF_BINARY_FILES}" "${CEF_BINARY_DIR}" "${CEF_TARGET_OUT_DIR}")
     COPY_FILES("${PROJECT_NAME}" "${CEF_RESOURCE_FILES}" "${CEF_RESOURCE_DIR}" "${CEF_TARGET_OUT_DIR}")
+	
+	# Deploy Qt DLLs and resources
+	include(WinDeployQt)
+	WinDeployQt(TARGET ${PROJECT_NAME} COMPILER_RUNTIME INCLUDE_MODULES ${QTLIBS})
 endif()

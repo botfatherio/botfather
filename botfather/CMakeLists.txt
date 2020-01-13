@@ -230,6 +230,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt5 COMPONENTS Core Widgets Script Gui Multimedia Network REQUIRED)
+set(QTLIBS Qt5::Core Qt5::Widgets Qt5::Script Qt5::Gui Qt5::Multimedia Qt5::Network)
 
 #
 # Linux configuration.
@@ -238,14 +239,14 @@ find_package(Qt5 COMPONENTS Core Widgets Script Gui Multimedia Network REQUIRED)
 if(OS_LINUX)
     find_package(X11 REQUIRED)
     find_package(Qt5X11Extras REQUIRED)
+	set(QTLIBS ${QTLIBS} Qt5::X11Extras)
 
     # Main executable target.
     add_executable(${PROJECT_NAME} ${BOTFATHER_SRCS})
     SET_EXECUTABLE_TARGET_PROPERTIES(${PROJECT_NAME})
     add_dependencies(${PROJECT_NAME} libcef_dll_wrapper qhotkey)
     target_link_libraries(${PROJECT_NAME} libcef_lib libcef_dll_wrapper ${CEF_STANDARD_LIBS})
-    target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Widgets Qt5::Script Qt5::Gui Qt5::Multimedia Qt5::Network)
-    target_link_libraries(${PROJECT_NAME} Qt5::X11Extras)
+    target_link_libraries(${PROJECT_NAME} ${QTLIBS})
     target_link_libraries(${PROJECT_NAME} qhotkey)
     target_link_libraries(${PROJECT_NAME} ${LIBGIT2_LIBRARIES})
     target_link_libraries(${PROJECT_NAME} opencv_features2d opencv_flann opencv_imgcodecs opencv_imgproc opencv_core opencv_highgui)
@@ -266,14 +267,14 @@ endif()
 
 if(OS_WINDOWS)
     find_package(Qt5WinExtras REQUIRED)
+	set(QTLIBS ${QTLIBS} Qt5::WinExtras)
 
     # Executable target.
     add_executable(${PROJECT_NAME} WIN32 ${BOTFATHER_SRCS})
     SET_EXECUTABLE_TARGET_PROPERTIES(${PROJECT_NAME})
     add_dependencies(${PROJECT_NAME} libcef_dll_wrapper qhotkey)
     target_link_libraries(${PROJECT_NAME} libcef_lib libcef_dll_wrapper ${CEF_STANDARD_LIBS})
-    target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Widgets Qt5::Script Qt5::Gui Qt5::Multimedia Qt5::Network)
-    target_link_libraries(${PROJECT_NAME} Qt5::WinExtras)
+    target_link_libraries(${PROJECT_NAME} ${QTLIBS})
     target_link_libraries(${PROJECT_NAME} qhotkey)
     target_link_libraries(${PROJECT_NAME} ${LIBGIT2_LIBRARIES})
     target_link_libraries(${PROJECT_NAME} opencv_features2d opencv_flann opencv_imgcodecs opencv_imgproc opencv_core opencv_highgui)
@@ -287,4 +288,8 @@ if(OS_WINDOWS)
     # Copy binary and resource files to the target output directory.
     COPY_FILES("${PROJECT_NAME}" "${CEF_BINARY_FILES}" "${CEF_BINARY_DIR}" "${CEF_TARGET_OUT_DIR}")
     COPY_FILES("${PROJECT_NAME}" "${CEF_RESOURCE_FILES}" "${CEF_RESOURCE_DIR}" "${CEF_TARGET_OUT_DIR}")
+	
+	# Deploy Qt DLLs and resources
+	include(WinDeployQt)
+	WinDeployQt(TARGET ${PROJECT_NAME} COMPILER_RUNTIME INCLUDE_MODULES ${QTLIBS})
 endif()
