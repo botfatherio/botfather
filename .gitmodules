@@ -1,9 +1,9 @@
 [submodule "3rdparty/opencv"]
 	path = 3rdparty/opencv
-	url = git@github.com:opencv/opencv.git
+	url = https://github.com/opencv/opencv.git
 [submodule "3rdparty/libgit2"]
 	path = 3rdparty/libgit2
-	url = git@github.com:libgit2/libgit2.git
+	url = https://github.com/libgit2/libgit2.git
 [submodule "3rdparty/QHotkey"]
 	path = 3rdparty/QHotkey
-	url = git@github.com:Skycoder42/QHotkey.git
+	url = https://github.com/Skycoder42/QHotkey.git
