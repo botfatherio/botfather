@@ -10,6 +10,9 @@ set_property(GLOBAL PROPERTY OS_FOLDERS ON)
 # Add local cmake modules
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
+# Allow find_package to use <PackageName>_ROOT  variables
+cmake_policy(SET CMP0074 NEW)
+
 # Turn off attribute warnings
 add_definitions(-Wno-attributes)
 
