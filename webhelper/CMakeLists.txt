@@ -74,11 +74,11 @@ if(OS_WINDOWS)
     if(USE_SANDBOX)
         # Logical target used to link the cef_sandbox library.
         ADD_LOGICAL_TARGET("cef_sandbox_lib" "${CEF_SANDBOX_LIB_DEBUG}" "${CEF_SANDBOX_LIB_RELEASE}")
-        target_link_libraries(${CEF_TARGET} cef_sandbox_lib ${CEF_SANDBOX_STANDARD_LIBS})
+        target_link_libraries(${PROJECT_NAME} cef_sandbox_lib ${CEF_SANDBOX_STANDARD_LIBS})
     endif()
 
     # Add the custom manifest files to the executable.
-    ADD_WINDOWS_MANIFEST("${CMAKE_CURRENT_SOURCE_DIR}" "${CEF_TARGET}" "exe")
+    ADD_WINDOWS_MANIFEST("${CMAKE_CURRENT_SOURCE_DIR}" "${PROJECT_NAME}" "exe")
 
     # Copy binary and resource files to the target output directory.
     COPY_FILES("${PROJECT_NAME}" "${CEF_BINARY_FILES}" "${CEF_BINARY_DIR}" "${BOTFATHER_BIN_OUT_DIR}")
