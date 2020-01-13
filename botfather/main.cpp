@@ -6,6 +6,8 @@
 #include "engine/modules/browser/browser_manager.hpp"
 #include "gui/main_window.hpp"
 
+#define PROJECT_VER  "@PROJECT_VERSION@"
+
 #if defined(_WIN32) || defined(_WIN64)
 #include <Windows.h>
 
@@ -69,7 +71,7 @@ int main(int argc, char *argv[])
 	QCoreApplication::setOrganizationName("botfather.io");
 	QCoreApplication::setOrganizationDomain("botfather.io");
 	QCoreApplication::setApplicationName("Botfather");
-	QCoreApplication::setApplicationVersion("6.2.1");
+	QCoreApplication::setApplicationVersion(PROJECT_VER);
 
 	QSettingsJsonFormat::setFormat(QSettings::registerFormat("json", &QSettingsJsonFormat::readFunc, &QSettingsJsonFormat::writeFunc));
 	QSettings::setDefaultFormat(QSettings::IniFormat);

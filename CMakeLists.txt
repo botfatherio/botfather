@@ -1,5 +1,12 @@
 cmake_minimum_required(VERSION 2.8.12.1)
-project(botfather)
+
+# Allow find_package to use <PackageName>_ROOT  variables
+cmake_policy(SET CMP0074 NEW)
+
+# Allow the project command to manage the VERSION variables
+cmake_policy(SET CMP0048 NEW)
+
+project(botfather VERSION 6.2.1)
 
 # Only generate Debug and Release configuration types.
 set(CMAKE_CONFIGURATION_TYPES Debug Release)
@@ -9,9 +16,6 @@ set_property(GLOBAL PROPERTY OS_FOLDERS ON)
 
 # Add local cmake modules
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-
-# Allow find_package to use <PackageName>_ROOT  variables
-cmake_policy(SET CMP0074 NEW)
 
 # Turn off attribute warnings
 add_definitions(-Wno-attributes)
