@@ -26,6 +26,9 @@ find_package(CEF REQUIRED)
 # Include the libcef_dll_wrapper target.
 add_subdirectory(${CEF_LIBCEF_DLL_WRAPPER_PATH} libcef_dll_wrapper)
 
+# Set build output dir for application targets.
+set(BOTFATHER_BIN_OUT_DIR ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}Output)
+
 # Include application targets.
 add_subdirectory(botfather)
 add_subdirectory(webhelper)
