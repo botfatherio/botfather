@@ -260,6 +260,7 @@ if(OS_LINUX)
     # Copy binary and resource files to the target output directory.
     COPY_FILES("${PROJECT_NAME}" "${CEF_BINARY_FILES}" "${CEF_BINARY_DIR}" "${CEF_TARGET_OUT_DIR}")
     COPY_FILES("${PROJECT_NAME}" "${CEF_RESOURCE_FILES}" "${CEF_RESOURCE_DIR}" "${CEF_TARGET_OUT_DIR}")
+    COPY_FILES("${PROJECT_NAME}" "adb" "${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/ADB/linux/" "${CEF_TARGET_OUT_DIR}")
 endif()
 
 #
@@ -289,6 +290,7 @@ if(OS_WINDOWS)
     # Copy binary and resource files to the target output directory.
     COPY_FILES("${PROJECT_NAME}" "${CEF_BINARY_FILES}" "${CEF_BINARY_DIR}" "${CEF_TARGET_OUT_DIR}")
     COPY_FILES("${PROJECT_NAME}" "${CEF_RESOURCE_FILES}" "${CEF_RESOURCE_DIR}" "${CEF_TARGET_OUT_DIR}")
+    COPY_FILES("${PROJECT_NAME}" "adb" "${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/ADB/windows/" "${CEF_TARGET_OUT_DIR}")
 	
 	# Deploy Qt DLLs and resources
 	include(WinDeployQt)
