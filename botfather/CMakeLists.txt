@@ -244,7 +244,7 @@ if(OS_LINUX)
     target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Widgets Qt5::Script Qt5::Gui Qt5::Multimedia Qt5::Network)
     target_link_libraries(${PROJECT_NAME} Qt5::X11Extras)
     target_link_libraries(${PROJECT_NAME} qhotkey)
-    target_link_libraries(${PROJECT_NAME} git2)
+    target_link_libraries(${PROJECT_NAME} ${LIBGIT2_LIBRARIES})
     target_link_libraries(${PROJECT_NAME} opencv_features2d opencv_flann opencv_imgcodecs opencv_imgproc opencv_core opencv_highgui)
 
     # Set rpath so that libraries can be placed next to the executable.
@@ -272,7 +272,7 @@ if(OS_WINDOWS)
     target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Widgets Qt5::Script Qt5::Gui Qt5::Multimedia Qt5::Network)
     target_link_libraries(${PROJECT_NAME} Qt5::WinExtras)
     target_link_libraries(${PROJECT_NAME} qhotkey)
-    target_link_libraries(${PROJECT_NAME} git2)
+    target_link_libraries(${PROJECT_NAME} ${LIBGIT2_LIBRARIES})
     target_link_libraries(${PROJECT_NAME} opencv_features2d opencv_flann opencv_imgcodecs opencv_imgproc opencv_core opencv_highgui)
 	
 	# Do not tread warnings as errors
