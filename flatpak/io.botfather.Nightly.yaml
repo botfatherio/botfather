@@ -37,15 +37,13 @@ modules:
   - libgit2/libgit2.json
   - flashplayer/flashplayer.json
   - name: botfather
-    buildsystem: qmake
+    buildsystem: cmake
     config-opts:
-      - QMAKE_LIBDIR=/app/lib
-      - CONFIG+=release
+      - -DCMAKE_BUILD_TYPE=Release
     no-make-install: true
     builddir: true
     build-commands:
-      - cp -R botfather/BuildOutput/* /app/bin
-      - cp -R webhelper/BuildOutput/* /app/bin
+      - cp -R bin/Release/* /app/bin
     sources:
       - type: dir
         path: "../"
