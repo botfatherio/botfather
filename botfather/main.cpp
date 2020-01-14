@@ -5,8 +5,7 @@
 #include "shared/q_settings_json_format.hpp"
 #include "engine/modules/browser/browser_manager.hpp"
 #include "gui/main_window.hpp"
-
-#define PROJECT_VER  "@PROJECT_VERSION@"
+#include "version.hpp"
 
 #if defined(_WIN32) || defined(_WIN64)
 #include <Windows.h>
@@ -14,12 +13,12 @@
 int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
 {
     UNREFERENCED_PARAMETER(hInstance);
-	UNREFERENCED_PARAMETER(hPrevInstance);
-	UNREFERENCED_PARAMETER(lpCmdLine);
+    UNREFERENCED_PARAMETER(hPrevInstance);
+    UNREFERENCED_PARAMETER(lpCmdLine);
     UNREFERENCED_PARAMETER(nCmdShow);
 
-	// Initialise the QApplication on Windows.
-	QApplication a(__argc, __argv);
+  	// Initialise the QApplication on Windows.
+  	QApplication a(__argc, __argv);
 #else
 #include <X11/Xlib.h>
 
@@ -59,7 +58,7 @@ int main(int argc, char *argv[])
 {
 	// Intialise the QApplication on Linux and MacOS
 	QApplication a(argc, argv);
-	
+
 	// Install xlib error handlers so that the application won't be terminated
 	// on non-fatal errors.
 	XSetErrorHandler(handleXError);
@@ -71,7 +70,7 @@ int main(int argc, char *argv[])
 	QCoreApplication::setOrganizationName("botfather.io");
 	QCoreApplication::setOrganizationDomain("botfather.io");
 	QCoreApplication::setApplicationName("Botfather");
-	QCoreApplication::setApplicationVersion(PROJECT_VER);
+	QCoreApplication::setApplicationVersion(PROJECT_VERSION);
 
 	QSettingsJsonFormat::setFormat(QSettings::registerFormat("json", &QSettingsJsonFormat::readFunc, &QSettingsJsonFormat::writeFunc));
 	QSettings::setDefaultFormat(QSettings::IniFormat);

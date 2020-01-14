@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
-project(botfather)
+project(botfather VERSION 6.2.1)
+
+configure_file(version.hpp.in version.hpp)
 
 set(BOTFATHER_SRCS
     auth/auth_settings.hpp
@@ -143,6 +145,7 @@ set(BOTFATHER_SRCS
     gui/authdialog/auth_dialog.cpp
     gui/scriptmanager/git_progress_dialog.cpp
     gui/scriptmanager/script_manager_dialog.cpp
+    version.hpp
     main.cpp
     engine/modules/common/apis/abstract_api.cpp
     engine/modules/vision/types/blob_tpl.cpp
@@ -280,7 +283,7 @@ if(OS_WINDOWS)
     target_link_libraries(${PROJECT_NAME} qhotkey)
     target_link_libraries(${PROJECT_NAME} ${LIBGIT2_LIBRARIES})
     target_link_libraries(${PROJECT_NAME} opencv_features2d opencv_flann opencv_imgcodecs opencv_imgproc opencv_core opencv_highgui)
-	
+
 	# Do not tread warnings as errors
 	target_compile_options(${PROJECT_NAME} PRIVATE /WX-)
 
@@ -291,7 +294,7 @@ if(OS_WINDOWS)
     COPY_FILES("${PROJECT_NAME}" "${CEF_BINARY_FILES}" "${CEF_BINARY_DIR}" "${CEF_TARGET_OUT_DIR}")
     COPY_FILES("${PROJECT_NAME}" "${CEF_RESOURCE_FILES}" "${CEF_RESOURCE_DIR}" "${CEF_TARGET_OUT_DIR}")
     COPY_FILES("${PROJECT_NAME}" "adb" "${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/ADB/windows/" "${CEF_TARGET_OUT_DIR}")
-	
+
 	# Deploy Qt DLLs and resources
 	include(WinDeployQt)
 	WinDeployQt(TARGET ${PROJECT_NAME} OUTPUT ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} COMPILER_RUNTIME INCLUDE_MODULES ${QTLIBS})

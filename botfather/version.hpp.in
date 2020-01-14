@@ -1,0 +1,6 @@
+#ifndef BFP_VERSION_HPP
+#define BFP_VERSION_HPP
+
+#define PROJECT_VERSION "@PROJECT_VERSION@"
+
+#endif // BFP_VERSION_HPP
