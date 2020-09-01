@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 2.8.12.1)
+project(botfather)
 
 # Allow find_package to use <PackageName>_ROOT  variables
 cmake_policy(SET CMP0074 NEW)
