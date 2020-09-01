@@ -96,6 +96,7 @@ signals:
 	void log(const QString &message, const Engine::LogSource &source);
 	void audioPlaybackRequested(const QString &path_to_wav_file);
 	void audioStopRequested();
+    void statsUpdated(const QString &group, const QString &label, const QString &value);
 
 	void started();
 	void stopped();

@@ -167,6 +167,7 @@ void Bot::start()
 	});
 
 	connect(m_engine, &Engine::log, this, &Bot::log);
+    connect(m_engine, &Engine::statsUpdated, this, &Bot::statsUpdated);
 	connect(m_engine, &Engine::playWavSound, this, &Bot::audioPlaybackRequested);
 	connect(m_engine, &Engine::stopWavSound, this, &Bot::audioStopRequested);
 

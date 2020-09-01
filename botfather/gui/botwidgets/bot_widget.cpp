@@ -12,6 +12,7 @@ BotWidget::BotWidget(Bot *bot, QSystemTrayIcon *trayicon, QWidget *parent)
 	m_tab_widget = new QTabWidget(this);
 	m_corner_widget = new QLabel(m_tab_widget);
 	m_bot_log_widget = new BotLogWidget(bot, this);
+    m_bot_stats_widget = new BotStatsWidget(bot, this);
 	m_bot_updates_widget = new BotUpdatesWidget(bot, this);
 	m_bot_browsers_widget = new BotBrowsersWidget(bot, this);
 	m_bot_settings_widget = new BotSettingsWidget(bot, this);
@@ -25,7 +26,8 @@ BotWidget::BotWidget(Bot *bot, QSystemTrayIcon *trayicon, QWidget *parent)
 	m_tab_widget->setCornerWidget(m_corner_widget);
 	m_tab_widget->addTab(m_bot_log_widget, "Log");
 	setupConfigTab();
-	m_tab_widget->addTab(m_bot_browsers_widget, "Browsers");
+    m_tab_widget->addTab(m_bot_browsers_widget, "Browsers");
+    m_tab_widget->addTab(m_bot_stats_widget, "Stats");
 	m_tab_widget->addTab(m_bot_updates_widget, "Updates");
 	m_tab_widget->addTab(m_bot_settings_widget, "Settings");
 

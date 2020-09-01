@@ -50,6 +50,7 @@ set(BOTFATHER_SRCS
     gui/browserwindow/browser_widget.hpp
     gui/browserwindow/browser_window.hpp
     engine/modules/common/apis/config_api.hpp
+    engine/modules/common/apis/stats_api.hpp
     engine/modules/browser/adapters/cef_key_event_adapter.hpp
     engine/modules/browser/browser_app.hpp
     engine/modules/browser/browser_client.hpp
@@ -158,6 +159,7 @@ set(BOTFATHER_SRCS
     engine/modules/common/prototypes/timer_prototype.cpp
     gui/models/bot.cpp
     engine/modules/common/apis/config_api.cpp
+    engine/modules/common/apis/stats_api.cpp
     engine/modules/browser/prototypes/browser_prototype.cpp
     engine/modules/browser/types/browser.cpp
     engine/modules/browser/browser_app.cpp
@@ -177,6 +179,9 @@ set(BOTFATHER_SRCS
     gui/preferences/preferences_dialog.ui
     gui/scriptmanager/git_progress_dialog.ui
     gui/scriptmanager/script_manager_dialog.ui
+    gui/botwidgets/bot_stats_widget.hpp
+    gui/botwidgets/bot_stats_widget.cpp
+    gui/botwidgets/bot_stats_widget.ui
     res/botfather.qrc
 )
 set(BOTFATHER_SRCS_LINUX
