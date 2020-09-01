@@ -14,6 +14,7 @@
 #include "modules/common/prototypes/url_prototype.hpp"
 #include "modules/common/apis/helper_api.hpp"
 #include "modules/common/apis/config_api.hpp"
+#include "modules/common/apis/stats_api.hpp"
 #include "modules/vision/prototypes/image_prototype.hpp"
 #include "modules/vision/prototypes/blob_tpl_prototype.hpp"
 #include "modules/vision/prototypes/match_prototype.hpp"
@@ -90,6 +91,7 @@ void Engine::runScript()
 	REGISTER_API(script_engine, this, VisionAPI, "Vision");
 	REGISTER_API(script_engine, this, AlgorithmAPI, "Algorithm");
 	REGISTER_API(script_engine, this, ConfigAPI, "Config");
+    REGISTER_API(script_engine, this, StatsAPI, "Stats");
 	
 	REGISTER_PROTO(script_engine, TimerPrototype, QElapsedTimer, "Timer");
 	REGISTER_PROTO(script_engine, TimerPrototype, QElapsedTimer*, "Timer");

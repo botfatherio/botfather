@@ -40,6 +40,9 @@ signals:
 	void started();
 	void stopped(bool without_errors);
 	void log(const QString &message, const Engine::LogSource &source);
+
+    // Stats API
+    void statsUpdated(const QString &group, const QString &label, const QString &value);
 	
 	// Start/stop a wav sound in the main thread.
 	void playWavSound(QString path_to_wav_file);
