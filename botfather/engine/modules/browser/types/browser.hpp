@@ -74,15 +74,10 @@ public:
 	void releaseKey(const QString &bf_keycode);
 	void holdKey(const CefKeyEvent &event);
 	void releaseKey(const CefKeyEvent &event);
+    void holdKey(const QKeyEvent *event);
+    void releaseKey(const QKeyEvent *event);
 
 	void enterText(const QString &text);
-
-public slots:
-	// Note: All public slots can be used by scripts.
-	// We might want to introduce proxy objects to custom types at some point,
-	// and reduce delegations in the Prototype files.
-	void holdKey(const QKeyEvent *event);
-	void releaseKey(const QKeyEvent *event);
 
 signals:
 	void aboutToGetDeletedByTheUser();
