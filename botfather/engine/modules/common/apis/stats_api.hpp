@@ -13,7 +13,7 @@ class StatsAPI : public AbstractAPI
 public:
         using AbstractAPI::AbstractAPI;
 
-        Q_INVOKABLE void setValue(const QString &group, const QString &label, const QString &value) const;
+        Q_INVOKABLE void show(const QString &group, const QString &label, const QString &value) const;
 };
 
 #endif // STATS_API_HPP
