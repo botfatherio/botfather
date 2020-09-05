@@ -8,7 +8,8 @@ BotStatsWidget::BotStatsWidget(Bot* bot, QWidget *parent) :
 {
     ui->setupUi(this);
     connect(bot, &Bot::statsUpdated, this, &BotStatsWidget::statsUpdated);
-    connect(bot, &Bot::started, this, &BotStatsWidget::resetStats);
+    connect(bot, &Bot::statsCleared, this, &BotStatsWidget::clearStats);
+    connect(bot, &Bot::started, this, &BotStatsWidget::clearStats);
 }
 
 BotStatsWidget::~BotStatsWidget()
@@ -16,7 +17,7 @@ BotStatsWidget::~BotStatsWidget()
     delete ui;
 }
 
-void BotStatsWidget::resetStats() {
+void BotStatsWidget::clearStats() {
     for (QGroupBox* group_widget : group_map) {
         ui->stats_container->layout()->removeWidget(group_widget);
         delete group_widget;

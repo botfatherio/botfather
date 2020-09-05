@@ -97,6 +97,7 @@ signals:
 	void audioPlaybackRequested(const QString &path_to_wav_file);
 	void audioStopRequested();
     void statsUpdated(const QString &group, const QString &label, const QString &value);
+    void statsCleared();
 
 	void started();
 	void stopped();

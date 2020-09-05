@@ -43,6 +43,7 @@ signals:
 
     // Stats API
     void statsUpdated(const QString &group, const QString &label, const QString &value);
+    void statsCleared();
 	
 	// Start/stop a wav sound in the main thread.
 	void playWavSound(QString path_to_wav_file);
