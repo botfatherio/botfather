@@ -20,6 +20,7 @@ public:
     ~BotStatsWidget();
 
 public slots:
+    void resetStats();
     void statsUpdated(const QString &group, const QString &label, const QString &value);
 
 protected:

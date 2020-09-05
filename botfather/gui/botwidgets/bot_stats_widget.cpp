@@ -8,11 +8,21 @@ BotStatsWidget::BotStatsWidget(Bot* bot, QWidget *parent) :
 {
     ui->setupUi(this);
     connect(bot, &Bot::statsUpdated, this, &BotStatsWidget::statsUpdated);
+    connect(bot, &Bot::started, this, &BotStatsWidget::resetStats);
 }
 
 BotStatsWidget::~BotStatsWidget()
 {
     delete ui;
+}
+
+void BotStatsWidget::resetStats() {
+    for (QGroupBox* group_widget : group_map) {
+        ui->stats_container->layout()->removeWidget(group_widget);
+        delete group_widget;
+    }
+    group_map.clear();
+    label_map.clear();
 }
 
 void BotStatsWidget::statsUpdated(const QString &group, const QString &label, const QString &value) {
