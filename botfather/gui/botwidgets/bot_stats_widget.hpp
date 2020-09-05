@@ -21,7 +21,7 @@ public:
 
 public slots:
     void clearStats();
-    void statsUpdated(const QString &group, const QString &label, const QString &value);
+    void updateStats(const QString &group, const QString &label, const QString &value);
 
 protected:
     QGroupBox* getOrCreateGroupWidget(const QString &group);

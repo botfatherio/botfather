@@ -7,7 +7,7 @@ BotStatsWidget::BotStatsWidget(Bot* bot, QWidget *parent) :
     ui(new Ui::BotStatsWidget)
 {
     ui->setupUi(this);
-    connect(bot, &Bot::statsUpdated, this, &BotStatsWidget::statsUpdated);
+    connect(bot, &Bot::statsUpdated, this, &BotStatsWidget::updateStats);
     connect(bot, &Bot::statsCleared, this, &BotStatsWidget::clearStats);
     connect(bot, &Bot::started, this, &BotStatsWidget::clearStats);
 }
@@ -26,7 +26,7 @@ void BotStatsWidget::clearStats() {
     label_map.clear();
 }
 
-void BotStatsWidget::statsUpdated(const QString &group, const QString &label, const QString &value) {
+void BotStatsWidget::updateStats(const QString &group, const QString &label, const QString &value) {
     QLabel* label_widget = getOrCreateLabelWidget(group, label);
     QString label_text = QString("%1: %2").arg(label, value);
     label_widget->setText(label_text);
