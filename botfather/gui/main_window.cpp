@@ -1,5 +1,6 @@
 #include "main_window.hpp"
 #include "ui_main_window.h"
+#include "color_finder/color_finder.hpp"
 #include <QCloseEvent>
 #include <QMessageBox>
 #include <QTimer>
@@ -51,6 +52,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->donate_action, &QAction::triggered, this, &MainWindow::openDonateLink);
 	connect(ui->about_qt_action, &QAction::triggered, [this](){ QMessageBox::aboutQt(this); });
 	connect(ui->about_action, &QAction::triggered, this, &MainWindow::showAboutDialog);
+    connect(ui->open_color_finder, &QAction::triggered, this, &MainWindow::openColorFinder);
 	connect(ui->quit_action, &QAction::triggered, QApplication::instance(), &QApplication::closeAllWindows);
 
 	ui->update_action->setEnabled(MaintenanceTool::exists());
@@ -281,6 +283,11 @@ void MainWindow::showAboutDialog()
 	).arg(QCoreApplication::applicationVersion());
 
 	QMessageBox::about(this, "About Botfather", text);
+}
+
+void MainWindow::openColorFinder() {
+    ColorFinder *color_finder = new ColorFinder();
+    color_finder->show();
 }
 
 void MainWindow::notifyAboutUpdate()

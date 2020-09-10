@@ -198,9 +198,16 @@
     <addaction name="about_qt_action"/>
     <addaction name="about_action"/>
    </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="open_color_finder"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuBots"/>
    <addaction name="menuAccount"/>
+   <addaction name="menuTools"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -435,6 +442,15 @@
    </property>
    <property name="text">
     <string>Buy me a coffe</string>
+   </property>
+  </action>
+  <action name="open_color_finder">
+   <property name="icon">
+    <iconset resource="../res/botfather.qrc">
+     <normaloff>:/icons/icons/icons8-paint-palette-32.png</normaloff>:/icons/icons/icons8-paint-palette-32.png</iconset>
+   </property>
+   <property name="text">
+    <string>Color finder</string>
    </property>
   </action>
  </widget>

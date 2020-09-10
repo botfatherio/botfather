@@ -39,6 +39,7 @@ public slots:
 	void updateLicenseInfo();
     void openDonateLink();
 	void showAboutDialog();
+    void openColorFinder();
 	void notifyAboutUpdate();
 
 protected:
