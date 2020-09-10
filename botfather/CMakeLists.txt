@@ -182,6 +182,8 @@ set(BOTFATHER_SRCS
     gui/botwidgets/bot_stats_widget.hpp
     gui/botwidgets/bot_stats_widget.cpp
     gui/botwidgets/bot_stats_widget.ui
+    gui/color_finder_preview/color_finder_preview.hpp
+    gui/color_finder_preview/color_finder_preview.cpp
     res/botfather.qrc
 )
 set(BOTFATHER_SRCS_LINUX
