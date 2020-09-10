@@ -81,7 +81,7 @@ void ColorFinder::updateCode()
 
 void ColorFinder::onMinHValueChanged(int value)
 {
-    ui->max_s_slider->setRange(value, H_MAX);
+    ui->max_h_slider->setRange(value, H_MAX);
     updateCode();
     emitColorsChanged();
 }
