@@ -7,3 +7,7 @@ build:
 	@echo "- Archive and upload the contents of build-dir/files/bin"
 	@echo "- Update url, filesize and hash in the release Botfather.yaml file"
 	@echo
+
+.PHONY: clean
+clean:
+	rm -r build-dir
