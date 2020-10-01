@@ -25,6 +25,12 @@ public:
 	// Removes all replace and block rules for all resources.
 	void unmodifyResources();
 
+    // Override the user agent
+    void setUserAgent(const QString &user_agent);
+
+    // Reset the user agent
+    void resetUserAgent();
+
 	// Called on the IO thread before a resource request is loaded.
 	CefRequestHandler::ReturnValue OnBeforeResourceLoad(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request, CefRefPtr<CefRequestCallback> callback) override;
 
@@ -42,6 +48,8 @@ private:
 	// The second item is either empty, meaning the url should not be loaded (is blocked),
 	// or there is a second url provided, meaning the second url should be loaded instead.
 	QVector<QPair<QString, QString>> m_modified_resources;
+
+    QString m_user_agent_override;
 
 	IMPLEMENT_REFCOUNTING(BrowserRequestHandler)
 };

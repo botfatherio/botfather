@@ -91,6 +91,16 @@ void BrowserPrototype::unmodifyResources()
 	THIS_BROWSER_P()->unmodifyResources();
 }
 
+void BrowserPrototype::setUserAgent(const QString &user_agent)
+{
+    THIS_BROWSER_P()->setUserAgent(user_agent);
+}
+
+void BrowserPrototype::resetUserAgent()
+{
+    THIS_BROWSER_P()->resetUserAgent();
+}
+
 void BrowserPrototype::loadUrl(const QString &url)
 {
 	THIS_BROWSER_P()->loadUrl(url);

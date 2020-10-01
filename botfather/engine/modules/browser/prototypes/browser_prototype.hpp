@@ -27,6 +27,9 @@ public:
 	Q_INVOKABLE void unmodifyResource(const QString &resource_pattern);
 	Q_INVOKABLE void unmodifyResources();
 
+    Q_INVOKABLE void setUserAgent(const QString &user_agent);
+    Q_INVOKABLE void resetUserAgent();
+
 	Q_INVOKABLE void loadUrl(const QString &url);
 	Q_INVOKABLE void beOnUrl(const QString &url);
 	Q_INVOKABLE QUrl getUrl() const;

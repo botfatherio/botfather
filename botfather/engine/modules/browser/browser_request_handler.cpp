@@ -36,10 +36,34 @@ void BrowserRequestHandler::unmodifyResources()
 	m_modified_resources.clear();
 }
 
+void BrowserRequestHandler::setUserAgent(const QString &user_agent)
+{
+    m_user_agent_override = user_agent;
+}
+
+void BrowserRequestHandler::resetUserAgent()
+{
+    m_user_agent_override.clear();
+}
+
 CefRequestHandler::ReturnValue BrowserRequestHandler::OnBeforeResourceLoad(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request, CefRefPtr<CefRequestCallback> callback)
 {
-	QString url = QString::fromStdString(request->GetURL().ToString());
+    QString url = QString::fromStdString(request->GetURL().ToString());
 
+    // Modify user agent
+    if (!m_user_agent_override.isEmpty()) {
+        std::multimap<CefString, CefString> header_map;
+        request->GetHeaderMap(header_map);
+        std::multimap<CefString, CefString>::iterator user_agent_match = header_map.find("User-Agent");
+        if (user_agent_match != header_map.end())
+        {
+        header_map.erase(user_agent_match);
+        }
+        header_map.insert({"User-Agent", m_user_agent_override.toStdString()});
+        request->SetHeaderMap(header_map);
+    }
+
+    // Modify resources
 	for (int i = 0; i < m_modified_resources.length(); i++)
 	{
 		QString pattern = m_modified_resources[i].first;

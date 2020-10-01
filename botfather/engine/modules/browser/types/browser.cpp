@@ -121,6 +121,17 @@ void Browser::unmodifyResources()
 	m_browser_client->unmodifyResources();
 }
 
+void Browser::setUserAgent(const QString &user_agent)
+{
+    m_browser_client->setUserAgent(user_agent);
+
+}
+
+void Browser::resetUserAgent()
+{
+    m_browser_client->resetUserAgent();
+}
+
 void Browser::loadUrl(const QString &url)
 {
 	m_cef_browser->GetMainFrame()->LoadURL(url.toStdString());

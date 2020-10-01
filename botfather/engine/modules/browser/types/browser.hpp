@@ -45,6 +45,9 @@ public:
 	void unmodifyResource(const QString &resource_pattern);
 	void unmodifyResources();
 
+    void setUserAgent(const QString &user_agent);
+    void resetUserAgent();
+
 	void loadUrl(const QString &url);
 	void beOnUrl(const QString &url);
 	void goHome();
