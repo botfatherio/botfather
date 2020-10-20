@@ -28,10 +28,10 @@ class DesktopAPI : public AbstractAPI {
     Q_INVOKABLE void middleClick(const QPoint &position);
     Q_INVOKABLE void rightClick(const QPoint &position);
 
-    Q_INVOKABLE void pressMouse(const QPoint &position, const QString &button);
-    Q_INVOKABLE void holdMouse(const QPoint &position, const QString &button);
+    Q_INVOKABLE void pressMouse(const QPoint &position, const QString &button = "left");
+    Q_INVOKABLE void holdMouse(const QPoint &position, const QString &button = "left");
     Q_INVOKABLE void releaseMouse(const QPoint &position,
-                                  const QString &button);
+                                  const QString &button = "left");
 
     Q_INVOKABLE void pressKey(const QString &key);
     Q_INVOKABLE void holdKey(const QString &key);
