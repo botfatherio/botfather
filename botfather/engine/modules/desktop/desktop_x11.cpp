@@ -1,5 +1,3 @@
-#include <X11/Xlib.h>  // Import X11 stuff always last. Otherwise compilation fails.
-#include <X11/Xutil.h>
 #include <fcntl.h>   // open
 #include <string.h>  // memset, strcpy
 #include <unistd.h>  // write
@@ -12,6 +10,11 @@
 #include "desktop.hpp"
 #include "keymap.hpp"
 #include "linux/uinput.hpp"
+
+/* clang-format off */
+#include <X11/Xlib.h>  // Import X11 stuff always last. Otherwise compilation fails.
+#include <X11/Xutil.h>
+/* clang-format on */
 
 /*
  * This implementation uses Xlib and uinput functionality to send keyboard and
