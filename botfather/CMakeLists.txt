@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(botfather VERSION 6.7.1)
+project(botfather VERSION 6.7.2)
 
 configure_file(version.hpp.in version.hpp)
 
