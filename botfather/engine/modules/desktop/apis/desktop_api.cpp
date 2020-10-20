@@ -5,7 +5,6 @@
 #include "../../vision/apis/vision_api.hpp"
 #include "../../vision/types/match.hpp"
 #include "../../vision/vision.hpp"
-#include "../desktop.hpp"
 
 DesktopAPI::DesktopAPI(Engine *bot, QObject *parent) : AbstractAPI(bot, parent)
 {
@@ -31,17 +30,53 @@ QRect DesktopAPI::getRect()
 
 void DesktopAPI::leftClick(const QPoint &position)
 {
-	desktop->leftClick(position);
+    desktop->warpCursor(position);
+    desktop->pressMouse(Desktop::MouseButtons::left);
 }
 
 void DesktopAPI::middleClick(const QPoint &position)
 {
-	desktop->middleClick(position);
+    desktop->warpCursor(position);
+    desktop->pressMouse(Desktop::MouseButtons::middle);
 }
 
 void DesktopAPI::rightClick(const QPoint &position)
 {
-	desktop->rightClick(position);
+    desktop->warpCursor(position);
+    desktop->pressMouse(Desktop::MouseButtons::right);
+}
+
+void DesktopAPI::pressMouse(const QPoint &position, const QString &button)
+{
+    desktop->warpCursor(position);
+    try {
+    desktop->pressMouse(mouseButtonFromString(button));
+    } catch (UnknownMouseButtonError&) {
+        engine()->currentContext()->throwError(QScriptContext::RangeError, "Unknown button");
+        return void();
+    }
+}
+
+void DesktopAPI::holdMouse(const QPoint &position, const QString &button)
+{
+    desktop->warpCursor(position);
+    try {
+    desktop->holdMouse(mouseButtonFromString(button));
+    } catch (UnknownMouseButtonError&) {
+        engine()->currentContext()->throwError(QScriptContext::RangeError, "Unknown button");
+        return void();
+    }
+}
+
+void DesktopAPI::releaseMouse(const QPoint &position, const QString &button)
+{
+    desktop->warpCursor(position);
+    try {
+        desktop->releaseMouse(mouseButtonFromString(button));
+    } catch (UnknownMouseButtonError&) {
+        engine()->currentContext()->throwError(QScriptContext::RangeError, "Unknown button");
+        return void();
+    }
 }
 
 void DesktopAPI::pressKey(const QString &key) {
@@ -86,4 +121,24 @@ QPoint DesktopAPI::getCursorPosition()
 	    // Getting the cursor position failed.
     }
 	return QPoint(x, y);
+}
+
+Desktop::MouseButtons DesktopAPI::mouseButtonFromString(const QString &button) const
+{
+    if (button.toLower() == "left")
+    {
+        return Desktop::MouseButtons::left;
+    }
+    else if (button.toLower() == "middle")
+    {
+        return Desktop::MouseButtons::middle;
+    }
+    else if (button.toLower() == "right")
+    {
+        return Desktop::MouseButtons::right;
+    }
+    else
+    {
+        throw UnknownMouseButtonError();
+    }
 }

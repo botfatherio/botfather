@@ -4,9 +4,11 @@
 #include <QObject>
 #include <QScriptEngine>
 #include <QImage>
+#include <exception>
 #include "../../common/apis/abstract_api.hpp"
+#include "../desktop.hpp"
 
-class Desktop;
+class UnknownMouseButtonError : public std::exception {};
 
 class DesktopAPI : public AbstractAPI
 {
@@ -21,16 +23,25 @@ public:
 	Q_INVOKABLE QSize getSize();
 	Q_INVOKABLE QRect getRect();
 	
+    // legacy
 	Q_INVOKABLE void leftClick(const QPoint &position);
 	Q_INVOKABLE void middleClick(const QPoint &position);
 	Q_INVOKABLE void rightClick(const QPoint &position);
-	
+
+    Q_INVOKABLE void pressMouse(const QPoint &position, const QString &button);
+    Q_INVOKABLE void holdMouse(const QPoint &position, const QString &button);
+    Q_INVOKABLE void releaseMouse(const QPoint &position, const QString &button);
+
 	Q_INVOKABLE void pressKey(const QString &key);
 	Q_INVOKABLE void holdKey(const QString &key);
 	Q_INVOKABLE void releaseKey(const QString &key);
 	
-	Q_INVOKABLE void warpCursor(const QPoint &position);
+    //Q_INVOKABLE void dragAndDrop(const QPoint &from, const QPoint &to);
+    Q_INVOKABLE void warpCursor(const QPoint &position);
 	Q_INVOKABLE QPoint getCursorPosition();
+
+protected:
+    Desktop::MouseButtons mouseButtonFromString(const QString &button) const;
 	
 private:
 	Desktop *desktop;

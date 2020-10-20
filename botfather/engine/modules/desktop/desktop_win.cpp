@@ -112,6 +112,42 @@ void Desktop::rightClick(const QPoint &position)
     pimpl->sendMouseEvent(MOUSEEVENTF_RIGHTUP);
 }
 
+void Desktop::pressMouse(Desktop::MouseButtons button)
+{
+    holdMouse(button);
+    releaseMouse(button);
+}
+
+void Desktop::holdMouse(Desktop::MouseButtons button)
+{
+    switch (button) {
+    case Desktop::MouseButtons::left:
+        pimpl->sendMouseEvent(MOUSEEVENTF_LEFTDOWN);
+        break;
+    case Desktop::MouseButtons::middle:
+        pimpl->sendMouseEvent(MOUSEEVENTF_MIDDLEDOWN);
+        break;
+    case Desktop::MouseButtons::right:
+        pimpl->sendMouseEvent(MOUSEEVENTF_RIGHTDOWN);
+        break;
+    }
+}
+
+void Desktop::releaseMouse(Desktop::MouseButtons button)
+{
+    switch (button) {
+    case Desktop::MouseButtons::left:
+        pimpl->sendMouseEvent(MOUSEEVENTF_LEFTUP);
+        break;
+    case Desktop::MouseButtons::middle:
+        pimpl->sendMouseEvent(MOUSEEVENTF_MIDDLEUP);
+        break;
+    case Desktop::MouseButtons::right:
+        pimpl->sendMouseEvent(MOUSEEVENTF_RIGHTUP);
+        break;
+    }
+}
+
 void Desktop::pressKey(const QString &key)
 {
     holdKey(key);

@@ -14,13 +14,19 @@ class Desktop : public QObject
 public:
 	Desktop(QObject *parent = nullptr);
 	~Desktop();
-	
+
+    enum MouseButtons {
+        left,
+        middle,
+        right,
+    };
+
 	QImage takeScreenshot();
 	QSize getSize();
 
-	void leftClick(const QPoint &position);
-	void middleClick(const QPoint &position);
-	void rightClick(const QPoint &position);
+    void pressMouse(Desktop::MouseButtons button);
+    void holdMouse(Desktop::MouseButtons button);
+    void releaseMouse(Desktop::MouseButtons button);
 
 	void pressKey(const QString &key);
 	void holdKey(const QString &key);

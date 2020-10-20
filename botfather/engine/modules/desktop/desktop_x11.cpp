@@ -59,12 +59,6 @@ public:
 		emitEvent(EV_SYN, SYN_REPORT, 0);
 	}
 	
-	void press(unsigned short keycode)
-	{
-		hold(keycode);
-		release(keycode);
-	}
-	
 	QSize getSize()
 	{
 		XWindowAttributes attributes;
@@ -234,22 +228,40 @@ QSize Desktop::getSize()
 	return pimpl->getSize();
 }
 
-void Desktop::leftClick(const QPoint &position)
+void Desktop::pressMouse(Desktop::MouseButtons button)
 {
-	warpCursor(position);
-	pimpl->press(BTN_LEFT);
+    holdMouse(button);
+    releaseMouse(button);
 }
 
-void Desktop::middleClick(const QPoint &position)
+void Desktop::holdMouse(Desktop::MouseButtons button)
 {
-	warpCursor(position);
-	pimpl->press(BTN_MIDDLE);
+    switch (button) {
+    case Desktop::MouseButtons::left:
+        pimpl->hold(BTN_LEFT);
+        break;
+    case Desktop::MouseButtons::middle:
+        pimpl->hold(BTN_MIDDLE);
+        break;
+    case Desktop::MouseButtons::right:
+        pimpl->hold(BTN_RIGHT);
+        break;
+    }
 }
 
-void Desktop::rightClick(const QPoint &position)
+void Desktop::releaseMouse(Desktop::MouseButtons button)
 {
-	warpCursor(position);
-	pimpl->press(BTN_RIGHT);
+    switch (button) {
+    case Desktop::MouseButtons::left:
+        pimpl->hold(BTN_LEFT);
+        break;
+    case Desktop::MouseButtons::middle:
+        pimpl->hold(BTN_MIDDLE);
+        break;
+    case Desktop::MouseButtons::right:
+        pimpl->hold(BTN_RIGHT);
+        break;
+    }
 }
 
 void Desktop::pressKey(const QString &key) {
