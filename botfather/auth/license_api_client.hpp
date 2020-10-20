@@ -3,36 +3,36 @@
 
 #include "rest_api_client.hpp"
 
-class LicenseApiClient : public RestApiClient
-{
-	Q_OBJECT
-	
-public:
-	using RestApiClient::RestApiClient;
+class LicenseApiClient : public RestApiClient {
+    Q_OBJECT
 
-	bool isLicenseActive() const;
+   public:
+    using RestApiClient::RestApiClient;
 
-	bool isBotRuntimeLimited() const;
-	int allowedBotRuntimeInSecs() const;
+    bool isLicenseActive() const;
 
-	bool isNumberOfRunningBotsLimited() const;
-	int maxNumberOfRunningBotsAllowed() const;
+    bool isBotRuntimeLimited() const;
+    int allowedBotRuntimeInSecs() const;
 
-public slots:
-	void requestLicense(const QString &software, const QString &username, const QString &password);
-	void resetLicense();
-	
-signals:
-	void licenseReceived(int curtime, int premend);
-	void errorsReceived(QJsonArray error_codes);
+    bool isNumberOfRunningBotsLimited() const;
+    int maxNumberOfRunningBotsAllowed() const;
 
-protected:
-	QUrl provideApiEndpoint() override;
-	void processJsonResponse(QJsonDocument json) override;
+   public slots:
+    void requestLicense(const QString &software, const QString &username,
+                        const QString &password);
+    void resetLicense();
 
-private:
-	int m_curtime = 1;
-	int m_premend = 0;
+   signals:
+    void licenseReceived(int curtime, int premend);
+    void errorsReceived(QJsonArray error_codes);
+
+   protected:
+    QUrl provideApiEndpoint() override;
+    void processJsonResponse(QJsonDocument json) override;
+
+   private:
+    int m_curtime = 1;
+    int m_premend = 0;
 };
 
-#endif // BFP_AUTH_LICENSE_API_CLIENT_H
+#endif  // BFP_AUTH_LICENSE_API_CLIENT_H

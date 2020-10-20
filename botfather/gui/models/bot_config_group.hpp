@@ -2,16 +2,16 @@
 #define BOTCONFIGGROUP_H
 
 #include <QVector>
-#include "bot_manifest_node.hpp"
+
 #include "bot_config_option.hpp"
+#include "bot_manifest_node.hpp"
 
-class BotConfigGroup : public BotManifestNode
-{
-public:
-	using BotManifestNode::BotManifestNode;
+class BotConfigGroup : public BotManifestNode {
+   public:
+    using BotManifestNode::BotManifestNode;
 
-	QString name() const;
-	QVector<BotConfigOption> options() const;
+    QString name() const;
+    QVector<BotConfigOption> options() const;
 };
 
-#endif // BOTCONFIGGROUP_H
+#endif  // BOTCONFIGGROUP_H

@@ -2,11 +2,12 @@
 #define BFP_ENGINE_PROTOTYPES_URL_PROTOTYPE_H
 #define URL_PROTOTYPE_DOCS "https://botfather.io/docs/apiref/url/"
 
-#include "abstract_prototype.hpp"
 #include <QUrl>
 
+#include "abstract_prototype.hpp"
+
 Q_DECLARE_METATYPE(QUrl)
-Q_DECLARE_METATYPE(QUrl*)
+Q_DECLARE_METATYPE(QUrl *)
 
 // ftp://uname:pword@sharing.example.com:2021
 // https://sub.example.com/contact/me/?something=cool&color=blue#fragment
@@ -20,121 +21,124 @@ Q_DECLARE_METATYPE(QUrl*)
 // topleveldomain: .com
 // authority: uname:pword@sharing.example.com:2021
 
-class UrlPrototype : public AbstractPrototype
-{
-	Q_OBJECT
-	Q_PROPERTY(QString scheme READ getScheme WRITE setScheme)
-	Q_PROPERTY(QString username READ getUsername WRITE setUsername)
-	Q_PROPERTY(QString password READ getPassword WRITE setPassword)
-	Q_PROPERTY(QString host READ getHost WRITE setHost)
-	Q_PROPERTY(int port READ getPort WRITE setPort)
-	Q_PROPERTY(QString path READ getPath WRITE setPath)
-	Q_PROPERTY(QString query READ getQuery WRITE setQuery)
-	Q_PROPERTY(QString fragment READ getFragment WRITE setFragment)
-	Q_PROPERTY(QString top_level_domain READ getTopLevelDomain)
-	Q_PROPERTY(QString authority READ getAuthority)
+class UrlPrototype : public AbstractPrototype {
+    Q_OBJECT
+    Q_PROPERTY(QString scheme READ getScheme WRITE setScheme)
+    Q_PROPERTY(QString username READ getUsername WRITE setUsername)
+    Q_PROPERTY(QString password READ getPassword WRITE setPassword)
+    Q_PROPERTY(QString host READ getHost WRITE setHost)
+    Q_PROPERTY(int port READ getPort WRITE setPort)
+    Q_PROPERTY(QString path READ getPath WRITE setPath)
+    Q_PROPERTY(QString query READ getQuery WRITE setQuery)
+    Q_PROPERTY(QString fragment READ getFragment WRITE setFragment)
+    Q_PROPERTY(QString top_level_domain READ getTopLevelDomain)
+    Q_PROPERTY(QString authority READ getAuthority)
 
-public:
-	static QScriptValue constructor(QScriptContext *context, QScriptEngine *engine);
-	using AbstractPrototype::AbstractPrototype;
+   public:
+    static QScriptValue constructor(QScriptContext *context,
+                                    QScriptEngine *engine);
+    using AbstractPrototype::AbstractPrototype;
 
-	// Returns true if the URL has no data; otherwise returns false.
-	// http://doc.qt.io/qt-5/qurl.html#isEmpty
-	Q_INVOKABLE bool isEmpty() const;
+    // Returns true if the URL has no data; otherwise returns false.
+    // http://doc.qt.io/qt-5/qurl.html#isEmpty
+    Q_INVOKABLE bool isEmpty() const;
 
-	// Returns true if the URL is non-empty and valid; otherwise returns false.
-	// http://doc.qt.io/qt-5/qurl.html#isValid
-	Q_INVOKABLE bool isValid() const;
+    // Returns true if the URL is non-empty and valid; otherwise returns false.
+    // http://doc.qt.io/qt-5/qurl.html#isValid
+    Q_INVOKABLE bool isValid() const;
 
-	// Returns the scheme of the URL. If an empty string is returned, this means the scheme is undefined and the URL is then relative.
-	// http://doc.qt.io/qt-5/qurl.html#scheme
-	Q_INVOKABLE QString getScheme() const;
+    // Returns the scheme of the URL. If an empty string is returned, this means
+    // the scheme is undefined and the URL is then relative.
+    // http://doc.qt.io/qt-5/qurl.html#scheme
+    Q_INVOKABLE QString getScheme() const;
 
-	// Sets the scheme of the URL to scheme.
-	// http://doc.qt.io/qt-5/qurl.html#setScheme
-	Q_INVOKABLE void setScheme(const QString &scheme);
+    // Sets the scheme of the URL to scheme.
+    // http://doc.qt.io/qt-5/qurl.html#setScheme
+    Q_INVOKABLE void setScheme(const QString &scheme);
 
-	// Returns the user name of the URL if it is defined; otherwise an empty string is returned.
-	// http://doc.qt.io/qt-5/qurl.html#userName
-	Q_INVOKABLE QString getUsername() const;
+    // Returns the user name of the URL if it is defined; otherwise an empty
+    // string is returned. http://doc.qt.io/qt-5/qurl.html#userName
+    Q_INVOKABLE QString getUsername() const;
 
-	// Sets the URL's user name to username.
-	// http://doc.qt.io/qt-5/qurl.html#setUserName
-	Q_INVOKABLE void setUsername(const QString &username);
+    // Sets the URL's user name to username.
+    // http://doc.qt.io/qt-5/qurl.html#setUserName
+    Q_INVOKABLE void setUsername(const QString &username);
 
-	// Returns the password of the URL if it is defined; otherwise an empty string is returned.
-	// http://doc.qt.io/qt-5/qurl.html#password
-	Q_INVOKABLE QString getPassword() const;
+    // Returns the password of the URL if it is defined; otherwise an empty
+    // string is returned. http://doc.qt.io/qt-5/qurl.html#password
+    Q_INVOKABLE QString getPassword() const;
 
-	// Sets the URL's password to password.
-	// http://doc.qt.io/qt-5/qurl.html#setPassword
-	Q_INVOKABLE void setPassword(const QString &password);
+    // Sets the URL's password to password.
+    // http://doc.qt.io/qt-5/qurl.html#setPassword
+    Q_INVOKABLE void setPassword(const QString &password);
 
-	// Returns the host of the URL if it is defined; otherwise an empty string is returned.
-	// http://doc.qt.io/qt-5/qurl.html#host
-	Q_INVOKABLE QString getHost() const;
+    // Returns the host of the URL if it is defined; otherwise an empty string
+    // is returned. http://doc.qt.io/qt-5/qurl.html#host
+    Q_INVOKABLE QString getHost() const;
 
-	// Sets the host of the URL to host. The host is part of the authority.
-	// http://doc.qt.io/qt-5/qurl.html#setHost
-	Q_INVOKABLE void setHost(const QString &host);
+    // Sets the host of the URL to host. The host is part of the authority.
+    // http://doc.qt.io/qt-5/qurl.html#setHost
+    Q_INVOKABLE void setHost(const QString &host);
 
-	// Returns the port of the URL, or -1 if the port is unspecified.
-	// http://doc.qt.io/qt-5/qurl.html#port
-	Q_INVOKABLE int getPort() const;
+    // Returns the port of the URL, or -1 if the port is unspecified.
+    // http://doc.qt.io/qt-5/qurl.html#port
+    Q_INVOKABLE int getPort() const;
 
-	// Sets the port of the URL to port.
-	// http://doc.qt.io/qt-5/qurl.html#setPort
-	Q_INVOKABLE void setPort(int port);
+    // Sets the port of the URL to port.
+    // http://doc.qt.io/qt-5/qurl.html#setPort
+    Q_INVOKABLE void setPort(int port);
 
-	// Returns the path of the URL.
-	// http://doc.qt.io/qt-5/qurl.html#path
-	Q_INVOKABLE QString getPath() const;
+    // Returns the path of the URL.
+    // http://doc.qt.io/qt-5/qurl.html#path
+    Q_INVOKABLE QString getPath() const;
 
-	// Sets the path of the URL to path. The path is the part of the URL that comes after the authority but before the query string.
-	// http://doc.qt.io/qt-5/qurl.html#setPath
-	Q_INVOKABLE void setPath(const QString &path);
+    // Sets the path of the URL to path. The path is the part of the URL that
+    // comes after the authority but before the query string.
+    // http://doc.qt.io/qt-5/qurl.html#setPath
+    Q_INVOKABLE void setPath(const QString &path);
 
-	// Returns true if this URL contains a Query (i.e., if ? was seen on it).
-	// http://doc.qt.io/qt-5/qurl.html#hasQuery
-	Q_INVOKABLE bool hasQuery() const;
+    // Returns true if this URL contains a Query (i.e., if ? was seen on it).
+    // http://doc.qt.io/qt-5/qurl.html#hasQuery
+    Q_INVOKABLE bool hasQuery() const;
 
-	// Returns the query string of the URL if there's a query string, or an empty result if not.
-	// http://doc.qt.io/qt-5/qurl.html#query
-	Q_INVOKABLE QString getQuery() const;
+    // Returns the query string of the URL if there's a query string, or an
+    // empty result if not. http://doc.qt.io/qt-5/qurl.html#query
+    Q_INVOKABLE QString getQuery() const;
 
-	// Sets the query string of the URL to query.
-	// http://doc.qt.io/qt-5/qurl.html#setQuery
-	Q_INVOKABLE void setQuery(const QString &query);
+    // Sets the query string of the URL to query.
+    // http://doc.qt.io/qt-5/qurl.html#setQuery
+    Q_INVOKABLE void setQuery(const QString &query);
 
-	// Returns true if this URL contains a fragment (i.e., if # was seen on it).
-	// http://doc.qt.io/qt-5/qurl.html#hasFragment
-	Q_INVOKABLE bool hasFragment() const;
+    // Returns true if this URL contains a fragment (i.e., if # was seen on it).
+    // http://doc.qt.io/qt-5/qurl.html#hasFragment
+    Q_INVOKABLE bool hasFragment() const;
 
-	// Returns the fragment of the URL.
-	// http://doc.qt.io/qt-5/qurl.html#fragment
-	Q_INVOKABLE QString getFragment() const;
+    // Returns the fragment of the URL.
+    // http://doc.qt.io/qt-5/qurl.html#fragment
+    Q_INVOKABLE QString getFragment() const;
 
-	// Sets the fragment of the URL to fragment.
-	// http://doc.qt.io/qt-5/qurl.html#setFragment
-	Q_INVOKABLE void setFragment(const QString &fragment);
+    // Sets the fragment of the URL to fragment.
+    // http://doc.qt.io/qt-5/qurl.html#setFragment
+    Q_INVOKABLE void setFragment(const QString &fragment);
 
-	// Returns the TLD (Top-Level Domain) of the URL, (e.g. .co.uk, .net).
-	// http://doc.qt.io/qt-5/qurl.html#topLevelDomain
-	Q_INVOKABLE QString getTopLevelDomain() const;
+    // Returns the TLD (Top-Level Domain) of the URL, (e.g. .co.uk, .net).
+    // http://doc.qt.io/qt-5/qurl.html#topLevelDomain
+    Q_INVOKABLE QString getTopLevelDomain() const;
 
-	// Returns the authority of the URL if it is defined; otherwise an empty string is returned.
-	// http://doc.qt.io/qt-5/qurl.html#authority
-	Q_INVOKABLE QString getAuthority() const;
+    // Returns the authority of the URL if it is defined; otherwise an empty
+    // string is returned. http://doc.qt.io/qt-5/qurl.html#authority
+    Q_INVOKABLE QString getAuthority() const;
 
-	// Returns true if this URL is a parent of childUrl.
-	// http://doc.qt.io/qt-5/qurl.html#isParentOf
-	Q_INVOKABLE bool isParentOf(const QUrl &child_url) const;
+    // Returns true if this URL is a parent of childUrl.
+    // http://doc.qt.io/qt-5/qurl.html#isParentOf
+    Q_INVOKABLE bool isParentOf(const QUrl &child_url) const;
 
-	// Returns the result of the merge of this URL with relative. This URL is used as a base to convert relative to an absolute URL.
-	// http://doc.qt.io/qt-5/qurl.html#resolved
-	Q_INVOKABLE QUrl resolved(const QString &relative);
+    // Returns the result of the merge of this URL with relative. This URL is
+    // used as a base to convert relative to an absolute URL.
+    // http://doc.qt.io/qt-5/qurl.html#resolved
+    Q_INVOKABLE QUrl resolved(const QString &relative);
 
-	Q_INVOKABLE QString toString() const;
+    Q_INVOKABLE QString toString() const;
 };
 
-#endif // BFP_ENGINE_PROTOTYPES_URL_PROTOTYPE_H
+#endif  // BFP_ENGINE_PROTOTYPES_URL_PROTOTYPE_H

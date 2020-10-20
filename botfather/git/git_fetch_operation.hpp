@@ -2,23 +2,23 @@
 #define GITFETCHOPERATION_H
 
 #include <QObject>
+
 #include "abstract_git_operation.hpp"
 
-class GitFetchOperation : public AbstractGitOperation
-{
-	Q_OBJECT
+class GitFetchOperation : public AbstractGitOperation {
+    Q_OBJECT
 
-public:
-	GitFetchOperation(const QString &repo_path);
-	~GitFetchOperation() override;
+   public:
+    GitFetchOperation(const QString &repo_path);
+    ~GitFetchOperation() override;
 
-public slots:
-	void process() override;
+   public slots:
+    void process() override;
 
-private:
-	QString m_repo_path;
-	git_repository *m_repo = nullptr;
-	git_remote *m_remote = nullptr;
+   private:
+    QString m_repo_path;
+    git_repository *m_repo = nullptr;
+    git_remote *m_remote = nullptr;
 };
 
-#endif // GITFETCHOPERATION_H
+#endif  // GITFETCHOPERATION_H

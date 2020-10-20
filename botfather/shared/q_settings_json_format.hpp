@@ -10,6 +10,6 @@ void setFormat(const QSettings::Format &format);
 bool readFunc(QIODevice &device, QSettings::SettingsMap &map);
 bool writeFunc(QIODevice &device, const QSettings::SettingsMap &map);
 
-}
+}  // namespace QSettingsJsonFormat
 
-#endif // QSETTINGSJSONFORMAT_H
+#endif  // QSETTINGSJSONFORMAT_H

@@ -1,30 +1,30 @@
 #ifndef BOTLOGWIDGET_H
 #define BOTLOGWIDGET_H
 
-#include <QWidget>
 #include <QSettings>
-#include "../models/bot.hpp"
+#include <QWidget>
+
 #include "../../engine/engine.hpp"
+#include "../models/bot.hpp"
 
 namespace Ui {
 class BotLogWidget;
 }
 
-class BotLogWidget : public QWidget
-{
-	Q_OBJECT
+class BotLogWidget : public QWidget {
+    Q_OBJECT
 
-public:
-	explicit BotLogWidget(Bot *bot, QWidget *parent = nullptr);
-	~BotLogWidget();
+   public:
+    explicit BotLogWidget(Bot *bot, QWidget *parent = nullptr);
+    ~BotLogWidget();
 
-public slots:
-	void log(const QString &message, const Engine::LogSource &source);
-	void saveLogToFile();
+   public slots:
+    void log(const QString &message, const Engine::LogSource &source);
+    void saveLogToFile();
 
-private:
-	Ui::BotLogWidget *m_ui;
-	QSettings *m_bot_settings;
+   private:
+    Ui::BotLogWidget *m_ui;
+    QSettings *m_bot_settings;
 };
 
-#endif // BOTLOGWIDGET_H
+#endif  // BOTLOGWIDGET_H

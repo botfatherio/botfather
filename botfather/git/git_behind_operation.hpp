@@ -2,23 +2,23 @@
 #define GITBEHINDOPERATION_H
 
 #include <QObject>
+
 #include "abstract_git_operation.hpp"
 
-class GitBehindOperation : public AbstractGitOperation
-{
-	Q_OBJECT
+class GitBehindOperation : public AbstractGitOperation {
+    Q_OBJECT
 
-public:
-	GitBehindOperation(const QString &repo_path);
+   public:
+    GitBehindOperation(const QString &repo_path);
 
-public slots:
-	void process() override;
+   public slots:
+    void process() override;
 
-signals:
-	void differencesToRemote(int differences);
+   signals:
+    void differencesToRemote(int differences);
 
-private:
-	QString m_repo_path;
+   private:
+    QString m_repo_path;
 };
 
-#endif // GITBEHINDOPERATION_H
+#endif  // GITBEHINDOPERATION_H

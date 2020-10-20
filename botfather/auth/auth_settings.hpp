@@ -3,11 +3,11 @@
 #include <QString>
 
 namespace auth {
-	namespace options {
-		static const QString USERNAME = "auth/username";
-		static const QString PASSWORD = "auth/password";
-		static const QString REMEMBER_ME = "auth/remember_me";
-	}
-}
+namespace options {
+static const QString USERNAME = "auth/username";
+static const QString PASSWORD = "auth/password";
+static const QString REMEMBER_ME = "auth/remember_me";
+}  // namespace options
+}  // namespace auth
 
-#endif // BFP__AUTH__AUTH_SETTINGS_H
+#endif  // BFP__AUTH__AUTH_SETTINGS_H

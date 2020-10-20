@@ -3,15 +3,18 @@
 
 #include "include/cef_app.h"
 
-class HelperApp : public CefApp, public CefRenderProcessHandler
-{
-public:
-	HelperApp();
-	CefRefPtr<CefRenderProcessHandler> GetRenderProcessHandler() override { return this; }
-	bool OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProcessId source_process, CefRefPtr<CefProcessMessage> message) override;
+class HelperApp : public CefApp, public CefRenderProcessHandler {
+   public:
+    HelperApp();
+    CefRefPtr<CefRenderProcessHandler> GetRenderProcessHandler() override {
+        return this;
+    }
+    bool OnProcessMessageReceived(
+        CefRefPtr<CefBrowser> browser, CefProcessId source_process,
+        CefRefPtr<CefProcessMessage> message) override;
 
-private:
-	IMPLEMENT_REFCOUNTING(HelperApp)
+   private:
+    IMPLEMENT_REFCOUNTING(HelperApp)
 };
 
-#endif // HELPER_APP_HPP
+#endif  // HELPER_APP_HPP

@@ -14,15 +14,14 @@ namespace Ui {
 class ColorFinder;
 }
 
-class ColorFinder : public QWidget
-{
+class ColorFinder : public QWidget {
     Q_OBJECT
 
-public:
+   public:
     explicit ColorFinder(QWidget *parent = nullptr);
     ~ColorFinder();
 
-public slots:
+   public slots:
     void openPreview();
     void updateCode();
     void onMinHValueChanged(int value);
@@ -32,14 +31,15 @@ public slots:
     void onMinVValueChanged(int value);
     void onMaxVValueChanged(int value);
 
-signals:
-    void colorsChanged(int min_h, int min_s, int min_v, int max_h, int max_s, int max_v);
+   signals:
+    void colorsChanged(int min_h, int min_s, int min_v, int max_h, int max_s,
+                       int max_v);
 
-protected:
+   protected:
     void emitColorsChanged();
 
-private:
+   private:
     Ui::ColorFinder *ui;
 };
 
-#endif // COLOR_FINDER_H
+#endif  // COLOR_FINDER_H

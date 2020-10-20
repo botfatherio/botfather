@@ -4,27 +4,26 @@
 #include <QObject>
 #include <QProcess>
 
-class MaintenanceTool : public QObject
-{
-	Q_OBJECT
-public:
-	explicit MaintenanceTool(QObject *parent = nullptr);
-	static QString filePath();
-	static bool exists();
+class MaintenanceTool : public QObject {
+    Q_OBJECT
+   public:
+    explicit MaintenanceTool(QObject *parent = nullptr);
+    static QString filePath();
+    static bool exists();
 
-public slots:
-	void checkForUpdates();
-	void startDetachedAsUpdater();
+   public slots:
+    void checkForUpdates();
+    void startDetachedAsUpdater();
 
-signals:
-	void errorsOccured();
-	void started();
-	void finished();
-	void updatesAvailable();
-	void updaterStarted();
+   signals:
+    void errorsOccured();
+    void started();
+    void finished();
+    void updatesAvailable();
+    void updaterStarted();
 
-protected:
-	QProcess *getPreparedProcess();
+   protected:
+    QProcess *getPreparedProcess();
 };
 
-#endif // MAINTENANCETOOL_H
+#endif  // MAINTENANCETOOL_H

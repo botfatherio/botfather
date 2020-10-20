@@ -4,14 +4,15 @@
 #include <QHash>
 
 #ifdef Q_OS_LINUX
-    #include "linux/input-event-codes.hpp"
-	#include <X11/Xlib.h>
-	#define KEY_TYPE KeySym
-	#define KEY_CODE(windows_key, uinput_key) (uinput_key)
+#include <X11/Xlib.h>
+
+#include "linux/input-event-codes.hpp"
+#define KEY_TYPE KeySym
+#define KEY_CODE(windows_key, uinput_key) (uinput_key)
 #elif defined(Q_OS_WIN)
-	#include <WinUser.h>
-	#define KEY_TYPE WORD
-	#define KEY_CODE(windows_key, uinput_key) (windows_key)
+#include <WinUser.h>
+#define KEY_TYPE WORD
+#define KEY_CODE(windows_key, uinput_key) (windows_key)
 #endif
 
 // Virtual key codes (windows)
@@ -21,8 +22,8 @@
 // https://github.com/torvalds/linux/blob/master/include/uapi/linux/input-event-codes.h
 
 static const QHash<QString, KEY_TYPE> KEYMAP = {
-	
-	// Normal numbers
+
+    // Normal numbers
     {"0", KEY_CODE(0x30, KEY_0)},
     {"1", KEY_CODE(0x31, KEY_1)},
     {"2", KEY_CODE(0x32, KEY_2)},
@@ -96,8 +97,8 @@ static const QHash<QString, KEY_TYPE> KEYMAP = {
 
     // Special keys
     {"alt", KEY_CODE(VK_MENU, KEY_LEFTALT)},
-	
-	{"shift", KEY_CODE(VK_SHIFT, KEY_LEFTSHIFT)},
+
+    {"shift", KEY_CODE(VK_SHIFT, KEY_LEFTSHIFT)},
     {"lshift", KEY_CODE(VK_LSHIFT, KEY_LEFTSHIFT)},
     {"rshift", KEY_CODE(VK_RSHIFT, KEY_RIGHTSHIFT)},
 
@@ -128,7 +129,6 @@ static const QHash<QString, KEY_TYPE> KEYMAP = {
 
     {"voldown", KEY_CODE(VK_VOLUME_DOWN, KEY_VOLUMEDOWN)},
     {"volumedown", KEY_CODE(VK_VOLUME_DOWN, KEY_VOLUMEDOWN)},
-    {"volume_down", KEY_CODE(VK_VOLUME_DOWN, KEY_VOLUMEDOWN)}
-};
+    {"volume_down", KEY_CODE(VK_VOLUME_DOWN, KEY_VOLUMEDOWN)}};
 
-#endif // BFP_ENGINE_MODULES_DESKTOP_KEYMAP_H
+#endif  // BFP_ENGINE_MODULES_DESKTOP_KEYMAP_H

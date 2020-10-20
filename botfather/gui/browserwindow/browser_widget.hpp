@@ -4,30 +4,30 @@
 #include <QLabel>
 
 class BrowserWidget : public QLabel {
-	Q_OBJECT
+    Q_OBJECT
 
-public:
-	explicit BrowserWidget(QWidget* parent = nullptr);
+   public:
+    explicit BrowserWidget(QWidget *parent = nullptr);
 
-public slots:
-	void emitGlobalPosition();
+   public slots:
+    void emitGlobalPosition();
 
-signals:
-	void globalPositionChanged(const QPoint &new_position);
-	void mousePressed(const QPoint &position, int qt_mouse_button);
-	void mouseReleased(const QPoint &position, int qt_mouse_button);
-	void mouseMoved(const QPoint &position);
-	void wheelScrolled(const QPoint &position, const QPoint &delta);
-	void keyPressed(const QKeyEvent *event);
-	void keyReleased(const QKeyEvent *event);
+   signals:
+    void globalPositionChanged(const QPoint &new_position);
+    void mousePressed(const QPoint &position, int qt_mouse_button);
+    void mouseReleased(const QPoint &position, int qt_mouse_button);
+    void mouseMoved(const QPoint &position);
+    void wheelScrolled(const QPoint &position, const QPoint &delta);
+    void keyPressed(const QKeyEvent *event);
+    void keyReleased(const QKeyEvent *event);
 
-protected:
-	void mousePressEvent(QMouseEvent *event);
-	void mouseReleaseEvent(QMouseEvent *event);
-	void mouseMoveEvent(QMouseEvent *event);
-	void wheelEvent(QWheelEvent *event);
-	void keyPressEvent(QKeyEvent *event);
-	void keyReleaseEvent(QKeyEvent *event);
+   protected:
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void wheelEvent(QWheelEvent *event);
+    void keyPressEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *event);
 };
 
-#endif // BFP__GUI__BROWSER_WIDGET_H
+#endif  // BFP__GUI__BROWSER_WIDGET_H

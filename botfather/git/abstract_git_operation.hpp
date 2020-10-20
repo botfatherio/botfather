@@ -1,79 +1,88 @@
 #ifndef ABSTRACTGITOPERATION_H
 #define ABSTRACTGITOPERATION_H
 
-#include <QObject>
 #include <git2.h>
 
-class AbstractGitOperation : public QObject
-{
-	Q_OBJECT
+#include <QObject>
 
-public:
-	AbstractGitOperation(); // Operations are intended to be used in seperate threads. In such situation won't give it a parent.
-	virtual ~AbstractGitOperation();
+class AbstractGitOperation : public QObject {
+    Q_OBJECT
 
-	static const int CANCELED_CODE = 42;
+   public:
+    AbstractGitOperation();  // Operations are intended to be used in seperate
+                             // threads. In such situation won't give it a
+                             // parent.
+    virtual ~AbstractGitOperation();
 
-	bool isCanceled() const;
+    static const int CANCELED_CODE = 42;
 
-	// NOTE: Move them at the time we make each callback its own class
+    bool isCanceled() const;
 
-	uint totalObjects() const;
-	void setTotalObjects(uint objects);
+    // NOTE: Move them at the time we make each callback its own class
 
-	uint receivedObjects() const;
-	void setReceivedObjects(uint objects);
+    uint totalObjects() const;
+    void setTotalObjects(uint objects);
 
-	ulong receivedBytes() const;
-	void setReceivedBytes(ulong bytes);
+    uint receivedObjects() const;
+    void setReceivedObjects(uint objects);
 
-	ulong completedSteps() const;
-	void setCompletedSteps(ulong steps);
+    ulong receivedBytes() const;
+    void setReceivedBytes(ulong bytes);
 
-	ulong totalSteps() const;
-	void setTotalSteps(ulong steps);
+    ulong completedSteps() const;
+    void setCompletedSteps(ulong steps);
 
-	QString checkoutPath() const;
-	void setCheckoutPath(const QString &path);
+    ulong totalSteps() const;
+    void setTotalSteps(ulong steps);
 
-	// NOTE: we could make those callbacks classes. But how to emit the valueChanged signals then?
-	// UpdateTipsCallbacks constructor would take an AbstractGitOperation, so that we can emit the operations signals.
-	// TODO: Make it work as it is first. Then make it better <3
+    QString checkoutPath() const;
+    void setCheckoutPath(const QString &path);
 
-	// During the download of new data, this will be regularly called with the current count of progress done by the indexer.
-	static int transferProgressCallback(const git_transfer_progress *stats, void *abstract_git_operation_p);
+    // NOTE: we could make those callbacks classes. But how to emit the
+    // valueChanged signals then? UpdateTipsCallbacks constructor would take an
+    // AbstractGitOperation, so that we can emit the operations signals.
+    // TODO: Make it work as it is first. Then make it better <3
 
-	// Optional callback to notify the consumer of checkout progress.
-	static void checkoutProgressCallback(const char *path, size_t completed_steps, size_t total_steps, void *abstract_git_operation_p);
+    // During the download of new data, this will be regularly called with the
+    // current count of progress done by the indexer.
+    static int transferProgressCallback(const git_transfer_progress *stats,
+                                        void *abstract_git_operation_p);
 
-public slots:
-	void cancel();
-	virtual void process() = 0;
+    // Optional callback to notify the consumer of checkout progress.
+    static void checkoutProgressCallback(const char *path,
+                                         size_t completed_steps,
+                                         size_t total_steps,
+                                         void *abstract_git_operation_p);
 
-signals:
-	void success();
-	void failure(int error_code = 0);
-	void finished();
+   public slots:
+    void cancel();
+    virtual void process() = 0;
 
-	void totalObjectsChanged(uint total);
-	void receivedObjectsChanged(uint received);
-	void transferProgressChanged(uint received, uint total, ulong bytes);
-	void checkoutCurrentChanged(ulong current);
-	void checkoutTotalChanged(ulong total);
-	void checkoutProgressChanged(ulong current, ulong total, const QString &path);
+   signals:
+    void success();
+    void failure(int error_code = 0);
+    void finished();
 
-private:
-	bool m_is_canceled = false;
+    void totalObjectsChanged(uint total);
+    void receivedObjectsChanged(uint received);
+    void transferProgressChanged(uint received, uint total, ulong bytes);
+    void checkoutCurrentChanged(ulong current);
+    void checkoutTotalChanged(ulong total);
+    void checkoutProgressChanged(ulong current, ulong total,
+                                 const QString &path);
 
-	// Transfer // TODO: move this into a dedicated GitTransferProgress class
-	uint m_total_objects = 0;
-	uint m_received_objects = 0;
-	ulong m_received_bytes = 0;
+   private:
+    bool m_is_canceled = false;
 
-	// Checkout // TODO: move this into a dedicated GitCheckoutProgress class
-	ulong m_completed_steps = 0;
-	ulong m_total_steps = 0;
-	QString m_checkout_path;
+    // Transfer // TODO: move this into a dedicated GitTransferProgress class
+    uint m_total_objects = 0;
+    uint m_received_objects = 0;
+    ulong m_received_bytes = 0;
+
+    // Checkout // TODO: move this into a dedicated GitCheckoutProgress class
+    ulong m_completed_steps = 0;
+    ulong m_total_steps = 0;
+    QString m_checkout_path;
 };
 
-#endif // ABSTRACTGITOPERATION_H
+#endif  // ABSTRACTGITOPERATION_H
