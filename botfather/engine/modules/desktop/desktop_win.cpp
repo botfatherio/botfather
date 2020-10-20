@@ -85,24 +85,6 @@ QImage Desktop::takeScreenshot() {
 
 QSize Desktop::getSize() { return pimpl->getDesktopSize(); }
 
-void Desktop::leftClick(const QPoint &position) {
-    warpCursor(position);
-    pimpl->sendMouseEvent(MOUSEEVENTF_LEFTDOWN);
-    pimpl->sendMouseEvent(MOUSEEVENTF_LEFTUP);
-}
-
-void Desktop::middleClick(const QPoint &position) {
-    warpCursor(position);
-    pimpl->sendMouseEvent(MOUSEEVENTF_MIDDLEDOWN);
-    pimpl->sendMouseEvent(MOUSEEVENTF_MIDDLEUP);
-}
-
-void Desktop::rightClick(const QPoint &position) {
-    warpCursor(position);
-    pimpl->sendMouseEvent(MOUSEEVENTF_RIGHTDOWN);
-    pimpl->sendMouseEvent(MOUSEEVENTF_RIGHTUP);
-}
-
 void Desktop::pressMouse(Desktop::MouseButtons button) {
     holdMouse(button);
     releaseMouse(button);
