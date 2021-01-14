@@ -45,7 +45,7 @@ int Vision::countDifferentPixels(const cv::Mat &image_1,
     cv::Mat image_1_gray, image_2_gray, diff;
 
     // Make both images grayscale (for better performance)
-    cv::cvtColor(image_1, image_1_gray, cv::COLOR_BGRA2BGR);
+    cv::cvtColor(image_1, image_1_gray, cv::COLOR_BGR2GRAY);
     cv::cvtColor(image_2, image_2_gray, cv::COLOR_BGR2GRAY);
 
     // CMP_NE: image_1 is unequal to image_2.

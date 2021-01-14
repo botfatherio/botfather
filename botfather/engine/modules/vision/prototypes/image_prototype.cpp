@@ -174,10 +174,12 @@ int ImagePrototype::countDifferentPixels(const QImage &other_image) const {
     cv::Mat image_1 = Vision::qimageToBGRMat(THIS_IMAGE());
     cv::Mat image_2 = Vision::qimageToBGRMat(other_image);
 
+    double count = Vision::countDifferentPixels(image_1, image_2);
+
     image_1.release();
     image_2.release();
 
-    return Vision::countDifferentPixels(image_1, image_2);
+    return count;
 }
 
 double ImagePrototype::pixelEquality(const QImage &other_image) const {
