@@ -43,6 +43,8 @@ class DesktopAPI : public AbstractAPI {
     Q_INVOKABLE void warpCursor(const QPoint &position);
     Q_INVOKABLE QPoint getCursorPosition();
 
+    Q_INVOKABLE void scroll(int units, bool horizontal = false);
+
    protected:
     Desktop::MouseButtons mouseButtonFromString(const QString &button) const;
 

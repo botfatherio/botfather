@@ -34,6 +34,8 @@ class Desktop : public QObject {
     void warpCursor(const QPoint &position);
     bool getCursorPosition(int *x, int *y);
 
+    void scroll(int units, bool horizontal);
+
     bool keyExists(const QString &key);
 
    private:

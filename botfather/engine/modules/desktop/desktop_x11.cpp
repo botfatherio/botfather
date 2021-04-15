@@ -45,20 +45,28 @@ class DesktopPrivate {
         write(fd, &ie, sizeof(ie));
     }
 
+    void sync() { emitEvent(EV_SYN, SYN_REPORT, 0); }
+
     void moveCursor(int delta_x, int delta_y) {
         emitEvent(EV_REL, REL_X, delta_x);
         emitEvent(EV_REL, REL_Y, delta_y);
-        emitEvent(EV_SYN, SYN_REPORT, 0);
+        sync();
     }
 
     void hold(unsigned short keycode) {
         emitEvent(EV_KEY, keycode, 1);
-        emitEvent(EV_SYN, SYN_REPORT, 0);
+        sync();
     }
 
     void release(unsigned short keycode) {
         emitEvent(EV_KEY, keycode, 0);
-        emitEvent(EV_SYN, SYN_REPORT, 0);
+        sync();
+    }
+
+    void scroll(int units, bool horizontal) {
+        int direction = horizontal ? REL_HWHEEL : REL_WHEEL;
+        emitEvent(EV_REL, direction, units);
+        sync();
     }
 
     QSize getSize() {
@@ -73,9 +81,10 @@ Desktop::Desktop(QObject *parent) : QObject(parent), pimpl(new DesktopPrivate) {
     // They are preocessed by the kernel and then interpreted by the userspace.
     pimpl->fd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
 
-    // Enable key and relative events
+    // Enable key, relative and sync events
     ioctl(pimpl->fd, UI_SET_EVBIT, EV_KEY);
     ioctl(pimpl->fd, UI_SET_EVBIT, EV_REL);
+    ioctl(pimpl->fd, UI_SET_EVBIT, EV_SYN);
 
     // Enable key input events
     ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_0);  // 0
@@ -162,9 +171,10 @@ Desktop::Desktop(QObject *parent) : QObject(parent), pimpl(new DesktopPrivate) {
     ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_VOLUMEUP);    // VOLUME UP
     ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_VOLUMEDOWN);  // VOLUME DOWN
 
-    // Enable mouse movement input
+    // Enable mouse movement and scrolling input
     ioctl(pimpl->fd, UI_SET_RELBIT, REL_X);
     ioctl(pimpl->fd, UI_SET_RELBIT, REL_Y);
+    ioctl(pimpl->fd, UI_SET_RELBIT, REL_WHEEL);
 
     // Mouse button events (they don't require mouse movement to be enabled)
     ioctl(pimpl->fd, UI_SET_KEYBIT, BTN_LEFT);
@@ -173,6 +183,9 @@ Desktop::Desktop(QObject *parent) : QObject(parent), pimpl(new DesktopPrivate) {
     ioctl(pimpl->fd, UI_SET_KEYBIT, BTN_WHEEL);
     ioctl(pimpl->fd, UI_SET_KEYBIT, BTN_GEAR_DOWN);
     ioctl(pimpl->fd, UI_SET_KEYBIT, BTN_GEAR_UP);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, BTN_MOUSE);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, BTN_TOUCH);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, BTN_TOOL_DOUBLETAP);
 
     // Create a fake input device, which is capable of inputting/faking
     // mouse and keyboard inputs.
@@ -312,6 +325,10 @@ bool Desktop::getCursorPosition(int *x, int *y) {
     return XQueryPointer(pimpl->display, pimpl->root, &returned_window,
                          &returned_window, x, y, &win_x, &win_y,
                          &returned_mask);
+}
+
+void Desktop::scroll(int units, bool horizontal) {
+    pimpl->scroll(units, horizontal);
 }
 
 bool Desktop::keyExists(const QString &key) {

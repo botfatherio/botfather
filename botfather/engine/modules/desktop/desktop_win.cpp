@@ -32,6 +32,16 @@ class DesktopPrivate {
         input_event.mi.dwFlags = flags;
         SendInput(1, &input_event, sizeof(INPUT));
     }
+
+    void sendScrollEvent(int units, bool horizontal) {
+        // https://msdn.microsoft.com/de-de/library/windows/desktop/ms646273(v=vs.85).aspx
+        INPUT input_event;
+        input_event.type = INPUT_MOUSE;
+        input_event.mi.dwFlags =
+            horizontal ? MOUSEEVENTF_HWHEEL : MOUSEEVENTF_WHEEL;
+        input_event.mi.mouseData = units;
+        SendInput(1, &input_event, sizeof(INPUT));
+    }
 };
 
 Desktop::Desktop(QObject *parent)
@@ -143,6 +153,10 @@ bool Desktop::getCursorPosition(int *x, int *y) {
         return true;
     }
     return false;
+}
+
+void Desktop::scroll(int units, bool horizontal) {
+    pimpl->sendScrollEvent(units, horizontal);
 }
 
 bool Desktop::keyExists(const QString &key) { return KEYMAP[key.toLower()]; }

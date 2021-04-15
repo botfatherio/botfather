@@ -114,6 +114,11 @@ QPoint DesktopAPI::getCursorPosition() {
     return QPoint(x, y);
 }
 
+void DesktopAPI::scroll(int units, bool horizontal) {
+    desktop->scroll(units, horizontal);
+    return void();
+}
+
 Desktop::MouseButtons DesktopAPI::mouseButtonFromString(
     const QString &button) const {
     if (button.toLower() == "left") {
