@@ -39,7 +39,7 @@ class DesktopPrivate {
         input_event.type = INPUT_MOUSE;
         input_event.mi.dwFlags =
             horizontal ? MOUSEEVENTF_HWHEEL : MOUSEEVENTF_WHEEL;
-        input_event.mi.mouseData = units;
+        input_event.mi.mouseData = WHEEL_DELTA * units;
         SendInput(1, &input_event, sizeof(INPUT));
     }
 };
