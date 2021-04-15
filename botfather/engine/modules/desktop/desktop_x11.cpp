@@ -178,9 +178,9 @@ Desktop::Desktop(QObject *parent) : QObject(parent), pimpl(new DesktopPrivate) {
     // mouse and keyboard inputs.
     memset(&pimpl->usetup, 0, sizeof(pimpl->usetup));
     pimpl->usetup.id.bustype = BUS_USB;
-    pimpl->usetup.id.vendor = 0x1234;                          // Sample vendor
-    pimpl->usetup.id.product = 0x5678;                         // Sample product
-    strcpy(pimpl->usetup.name, "BFP Universal Input Device");  // Device name
+    pimpl->usetup.id.vendor = 0x1234;                      // Sample vendor
+    pimpl->usetup.id.product = 0x5678;                     // Sample product
+    strcpy(pimpl->usetup.name, "Universal Input Device");  // Device name
 
     // Enable the fake input device.
     ioctl(pimpl->fd, UI_DEV_SETUP, &pimpl->usetup);
