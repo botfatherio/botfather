@@ -17,12 +17,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     connect(ui->button_box, SIGNAL(accepted()), this, SLOT(close()));
     connect(ui->button_box, SIGNAL(rejected()), this, SLOT(close()));
 
-#ifdef Q_OS_LINUX
-    ui->flash_on_window->hide();
-#else
-    ui->flash_on_linux->hide();
-#endif
-
     ui->check_for_updates->setDisabled(MaintenanceTool::filePath().isEmpty());
 
     // Disabled/enable the flash input fields with the de/activation of the 'use
@@ -52,8 +46,6 @@ void PreferencesDialog::saveConfig() {
     QSettings s;
     s.setValue(browser::options::FLASH_SO, ui->flash_so->text());
     s.setValue(browser::options::FLASH_MANIFEST, ui->flash_manifest->text());
-    s.setValue(browser::options::USE_SYSTEM_FLASH,
-               ui->use_system_flash->isChecked());
     s.setValue(browser::options::USE_CUSTOM_FLASH,
                ui->use_custom_flash->isChecked());
     s.setValue(browser::options::USE_BUNDLED_FLASH,
@@ -79,10 +71,6 @@ void PreferencesDialog::loadConfig() {
     ui->use_custom_flash->setChecked(
         s.value(browser::options::USE_CUSTOM_FLASH,
                 browser::fallback::USE_CUSTOM_FLASH)
-            .toBool());
-    ui->use_system_flash->setChecked(
-        s.value(browser::options::USE_SYSTEM_FLASH,
-                browser::fallback::USE_SYSTEM_FLASH)
             .toBool());
     ui->use_bundled_flash->setChecked(
         s.value(browser::options::USE_BUNDLED_FLASH,
@@ -117,7 +105,7 @@ void PreferencesDialog::on_browse_adb_binary_pressed() {
 void PreferencesDialog::on_browse_flash_so_pressed() {
     QString flash_so = QFileDialog::getOpenFileName(
         this, tr("Select Flashplayer for Opera and Chromium PPAPI"), "",
-        tr("Flashplayer PPAPI (libpepflashplayer.so)"), Q_NULLPTR);
+        tr("Flashplayer PPAPI (*.dll, *.so)"), Q_NULLPTR);
 
     if (!flash_so.isEmpty()) {
         ui->flash_so->setText(flash_so);

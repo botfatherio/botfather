@@ -65,7 +65,7 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QGroupBox" name="flash_on_linux">
+        <widget class="QGroupBox" name="flash">
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -80,6 +80,9 @@
            <widget class="QRadioButton" name="use_bundled_flash">
             <property name="text">
              <string>&amp;Use bundled Flashplayer (default)</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -134,44 +137,6 @@
              </widget>
             </item>
            </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="flash_on_window">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="title">
-          <string>Flashplayer</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_7">
-          <item>
-           <widget class="QCheckBox" name="use_system_flash">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <property name="text">
-             <string>Use the system wide flash installation if available</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_5">
-            <property name="text">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://get.adobe.com/de/flashplayer/otherversions/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Download FP for Opera and Chromium PPAPI&lt;/span&gt;&lt;/a&gt; for Windows and install it. Then tick the checkbox above, press OK and restart Botfather.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-            <property name="openExternalLinks">
-             <bool>true</bool>
-            </property>
-           </widget>
           </item>
          </layout>
         </widget>

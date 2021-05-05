@@ -1,5 +1,7 @@
 #include "browser_app.hpp"
 
+#include <QApplication>
+#include <QDir>
 #include <QFileInfo>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -23,10 +25,8 @@ void BrowserApp::OnBeforeCommandLineProcessing(
     Q_UNUSED(process_type);
     QSettings settings;
 
-#ifdef Q_OS_LINUX
-    QString flash_so = browser::fallback::BUNDLED_FLASH_SO_PATH;  // default
-    QString flash_manifest =
-        browser::fallback::BUNDLED_FLASH_MANIFEST_PATH;  // default
+    QString flash_so;
+    QString flash_manifest;
 
     if (settings
             .value(browser::options::USE_CUSTOM_FLASH,
@@ -35,6 +35,16 @@ void BrowserApp::OnBeforeCommandLineProcessing(
         flash_so = settings.value(browser::options::FLASH_SO).toString();
         flash_manifest =
             settings.value(browser::options::FLASH_MANIFEST).toString();
+    } else {
+#ifdef Q_OS_LINUX
+        flash_so = "/app/extra/flash/libpepflashplayer.so";
+        flash_manifest = "/app/extra/flash/manifest.json";
+#else
+        QDir flash_dir =
+            QDir(QDir(QApplication::applicationDirPath()).filePath("flash"));
+        flash_manifest = flash_dir.filePath("manifest.json");
+        flash_so = flash_dir.filePath("pepflashplayer.dll");
+#endif
     }
 
     QFileInfo flash_so_info(flash_so);
@@ -53,14 +63,6 @@ void BrowserApp::OnBeforeCommandLineProcessing(
                                                 flash_version.toStdString());
         }
     }
-#else
-    if (settings
-            .value(browser::options::USE_SYSTEM_FLASH,
-                   browser::fallback::USE_SYSTEM_FLASH)
-            .toBool()) {
-        command_line->AppendSwitch("enable-system-flash");
-    }
-#endif
 
     // Fix page scrolling. (scrolling ingame worked but not on normal pages)
     // https://bitbucket.org/chromiumembedded/cef/issues/2214/osr-scroll-is-erratic-after-using-mouse
