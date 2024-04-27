@@ -17,7 +17,7 @@
 		{
 			"type": "archive",
 			"url": "https://cef-builds.spotifycdn.com/cef_binary_3.3578.1861.g1992780_linux64.tar.bz2",
-			"sha1": "01ba00d7be2134923c78d2c6363f7cbdbebf2bce"
+			"sha256": "f6ec1507b9f1bc7aed610c9ce30275196319f17a967474909d306d192024b503"
 		},
         {
             "type": "patch",

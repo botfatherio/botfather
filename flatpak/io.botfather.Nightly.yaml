@@ -1,7 +1,7 @@
 app-id: io.botfather.Nightly
 branch: stable
 runtime: org.kde.Platform
-runtime-version: '5.12'
+runtime-version: '5.15-22.08'
 sdk: org.kde.Sdk
 command: botfather
 tags:
@@ -30,10 +30,8 @@ cleanup:
   - "*.a"
 modules:
   - udev/udev-175.json
-  - gyp/gyp.json
-  - nss/nss-3.39.json
   - cef/cef-3.3578.1861-linux64.json
-  - opencv/opencv-3.4.3.json
+  - opencv/opencv-4.9.0.json
   - libgit2/libgit2.json
   - flashplayer/flashplayer.json
   - name: botfather

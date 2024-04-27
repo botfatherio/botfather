@@ -1,8 +1,9 @@
 {
 	"name": "opencv",
-	"buildsystem": "cmake",
+	"buildsystem": "cmake-ninja",
 	"builddir": true,
 	"config-opts": [
+		"-D WITH_OPENCL=OFF",
 		"-D WITH_TBB=ON",
 		"-D WITH_OPENMP=ON",
 		"-D WITH_IPP=ON",
@@ -38,8 +39,8 @@
 	"sources": [
 		{
 			"type": "archive",
-			"url": "https://github.com/opencv/opencv/archive/3.4.3.zip",
-			"sha256": "37c7d8c3b9807902ad11b9181bbde61dcb3898a78a563130494752f46fe8cc5f"
+			"url": "https://github.com/opencv/opencv/archive/4.9.0.tar.gz",
+			"sha256": "ddf76f9dffd322c7c3cb1f721d0887f62d747b82059342213138dc190f28bc6c"
 		}
 	]
 }
