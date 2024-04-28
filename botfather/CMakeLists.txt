@@ -4,8 +4,6 @@ project(botfather VERSION 6.8.0)
 configure_file(version.hpp.in version.hpp)
 
 set(BOTFATHER_SRCS
-    auth/auth_settings.hpp
-    auth/license_api_client.hpp
     auth/rest_api_client.hpp
     auth/scripts_api_client.hpp
     engine/modules/android/apis/android_api.hpp
@@ -77,7 +75,6 @@ set(BOTFATHER_SRCS
     gui/models/bot_manifest.hpp
     gui/models/bot_manifest_node.hpp
     gui/models/bot_repo.hpp
-    gui/authdialog/auth_dialog.hpp
     engine/modules/common/apis/abstract_api.hpp
     engine/modules/vision/types/blob_tpl.hpp
     engine/modules/vision/prototypes/blob_tpl_prototype.hpp
@@ -90,7 +87,6 @@ set(BOTFATHER_SRCS
     gui/scriptmanager/script_manager_dialog.hpp
     res/resource.hpp
     shared/q_settings_json_format.hpp
-    auth/license_api_client.cpp
     auth/rest_api_client.cpp
     auth/scripts_api_client.cpp
     engine/modules/android/apis/android_api.cpp
@@ -143,7 +139,6 @@ set(BOTFATHER_SRCS
     gui/models/bot_repo.cpp
     gui/models/bot_repo_list_model.cpp
     gui/preferences/preferences_dialog.cpp
-    gui/authdialog/auth_dialog.cpp
     gui/scriptmanager/git_progress_dialog.cpp
     gui/scriptmanager/script_manager_dialog.cpp
     version.hpp
@@ -168,7 +163,6 @@ set(BOTFATHER_SRCS
     engine/modules/browser/browser_util.cpp
     shared/q_settings_json_format.cpp
     gui/androiddialog/android_dialog.ui
-    gui/authdialog/auth_dialog.ui
     gui/botwidgets/bot_browsers_widget.ui
     gui/botwidgets/bot_config_widget.ui
     gui/botwidgets/bot_log_widget.ui

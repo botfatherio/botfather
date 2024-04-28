@@ -27,10 +27,9 @@ class BotWidget : public AbstractBotWidget {
     void updateBotName(const QString &new_bot_name);
     void updateTabIconBasedOnBotStatus(const Bot::Status &status);
     void updateShortcuts();
-    void tryBotStart(int runtime_in_secs = -1);
+    void tryBotStart();
     void tryBotStop();
     void stopHotkeyActivated();
-    void runtimerTimedOut();
     void checkPermissions(const QString &script_path);
 
    protected:
@@ -45,7 +44,6 @@ class BotWidget : public AbstractBotWidget {
     BotStatsWidget *m_bot_stats_widget;
     BotBrowsersWidget *m_bot_browsers_widget;
     BotSettingsWidget *m_bot_settings_widget;
-    QTimer runtimer;
     QSettings *m_bot_settings;
     QHotkey *m_stop_hotkey;
 };

@@ -6,7 +6,6 @@
 #include <QSystemTrayIcon>
 
 #include "androiddialog/android_dialog.hpp"
-#include "authdialog/auth_dialog.hpp"
 #include "botwidgets/bot_widget.hpp"
 #include "maintenancetool/maintenance_tool.hpp"
 #include "models/bot_list_model.hpp"
@@ -37,7 +36,6 @@ class MainWindow : public QMainWindow {
     void removeWidgetForBot(const QString &bot_path);
 
     void addLocalBot();
-    void updateLicenseInfo();
     void openDonateLink();
     void showAboutDialog();
     void openColorFinder();
@@ -54,8 +52,6 @@ class MainWindow : public QMainWindow {
     ScriptManagerDialog *m_script_manager_dialog;
     AndroidDialog *m_android_dialog;
     PreferencesDialog *m_preferences_dialog;
-    LicenseApiClient *m_license_api_client;
-    AuthDialog *m_auth_dialog;
     MaintenanceTool *m_maintenance_tool;
 };
 

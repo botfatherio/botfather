@@ -47,10 +47,6 @@ BotWidget::BotWidget(Bot *bot, QSystemTrayIcon *trayicon, QWidget *parent)
     connect(bot, &Bot::audioStopRequested, this,
             &AbstractBotWidget::stopWavSound);
 
-    connect(bot, &Bot::stopped, &runtimer, &QTimer::stop);
-    connect(&runtimer, &QTimer::timeout, this, &BotWidget::runtimerTimedOut);
-    connect(&runtimer, &QTimer::timeout, this, &BotWidget::tryBotStop);
-
     connect(m_bot_settings_widget, &BotSettingsWidget::settingsChanged, this,
             &BotWidget::updateShortcuts);
     connect(m_stop_hotkey, &QHotkey::activated, this,
@@ -83,25 +79,13 @@ void BotWidget::updateShortcuts() {
     m_stop_hotkey->setRegistered(!stop_ks.isEmpty());
 }
 
-void BotWidget::tryBotStart(int runtime_in_secs) {
+void BotWidget::tryBotStart() {
     if (m_bot->isRunning()) {
         qDebug() << "Can't start already running bot";
         return;
     }
 
     checkPermissions(m_bot->scriptPath());
-
-    if (runtime_in_secs > 0) {
-        runtimer.setInterval(runtime_in_secs * 1000);
-        int runtime_in_minutes = qRound(runtimer.interval() / 1000 / 60.0);
-        QString limitation_msg = QString(
-                                     "The bot will run for %0 minutes, login "
-                                     "first to avoid this limitation.")
-                                     .arg(runtime_in_minutes);
-        m_bot_log_widget->log(limitation_msg, Engine::LogSource::System);
-        runtimer.start();
-    }
-
     m_bot->start();
 }
 
@@ -111,7 +95,6 @@ void BotWidget::tryBotStop() {
         return;
     }
 
-    runtimer.stop();
     m_bot->stop();
 }
 
@@ -126,20 +109,6 @@ void BotWidget::stopHotkeyActivated() {
         tr("%0 has been stopped via hotkey").arg(m_bot->name()), windowIcon());
 
     tryBotStop();
-}
-
-void BotWidget::runtimerTimedOut() {
-    int runtime_in_minutes = qRound(runtimer.interval() / 1000 / 60.0);
-    QString msg1 =
-        QString(
-            "The bot stopped after %0 minutes, because you were not logged in.")
-            .arg(runtime_in_minutes);
-    QString msg2 = QString(
-                       "Go to Account > Login to prevent the bot from stopping "
-                       "after %0 minutes.")
-                       .arg(runtime_in_minutes);
-    m_bot_log_widget->log(msg1, Engine::LogSource::System);
-    m_bot_log_widget->log(msg2, Engine::LogSource::System);
 }
 
 void BotWidget::checkPermissions(const QString &script_path) {

@@ -18,8 +18,6 @@ MainWindow::MainWindow(QWidget *parent)
     m_script_manager_dialog = new ScriptManagerDialog(this);
     m_android_dialog = new AndroidDialog(this);
     m_preferences_dialog = new PreferencesDialog(this);
-    m_license_api_client = new LicenseApiClient(this);
-    m_auth_dialog = new AuthDialog(m_license_api_client, this);
     m_maintenance_tool = new MaintenanceTool(this);
 
     ui->bot_list_view->setModel(m_bot_list_model);
@@ -82,23 +80,6 @@ MainWindow::MainWindow(QWidget *parent)
             QApplication::instance(), &QApplication::quit);
     connect(ui->update_action, &QAction::triggered, m_maintenance_tool,
             &MaintenanceTool::startDetachedAsUpdater);
-
-    connect(ui->login_action, &QAction::triggered, m_auth_dialog,
-            &AuthDialog::exec);
-    connect(ui->logout_action, &QAction::triggered, m_auth_dialog,
-            &AuthDialog::logout);
-    connect(ui->logout_action, &QAction::triggered, m_license_api_client,
-            &LicenseApiClient::resetLicense);
-    connect(ui->logout_action, &QAction::triggered, this,
-            &MainWindow::updateLicenseInfo);
-    // connect(ui->status_action, &QAction::triggered, m_auth_dialog,
-    // &AuthDialog::viewPlans);
-    connect(m_auth_dialog, &AuthDialog::authenticated, this,
-            &MainWindow::updateLicenseInfo);
-    connect(m_auth_dialog, &AuthDialog::triedAutoLogin,
-            [this]() { ui->menuAccount->setEnabled(true); });
-    updateLicenseInfo();
-    QTimer::singleShot(0, m_auth_dialog, &AuthDialog::tryAutoLogin);
 
     // Check for updates and notify about vailable ones
     if (QSettings().value("check_for_updates", true).toBool() &&
@@ -197,23 +178,13 @@ void MainWindow::startSelectedBot() {
     if (!model_index.isValid())
         return;  // There might not be a single bot listed
 
-    if (m_bot_list_model->numberOfRunningBots() >=
-            m_license_api_client->maxNumberOfRunningBotsAllowed() &&
-        m_license_api_client->isNumberOfRunningBotsLimited()) {
-        QMessageBox::information(
-            this, tr("Login to run more bots"),
-            tr("Please login to run more than %0 bots at the same time.")
-                .arg(m_license_api_client->maxNumberOfRunningBotsAllowed()));
-        return;
-    }
-
     QString bot_path =
         m_bot_list_model->data(model_index, BotListModel::BOT_PATH_ROLE)
             .toString();
     BotWidget *bot_widget = m_bot_path_to_widget_map[bot_path];
 
     Q_ASSERT(bot_widget);
-    bot_widget->tryBotStart(m_license_api_client->allowedBotRuntimeInSecs());
+    bot_widget->tryBotStart();
 }
 
 void MainWindow::stopSelectedBot() {
@@ -274,24 +245,6 @@ void MainWindow::addLocalBot() {
 
     Bot::Data bot_data(bot_path, bot_name, QString());
     m_bot_list_model->list(bot_data);
-}
-
-void MainWindow::updateLicenseInfo() {
-    if (m_license_api_client->isLicenseActive()) {
-        QString status_info = tr("Status: unlimited bots, no time limit");
-        ui->status_action->setText(status_info);
-    } else {
-        int number_of_bots =
-            m_license_api_client->maxNumberOfRunningBotsAllowed();
-        int runtime_in_min =
-            qRound(m_license_api_client->allowedBotRuntimeInSecs() / 60.0);
-        QString status_info = tr("Status: %0 bot(s), %1min sessions per bot")
-                                  .arg(number_of_bots)
-                                  .arg(runtime_in_min);
-        ui->status_action->setText(status_info);
-    }
-    ui->logout_action->setVisible(m_license_api_client->isLicenseActive());
-    ui->login_action->setVisible(!m_license_api_client->isLicenseActive());
 }
 
 void MainWindow::openDonateLink() {
