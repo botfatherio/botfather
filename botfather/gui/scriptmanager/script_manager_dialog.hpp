@@ -5,7 +5,6 @@
 #include <QSortFilterProxyModel>
 
 #include "../models/bot.hpp"
-#include "../models/bot_repo_list_model.hpp"
 
 namespace Ui {
 class ScriptManagerDialog;
@@ -19,21 +18,16 @@ class ScriptManagerDialog : public QDialog {
     ~ScriptManagerDialog();
 
    public slots:
-    void handleRowChange(const QModelIndex &current,
-                         const QModelIndex &previous);
-    void refetchModelData();
-    void installSelectedScript();
+    void validateInputs();
+    void installScript();
     void cloneRepository(const Bot::Data &bot_data);
-    void giveMoreInfo();
+    void showHelp();
 
    signals:
     void botCreated(const Bot::Data &bot_data);
 
    private:
     Ui::ScriptManagerDialog *m_ui;
-    QPushButton *m_more_info_button;
-    BotRepoListModel *m_repos_model;
-    QSortFilterProxyModel *m_repos_proxy;
 };
 
 #endif  // SCRIPTMANAGERDIALOG_H

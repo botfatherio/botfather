@@ -4,8 +4,6 @@ project(botfather VERSION 6.8.0)
 configure_file(version.hpp.in version.hpp)
 
 set(BOTFATHER_SRCS
-    auth/rest_api_client.hpp
-    auth/scripts_api_client.hpp
     engine/modules/android/apis/android_api.hpp
     engine/modules/desktop/apis/desktop_api.hpp
     engine/modules/common/apis/helper_api.hpp
@@ -81,14 +79,11 @@ set(BOTFATHER_SRCS
     engine/modules/algorithm/apis/algorithm_api.hpp
     engine/modules/common/prototypes/margins_prototype.hpp
     engine/modules/common/prototypes/url_prototype.hpp
-    gui/models/bot_repo_list_model.hpp
     gui/preferences/preferences_dialog.hpp
     gui/scriptmanager/git_progress_dialog.hpp
     gui/scriptmanager/script_manager_dialog.hpp
     res/resource.hpp
     shared/q_settings_json_format.hpp
-    auth/rest_api_client.cpp
-    auth/scripts_api_client.cpp
     engine/modules/android/apis/android_api.cpp
     engine/modules/desktop/apis/desktop_api.cpp
     engine/modules/common/apis/helper_api.cpp
@@ -137,7 +132,6 @@ set(BOTFATHER_SRCS
     gui/models/bot_manifest.cpp
     gui/models/bot_manifest_node.cpp
     gui/models/bot_repo.cpp
-    gui/models/bot_repo_list_model.cpp
     gui/preferences/preferences_dialog.cpp
     gui/scriptmanager/git_progress_dialog.cpp
     gui/scriptmanager/script_manager_dialog.cpp

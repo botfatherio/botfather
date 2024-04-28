@@ -27,6 +27,7 @@
         <file>icons/icons8-home-32.png</file>
         <file>icons/icons8-right-32.png</file>
         <file>icons/icons8-paint-palette-32.png</file>
+        <file>icons/icons8-download-from-cloud-32.png</file>
     </qresource>
     <qresource prefix="/">
         <file>logo_v2.png</file>

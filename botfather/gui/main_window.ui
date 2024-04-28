@@ -223,6 +223,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="add_local_action"/>
    <addaction name="add_bot_action"/>
    <addaction name="del_bot_action"/>
    <addaction name="run_bot_action"/>
@@ -232,10 +233,10 @@
   <action name="add_bot_action">
    <property name="icon">
     <iconset resource="../res/botfather.qrc">
-     <normaloff>:/icons/icons/icons8-add-new-32.png</normaloff>:/icons/icons/icons8-add-new-32.png</iconset>
+     <normaloff>:/icons/icons/icons8-download-from-cloud-32.png</normaloff>:/icons/icons/icons8-download-from-cloud-32.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;Add a bot</string>
+    <string>Clone bots</string>
    </property>
    <property name="toolTip">
     <string>Add a bot with custom cofiguration to the list of all your bots</string>
@@ -374,10 +375,10 @@
   <action name="add_local_action">
    <property name="icon">
     <iconset resource="../res/botfather.qrc">
-     <normaloff>:/icons/icons/icons8-file-32.png</normaloff>:/icons/icons/icons8-file-32.png</iconset>
+     <normaloff>:/icons/icons/icons8-add-new-32.png</normaloff>:/icons/icons/icons8-add-new-32.png</iconset>
    </property>
    <property name="text">
-    <string>Add a &amp;local bot</string>
+    <string>Add bots</string>
    </property>
    <property name="toolTip">
     <string>Add a bot from a local folder</string>
