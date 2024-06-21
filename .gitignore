@@ -1,4 +1,5 @@
 build/
+.vscode/
 
 # Created by https://www.gitignore.io/api/qt,linux,macos,cmake,windows,qtcreator,visualstudio
 # Edit at https://www.gitignore.io/?templates=qt,linux,macos,cmake,windows,qtcreator,visualstudio
