@@ -26,6 +26,11 @@ This does the build again, and at the end exports the result to a local director
 
 This second time we passed in `--force-clean`, which means that the previously created `build-dir` directory was deleted before the new build was started.
 
+## Running the app from a repository
+
+- `flatpak --user install ./repo io.botfather.Nightly`
+- `flatpak run io.botfather.Nightly`
+
 ## Troubleshooting
 
 ### Debug the application
