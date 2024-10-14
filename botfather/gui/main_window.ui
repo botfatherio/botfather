@@ -393,7 +393,7 @@
      <normaloff>:/icons/icons/icons8-heart-outline-32.png</normaloff>:/icons/icons/icons8-heart-outline-32.png</iconset>
    </property>
    <property name="text">
-    <string>Buy me a coffe</string>
+    <string>Buy me a coffee</string>
    </property>
   </action>
   <action name="open_color_finder">
