@@ -28,10 +28,10 @@
        </sizepolicy>
       </property>
       <property name="editTriggers">
-       <set>QAbstractItemView::EditTrigger::DoubleClicked|QAbstractItemView::EditTrigger::EditKeyPressed</set>
+       <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
       </property>
       <property name="selectionMode">
-       <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+       <enum>QAbstractItemView::SingleSelection</enum>
       </property>
       <property name="showGrid">
        <bool>false</bool>
@@ -63,13 +63,7 @@
         <item>
          <spacer name="verticalSpacer">
           <property name="orientation">
-           <enum>Qt::Orientation::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
+           <enum>Qt::Vertical</enum>
           </property>
          </spacer>
         </item>
@@ -79,7 +73,7 @@
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Create as many bots as you want&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignmentFlag::AlignCenter</set>
+           <set>Qt::AlignCenter</set>
           </property>
          </widget>
         </item>
@@ -89,7 +83,7 @@
            <string>Bots can be created from local and online scripts</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignmentFlag::AlignCenter</set>
+           <set>Qt::AlignCenter</set>
           </property>
          </widget>
         </item>
@@ -98,7 +92,7 @@
           <item>
            <spacer name="horizontalSpacer">
             <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
+             <enum>Qt::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -118,7 +112,7 @@
           <item>
            <spacer name="horizontalSpacer_2">
             <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
+             <enum>Qt::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -133,13 +127,7 @@
         <item>
          <spacer name="verticalSpacer_2">
           <property name="orientation">
-           <enum>Qt::Orientation::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
+           <enum>Qt::Vertical</enum>
           </property>
          </spacer>
         </item>
@@ -215,7 +203,7 @@
     </size>
    </property>
    <property name="toolButtonStyle">
-    <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
+    <enum>Qt::ToolButtonTextBesideIcon</enum>
    </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
@@ -323,7 +311,7 @@
     <string>Open the preferences window</string>
    </property>
    <property name="menuRole">
-    <enum>QAction::MenuRole::PreferencesRole</enum>
+    <enum>QAction::PreferencesRole</enum>
    </property>
   </action>
   <action name="quit_action">
@@ -338,7 +326,7 @@
     <string>Ctrl+Q</string>
    </property>
    <property name="menuRole">
-    <enum>QAction::MenuRole::QuitRole</enum>
+    <enum>QAction::QuitRole</enum>
    </property>
   </action>
   <action name="about_qt_action">
@@ -346,7 +334,7 @@
     <string>&amp;About Qt</string>
    </property>
    <property name="menuRole">
-    <enum>QAction::MenuRole::AboutQtRole</enum>
+    <enum>QAction::AboutQtRole</enum>
    </property>
   </action>
   <action name="about_action">
@@ -354,7 +342,7 @@
     <string>About &amp;Botfather</string>
    </property>
    <property name="menuRole">
-    <enum>QAction::MenuRole::AboutRole</enum>
+    <enum>QAction::AboutRole</enum>
    </property>
   </action>
   <action name="update_action">
