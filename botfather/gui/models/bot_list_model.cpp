@@ -5,6 +5,8 @@
 #include <QDir>
 #include <QFile>
 #include <QIcon>
+#include <QJsonArray>
+#include <QJsonDocument>
 #include <QStandardPaths>
 
 BotListModel::BotListModel(QObject *parent) : QAbstractListModel(parent) {
@@ -176,19 +178,22 @@ void BotListModel::save(const QString &filepath) {
     QFile file(filepath);
     if (!file.open(QIODevice::WriteOnly)) {
         qDebug() << "Failed to open" << filepath
-                 << "to store the BotListModel data in it";
+                 << "to store the bot list data in it";
         return;
     }
 
-    // Data must be stored using the same structur it's loaded from (otherwise
-    // loading will fail).
-    QVector<Bot::Data> bot_data_list;
+    QJsonArray json_bots_array;
     for (Bot *bot : m_bots) {
-        bot_data_list << bot->data();
+        QJsonObject json_bot_object;
+        json_bot_object["name"] = bot->name();
+        json_bot_object["path"] = bot->path();
+        json_bot_object["repo"] = bot->repo();
+        json_bot_object["branch"] = bot->branch();
+        json_bots_array.append(json_bot_object);
     }
 
-    QDataStream out(&file);
-    out << bot_data_list;
+    QJsonDocument json_doc(json_bots_array);
+    file.write(json_doc.toJson());
     file.close();
 }
 
@@ -200,25 +205,53 @@ void BotListModel::load(const QString &filepath) {
         return;
     }
 
-    QVector<Bot::Data> bot_data_list;
+    QJsonDocument json_doc = QJsonDocument::fromJson(file.readAll());
+    file.close();
+
+    if (!json_doc.isArray()) {
+        qDebug() << "The bot list file" << filepath
+                 << "does not contain a JSON array";
+        return;
+    }
+
+    QJsonArray json_bots_array = json_doc.array();
+    for (const QJsonValue &json_bot_value : json_bots_array) {
+        QJsonObject json_bot_object = json_bot_value.toObject();
+        list(json_bot_object["path"].toString(),
+             json_bot_object["name"].toString(),
+             json_bot_object["repo"].toString(),
+             json_bot_object["branch"].toString());
+    }
+}
+
+void BotListModel::loadLegacy(const QString &filepath) {
+    QFile file(filepath);
+    if (!file.open(QIODevice::ReadOnly)) {
+        qDebug() << "Failed to open" << filepath
+                 << "to load legacy bot list data from";
+        return;
+    }
+
+    QVector<Bot::LegacyData> bot_data_list;
     QDataStream in(&file);
     in >> bot_data_list;
 
-    for (Bot::Data bot_data : bot_data_list) {
+    for (Bot::LegacyData bot_data : bot_data_list) {
         qDebug() << "Listing bot" << bot_data.name << bot_data.path;
-        list(bot_data);
+        list(bot_data.path, bot_data.name, bot_data.repo, QString());
     }
 
     file.close();
 }
 
-void BotListModel::list(const Bot::Data &bot_data) {
-    Bot *temp_bot = new Bot(bot_data);
+void BotListModel::list(const QString &path, const QString &name,
+                        const QString &repo, const QString &branch) {
+    Bot *temp_bot = new Bot(path, name, repo, branch);
     bool is_valid = temp_bot->isValid();
     delete temp_bot;
 
     if (!is_valid) {
-        qDebug() << "The bot (" << bot_data.path
+        qDebug() << "The bot (" << path
                  << ") is invalid and will not be listed";
         return;
     }
@@ -228,9 +261,10 @@ void BotListModel::list(const Bot::Data &bot_data) {
         return;
     }
 
-    setData(index(rowCount() - 1, 0), bot_data.name, Qt::DisplayRole);
-    setData(index(rowCount() - 1, 1), bot_data.path, Qt::DisplayRole);
-    setData(index(rowCount() - 1, 2), bot_data.repo, Qt::DisplayRole);
+    setData(index(rowCount() - 1, 0), name, Qt::DisplayRole);
+    setData(index(rowCount() - 1, 1), path, Qt::DisplayRole);
+    setData(index(rowCount() - 1, 2), repo, Qt::DisplayRole);
+    setData(index(rowCount() - 1, 3), branch, Qt::DisplayRole);
 
     Bot *bot_to_list =
         qvariant_cast<Bot *>(data(index(rowCount() - 1), BOT_PTR_ROLE));
@@ -238,6 +272,11 @@ void BotListModel::list(const Bot::Data &bot_data) {
 }
 
 QString BotListModel::defaultLocation() const {
+    return QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) +
+           "/bots.json";
+}
+
+QString BotListModel::legacyLocation() const {
     return QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) +
            "/bots.dat";
 }

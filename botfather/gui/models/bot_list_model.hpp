@@ -35,9 +35,12 @@ class BotListModel : public QAbstractListModel {
     void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
     void save(const QString &filepath);
     void load(const QString &filepath);
-    void list(const Bot::Data &bot_data);
+    void loadLegacy(const QString &filepath);
+    void list(const QString &path, const QString &name, const QString &repo,
+              const QString &branch);
 
     QString defaultLocation() const;
+    QString legacyLocation() const;
     int numberOfRunningBots() const;
 
    signals:

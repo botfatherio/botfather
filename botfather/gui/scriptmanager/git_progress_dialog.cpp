@@ -46,7 +46,8 @@ void GitProgressDialog::checkoutProgressChanged(ulong current, ulong total,
 }
 
 void GitProgressDialog::reclone(const QString &repo_url,
-                                const QString &dir_path) {
+                                const QString &dir_path,
+                                const QString &branch) {
     setWindowTitle("Script repository update");
     setLabelText("Updating script repository");
     show();
@@ -58,7 +59,7 @@ void GitProgressDialog::reclone(const QString &repo_url,
     reclone_thread->setObjectName("GitRecloneOperation Thread");
 
     GitRecloneOperation *reclone_op =
-        new GitRecloneOperation(repo_url, dir_path);
+        new GitRecloneOperation(repo_url, dir_path, branch);
     reclone_op->moveToThread(reclone_thread);
 
     connect(reclone_thread, &QThread::started, reclone_op,
@@ -99,7 +100,8 @@ void GitProgressDialog::reclone(const QString &repo_url,
 }
 
 void GitProgressDialog::clone(const QString &repo_url,
-                              const QString &dir_path) {
+                              const QString &dir_path,
+                              const QString &branch) {
     setWindowTitle("Cloning script repository...");
     setLabelText("Cloning script repository...");
     show();
@@ -110,7 +112,7 @@ void GitProgressDialog::clone(const QString &repo_url,
                       // finished.
     clone_thread->setObjectName("GitCloneOperation Thread");
 
-    GitCloneOperation *clone_op = new GitCloneOperation(repo_url, dir_path);
+    GitCloneOperation *clone_op = new GitCloneOperation(repo_url, dir_path, branch);
     clone_op->moveToThread(clone_thread);
 
     connect(clone_thread, &QThread::started, clone_op,

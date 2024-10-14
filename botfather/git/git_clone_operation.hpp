@@ -9,7 +9,7 @@ class GitCloneOperation : public AbstractGitOperation {
     Q_OBJECT
 
    public:
-    GitCloneOperation(const QString &repo_url, const QString &dir_path);
+    GitCloneOperation(const QString &repo_url, const QString &dir_path, const QString &branch);
 
    public slots:
     void process() override;
@@ -17,6 +17,7 @@ class GitCloneOperation : public AbstractGitOperation {
    private:
     QString m_repo_url;
     QString m_dir_path;
+    QString m_branch;
 };
 
 #endif  // GITCLONEOPERATION_H

@@ -13,14 +13,14 @@ class Bot : public QObject {
    public:
     // We use a struct to serialize a bots data because QObjects can't be
     // serialized directly.
-    struct Data {
+    struct LegacyData {
         QString path;  // Use the path to identify this bot
         QString name;
-        QString repo;  // BF ratings are bind to a repository, we don't want it
-                       // to change.
+        QString repo;
 
-        Data() {}
-        Data(const QString &path, const QString &name, const QString &repo) {
+        LegacyData() {}
+        LegacyData(const QString &path, const QString &name,
+                   const QString &repo) {
             this->path = path;
             this->name = name;
             this->repo = repo;
@@ -34,7 +34,8 @@ class Bot : public QObject {
     };
 
     explicit Bot(QObject *parent = nullptr);
-    explicit Bot(const Bot::Data &data, QObject *parent = nullptr);
+    explicit Bot(const QString &path, const QString &name, const QString &repo,
+                 const QString &branch, QObject *parent = nullptr);
 
     // Returns true if the bots name and path are empty.
     bool isNull() const;
@@ -47,8 +48,6 @@ class Bot : public QObject {
     // Whether this bot is technically updateable. It is if it has a valid git
     // repository.
     bool isUpdatable() const;
-
-    Bot::Data data() const;
 
     // Whether the bot is uptodate with its remote git repo (if there is such)
     Status status() const;
@@ -67,6 +66,9 @@ class Bot : public QObject {
     // is local (has no remote repo).
     QString repo() const;
     void setRepo(const QString &repo);
+
+    QString branch() const;
+    void setBranch(const QString &branch);
 
     // Returns the path to the first script file found in the bots directory or
     // an empty string if nothing has been found.
@@ -112,7 +114,10 @@ class Bot : public QObject {
 
    private:
     Status m_status = Status::Unavailabe;
-    Bot::Data m_data;
+    QString m_path;
+    QString m_name;
+    QString m_repo;
+    QString m_branch;
     bool m_is_running = false;
     Engine *m_engine;
     QThread *m_engine_thread;
@@ -120,11 +125,7 @@ class Bot : public QObject {
 
 Q_DECLARE_METATYPE(Bot *)
 
-inline QDataStream &operator<<(QDataStream &stream, const Bot::Data &data) {
-    return stream << data.name << data.path << data.repo;
-}
-
-inline QDataStream &operator>>(QDataStream &stream, Bot::Data &data) {
+inline QDataStream &operator>>(QDataStream &stream, Bot::LegacyData &data) {
     return stream >> data.name >> data.path >> data.repo;
 }
 

@@ -55,7 +55,7 @@ void BotUpdatesWidget::updateTheBot() {
             &BotUpdatesWidget::resetProgressIndicators);
     connect(git_progress_dialog, &GitProgressDialog::cloned, this,
             &BotUpdatesWidget::botUpdated);
-    git_progress_dialog->reclone(m_bot->repo(), m_bot->path());
+    git_progress_dialog->reclone(m_bot->repo(), m_bot->path(), m_bot->branch());
 }
 
 void BotUpdatesWidget::resetProgressIndicators() {

@@ -7,16 +7,18 @@
 #include "git_clone_operation.hpp"
 
 GitRecloneOperation::GitRecloneOperation(const QString &remote_url,
-                                         const QString &local_path)
+                                         const QString &local_path,
+                                         const QString &branch)
     : AbstractGitOperation(),
       m_remote_url(remote_url),
-      m_local_path(local_path) {
+      m_local_path(local_path),
+      m_branch(branch) {
     m_tmp_clone_dir.setAutoRemove(false);
 }
 
 void GitRecloneOperation::process() {
     GitCloneOperation *clone_op =
-        new GitCloneOperation(m_remote_url, m_tmp_clone_dir.path());
+        new GitCloneOperation(m_remote_url, m_tmp_clone_dir.path(), m_branch);
 
     connect(clone_op, SIGNAL(failure()), this, SIGNAL(failure()));
     connect(clone_op, SIGNAL(success()), this, SLOT(replaceRepo()));

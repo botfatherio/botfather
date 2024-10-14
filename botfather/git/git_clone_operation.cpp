@@ -4,13 +4,19 @@
 #include <QDebug>
 
 GitCloneOperation::GitCloneOperation(const QString &repo_url,
-                                     const QString &dir_path)
-    : AbstractGitOperation(), m_repo_url(repo_url), m_dir_path(dir_path) {}
+                                     const QString &dir_path,
+                                     const QString &branch)
+    : AbstractGitOperation(),
+      m_repo_url(repo_url),
+      m_dir_path(dir_path),
+      m_branch(branch) {}
 
 void GitCloneOperation::process() {
     git_repository *repo = nullptr;
     git_clone_options clone_opts = GIT_CLONE_OPTIONS_INIT;
 
+    clone_opts.checkout_branch =
+        m_branch.isEmpty() ? NULL : qstrdup(m_branch.toUtf8().constData());
     clone_opts.fetch_opts.callbacks.payload = this;
     clone_opts.fetch_opts.callbacks.transfer_progress =
         GitCloneOperation::transferProgressCallback;

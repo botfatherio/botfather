@@ -11,6 +11,7 @@
 #include <QRegularExpressionValidator>
 #include <QStandardPaths>
 #include <QThread>
+#include <QUrl>
 #include <QUuid>
 
 #include "git_progress_dialog.hpp"
@@ -58,6 +59,7 @@ void ScriptManagerDialog::installScript() {
     bot_parent_dir.mkpath(bot_parent_dir.absolutePath());
 
     QString git_url = m_ui->git_url_line_edit->text();
+    QString git_branch = m_ui->git_branch_line_edit->text();
     QString bot_name = m_ui->bot_name_line_edit->text();
     QString bot_uuid = QUuid::createUuid().toString(QUuid::WithoutBraces);
 
@@ -68,18 +70,22 @@ void ScriptManagerDialog::installScript() {
 
     QString bot_path = bot_parent_dir.filePath(bot_uuid);
 
-    Bot::Data bot_data(bot_path, bot_name, git_url);
-    qDebug() << "Bot created. Path:" << bot_data.path
-             << "Name:" << bot_data.name << "Repo:" << bot_data.repo;
+    qDebug() << "Bot created. Path:" << bot_path << "Name:" << bot_name
+             << "Repo:" << git_url << "Branch:" << git_branch;
 
-    cloneRepository(bot_data);
+    cloneRepository(bot_path, bot_name, git_url, git_branch);
 }
 
-void ScriptManagerDialog::cloneRepository(const Bot::Data &bot_data) {
+void ScriptManagerDialog::cloneRepository(const QString &path,
+                                          const QString &name,
+                                          const QString &repo,
+                                          const QString &branch) {
     GitProgressDialog *dialog = new GitProgressDialog(this);
     connect(dialog, &GitProgressDialog::cloned,
-            [this, bot_data]() { emit botCreated(bot_data); });
-    dialog->clone(bot_data.repo, bot_data.path);
+            [this, path, name, repo, branch]() {
+                emit botCreated(path, name, repo, branch);
+            });
+    dialog->clone(repo, path, branch);
 }
 
 void ScriptManagerDialog::showHelp() {

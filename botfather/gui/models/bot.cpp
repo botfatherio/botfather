@@ -9,15 +9,18 @@
 
 Bot::Bot(QObject *parent) : QObject(parent) {}
 
-Bot::Bot(const Bot::Data &data, QObject *parent) : Bot(parent) {
-    m_data = data;
+Bot::Bot(const QString &path, const QString &name, const QString &repo,
+         const QString &branch, QObject *parent)
+    : Bot(parent) {
+    m_path = path;
+    m_name = name;
+    m_repo = repo;
+    m_branch = branch;
 }
 
-bool Bot::isNull() const {
-    return m_data.name.isEmpty() && m_data.path.isEmpty();
-}
+bool Bot::isNull() const { return m_name.isEmpty() && m_path.isEmpty(); }
 
-bool Bot::isValid() const { return !isNull() && QDir(m_data.path).exists(); }
+bool Bot::isValid() const { return !isNull() && QDir(m_path).exists(); }
 
 bool Bot::isRunning() const { return m_is_running; }
 
@@ -28,8 +31,6 @@ bool Bot::isUpdatable() const {
                                    GIT_REPOSITORY_OPEN_NO_SEARCH, nullptr) == 0;
 }
 
-Bot::Data Bot::data() const { return m_data; }
-
 Bot::Status Bot::status() const { return m_status; }
 
 void Bot::setStatus(const Status &status) {
@@ -37,20 +38,24 @@ void Bot::setStatus(const Status &status) {
     emit statusChanged(status);
 }
 
-QString Bot::path() const { return m_data.path; }
+QString Bot::path() const { return m_path; }
 
-void Bot::setPath(const QString &path) { m_data.path = path; }
+void Bot::setPath(const QString &path) { m_path = path; }
 
-QString Bot::name() const { return m_data.name; }
+QString Bot::name() const { return m_name; }
 
 void Bot::setName(const QString &name) {
-    m_data.name = name;
+    m_name = name;
     emit nameChanged(name);
 }
 
-QString Bot::repo() const { return m_data.repo; }
+QString Bot::repo() const { return m_repo; }
 
-void Bot::setRepo(const QString &repo) { m_data.repo = repo; }
+void Bot::setRepo(const QString &repo) { m_repo = repo; }
+
+QString Bot::branch() const { return m_branch; }
+
+void Bot::setBranch(const QString &branch) { m_branch = branch; }
 
 QString Bot::scriptPath() const {
     QDir repo_dir(path());

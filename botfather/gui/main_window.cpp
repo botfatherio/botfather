@@ -95,9 +95,13 @@ MainWindow::MainWindow(QWidget *parent)
         m_bot_list_model->save(m_bot_list_model->defaultLocation());
     });
 
+    // Don't block the constructor while loading model data
     QTimer::singleShot(1, this, [this]() {
-        // Don't block the constructor while loading model data
-        m_bot_list_model->load(m_bot_list_model->defaultLocation());
+        if (QFileInfo(m_bot_list_model->defaultLocation()).exists()) {
+            m_bot_list_model->load(m_bot_list_model->defaultLocation());
+        } else if (QFileInfo(m_bot_list_model->legacyLocation()).exists()) {
+            m_bot_list_model->loadLegacy(m_bot_list_model->legacyLocation());
+        }
 
         // Select the first bot in the list. (looks better visually)
         ui->bot_list_view->setCurrentIndex(m_bot_list_model->index(0));
@@ -243,8 +247,7 @@ void MainWindow::addLocalBot() {
     QDir bot_dir(bot_path);
     QString bot_name = bot_dir.dirName();
 
-    Bot::Data bot_data(bot_path, bot_name, QString());
-    m_bot_list_model->list(bot_data);
+    m_bot_list_model->list(bot_path, bot_name, QString(), QString());
 }
 
 void MainWindow::openDonateLink() {

@@ -4,8 +4,6 @@
 #include <QDialog>
 #include <QSortFilterProxyModel>
 
-#include "../models/bot.hpp"
-
 namespace Ui {
 class ScriptManagerDialog;
 }
@@ -20,11 +18,13 @@ class ScriptManagerDialog : public QDialog {
    public slots:
     void validateInputs();
     void installScript();
-    void cloneRepository(const Bot::Data &bot_data);
+    void cloneRepository(const QString &path, const QString &name,
+                         const QString &repo, const QString &branch);
     void showHelp();
 
    signals:
-    void botCreated(const Bot::Data &bot_data);
+    void botCreated(const QString &path, const QString &name,
+                    const QString &repo, const QString &branch);
 
    private:
     Ui::ScriptManagerDialog *m_ui;
