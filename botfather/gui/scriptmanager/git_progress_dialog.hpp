@@ -25,8 +25,10 @@ class GitProgressDialog : public QDialog {
     void checkoutProgressChanged(ulong current, ulong total,
                                  const QString &path);
 
-    void reclone(const QString &repo_url, const QString &dir_path, const QString &branch);
-    void clone(const QString &repo_url, const QString &dir_path, const QString &branch);
+    void reclone(const QString &repo_url, const QString &dir_path,
+                 const QString &branch);
+    void clone(const QString &repo_url, const QString &dir_path,
+               const QString &branch);
     void cloneSuccess();
     void cloneFailure();
 

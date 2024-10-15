@@ -99,8 +99,7 @@ void GitProgressDialog::reclone(const QString &repo_url,
     reclone_thread->start();
 }
 
-void GitProgressDialog::clone(const QString &repo_url,
-                              const QString &dir_path,
+void GitProgressDialog::clone(const QString &repo_url, const QString &dir_path,
                               const QString &branch) {
     setWindowTitle("Cloning script repository...");
     setLabelText("Cloning script repository...");
@@ -112,7 +111,8 @@ void GitProgressDialog::clone(const QString &repo_url,
                       // finished.
     clone_thread->setObjectName("GitCloneOperation Thread");
 
-    GitCloneOperation *clone_op = new GitCloneOperation(repo_url, dir_path, branch);
+    GitCloneOperation *clone_op =
+        new GitCloneOperation(repo_url, dir_path, branch);
     clone_op->moveToThread(clone_thread);
 
     connect(clone_thread, &QThread::started, clone_op,

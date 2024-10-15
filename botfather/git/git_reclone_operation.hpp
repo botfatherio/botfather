@@ -10,7 +10,8 @@ class GitRecloneOperation : public AbstractGitOperation {
     Q_OBJECT
 
    public:
-    GitRecloneOperation(const QString &remote_url, const QString &local_path, const QString &branch);
+    GitRecloneOperation(const QString &remote_url, const QString &local_path,
+                        const QString &branch);
 
    public slots:
     void process() override;

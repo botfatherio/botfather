@@ -37,10 +37,10 @@ void HelperAPI::playWavSound(const QString &path_to_wav_file) {
             QScriptContext::TypeError, "path_to_wav_file does not exist.");
         return void();
     }
-    emit bot()->playWavSound(bot()->normalisePath(path_to_wav_file));
+    emit bot() -> playWavSound(bot()->normalisePath(path_to_wav_file));
 }
 
-void HelperAPI::stopWavSound() { emit bot()->stopWavSound(); }
+void HelperAPI::stopWavSound() { emit bot() -> stopWavSound(); }
 
 QStringList HelperAPI::qScriptValueToStringList(const QScriptValue &value,
                                                 bool quote_strings) {
