@@ -4,29 +4,15 @@ We use these builds for testing Flatpak runtimes and to pre-build the binaries w
 
 ## Installing a runtime and matching SDK
 
-`flatpak install flathub org.kde.Platform//5.15-22.08 org.kde.Sdk//5.15-22.08`
+`flatpak install flathub org.kde.Platform//5.15-23.08 org.kde.Sdk//5.15-23.08`
 
-## Building the application
+## Bulding the app
 
-`flatpak-builder build-dir --force-clean io.botfather.Nightly.yaml`
-
-## Testing the build
-
-To verify that the build was successful, run the following:
-
-`flatpak-builder --run build-dir io.botfather.Nightly.yaml botfather`
-
-## Putting the app in a repository
-
-Before you can install and run the app, it first needs to be put in a repository. This is done by passing the `--repo` argument to `flatpak-builder`:
+Before you can install and run the app, it first needs to be built and put in a repository:
 
 - `flatpak-builder --repo=repo --force-clean build-dir io.botfather.Nightly.yaml`
 
-This does the build again, and at the end exports the result to a local directory called `repo`. Note that `flatpak-builder` keeps a cache of previous builds in the `.flatpak-builder` subdirectory, so doing a second build like this is very fast.
-
-This second time we passed in `--force-clean`, which means that the previously created `build-dir` directory was deleted before the new build was started.
-
-## Running the app from a repository
+## Testing the app
 
 - `flatpak --user install ./repo io.botfather.Nightly`
 - `flatpak run io.botfather.Nightly`
