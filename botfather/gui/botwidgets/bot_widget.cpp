@@ -148,11 +148,11 @@ void BotWidget::checkPermissions(const QString &script_path) {
     box->setDetailedText(
         "Botfathers Desktop API uses the uinput linux kernel module to "
         "generate keyboard and mouse input events. "
-        "Thus botfather requires write permission on the '/dev/uinput' file.\n"
+        "Thus Botfather requires write permission on the '/dev/uinput' file.\n"
         "On some distributions that file is writable by default. On your "
         "machine it's currently not writable. "
         "The command 'chmod 662 /dev/uinput' makes it writable.\n"
-        "When 'pkexec' is installed on your system botfather can execute the "
+        "When 'pkexec' is installed on your system Botfather can execute the "
         "command for you. "
         "Otherwise you have to execute it manually from a command line.\n"
         "If you don't want to run scripts controlling your desktop anyway, you "

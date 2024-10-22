@@ -1,6 +1,6 @@
-# BotFather
+# Botfather
 
-With botfather one can write crossplatform bots for Android, Desktop and Web (browser) applications in JavaScript.
+With Botfather one can write crossplatform bots for Android, Desktop and Web (browser) applications in JavaScript.
 For this purpose Botfather provides several JavaScript APIs featuring image matching and more.
 Furthermore scripts can be turned into crossplatform binaries using the Botfather Binary Generator Tool (bingen for short).
 

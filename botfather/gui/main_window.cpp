@@ -265,7 +265,7 @@ void MainWindow::showAboutDialog() {
             "href='https://botfather.io/docs/legal/privacy/'>Privacy</a> | <a "
             "href='https://botfather.io/docs/legal/tos/'>EULA</a> | Version: "
             "%1</p>"
-            "<b>Software used by botfather:</b>"
+            "<b>Software used by Botfather:</b>"
             "<p>Those beautiful application icons are made by Icons8.<br>"
             "<a href='https://icons8.com/'>website</a> | <a "
             "href='https://icons8.com/license/'>license</a></p>"
