@@ -52,27 +52,3 @@ On Centos 7 `libXScrnSaver` is installed as workaround for the following error d
 - `make install` (creates a `package` directory and puts `botfather` and `webhelper` in it)
 
 *or use qtcreator...*
-
-## Troubleshooting
-
-##### LaunchProcess: failed to execvp: ./webhelper
-
-This means that there is no `webhelper` binary next to the `botfather` binary.
-Place a `webhelper` binary matching platform and build type (release/debug) next to your bots binary to fix the problem.
-
-##### Browser is blank / nothing works after CEF Update
-
-Rebuild(!) the both `webhelper` and(!) `botfather`.
-
-##### How to choose a new CEF version
-
-See what branches are supported and stable on [CEF Release Branches](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-release-branches)
-CEF releases considered stable mostly aren't. Check what CEF release other project like CefSharp use in their latest stable release. [CefSharp Releases](https://github.com/cefsharp/CefSharp/releases)
-
-##### QtCreator doesn't find `CEF_ROOT`
-
-Environment variables put in `~/.bashrc` are only visible for programs started from bash. You could start `qtcreator` from commandline, but putting the environment variables in `~/.xsession` might be a better solution.
-
-Environment variables put in `~/.xsession` are visible for all programs started in your current X session.
-
-Make sure you *relog after setting new variables*.

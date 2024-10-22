@@ -52,3 +52,18 @@ Furthermore scripts can be turned into crossplatform binaries using the Botfathe
         C:\OPENCV\4.2.0\build\include\**
         C:\CEF\cef_binary_3.3578.1861.g1992780_windows64\**
         ```
+## Troubleshooting
+
+### `LaunchProcess: failed to execvp: ./webhelper`
+
+This means there's no `webhelper` binary next to the `botfather` binary.
+Fix this problem by placing a `webhelper` binary next to the `botfather` binary matching the platform and build type.
+
+### Browser is blank / nothing works after CEF Update
+
+Rebuild the both `webhelper` and `botfather`.
+
+### How to choose a new CEF version
+
+Look up the latest supported [CEF Release Branches](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-current-release-branches-supported) and attempt to use it.
+In case the version appears unstable, use the release [CefSharp](https://github.com/cefsharp/CefSharp/releases) is based on.
