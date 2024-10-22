@@ -28,7 +28,7 @@ void BrowserWidget::mouseMoveEvent(QMouseEvent *event) {
 }
 
 void BrowserWidget::wheelEvent(QWheelEvent *event) {
-    emit wheelScrolled(event->pos(), event->angleDelta());
+    emit wheelScrolled(event->position().toPoint(), event->angleDelta());
 }
 
 void BrowserWidget::keyPressEvent(QKeyEvent *event) { emit keyPressed(event); }
