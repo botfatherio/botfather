@@ -7,7 +7,6 @@ Furthermore scripts can be turned into crossplatform binaries using the Botfathe
 ## Documentation
 
 - [Building on Windows](docs/building-on-windows-10.md)
-- [Building an Appimage](docs/building-an-appimage.md)
 
 ## Building on Linux
 
