@@ -8,7 +8,11 @@ cmake_policy(SET CMP0074 NEW)
 cmake_policy(SET CMP0048 NEW)
 
 # Enable compilation of libcef_dll_wrapper 3.3578.1861 with gcc 14
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error=template-id-cdtor -Wno-error=attributes -Wno-error=deprecated-declarations -Wno-error=unused-result")
+include(CheckCXXCompilerFlag)
+check_cxx_compiler_flag("-Wno-error=template-id-cdtor" COMPILER_SUPPORTS_TEMPLATE_ID_CDTOR)
+IF (COMPILER_SUPPORTS_TEMPLATE_ID_CDTOR)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error=template-id-cdtor -Wno-error=attributes -Wno-error=deprecated-declarations -Wno-error=unused-result")
+ENDIF()
 
 # Only generate Debug and Release configuration types.
 set(CMAKE_CONFIGURATION_TYPES Debug Release)
