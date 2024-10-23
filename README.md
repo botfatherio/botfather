@@ -6,7 +6,6 @@ Furthermore scripts can be turned into crossplatform binaries using the Botfathe
 
 ## Documentation
 
-- [Building a Flatpak](docs/building-a-flatpak.md)
 - [Building on Windows](docs/building-on-windows-10.md)
 - [Building an Appimage](docs/building-an-appimage.md)
 
@@ -25,6 +24,16 @@ Furthermore scripts can be turned into crossplatform binaries using the Botfathe
     1. `mkdir build && cd build`
     2. `cmake -DCMAKE_BUILD_TYPE=Release ..`
     3. `make`
+
+## Building a Flatpak
+
+We use these builds for testing Flatpak runtimes and to pre-build the binaries we later ship to Flathub.
+
+1. Install the runtime and matching SDK: `flatpak install flathub org.kde.Platform//5.15-23.08 org.kde.Sdk//5.15-23.08`
+2. Build the app and put it in a repository: `flatpak-builder --repo=flatpak/repo --force-clean flatpak/build-dir flatpak/io.botfather.Nightly.yaml`
+3. Install and run the app for testing:
+    1. `flatpak --user install ./flatpak/repo io.botfather.Nightly`
+    2. `flatpak run io.botfather.Nightly`
 
 ## VSCode Setup
 
@@ -66,3 +75,19 @@ Rebuild the both `webhelper` and `botfather`.
 
 Look up the latest supported [CEF Release Branches](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-current-release-branches-supported) and attempt to use it.
 In case the version appears unstable, use the release [CefSharp](https://github.com/cefsharp/CefSharp/releases) is based on.
+
+### Debugging the Flatpak
+
+Add the following build options to the `io.botfather.Nightly.yaml` to prevent the builder from stipping debug symbols from the build.
+
+```json
+"build-options": {
+	"no-debuginfo": true,
+	"strip": false
+}
+```
+
+Then start a shell in the sandbox using `flatpak-builder --run <build-dir> <manifest> sh`.
+Now use `gdb`, `strace`, `ldd` and so on to debug.
+
+More infos can be found in the [Flatpak documentation on debugging](http://docs.flatpak.org/en/latest/debugging.html).
