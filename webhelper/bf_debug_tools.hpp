@@ -1,9 +1,9 @@
 #ifndef BF_DEBUG_TOOLS_HPP
 #define BF_DEBUG_TOOLS_HPP
 
-#include <QString>
+#include <include/cef_app.h>
 
-#include "include/cef_app.h"
+#include <QString>
 
 namespace BFDebugTools {
 // Sends a debug message to the browser process, where it will be printed to the

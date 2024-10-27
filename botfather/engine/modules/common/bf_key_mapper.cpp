@@ -1,10 +1,11 @@
 #include "bf_key_mapper.hpp"
 
+#include <include/cef_base.h>
+
 #include <QDebug>
 #include <QHash>
 
 #include "bf_keymap.hpp"
-#include "include/cef_base.h"
 #include "linux11_keyboard_codes.hpp"
 #include "qt_keymaps.hpp"
 #include "windows_keyboard_codes.hpp"

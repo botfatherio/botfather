@@ -1,9 +1,9 @@
 #ifndef CEF_KEY_EVENT_ADAPTER_BASE_H
 #define CEF_KEY_EVENT_ADAPTER_BASE_H
 
-#include <QKeyEvent>
+#include <include/cef_base.h>
 
-#include "include/cef_base.h"
+#include <QKeyEvent>
 
 class CefKeyEventAdapter : public CefKeyEvent {
    public:

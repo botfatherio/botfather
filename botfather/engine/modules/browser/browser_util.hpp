@@ -1,14 +1,14 @@
 #ifndef BROWSER_UTIL_H
 #define BROWSER_UTIL_H
 
+#include <include/cef_values.h>
+
 #include <QApplication>
 #include <QByteArray>
 #include <QCborValue>
 #include <QScriptValue>
 #include <QThread>
 #include <QTimer>
-
-#include "include/cef_values.h"
 
 namespace BrowserUtil {
 

@@ -1,12 +1,12 @@
 #ifndef BROWSER_RENDER_HANDLER_HPP
 #define BROWSER_RENDER_HANDLER_HPP
 
+#include <include/cef_client.h>
+
 #include <QImage>
 #include <QPoint>
 #include <QReadWriteLock>
 #include <QSize>
-
-#include "include/cef_client.h"
 
 class BrowserClient;
 

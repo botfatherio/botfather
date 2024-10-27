@@ -1,7 +1,7 @@
 #ifndef BROWSER_LIFE_SPAN_HANDLER_HPP
 #define BROWSER_LIFE_SPAN_HANDLER_HPP
 
-#include "include/cef_client.h"
+#include <include/cef_client.h>
 
 class BrowserLifeSpanHandler : public CefLifeSpanHandler {
    public:

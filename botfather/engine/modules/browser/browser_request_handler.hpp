@@ -1,10 +1,10 @@
 #ifndef BROWSER_REQUEST_HANDLER_HPP
 #define BROWSER_REQUEST_HANDLER_HPP
 
+#include <include/cef_client.h>
+
 #include <QString>
 #include <QVector>
-
-#include "include/cef_client.h"
 
 class BrowserClient;
 

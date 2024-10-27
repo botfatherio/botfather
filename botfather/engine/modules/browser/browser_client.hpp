@@ -1,6 +1,8 @@
 #ifndef BROWSERCLIENT_H
 #define BROWSERCLIENT_H
 
+#include <include/cef_client.h>
+
 #include <QCborValue>
 #include <QObject>
 
@@ -8,7 +10,6 @@
 #include "browser_load_handler.hpp"
 #include "browser_render_handler.hpp"
 #include "browser_request_handler.hpp"
-#include "include/cef_client.h"
 
 class BrowserClient : public QObject,
                       public CefClient,
