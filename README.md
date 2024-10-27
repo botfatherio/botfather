@@ -4,10 +4,6 @@ With Botfather one can write crossplatform bots for Android, Desktop and Web (br
 For this purpose Botfather provides several JavaScript APIs featuring image matching and more.
 Furthermore scripts can be turned into crossplatform binaries using the Botfather Binary Generator Tool (bingen for short).
 
-## Documentation
-
-- [Building on Windows](docs/building-on-windows-10.md)
-
 ## Building on Linux
 
 1. Install gcc and cmake (e.g. `sudo pacman -S gcc cmake`)
@@ -33,6 +29,34 @@ We use these builds for testing Flatpak runtimes and to pre-build the binaries w
 3. Install and run the app for testing:
     1. `flatpak --user install ./flatpak/repo io.botfather.Nightly`
     2. `flatpak run io.botfather.Nightly`
+
+## Building on Windows
+
+1. Install [Visual Studio](https://visualstudio.microsoft.com/) including the `Desktop development with C++` option
+2. Install [CMake](https://cmake.org/download/)
+3. Install [Qt 5](https://www.qt.io/download)
+4. Set up Chromium Embedded Framework (CEF)
+    1. Download https://cef-builds.spotifycdn.com/cef_binary_3.3578.1861.g1992780_windows64.tar.bz2
+    2. Extract the archive to a persistent location
+    3. Set the `CEF_ROOT` environment variable to the extracted directory
+5. Set up OpenCV 4
+    1. Download and run the [OpenCV installer for Windows](https://opencv.org/releases/)
+    2. Select the OpenCV directory and a build directory in CMake
+    3. Configure and make sure `opencv_world` is selected
+    4. Generate and open the project
+    4. Build `ALL_BUILD` in the Release configuration
+    6. Point the `OPENCV_ROOT` environment variable to the build directory
+6. Set up libgit2
+    1. Download and extract the [latest libgit2 release](https://github.com/libgit2/libgit2/releases)
+    2. Select the libgit2 directory and a build directory in CMake
+    3. Configure, generate, and open the project
+    4. Build `ALL_BUILD` in the Release configuration
+    5. Add the libgit2 source and `build/Release` directories to the `CMAKE_PREFIX_PATH` environment variable
+7. Build Botfather
+    1. Clone the `botfather` repository
+    2. Select the `botfather` directory and a build directory in CMake
+    3. Configure, generate, and open the project
+    4. Build `ALL_BUILD` in the Release configuration
 
 ## VSCode Setup
 
