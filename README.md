@@ -73,6 +73,8 @@ We use these builds for testing Flatpak runtimes and to pre-build the binaries w
         ```txt
         ${workspaceFolder}/**
         /usr/include/qt/**
+        /usr/include/opencv4/**
+        /path/to/cef_binary_3.3578.1861.g1992780_linux64/**
         ```
 
         On Windows, something like this should work:
