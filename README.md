@@ -57,6 +57,7 @@ We use these builds for testing Flatpak runtimes and to pre-build the binaries w
     2. Select the `botfather` directory and a build directory in CMake
     3. Configure, generate, and open the project
     4. Build `ALL_BUILD` in the Release configuration
+    5. Copy `git2.dll` and `opencv_world4xxx.dll` to the `build/bin/Release` directory
 
 ## VSCode Setup
 
