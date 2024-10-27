@@ -80,8 +80,8 @@ We use these builds for testing Flatpak runtimes and to pre-build the binaries w
         ```txt
         ${workspaceFolder}/**
         C:\Qt\5.12.9\msvc2015_64\include\**
-        C:\LIBGIT2\libgit2-0.27.7\include\**
-        C:\OPENCV\4.2.0\build\include\**
+        C:\LIBGIT2\libgit2-1.8.2\include\**
+        C:\OPENCV\4.10.0\build\include\**
         C:\CEF\cef_binary_3.3578.1861.g1992780_windows64\**
         ```
 ## Troubleshooting
