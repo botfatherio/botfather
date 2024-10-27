@@ -1,11 +1,8 @@
-cmake_minimum_required(VERSION 2.8.12.1)
+cmake_minimum_required(VERSION 3.5)
 project(botfather)
 
 # Allow find_package to use <PackageName>_ROOT  variables
 cmake_policy(SET CMP0074 NEW)
-
-# Allow the project command to manage the VERSION variables
-cmake_policy(SET CMP0048 NEW)
 
 # Enable compilation of libcef_dll_wrapper 3.3578.1861 with gcc 14
 include(CheckCXXCompilerFlag)
