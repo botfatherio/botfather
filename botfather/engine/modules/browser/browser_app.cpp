@@ -25,42 +25,27 @@ void BrowserApp::OnBeforeCommandLineProcessing(
     Q_UNUSED(process_type);
     QSettings settings;
 
-    QString flash_so;
-    QString flash_manifest;
+    QString flash_so =
+        settings.value(browser::options::FLASH_SO, "").toString();
+    QString flash_manifest =
+        settings.value(browser::options::FLASH_MANIFEST, "").toString();
 
-    if (settings
-            .value(browser::options::USE_CUSTOM_FLASH,
-                   browser::fallback::USE_CUSTOM_FLASH)
-            .toBool()) {
-        flash_so = settings.value(browser::options::FLASH_SO).toString();
-        flash_manifest =
-            settings.value(browser::options::FLASH_MANIFEST).toString();
-    } else {
-#ifdef Q_OS_LINUX
-        flash_so = "/app/extra/flash/libpepflashplayer.so";
-        flash_manifest = "/app/extra/flash/manifest.json";
-#else
-        QDir flash_dir =
-            QDir(QDir(QApplication::applicationDirPath()).filePath("flash"));
-        flash_manifest = flash_dir.filePath("manifest.json");
-        flash_so = flash_dir.filePath("pepflashplayer.dll");
-#endif
-    }
+    if (!flash_so.isEmpty() && !flash_manifest.isEmpty()) {
+        QFileInfo flash_so_info(flash_so);
+        QFileInfo flash_manifest_info(flash_manifest);
 
-    QFileInfo flash_so_info(flash_so);
-    QFileInfo flash_manifest_info(flash_manifest);
+        bool is_flash_so_file = flash_so_info.isFile();
+        bool is_flash_manifest_file = flash_manifest_info.isFile();
 
-    bool flash_so_exists = flash_so_info.exists() && flash_so_info.isFile();
-    bool flash_manifest_exists =
-        flash_manifest_info.exists() && flash_manifest_info.isFile();
-
-    if (flash_so_exists && flash_manifest_exists) {
-        QString flash_version = parseFlashVersionFromManifest(flash_manifest);
-        if (!flash_version.isEmpty()) {
-            command_line->AppendSwitchWithValue("ppapi-flash-path",
-                                                flash_so.toStdString());
-            command_line->AppendSwitchWithValue("ppapi-flash-version",
-                                                flash_version.toStdString());
+        if (is_flash_so_file && is_flash_manifest_file) {
+            QString flash_version =
+                parseFlashVersionFromManifest(flash_manifest);
+            if (!flash_version.isEmpty()) {
+                command_line->AppendSwitchWithValue("ppapi-flash-path",
+                                                    flash_so.toStdString());
+                command_line->AppendSwitchWithValue(
+                    "ppapi-flash-version", flash_version.toStdString());
+            }
         }
     }
 

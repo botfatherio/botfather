@@ -77,23 +77,6 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
-           <widget class="QRadioButton" name="use_bundled_flash">
-            <property name="text">
-             <string>&amp;Use bundled Flashplayer (default)</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QRadioButton" name="use_custom_flash">
-            <property name="text">
-             <string>Use custo&amp;m Flashplayer files</string>
-            </property>
-           </widget>
-          </item>
-          <item>
            <layout class="QHBoxLayout" name="horizontalLayout">
             <item>
              <widget class="QLineEdit" name="flash_so">

@@ -19,17 +19,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
 
     ui->check_for_updates->setDisabled(MaintenanceTool::filePath().isEmpty());
 
-    // Disabled/enable the flash input fields with the de/activation of the 'use
-    // custom flash' option.
-    connect(ui->use_bundled_flash, SIGNAL(toggled(bool)), ui->flash_so,
-            SLOT(setDisabled(bool)));
-    connect(ui->use_bundled_flash, SIGNAL(toggled(bool)), ui->flash_manifest,
-            SLOT(setDisabled(bool)));
-    connect(ui->use_bundled_flash, SIGNAL(toggled(bool)), ui->browse_flash_so,
-            SLOT(setDisabled(bool)));
-    connect(ui->use_bundled_flash, SIGNAL(toggled(bool)),
-            ui->browse_flash_manifest, SLOT(setDisabled(bool)));
-
     connect(ui->use_bundled_adb, SIGNAL(toggled(bool)), ui->adb_binary,
             SLOT(setDisabled(bool)));
     connect(ui->use_bundled_adb, SIGNAL(toggled(bool)), ui->browse_adb_binary,
@@ -46,10 +35,6 @@ void PreferencesDialog::saveConfig() {
     QSettings s;
     s.setValue(browser::options::FLASH_SO, ui->flash_so->text());
     s.setValue(browser::options::FLASH_MANIFEST, ui->flash_manifest->text());
-    s.setValue(browser::options::USE_CUSTOM_FLASH,
-               ui->use_custom_flash->isChecked());
-    s.setValue(browser::options::USE_BUNDLED_FLASH,
-               ui->use_bundled_flash->isChecked());
 
     s.setValue(android::options::ADB_BINARY, ui->adb_binary->text());
     s.setValue(android::options::USE_CUSTOM_ADB,
@@ -68,14 +53,6 @@ void PreferencesDialog::loadConfig() {
     ui->flash_so->setText(s.value(browser::options::FLASH_SO).toString());
     ui->flash_manifest->setText(
         s.value(browser::options::FLASH_MANIFEST).toString());
-    ui->use_custom_flash->setChecked(
-        s.value(browser::options::USE_CUSTOM_FLASH,
-                browser::fallback::USE_CUSTOM_FLASH)
-            .toBool());
-    ui->use_bundled_flash->setChecked(
-        s.value(browser::options::USE_BUNDLED_FLASH,
-                browser::fallback::USE_BUNDLED_FLASH)
-            .toBool());
 
     ui->adb_binary->setText(s.value(android::options::ADB_BINARY).toString());
     ui->use_custom_adb->setChecked(s.value(android::options::USE_CUSTOM_ADB,
