@@ -4,178 +4,178 @@ project(botfather VERSION 6.9.1)
 configure_file(version.hpp.in version.hpp)
 
 set(BOTFATHER_SRCS
-    engine/runtime/android_api.hpp
-    engine/runtime/desktop_api.hpp
-    engine/runtime/helper_api.hpp
-    engine/runtime/vision_api.hpp
-    engine/engine.hpp
+    engine/algorithms/dijkstra.cpp
     engine/algorithms/dijkstra.hpp
+    engine/android/adb_device_info.cpp
     engine/android/adb_device_info.hpp
+    engine/android/adb_wrapper.cpp
     engine/android/adb_wrapper.hpp
     engine/android/android_settings.hpp
+    engine/browser/browser.cpp
+    engine/browser/browser.hpp
+    engine/browser/browser_app.cpp
+    engine/browser/browser_app.hpp
+    engine/browser/browser_client.cpp
+    engine/browser/browser_client.hpp
+    engine/browser/browser_creator.cpp
+    engine/browser/browser_creator.hpp
+    engine/browser/browser_life_span_handler.cpp
     engine/browser/browser_life_span_handler.hpp
+    engine/browser/browser_list_model.cpp
+    engine/browser/browser_list_model.hpp
+    engine/browser/browser_load_handler.cpp
     engine/browser/browser_load_handler.hpp
+    engine/browser/browser_manager.cpp
+    engine/browser/browser_manager.hpp
+    engine/browser/browser_render_handler.cpp
     engine/browser/browser_render_handler.hpp
+    engine/browser/browser_request_handler.cpp
     engine/browser/browser_request_handler.hpp
     engine/browser/browser_settings.hpp
-    engine/desktop/desktop.hpp
-    engine/desktop/keymap.hpp
-    engine/vision/vision.hpp
-    engine/runtime/abstract_prototype.hpp
-    engine/runtime/color_prototype.hpp
-    engine/runtime/image_prototype.hpp
-    engine/runtime/match_prototype.hpp
-    engine/runtime/point_prototype.hpp
-    engine/runtime/rect_prototype.hpp
-    engine/runtime/size_prototype.hpp
-    engine/vision/match.hpp
-    git/abstract_git_operation.hpp
-    git/git_behind_operation.hpp
-    git/git_clone_operation.hpp
-    git/git_fetch_operation.hpp
-    git/git_reclone_operation.hpp
-    gui/androiddialog/android_dialog.hpp
-    gui/botwidgets/abstract_bot_widget.hpp
-    gui/botwidgets/bot_browsers_widget.hpp
-    gui/botwidgets/bot_config_widget.hpp
-    gui/botwidgets/bot_log_widget.hpp
-    gui/botwidgets/bot_settings_widget.hpp
-    gui/botwidgets/bot_updates_widget.hpp
-    gui/botwidgets/bot_widget.hpp
-    gui/browserwindow/browser_address_bar.hpp
-    gui/browserwindow/browser_widget.hpp
-    gui/browserwindow/browser_window.hpp
-    engine/runtime/config_api.hpp
-    engine/runtime/stats_api.hpp
-    engine/browser/cef_key_event_adapter.hpp
-    engine/browser/browser_app.hpp
-    engine/browser/browser_client.hpp
-    engine/browser/browser_creator.hpp
-    engine/browser/browser_list_model.hpp
-    engine/browser/browser_manager.hpp
+    engine/browser/browser_util.cpp
     engine/browser/browser_util.hpp
+    engine/browser/cef_key_event_adapter.cpp
+    engine/browser/cef_key_event_adapter.hpp
+    engine/common/bf_key_mapper.cpp
     engine/common/bf_key_mapper.hpp
     engine/common/bf_key_traits.hpp
     engine/common/bf_keymap.hpp
     engine/common/qt_key_traits.hpp
     engine/common/qt_keymaps.hpp
     engine/common/windows_keyboard_codes.hpp
-    engine/runtime/browser_prototype.hpp
-    engine/runtime/timer_prototype.hpp
-    engine/browser/browser.hpp
-    gui/main_window.hpp
-    gui/maintenancetool/maintenance_tool.hpp
-    gui/models/bot.hpp
-    gui/models/bot_config.hpp
-    gui/models/bot_config_group.hpp
-    gui/models/bot_config_option.hpp
-    gui/models/bot_list_model.hpp
-    gui/models/bot_manifest.hpp
-    gui/models/bot_manifest_node.hpp
-    gui/models/bot_repo.hpp
-    engine/runtime/abstract_api.hpp
-    engine/vision/blob_tpl.hpp
-    engine/runtime/blob_tpl_prototype.hpp
-    engine/runtime/algorithm_api.hpp
-    engine/runtime/margins_prototype.hpp
-    engine/runtime/url_prototype.hpp
-    gui/preferences/preferences_dialog.hpp
-    gui/scriptmanager/git_progress_dialog.hpp
-    gui/scriptmanager/script_manager_dialog.hpp
-    res/resource.hpp
-    shared/q_settings_json_format.hpp
-    engine/runtime/android_api.cpp
-    engine/runtime/desktop_api.cpp
-    engine/runtime/helper_api.cpp
-    engine/runtime/vision_api.cpp
+    engine/desktop/desktop.hpp
+    engine/desktop/keymap.hpp
     engine/engine.cpp
-    engine/algorithms/dijkstra.cpp
-    engine/android/adb_device_info.cpp
-    engine/android/adb_wrapper.cpp
-    engine/browser/browser_life_span_handler.cpp
-    engine/browser/browser_load_handler.cpp
-    engine/browser/browser_render_handler.cpp
-    engine/browser/browser_request_handler.cpp
-    engine/vision/vision.cpp
-    engine/runtime/abstract_prototype.cpp
-    engine/runtime/color_prototype.cpp
-    engine/runtime/image_prototype.cpp
-    engine/runtime/match_prototype.cpp
-    engine/runtime/point_prototype.cpp
-    engine/runtime/rect_prototype.cpp
-    engine/runtime/size_prototype.cpp
-    engine/vision/match.cpp
-    git/abstract_git_operation.cpp
-    git/git_behind_operation.cpp
-    git/git_clone_operation.cpp
-    git/git_fetch_operation.cpp
-    git/git_reclone_operation.cpp
-    gui/androiddialog/android_dialog.cpp
-    gui/botwidgets/abstract_bot_widget.cpp
-    gui/botwidgets/bot_browsers_widget.cpp
-    gui/botwidgets/bot_config_widget.cpp
-    gui/botwidgets/bot_log_widget.cpp
-    gui/botwidgets/bot_settings_widget.cpp
-    gui/botwidgets/bot_updates_widget.cpp
-    gui/botwidgets/bot_widget.cpp
-    gui/browserwindow/browser_address_bar.cpp
-    gui/browserwindow/browser_widget.cpp
-    gui/browserwindow/browser_window.cpp
-    engine/browser/cef_key_event_adapter.cpp
-    engine/common/bf_key_mapper.cpp
-    gui/main_window.cpp
-    gui/maintenancetool/maintenance_tool.cpp
-    gui/models/bot_config.cpp
-    gui/models/bot_config_group.cpp
-    gui/models/bot_config_option.cpp
-    gui/models/bot_list_model.cpp
-    gui/models/bot_manifest.cpp
-    gui/models/bot_manifest_node.cpp
-    gui/models/bot_repo.cpp
-    gui/preferences/preferences_dialog.cpp
-    gui/scriptmanager/git_progress_dialog.cpp
-    gui/scriptmanager/script_manager_dialog.cpp
-    version.hpp
-    main.cpp
+    engine/engine.hpp
     engine/runtime/abstract_api.cpp
-    engine/vision/blob_tpl.cpp
-    engine/runtime/blob_tpl_prototype.cpp
+    engine/runtime/abstract_api.hpp
+    engine/runtime/abstract_prototype.cpp
+    engine/runtime/abstract_prototype.hpp
     engine/runtime/algorithm_api.cpp
-    engine/runtime/margins_prototype.cpp
-    engine/runtime/url_prototype.cpp
-    engine/browser/browser_list_model.cpp
-    engine/browser/browser_manager.cpp
-    engine/runtime/timer_prototype.cpp
-    gui/models/bot.cpp
-    engine/runtime/config_api.cpp
-    engine/runtime/stats_api.cpp
+    engine/runtime/algorithm_api.hpp
+    engine/runtime/android_api.cpp
+    engine/runtime/android_api.hpp
+    engine/runtime/blob_tpl_prototype.cpp
+    engine/runtime/blob_tpl_prototype.hpp
     engine/runtime/browser_prototype.cpp
-    engine/browser/browser.cpp
-    engine/browser/browser_app.cpp
-    engine/browser/browser_client.cpp
-    engine/browser/browser_creator.cpp
-    engine/browser/browser_util.cpp
-    shared/q_settings_json_format.cpp
+    engine/runtime/browser_prototype.hpp
+    engine/runtime/color_prototype.cpp
+    engine/runtime/color_prototype.hpp
+    engine/runtime/config_api.cpp
+    engine/runtime/config_api.hpp
+    engine/runtime/desktop_api.cpp
+    engine/runtime/desktop_api.hpp
+    engine/runtime/helper_api.cpp
+    engine/runtime/helper_api.hpp
+    engine/runtime/image_prototype.cpp
+    engine/runtime/image_prototype.hpp
+    engine/runtime/margins_prototype.cpp
+    engine/runtime/margins_prototype.hpp
+    engine/runtime/match_prototype.cpp
+    engine/runtime/match_prototype.hpp
+    engine/runtime/point_prototype.cpp
+    engine/runtime/point_prototype.hpp
+    engine/runtime/rect_prototype.cpp
+    engine/runtime/rect_prototype.hpp
+    engine/runtime/size_prototype.cpp
+    engine/runtime/size_prototype.hpp
+    engine/runtime/stats_api.cpp
+    engine/runtime/stats_api.hpp
+    engine/runtime/timer_prototype.cpp
+    engine/runtime/timer_prototype.hpp
+    engine/runtime/url_prototype.cpp
+    engine/runtime/url_prototype.hpp
+    engine/runtime/vision_api.cpp
+    engine/runtime/vision_api.hpp
+    engine/vision/blob_tpl.cpp
+    engine/vision/blob_tpl.hpp
+    engine/vision/match.cpp
+    engine/vision/match.hpp
+    engine/vision/vision.cpp
+    engine/vision/vision.hpp
+    git/abstract_git_operation.cpp
+    git/abstract_git_operation.hpp
+    git/git_behind_operation.cpp
+    git/git_behind_operation.hpp
+    git/git_clone_operation.cpp
+    git/git_clone_operation.hpp
+    git/git_fetch_operation.cpp
+    git/git_fetch_operation.hpp
+    git/git_reclone_operation.cpp
+    git/git_reclone_operation.hpp
+    gui/androiddialog/android_dialog.cpp
+    gui/androiddialog/android_dialog.hpp
     gui/androiddialog/android_dialog.ui
+    gui/botwidgets/abstract_bot_widget.cpp
+    gui/botwidgets/abstract_bot_widget.hpp
+    gui/botwidgets/bot_browsers_widget.cpp
+    gui/botwidgets/bot_browsers_widget.hpp
     gui/botwidgets/bot_browsers_widget.ui
+    gui/botwidgets/bot_config_widget.cpp
+    gui/botwidgets/bot_config_widget.hpp
     gui/botwidgets/bot_config_widget.ui
+    gui/botwidgets/bot_log_widget.cpp
+    gui/botwidgets/bot_log_widget.hpp
     gui/botwidgets/bot_log_widget.ui
+    gui/botwidgets/bot_settings_widget.cpp
+    gui/botwidgets/bot_settings_widget.hpp
     gui/botwidgets/bot_settings_widget.ui
-    gui/botwidgets/bot_updates_widget.ui
-    gui/browserwindow/browser_window.ui
-    gui/main_window.ui
-    gui/preferences/preferences_dialog.ui
-    gui/scriptmanager/git_progress_dialog.ui
-    gui/scriptmanager/script_manager_dialog.ui
-    gui/botwidgets/bot_stats_widget.hpp
     gui/botwidgets/bot_stats_widget.cpp
+    gui/botwidgets/bot_stats_widget.hpp
     gui/botwidgets/bot_stats_widget.ui
-    gui/color_finder/color_finder.hpp
+    gui/botwidgets/bot_updates_widget.cpp
+    gui/botwidgets/bot_updates_widget.hpp
+    gui/botwidgets/bot_updates_widget.ui
+    gui/botwidgets/bot_widget.cpp
+    gui/botwidgets/bot_widget.hpp
+    gui/browserwindow/browser_address_bar.cpp
+    gui/browserwindow/browser_address_bar.hpp
+    gui/browserwindow/browser_widget.cpp
+    gui/browserwindow/browser_widget.hpp
+    gui/browserwindow/browser_window.cpp
+    gui/browserwindow/browser_window.hpp
+    gui/browserwindow/browser_window.ui
     gui/color_finder/color_finder.cpp
+    gui/color_finder/color_finder.hpp
     gui/color_finder/color_finder.ui
-    gui/color_finder_preview/color_finder_preview.hpp
     gui/color_finder_preview/color_finder_preview.cpp
+    gui/color_finder_preview/color_finder_preview.hpp
+    gui/main_window.cpp
+    gui/main_window.hpp
+    gui/main_window.ui
+    gui/maintenancetool/maintenance_tool.cpp
+    gui/maintenancetool/maintenance_tool.hpp
+    gui/models/bot.cpp
+    gui/models/bot.hpp
+    gui/models/bot_config.cpp
+    gui/models/bot_config.hpp
+    gui/models/bot_config_group.cpp
+    gui/models/bot_config_group.hpp
+    gui/models/bot_config_option.cpp
+    gui/models/bot_config_option.hpp
+    gui/models/bot_list_model.cpp
+    gui/models/bot_list_model.hpp
+    gui/models/bot_manifest.cpp
+    gui/models/bot_manifest.hpp
+    gui/models/bot_manifest_node.cpp
+    gui/models/bot_manifest_node.hpp
+    gui/models/bot_repo.cpp
+    gui/models/bot_repo.hpp
+    gui/preferences/preferences_dialog.cpp
+    gui/preferences/preferences_dialog.hpp
+    gui/preferences/preferences_dialog.ui
+    gui/scriptmanager/git_progress_dialog.cpp
+    gui/scriptmanager/git_progress_dialog.hpp
+    gui/scriptmanager/git_progress_dialog.ui
+    gui/scriptmanager/script_manager_dialog.cpp
+    gui/scriptmanager/script_manager_dialog.hpp
+    gui/scriptmanager/script_manager_dialog.ui
+    main.cpp
     res/botfather.qrc
+    res/resource.hpp
+    shared/q_settings_json_format.cpp
+    shared/q_settings_json_format.hpp
+    version.hpp
 )
 set(BOTFATHER_SRCS_LINUX
     engine/desktop/desktop_x11.cpp
@@ -183,10 +183,10 @@ set(BOTFATHER_SRCS_LINUX
     engine/desktop/linux/uinput.hpp
 )
 set(BOTFATHER_SRCS_WINDOWS
+    engine/desktop/desktop_win.cpp
     res/botfather.exe.manifest
     res/botfather.rc
     res/resource.hpp
-    engine/desktop/desktop_win.cpp
 )
 APPEND_PLATFORM_SOURCES(BOTFATHER_SRCS)
 source_group(${PROJECT_NAME} FILES ${BOTFATHER_SRCS})
