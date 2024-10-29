@@ -59,6 +59,6 @@ modules:
       - type: file
         path: io.botfather.Nightly-128.png
       - type: file
-        path: io.botfather.Nightly.appdata.xml
+        path: io.botfather.Nightly.metainfo.xml
       - type: file
         path: io.botfather.Nightly.desktop
