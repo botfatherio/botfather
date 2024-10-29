@@ -13,9 +13,11 @@ finish-args:
   - "--share=ipc" # share IPC namespace with the host (necessary for X11)
   - "--device=dri" # OpenGL rendering (for CEF)
   - "--socket=pulseaudio" # play sound with PulseAudio
-  - "--share=network" # access the network
+  - "--share=network" # access the network (CEF)
   - "--device=all" # for /dev/uinput
   - "--talk-name=org.freedesktop.ScreenSaver" # otherwise crazy ERROR messages appear
+  - "--talk-name=org.freedesktop.Notifications"
+  - "--talk-name=org.kde.StatusNotifierWatcher"
 build-options:
   env:
     CEF_ROOT: "/app/CEF"
@@ -33,7 +35,6 @@ modules:
   - cef/cef-3.3578.1861-linux64.json
   - opencv/opencv-4.9.0.json
   - libgit2/libgit2.json
-  - flashplayer/flashplayer.json
   - name: botfather
     buildsystem: cmake
     config-opts:

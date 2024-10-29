@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2018 The Botfather Developers -->
+<component type="desktop-application">
+	<id>io.botfather.Nightly</id>
+	<metadata_license>CC0-1.0</metadata_license>
+	<project_license>LicenseRef-proprietary=https://botfather.io/terms/</project_license>
+	<url type="homepage">https://botfather.io</url>
+	<name>Botfather Nightly</name>
+	<summary>Universal automation framework</summary>
+	<developer id="io.botfather">
+		<name>Botfather</name>
+	</developer>
+	<launchable type="desktop-id">io.botfather.Nightly.desktop</launchable>
+
+	<categories>
+		<category>Development</category>
+		<category>Utility</category>
+	</categories>
+
+	<description>
+		<p>With Botfather, you can create and run automation bots with ease.
+			Automate your favorite Android, Browser, and Desktop applications using bot scripts.
+			Find scripts online or create your own using Botfathers convenient APIs.
+			Botfather already has image recognition, custom types, and much more built-in.</p>
+	</description>
+
+	<screenshots>
+		<screenshot type="default">
+			<caption>The Botfather main window</caption>
+			<image>http://repo.botfather.io/screenshots/mainwindow-1440x800.png</image>
+		</screenshot>
+		<screenshot>
+			<caption>A bots configuration tab</caption>
+			<image>http://repo.botfather.io/screenshots/configtab-1440x800.png</image>
+		</screenshot>
+		<screenshot>
+			<caption>A bots settings tab</caption>
+			<image>http://repo.botfather.io/screenshots/settingstab-1440x800.png</image>
+		</screenshot>
+		<screenshot>
+			<caption>A bots update tab used to update scripts</caption>
+			<image>http://repo.botfather.io/screenshots/updatetab-1440x800.png</image>
+		</screenshot>
+		<screenshot>
+			<caption>The scriptmanager used to install scripts</caption>
+			<image>http://repo.botfather.io/screenshots/scriptmanager-1440x800.png</image>
+		</screenshot>
+		<screenshot>
+			<caption>Android device dialog</caption>
+			<image>http://repo.botfather.io/screenshots/android-1440x800.png</image>
+		</screenshot>
+		<screenshot>
+			<caption>Window showing the integrated browser</caption>
+			<image>http://repo.botfather.io/screenshots/browser-1440x800.png</image>
+		</screenshot>
+	</screenshots>
+
+	<content_rating type="oars-1.1" />
+
+
+	<releases>
+		<release date="2024-10-15" version="6.9.1"></release>
+		<release date="2024-10-14" version="6.9.0"></release>
+		<release date="2021-05-05" version="6.8.0"></release>
+		<release date="2021-01-14" version="6.7.3"></release>
+		<release date="2020-10-20" version="6.7.2"></release>
+		<release date="2020-10-01" version="6.6.0"></release>
+		<release date="2020-09-11" version="6.5.0"></release>
+		<release date="2020-09-05" version="6.4.0"></release>
+		<release date="2020-09-02" version="6.3.0"></release>
+		<release date="2019-11-13" version="6.2.1"></release>
+		<release date="2019-06-29" version="6.2.0"></release>
+		<release date="2019-06-26" version="6.1.1"></release>
+		<release date="2019-06-25" version="6.1.0"></release>
+		<release date="2019-06-16" version="6.0.0"></release>
+		<release date="2019-04-23" version="5.4.1"></release>
+		<release date="2019-03-11" version="5.4.0"></release>
+		<release date="2019-03-09" version="5.3.0"></release>
+		<release date="2019-03-03" version="5.2.3"></release>
+		<release date="2019-02-16" version="5.2.2"></release>
+		<release date="2019-02-15" version="5.2.0"></release>
+		<release date="2019-02-02" version="5.1.0"></release>
+		<release date="2019-01-24" version="4.5.1"></release>
+		<release date="2019-01-19" version="4.5.0"></release>
+		<release date="2019-01-11" version="4.4.2"></release>
+		<release date="2018-12-07" version="4.4.1"></release>
+		<release date="2018-11-29" version="4.4.0"></release>
+		<release date="2018-10-30" version="4.3.4"></release>
+		<release date="2018-10-27" version="4.3.3"></release>
+		<release date="2018-10-26" version="4.3.2"></release>
+	</releases>
+</component>
