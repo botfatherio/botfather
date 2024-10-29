@@ -4,8 +4,8 @@
 #include <QFileDialog>
 #include <QSettings>
 
-#include "../../engine/modules/android/android_settings.hpp"
-#include "../../engine/modules/browser/browser_settings.hpp"
+#include "../../engine/android/android_settings.hpp"
+#include "../../engine/browser/browser_settings.hpp"
 #include "../maintenancetool/maintenance_tool.hpp"
 #include "ui_preferences_dialog.h"
 

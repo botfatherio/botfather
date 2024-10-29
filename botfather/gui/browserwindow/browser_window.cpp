@@ -5,7 +5,7 @@
 #include <QSettings>
 #include <QStyle>
 
-#include "../../engine/modules/browser/browser_settings.hpp"
+#include "../../engine/browser/browser_settings.hpp"
 #include "ui_browser_window.h"
 
 BrowserWindow::BrowserWindow(const QString &title, QWidget *parent)

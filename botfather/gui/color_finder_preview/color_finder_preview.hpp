@@ -4,7 +4,7 @@
 #include <QLabel>
 #include <QWidget>
 
-#include "../../engine/modules/vision/vision.hpp"
+#include "../../engine/vision/vision.hpp"
 
 class ColorFinderPreview : public QWidget {
     Q_OBJECT

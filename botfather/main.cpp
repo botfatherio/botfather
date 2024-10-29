@@ -4,7 +4,7 @@
 #include <QSettings>
 #include <QTime>
 
-#include "engine/modules/browser/browser_manager.hpp"
+#include "engine/browser/browser_manager.hpp"
 #include "gui/main_window.hpp"
 #include "shared/q_settings_json_format.hpp"
 #include "version.hpp"

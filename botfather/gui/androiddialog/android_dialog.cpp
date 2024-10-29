@@ -9,8 +9,8 @@
 #include <QStandardPaths>
 #include <QTableWidgetItem>
 
-#include "../../engine/modules/android/adb_wrapper.hpp"
-#include "../../engine/modules/android/android_settings.hpp"
+#include "../../engine/android/adb_wrapper.hpp"
+#include "../../engine/android/android_settings.hpp"
 #include "ui_android_dialog.h"
 
 AndroidDialog::AndroidDialog(QWidget *parent)

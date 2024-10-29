@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-#include "../../engine/modules/browser/browser_manager.hpp"
+#include "../../engine/browser/browser_manager.hpp"
 #include "../browserwindow/browser_window.hpp"
 #include "ui_bot_browsers_widget.h"
 

@@ -4,31 +4,31 @@ project(botfather VERSION 6.9.1)
 configure_file(version.hpp.in version.hpp)
 
 set(BOTFATHER_SRCS
-    engine/modules/android/apis/android_api.hpp
-    engine/modules/desktop/apis/desktop_api.hpp
-    engine/modules/common/apis/helper_api.hpp
-    engine/modules/vision/apis/vision_api.hpp
+    engine/runtime/android_api.hpp
+    engine/runtime/desktop_api.hpp
+    engine/runtime/helper_api.hpp
+    engine/runtime/vision_api.hpp
     engine/engine.hpp
-    engine/modules/algorithm/dijkstra.hpp
-    engine/modules/android/adb_device_info.hpp
-    engine/modules/android/adb_wrapper.hpp
-    engine/modules/android/android_settings.hpp
-    engine/modules/browser/browser_life_span_handler.hpp
-    engine/modules/browser/browser_load_handler.hpp
-    engine/modules/browser/browser_render_handler.hpp
-    engine/modules/browser/browser_request_handler.hpp
-    engine/modules/browser/browser_settings.hpp
-    engine/modules/desktop/desktop.hpp
-    engine/modules/desktop/keymap.hpp
-    engine/modules/vision/vision.hpp
-    engine/modules/common/prototypes/abstract_prototype.hpp
-    engine/modules/common/prototypes/color_prototype.hpp
-    engine/modules/vision/prototypes/image_prototype.hpp
-    engine/modules/vision/prototypes/match_prototype.hpp
-    engine/modules/common/prototypes/point_prototype.hpp
-    engine/modules/common/prototypes/rect_prototype.hpp
-    engine/modules/common/prototypes/size_prototype.hpp
-    engine/modules/vision/types/match.hpp
+    engine/algorithms/dijkstra.hpp
+    engine/android/adb_device_info.hpp
+    engine/android/adb_wrapper.hpp
+    engine/android/android_settings.hpp
+    engine/browser/browser_life_span_handler.hpp
+    engine/browser/browser_load_handler.hpp
+    engine/browser/browser_render_handler.hpp
+    engine/browser/browser_request_handler.hpp
+    engine/browser/browser_settings.hpp
+    engine/desktop/desktop.hpp
+    engine/desktop/keymap.hpp
+    engine/vision/vision.hpp
+    engine/runtime/abstract_prototype.hpp
+    engine/runtime/color_prototype.hpp
+    engine/runtime/image_prototype.hpp
+    engine/runtime/match_prototype.hpp
+    engine/runtime/point_prototype.hpp
+    engine/runtime/rect_prototype.hpp
+    engine/runtime/size_prototype.hpp
+    engine/vision/match.hpp
     git/abstract_git_operation.hpp
     git/git_behind_operation.hpp
     git/git_clone_operation.hpp
@@ -45,24 +45,24 @@ set(BOTFATHER_SRCS
     gui/browserwindow/browser_address_bar.hpp
     gui/browserwindow/browser_widget.hpp
     gui/browserwindow/browser_window.hpp
-    engine/modules/common/apis/config_api.hpp
-    engine/modules/common/apis/stats_api.hpp
-    engine/modules/browser/adapters/cef_key_event_adapter.hpp
-    engine/modules/browser/browser_app.hpp
-    engine/modules/browser/browser_client.hpp
-    engine/modules/browser/browser_creator.hpp
-    engine/modules/browser/browser_list_model.hpp
-    engine/modules/browser/browser_manager.hpp
-    engine/modules/browser/browser_util.hpp
-    engine/modules/common/bf_key_mapper.hpp
-    engine/modules/common/bf_key_traits.hpp
-    engine/modules/common/bf_keymap.hpp
-    engine/modules/common/qt_key_traits.hpp
-    engine/modules/common/qt_keymaps.hpp
-    engine/modules/common/windows_keyboard_codes.hpp
-    engine/modules/browser/prototypes/browser_prototype.hpp
-    engine/modules/common/prototypes/timer_prototype.hpp
-    engine/modules/browser/types/browser.hpp
+    engine/runtime/config_api.hpp
+    engine/runtime/stats_api.hpp
+    engine/browser/cef_key_event_adapter.hpp
+    engine/browser/browser_app.hpp
+    engine/browser/browser_client.hpp
+    engine/browser/browser_creator.hpp
+    engine/browser/browser_list_model.hpp
+    engine/browser/browser_manager.hpp
+    engine/browser/browser_util.hpp
+    engine/common/bf_key_mapper.hpp
+    engine/common/bf_key_traits.hpp
+    engine/common/bf_keymap.hpp
+    engine/common/qt_key_traits.hpp
+    engine/common/qt_keymaps.hpp
+    engine/common/windows_keyboard_codes.hpp
+    engine/runtime/browser_prototype.hpp
+    engine/runtime/timer_prototype.hpp
+    engine/browser/browser.hpp
     gui/main_window.hpp
     gui/maintenancetool/maintenance_tool.hpp
     gui/models/bot.hpp
@@ -73,38 +73,38 @@ set(BOTFATHER_SRCS
     gui/models/bot_manifest.hpp
     gui/models/bot_manifest_node.hpp
     gui/models/bot_repo.hpp
-    engine/modules/common/apis/abstract_api.hpp
-    engine/modules/vision/types/blob_tpl.hpp
-    engine/modules/vision/prototypes/blob_tpl_prototype.hpp
-    engine/modules/algorithm/apis/algorithm_api.hpp
-    engine/modules/common/prototypes/margins_prototype.hpp
-    engine/modules/common/prototypes/url_prototype.hpp
+    engine/runtime/abstract_api.hpp
+    engine/vision/blob_tpl.hpp
+    engine/runtime/blob_tpl_prototype.hpp
+    engine/runtime/algorithm_api.hpp
+    engine/runtime/margins_prototype.hpp
+    engine/runtime/url_prototype.hpp
     gui/preferences/preferences_dialog.hpp
     gui/scriptmanager/git_progress_dialog.hpp
     gui/scriptmanager/script_manager_dialog.hpp
     res/resource.hpp
     shared/q_settings_json_format.hpp
-    engine/modules/android/apis/android_api.cpp
-    engine/modules/desktop/apis/desktop_api.cpp
-    engine/modules/common/apis/helper_api.cpp
-    engine/modules/vision/apis/vision_api.cpp
+    engine/runtime/android_api.cpp
+    engine/runtime/desktop_api.cpp
+    engine/runtime/helper_api.cpp
+    engine/runtime/vision_api.cpp
     engine/engine.cpp
-    engine/modules/algorithm/dijkstra.cpp
-    engine/modules/android/adb_device_info.cpp
-    engine/modules/android/adb_wrapper.cpp
-    engine/modules/browser/browser_life_span_handler.cpp
-    engine/modules/browser/browser_load_handler.cpp
-    engine/modules/browser/browser_render_handler.cpp
-    engine/modules/browser/browser_request_handler.cpp
-    engine/modules/vision/vision.cpp
-    engine/modules/common/prototypes/abstract_prototype.cpp
-    engine/modules/common/prototypes/color_prototype.cpp
-    engine/modules/vision/prototypes/image_prototype.cpp
-    engine/modules/vision/prototypes/match_prototype.cpp
-    engine/modules/common/prototypes/point_prototype.cpp
-    engine/modules/common/prototypes/rect_prototype.cpp
-    engine/modules/common/prototypes/size_prototype.cpp
-    engine/modules/vision/types/match.cpp
+    engine/algorithms/dijkstra.cpp
+    engine/android/adb_device_info.cpp
+    engine/android/adb_wrapper.cpp
+    engine/browser/browser_life_span_handler.cpp
+    engine/browser/browser_load_handler.cpp
+    engine/browser/browser_render_handler.cpp
+    engine/browser/browser_request_handler.cpp
+    engine/vision/vision.cpp
+    engine/runtime/abstract_prototype.cpp
+    engine/runtime/color_prototype.cpp
+    engine/runtime/image_prototype.cpp
+    engine/runtime/match_prototype.cpp
+    engine/runtime/point_prototype.cpp
+    engine/runtime/rect_prototype.cpp
+    engine/runtime/size_prototype.cpp
+    engine/vision/match.cpp
     git/abstract_git_operation.cpp
     git/git_behind_operation.cpp
     git/git_clone_operation.cpp
@@ -121,8 +121,8 @@ set(BOTFATHER_SRCS
     gui/browserwindow/browser_address_bar.cpp
     gui/browserwindow/browser_widget.cpp
     gui/browserwindow/browser_window.cpp
-    engine/modules/browser/adapters/cef_key_event_adapter.cpp
-    engine/modules/common/bf_key_mapper.cpp
+    engine/browser/cef_key_event_adapter.cpp
+    engine/common/bf_key_mapper.cpp
     gui/main_window.cpp
     gui/maintenancetool/maintenance_tool.cpp
     gui/models/bot_config.cpp
@@ -137,24 +137,24 @@ set(BOTFATHER_SRCS
     gui/scriptmanager/script_manager_dialog.cpp
     version.hpp
     main.cpp
-    engine/modules/common/apis/abstract_api.cpp
-    engine/modules/vision/types/blob_tpl.cpp
-    engine/modules/vision/prototypes/blob_tpl_prototype.cpp
-    engine/modules/algorithm/apis/algorithm_api.cpp
-    engine/modules/common/prototypes/margins_prototype.cpp
-    engine/modules/common/prototypes/url_prototype.cpp
-    engine/modules/browser/browser_list_model.cpp
-    engine/modules/browser/browser_manager.cpp
-    engine/modules/common/prototypes/timer_prototype.cpp
+    engine/runtime/abstract_api.cpp
+    engine/vision/blob_tpl.cpp
+    engine/runtime/blob_tpl_prototype.cpp
+    engine/runtime/algorithm_api.cpp
+    engine/runtime/margins_prototype.cpp
+    engine/runtime/url_prototype.cpp
+    engine/browser/browser_list_model.cpp
+    engine/browser/browser_manager.cpp
+    engine/runtime/timer_prototype.cpp
     gui/models/bot.cpp
-    engine/modules/common/apis/config_api.cpp
-    engine/modules/common/apis/stats_api.cpp
-    engine/modules/browser/prototypes/browser_prototype.cpp
-    engine/modules/browser/types/browser.cpp
-    engine/modules/browser/browser_app.cpp
-    engine/modules/browser/browser_client.cpp
-    engine/modules/browser/browser_creator.cpp
-    engine/modules/browser/browser_util.cpp
+    engine/runtime/config_api.cpp
+    engine/runtime/stats_api.cpp
+    engine/runtime/browser_prototype.cpp
+    engine/browser/browser.cpp
+    engine/browser/browser_app.cpp
+    engine/browser/browser_client.cpp
+    engine/browser/browser_creator.cpp
+    engine/browser/browser_util.cpp
     shared/q_settings_json_format.cpp
     gui/androiddialog/android_dialog.ui
     gui/botwidgets/bot_browsers_widget.ui
@@ -178,15 +178,15 @@ set(BOTFATHER_SRCS
     res/botfather.qrc
 )
 set(BOTFATHER_SRCS_LINUX
-    engine/modules/desktop/desktop_x11.cpp
-    engine/modules/desktop/linux/input-event-codes.hpp
-    engine/modules/desktop/linux/uinput.hpp
+    engine/desktop/desktop_x11.cpp
+    engine/desktop/linux/input-event-codes.hpp
+    engine/desktop/linux/uinput.hpp
 )
 set(BOTFATHER_SRCS_WINDOWS
     res/botfather.exe.manifest
     res/botfather.rc
     res/resource.hpp
-    engine/modules/desktop/desktop_win.cpp
+    engine/desktop/desktop_win.cpp
 )
 APPEND_PLATFORM_SOURCES(BOTFATHER_SRCS)
 source_group(${PROJECT_NAME} FILES ${BOTFATHER_SRCS})
