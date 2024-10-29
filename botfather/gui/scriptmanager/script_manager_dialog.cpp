@@ -90,5 +90,5 @@ void ScriptManagerDialog::cloneRepository(const QString &path,
 
 void ScriptManagerDialog::showHelp() {
     QDesktopServices::openUrl(
-        QUrl("https://botfather.io/docs/player/cloning-scripts/"));
+        QUrl("https://botfather.io/scripts/"));
 }
