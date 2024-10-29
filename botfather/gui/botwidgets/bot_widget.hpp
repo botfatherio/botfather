@@ -24,7 +24,6 @@ class BotWidget : public AbstractBotWidget {
                        QWidget *parent = nullptr);
 
    public slots:
-    void updateBotName(const QString &new_bot_name);
     void updateTabIconBasedOnBotStatus(const Bot::Status &status);
     void updateShortcuts();
     void tryBotStart();
@@ -37,7 +36,6 @@ class BotWidget : public AbstractBotWidget {
 
    private:
     QTabWidget *m_tab_widget;
-    QLabel *m_corner_widget;
     BotLogWidget *m_bot_log_widget;
     BotConfigWidget *m_bot_config_widget = nullptr;
     BotUpdatesWidget *m_bot_updates_widget;

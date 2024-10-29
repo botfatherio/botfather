@@ -10,7 +10,6 @@
 BotWidget::BotWidget(Bot *bot, QSystemTrayIcon *trayicon, QWidget *parent)
     : AbstractBotWidget(bot, trayicon, parent) {
     m_tab_widget = new QTabWidget(this);
-    m_corner_widget = new QLabel(m_tab_widget);
     m_bot_log_widget = new BotLogWidget(bot, this);
     m_bot_stats_widget = new BotStatsWidget(bot, this);
     m_bot_updates_widget = new BotUpdatesWidget(bot, this);
@@ -23,7 +22,6 @@ BotWidget::BotWidget(Bot *bot, QSystemTrayIcon *trayicon, QWidget *parent)
     layout()->setMargin(0);
     layout()->addWidget(m_tab_widget);
 
-    m_tab_widget->setCornerWidget(m_corner_widget);
     m_tab_widget->addTab(m_bot_log_widget, "Log");
     setupConfigTab();
     m_tab_widget->addTab(m_bot_browsers_widget, "Browsers");
@@ -39,7 +37,6 @@ BotWidget::BotWidget(Bot *bot, QSystemTrayIcon *trayicon, QWidget *parent)
     connect(m_bot_updates_widget, &BotUpdatesWidget::botUpdated, this,
             &BotWidget::setupConfigTab);
 
-    connect(bot, &Bot::nameChanged, this, &BotWidget::updateBotName);
     connect(bot, &Bot::statusChanged, this,
             &BotWidget::updateTabIconBasedOnBotStatus);
     connect(bot, &Bot::audioPlaybackRequested, this,
@@ -52,14 +49,6 @@ BotWidget::BotWidget(Bot *bot, QSystemTrayIcon *trayicon, QWidget *parent)
     connect(m_stop_hotkey, &QHotkey::activated, this,
             &BotWidget::stopHotkeyActivated);
     updateShortcuts();  // To initially setup the shortcuts
-
-    updateBotName(bot->name());
-}
-
-void BotWidget::updateBotName(const QString &new_bot_name) {
-    QString formated_bot_name =
-        QString("<span style='font-size:12pt;'>%0</span>").arg(new_bot_name);
-    m_corner_widget->setText(formated_bot_name);
 }
 
 void BotWidget::updateTabIconBasedOnBotStatus(const Bot::Status &status) {
