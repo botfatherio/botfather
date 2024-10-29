@@ -1,12 +1,13 @@
 #include "browser_creator.hpp"
 
+#include <include/wrapper/cef_helpers.h>
+
 #include <QApplication>
 #include <QDebug>
 #include <QThread>
 #include <QTimer>
 
 #include "browser_util.hpp"
-#include "include/wrapper/cef_helpers.h"
 
 CefRefPtr<CefBrowser> BrowserCreator::createBrowserSync(const QSize &size) {
     CefRefPtr<CefBrowser> browser;

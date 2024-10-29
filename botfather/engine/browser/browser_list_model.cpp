@@ -1,11 +1,12 @@
 #include "browser_list_model.hpp"
 
+#include <include/wrapper/cef_helpers.h>
+
 #include <QDebug>
 
 #include "browser.hpp"
 #include "browser_creator.hpp"
 #include "browser_util.hpp"
-#include "include/wrapper/cef_helpers.h"
 
 BrowserListModel::BrowserListModel(QObject *parent)
     : QAbstractTableModel(parent) {}

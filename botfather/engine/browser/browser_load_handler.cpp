@@ -1,9 +1,10 @@
 #include "browser_load_handler.hpp"
 
+#include <include/wrapper/cef_helpers.h>
+
 #include <QString>
 
 #include "browser_client.hpp"
-#include "include/wrapper/cef_helpers.h"
 
 BrowserLoadHandler::BrowserLoadHandler(BrowserClient *parent)
     : m_parent(parent) {}

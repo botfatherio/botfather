@@ -1,7 +1,8 @@
 #include "browser_render_handler.hpp"
 
+#include <include/wrapper/cef_helpers.h>
+
 #include "browser_client.hpp"
-#include "include/wrapper/cef_helpers.h"
 
 BrowserRenderHandler::BrowserRenderHandler(BrowserClient *parent,
                                            const QSize &browser_size)

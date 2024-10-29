@@ -1,8 +1,8 @@
 #include "browser_life_span_handler.hpp"
 
-#include <Qt>
+#include <include/wrapper/cef_helpers.h>
 
-#include "include/wrapper/cef_helpers.h"
+#include <Qt>
 
 BrowserLifeSpanHandler::BrowserLifeSpanHandler() {}
 

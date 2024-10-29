@@ -1,5 +1,8 @@
 #include "browser.hpp"
 
+#include <include/base/cef_bind.h>
+#include <include/wrapper/cef_closure_task.h>
+
 #include <QDebug>
 #include <QElapsedTimer>
 #include <QThread>
@@ -11,8 +14,6 @@
 #include "../common/bf_keymap.hpp"
 #include "browser_settings.hpp"
 #include "cef_key_event_adapter.hpp"
-#include "include/base/cef_bind.h"
-#include "include/wrapper/cef_closure_task.h"
 
 Browser::Browser(const QString &group, const QString &id,
                  CefRefPtr<CefBrowser> cef_browser)
