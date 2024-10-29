@@ -44,7 +44,3 @@ void BotRepo::setPlatform(const QString &platform) { m_platform = platform; }
 QString BotRepo::gitUrl() const { return m_git_url; }
 
 void BotRepo::setGitUrl(const QString &git_url) { m_git_url = git_url; }
-
-QString BotRepo::scriptUrl() const {
-    return QString("https://botfather.io/scripts/%1/").arg(id());
-}

@@ -30,8 +30,6 @@ class BotRepo {
     QString gitUrl() const;
     void setGitUrl(const QString &git_url);
 
-    QString scriptUrl() const;
-
    private:
     QString m_id;
     QString m_name;
