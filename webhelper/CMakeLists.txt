@@ -76,6 +76,9 @@ if(OS_WINDOWS)
     target_link_libraries(${PROJECT_NAME} libcef_dll_wrapper libcef_lib ${CEF_STANDARD_LIBS})
     target_link_libraries(${PROJECT_NAME} ${QTLIBS})
 
+	# Do not treat warnings as errors
+	target_compile_options(${PROJECT_NAME} PRIVATE /WX-)
+
     if(USE_SANDBOX)
         # Logical target used to link the cef_sandbox library.
         ADD_LOGICAL_TARGET("cef_sandbox_lib" "${CEF_SANDBOX_LIB_DEBUG}" "${CEF_SANDBOX_LIB_RELEASE}")
