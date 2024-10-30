@@ -34,7 +34,10 @@ We use these builds for testing Flatpak runtimes and to pre-build the binaries w
 
 1. Install [Visual Studio](https://visualstudio.microsoft.com/) including the `Desktop development with C++` option
 2. Install [CMake](https://cmake.org/download/)
-3. Install [Qt 5](https://www.qt.io/download)
+3. Install [Qt 5.15.2](https://www.qt.io/download)
+    - Enable the `Archive` version filter to list Qt 5 releases
+    - Make sure to install the `Qt Script` module
+    - Add `C:\Qt\5.15.2\msvc2015_64` to the `CMAKE_PREFIX_PATH` environment variable
 4. Set up Chromium Embedded Framework (CEF)
     1. Download https://cef-builds.spotifycdn.com/cef_binary_3.3578.1861.g1992780_windows64.tar.bz2
     2. Extract the archive to a persistent location
@@ -44,7 +47,7 @@ We use these builds for testing Flatpak runtimes and to pre-build the binaries w
     2. Select the OpenCV directory and a build directory in CMake
     3. Configure and make sure `opencv_world` is selected
     4. Generate and open the project
-    4. Build `ALL_BUILD` in the Release configuration
+    5. Build `ALL_BUILD` in the Release configuration
     6. Point the `OPENCV_ROOT` environment variable to the build directory
 6. Set up libgit2
     1. Download and extract the [latest libgit2 release](https://github.com/libgit2/libgit2/releases)
@@ -81,7 +84,7 @@ We use these builds for testing Flatpak runtimes and to pre-build the binaries w
 
         ```txt
         ${workspaceFolder}/**
-        C:\Qt\5.12.9\msvc2015_64\include\**
+        C:\Qt\5.15.2\msvc2015_64\include\**
         C:\LIBGIT2\libgit2-1.8.2\include\**
         C:\OPENCV\4.10.0\build\include\**
         C:\CEF\cef_binary_3.3578.1861.g1992780_windows64\**
