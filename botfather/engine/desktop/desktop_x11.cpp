@@ -265,13 +265,13 @@ void Desktop::holdMouse(Desktop::MouseButtons button) {
 void Desktop::releaseMouse(Desktop::MouseButtons button) {
     switch (button) {
         case Desktop::MouseButtons::left:
-            pimpl->hold(BTN_LEFT);
+            pimpl->release(BTN_LEFT);
             break;
         case Desktop::MouseButtons::middle:
-            pimpl->hold(BTN_MIDDLE);
+            pimpl->release(BTN_MIDDLE);
             break;
         case Desktop::MouseButtons::right:
-            pimpl->hold(BTN_RIGHT);
+            pimpl->release(BTN_RIGHT);
             break;
     }
 }
