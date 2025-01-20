@@ -87,89 +87,89 @@ Desktop::Desktop(QObject *parent) : QObject(parent), pimpl(new DesktopPrivate) {
     ioctl(pimpl->fd, UI_SET_EVBIT, EV_SYN);
 
     // Enable key input events
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_0);  // 0
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_1);  // 1
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_2);  // 2
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_3);  // 3
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_4);  // 4
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_5);  // 5
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_6);  // 6
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_7);  // 7
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_8);  // 8
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_9);  // 9
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_0);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_1);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_2);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_3);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_4);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_5);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_6);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_7);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_8);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_9);
 
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_A);  // A
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_B);  // B
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_C);  // C
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_D);  // D
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_E);  // E
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F);  // F
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_G);  // G
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_H);  // H
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_I);  // I
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_J);  // J
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_K);  // K
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_L);  // L
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_M);  // M
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_N);  // N
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_O);  // O
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_P);  // P
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_Q);  // Q
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_R);  // R
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_S);  // S
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_T);  // T
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_U);  // U
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_V);  // V
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_W);  // W
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_X);  // X
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_Y);  // Y
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_Z);  // Z
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_A);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_B);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_C);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_D);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_E);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_G);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_H);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_I);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_J);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_K);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_L);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_M);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_N);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_O);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_P);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_Q);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_R);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_S);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_T);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_U);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_V);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_W);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_X);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_Y);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_Z);
 
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F1);   // F1
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F2);   // F2
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F3);   // F3
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F4);   // F4
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F5);   // F5
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F6);   // F6
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F7);   // F7
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F8);   // F8
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F9);   // F9
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F10);  // F10
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F11);  // F11
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F12);  // F12
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F13);  // F13
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F14);  // F14
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F15);  // F15
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F16);  // F16
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F17);  // F17
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F18);  // F18
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F19);  // F19
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F20);  // F20
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F21);  // F21
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F22);  // F22
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F23);  // F23
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F24);  // F24
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F1);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F2);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F3);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F4);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F5);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F6);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F7);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F8);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F9);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F10);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F11);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F12);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F13);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F14);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F15);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F16);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F17);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F18);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F19);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F20);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F21);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F22);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F23);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_F24);
 
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_LEFT);   // LEFT
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_RIGHT);  // RIGHT
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_UP);     // UP
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_DOWN);   // DOWN
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_LEFT);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_RIGHT);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_UP);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_DOWN);
 
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_LEFTALT);     // LEFT ALT
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_RIGHTALT);    // RIGHT ALT
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_LEFTSHIFT);   // LEFT SHIFT
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_RIGHTSHIFT);  // RIGHT SHIFT
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_LEFTCTRL);    // LEFT CTRL
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_RIGHTCTRL);   // RIGHT CTRL
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_CAPSLOCK);    // CAPSLOCK
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_SPACE);       // SPACE
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_TAB);         // TAB
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_ESC);         // ESC
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_BACKSPACE);   // BACKSPACE
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_DELETE);      // DELETE
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_ENTER);       // ENTER
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_VOLUMEUP);    // VOLUME UP
-    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_VOLUMEDOWN);  // VOLUME DOWN
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_LEFTALT);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_RIGHTALT);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_LEFTSHIFT);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_RIGHTSHIFT);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_LEFTCTRL);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_RIGHTCTRL);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_CAPSLOCK);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_SPACE);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_TAB);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_ESC);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_BACKSPACE);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_DELETE);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_ENTER);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_VOLUMEUP);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, KEY_VOLUMEDOWN);
 
     // Enable mouse movement and scrolling input
     ioctl(pimpl->fd, UI_SET_RELBIT, REL_X);
