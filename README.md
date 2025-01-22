@@ -80,6 +80,15 @@ We use these builds for testing Flatpak runtimes and to pre-build the binaries w
         /path/to/cef_binary_3.3578.1861.g1992780_linux64/**
         ```
 
+        On Ubuntu, the paths differ slightly:
+
+        ```txt
+        ${workspaceFolder}/**
+        /usr/include/x86_64-linux-gnu/qt5/**
+        /usr/include/x86_64-linux-gnu/opencv4/**
+        /path/to/cef_binary_3.3578.1861.g1992780_linux64/**
+        ```
+
         On Windows, something like this should work:
 
         ```txt
@@ -89,6 +98,7 @@ We use these builds for testing Flatpak runtimes and to pre-build the binaries w
         C:\OPENCV\4.10.0\build\include\**
         C:\CEF\cef_binary_3.3578.1861.g1992780_windows64\**
         ```
+
 ## Troubleshooting
 
 ### `LaunchProcess: failed to execvp: ./webhelper`
