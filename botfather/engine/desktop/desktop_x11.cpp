@@ -2,6 +2,7 @@
 #include <string.h>  // memset, strcpy
 #include <unistd.h>  // write
 
+#include <QCursor>
 #include <QPoint>
 #include <QSize>
 #include <QThread>
@@ -319,12 +320,10 @@ void Desktop::warpCursor(const QPoint &position) {
 }
 
 bool Desktop::getCursorPosition(int *x, int *y) {
-    Window returned_window;
-    int win_x, win_y;
-    unsigned int returned_mask;
-    return XQueryPointer(pimpl->display, pimpl->root, &returned_window,
-                         &returned_window, x, y, &win_x, &win_y,
-                         &returned_mask);
+    QPoint position = QCursor::pos();
+    *x = position.x();
+    *y = position.y();
+    return true;
 }
 
 void Desktop::scroll(int units, bool horizontal) {
