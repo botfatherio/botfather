@@ -1,0 +1,47 @@
+name: Build
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+env:
+  BUILD_TYPE: Release
+  CEF_ARCHIVE: cef_binary_3.3578.1861.g1992780_linux64.tar.bz2
+  CEF_ROOT: ${{ github.workspace }}/cef
+
+jobs:
+  build-on-ubuntu:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Cache CEF
+        id: cache-cef
+        uses: actions/cache@v4
+        with:
+          path: cef.tar.bz2
+          key: ${{ runner.os }}-cef-${{ env.CEF_ARCHIVE }}
+
+      - name: Download CEF
+        if: steps.cache-cef.outputs.cache-hit != 'true'
+        run: wget https://cef-builds.spotifycdn.com/${{ env.CEF_ARCHIVE }} -O cef.tar.bz2
+
+      - name: Extract CEF
+        run: mkdir -p ${{ env.CEF_ROOT }} && tar -xjf cef.tar.bz2 -C ${{ env.CEF_ROOT }} --strip-components=1
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y libgit2-dev libopencv-dev qtbase5-dev qtscript5-dev qtmultimedia5-dev libqt5x11extras5-dev
+
+      - name: Patch CEF cmake file
+        run: sed -i 's/-Werror//g' ${{ env.CEF_ROOT }}/cmake/cef_variables.cmake
+
+      - name: Configure CMake
+        run: cmake -B ${{ github.workspace }}/build -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} -DCEF_ROOT=${{ env.CEF_ROOT }}
+
+      - name: Build
+        run: cmake --build ${{ github.workspace }}/build --config ${{ env.BUILD_TYPE }}
