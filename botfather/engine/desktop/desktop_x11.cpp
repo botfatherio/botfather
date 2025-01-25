@@ -306,12 +306,7 @@ void Desktop::warpCursor(const QPoint &position) {
     // the desired position and then shake the cursor a little using input to
     // make all programs recognise the cursors new position.
 
-    // If dest_w is None, XWarpPointer moves the pointer by the offsets (dest_x,
-    // dest_y) relative to the current position of the pointer.
-    // https://linux.die.net/man/3/xwarppointer
-    XWarpPointer(pimpl->display, pimpl->root, pimpl->root, 0, 0, 0, 0,
-                 position.x(), position.y());
-    XFlush(pimpl->display);
+    QCursor::setPos(position);
 
     // Shake the mouse using uinput
     pimpl->moveCursor(10, 10);
