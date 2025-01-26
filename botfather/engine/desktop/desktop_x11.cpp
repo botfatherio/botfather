@@ -3,6 +3,7 @@
 #include <unistd.h>  // write
 
 #include <QCursor>
+#include <QDebug>
 #include <QPoint>
 #include <QSize>
 #include <QThread>
@@ -48,10 +49,32 @@ class DesktopPrivate {
 
     void sync() { emitEvent(EV_SYN, SYN_REPORT, 0); }
 
-    void moveCursor(int delta_x, int delta_y) {
-        emitEvent(EV_REL, REL_X, delta_x);
-        emitEvent(EV_REL, REL_Y, delta_y);
-        sync();
+    void moveCursor(int x, int y) {
+        // emitEvent(EV_ABS, ABS_X, delta_x);
+        // emitEvent(EV_ABS, ABS_Y, delta_y);
+        // sync();
+
+        struct input_event ev[2], ev_sync;
+        memset(ev, 0, sizeof(ev));
+        memset(&ev_sync, 0, sizeof(ev_sync));
+
+        ev[0].type = EV_ABS;
+        ev[0].code = ABS_X;
+        ev[0].value = x;
+        ev[1].type = EV_ABS;
+        ev[1].code = ABS_Y;
+        ev[1].value = y;
+
+        int res_w = write(fd, ev, sizeof(ev));
+
+        qDebug() << "res w : " << res_w << "\n";
+
+        ev_sync.type = EV_SYN;
+        ev_sync.value = 0;
+        ev_sync.code = 0;
+        int res_ev_sync = write(fd, &ev_sync, sizeof(ev_sync));
+
+        qDebug() << "res syn : " << res_ev_sync << "\n";
     }
 
     void hold(unsigned short keycode) {
@@ -82,6 +105,7 @@ Desktop::Desktop(QObject *parent) : QObject(parent), pimpl(new DesktopPrivate) {
     // They are processed by the kernel and then interpreted by the userspace.
     pimpl->fd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
 
+    /*
     // Enable key, relative and sync events
     ioctl(pimpl->fd, UI_SET_EVBIT, EV_KEY);
     ioctl(pimpl->fd, UI_SET_EVBIT, EV_REL);
@@ -199,6 +223,34 @@ Desktop::Desktop(QObject *parent) : QObject(parent), pimpl(new DesktopPrivate) {
     // Enable the fake input device.
     ioctl(pimpl->fd, UI_DEV_SETUP, &pimpl->usetup);
     ioctl(pimpl->fd, UI_DEV_CREATE);
+    */
+
+    ioctl(pimpl->fd, UI_SET_EVBIT, EV_KEY);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, BTN_RIGHT);
+    ioctl(pimpl->fd, UI_SET_KEYBIT, BTN_LEFT);
+
+    ioctl(pimpl->fd, UI_SET_EVBIT, EV_ABS);
+    ioctl(pimpl->fd, UI_SET_ABSBIT, ABS_X);
+    ioctl(pimpl->fd, UI_SET_ABSBIT, ABS_Y);
+
+    ioctl(pimpl->fd, UI_SET_EVBIT, EV_REL);
+
+    struct uinput_user_dev uidev;  // TODO: remove uinput_setup
+    memset(&uidev, 0, sizeof(uidev));
+    snprintf(uidev.name, UINPUT_MAX_NAME_SIZE,
+             "Universal Input Device");
+    uidev.id.bustype = BUS_USB;
+    uidev.id.version = 1;
+    uidev.id.vendor = 0x1;
+    uidev.id.product = 0x1;
+    uidev.absmin[ABS_X] = 0;
+    uidev.absmax[ABS_X] = 1920 * 2 - 1; // TODO: dynamic
+    uidev.absmin[ABS_Y] = 0;
+    uidev.absmax[ABS_Y] = 1080 - 1; // TODO: dynamic
+    write(pimpl->fd, &uidev, sizeof(uidev));
+    ioctl(pimpl->fd, UI_DEV_CREATE);
+
+    //sleep(2);
 
     pimpl->display = XOpenDisplay(nullptr);
     pimpl->root = XDefaultRootWindow(pimpl->display);
@@ -306,11 +358,16 @@ void Desktop::warpCursor(const QPoint &position) {
     // the desired position and then shake the cursor a little using input to
     // make all programs recognise the cursors new position.
 
-    QCursor::setPos(position);
+    // QCursor::setPos(position);
+    //QPoint currentPosition = QCursor::pos();
+    //QPoint delta = position - currentPosition;
+    //qDebug() << "DELTA" << delta;
+    qDebug() << "POSITION" << position;
+    pimpl->moveCursor(position.x(), position.y());
 
     // Shake the mouse using uinput
-    pimpl->moveCursor(10, 10);
-    pimpl->moveCursor(-10, -10);
+    // pimpl->moveCursor(10, 10);
+    // pimpl->moveCursor(-10, -10);
 }
 
 bool Desktop::getCursorPosition(int *x, int *y) {
