@@ -49,7 +49,7 @@ modules:
     build-commands:
       - install -Dm644 io.botfather.Nightly-64.png /app/share/icons/hicolor/64x64/apps/io.botfather.Nightly.png
       - install -Dm644 io.botfather.Nightly-128.png /app/share/icons/hicolor/128x128/apps/io.botfather.Nightly.png
-      - install -Dm644 -t /app/share/metainfo io.botfather.Nightly.appdata.xml
+      - install -Dm644 -t /app/share/metainfo io.botfather.Nightly.metainfo.xml
       - install -Dm644 -t /app/share/applications io.botfather.Nightly.desktop
     sources:
       - type: file
