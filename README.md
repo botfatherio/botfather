@@ -99,6 +99,13 @@ We use these builds for testing Flatpak runtimes and to pre-build the binaries w
         C:\CEF\cef_binary_3.3578.1861.g1992780_windows64\**
         ```
 
+## Upgrading the flatpak runtime
+
+1. Find the latest runtime version branch on the [KDE GitLab](https://flathub.org/apps/details/org.kde.Platform)
+2. Get the version identifier from the `branch` field in the `org.kde.sdk.json.in` file (e.g., `5.15-25-08`)
+3. Update the `runtime-version` field in `flatpak/io.botfather.Nightly.yaml`
+4. Install the runtime and matching SDK: `flatpak install flathub org.kde.Platform//<runtime-version> org.kde.Sdk//<runtime-version>`
+
 ## Troubleshooting
 
 ### `LaunchProcess: failed to execvp: ./webhelper`

@@ -1,7 +1,7 @@
 app-id: io.botfather.Nightly
 branch: stable
 runtime: org.kde.Platform
-runtime-version: '5.15-24.08'
+runtime-version: '5.15-25.08'
 sdk: org.kde.Sdk
 command: botfather
 finish-args:
@@ -20,6 +20,7 @@ build-options:
   env:
     CEF_ROOT: "/app/CEF"
     LD_LIBRARY_PATH: "/app/lib"
+    GTKDOCIZE: "echo" # udev: Can't exec "gtkdocize": No such file or directory
 cleanup:
   - "/CEF"
   - "/include"
