@@ -20,11 +20,11 @@ Furthermore scripts can be turned into crossplatform binaries using the Botfathe
     2. `cmake -DCMAKE_BUILD_TYPE=Release ..`
     3. `make`
 
-## Building a Flatpak
+## Building the nightly Flatpak
 
 We use these builds for testing Flatpak runtimes and to pre-build the binaries we later ship to Flathub.
 
-1. Install the runtime and matching SDK: `flatpak install flathub org.kde.Platform//5.15-23.08 org.kde.Sdk//5.15-23.08`
+1. Install the runtime and matching SDK: `flatpak install flathub org.kde.Platform//5.15-25.08 org.kde.Sdk//5.15-25.08`
 2. Build the app and put it in a repository: `flatpak-builder --repo=flatpak/repo --force-clean flatpak/build-dir flatpak/io.botfather.Nightly.yaml`
 3. Install and run the app for testing:
     1. `flatpak --user install ./flatpak/repo io.botfather.Nightly`
