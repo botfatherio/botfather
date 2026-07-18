@@ -1,6 +1,0 @@
-# Flatpak
-build
-build*
-repo
-repo*
-.flatpak-builder
