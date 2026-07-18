@@ -45,3 +45,28 @@ jobs:
 
       - name: Build
         run: cmake --build ${{ github.workspace }}/build --config ${{ env.BUILD_TYPE }}
+
+  build-flatpak:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache flatpak build
+        id: cache-flatpak-build
+        uses: actions/cache@v6
+        with:
+          path: build-dir
+          key: ${{ runner.os }}-flatpak-build
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y flatpak-builder
+
+      - name: Set up Flathub
+        run: flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+      - name: Install runtime
+        run: flatpak install --noninteractive flathub org.kde.Platform//5.15-25.08 org.kde.Sdk//5.15-25.08
+
+      - name: Build
+        run: flatpak-builder build-dir flatpak/io.botfather.Nightly.yaml
