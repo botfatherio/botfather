@@ -12,7 +12,7 @@ QScriptValue BlobTplPrototype::constructor(QScriptContext *context,
         }
     }
 
-    if (context->argumentCount() > 10) {
+    if (context->argumentCount() > 11) {
         NO_MATCHING_CTOR("BlobTpl", BLOB_TPL_PROTOTYPE_DOCS)
     }
 
@@ -122,7 +122,8 @@ QScriptValue BlobTplPrototype::constructor(QScriptContext *context,
         if (threshold_step > max_threshold - min_threshold) {
             return RANGE_ERROR(
                 context,
-                "threshold_step must be smaller or equal to max_circularity");
+                "threshold_step must be smaller or equal to max_threshold - "
+                "min_threshold");
         }
 
         blob_tpl.setThresholdStep(threshold_step);
