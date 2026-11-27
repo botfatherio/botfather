@@ -16,13 +16,13 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           submodules: true
 
       - name: Cache CEF
         id: cache-cef
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: cef.tar.bz2
           key: ${{ runner.os }}-cef-${{ env.CEF_ARCHIVE }}
@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Cache flatpak build
         id: cache-flatpak-build
@@ -85,7 +85,7 @@ jobs:
         shell: bash
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
@@ -97,7 +97,7 @@ jobs:
 
       - name: Cache CEF
         id: cache-cef
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: cef.tar.bz2
           key: ${{ runner.os }}-cef-${{ env.CEF_ARCHIVE }}
@@ -114,7 +114,7 @@ jobs:
 
       - name: Cache OpenCV
         id: cache-opencv
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: opencv.exe
           key: ${{ runner.os }}-opencv-${{ env.OPENCV_VERSION }}
@@ -132,7 +132,7 @@ jobs:
 
       - name: Cache libgit2
         id: cache-libgit2
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: libgit2
           key: ${{ runner.os }}-libgit2-${{ env.LIBGIT2_VERSION }}
