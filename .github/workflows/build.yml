@@ -71,3 +71,87 @@ jobs:
 
       - name: Build
         run: flatpak-builder --force-clean build-dir flatpak/io.botfather.Nightly.yaml
+
+  build-on-windows:
+    runs-on: windows-2022
+
+    env:
+      CEF_ARCHIVE: cef_binary_3.3578.1861.g1992780_windows64.tar.bz2
+      OPENCV_VERSION: 4.10.0
+      LIBGIT2_VERSION: 1.8.4
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: 5.15.2
+          arch: win64_msvc2019_64
+          modules: qtscript
+          cache: true
+
+      - name: Cache CEF
+        id: cache-cef
+        uses: actions/cache@v4
+        with:
+          path: cef.tar.bz2
+          key: ${{ runner.os }}-cef-${{ env.CEF_ARCHIVE }}
+
+      - name: Download CEF
+        if: steps.cache-cef.outputs.cache-hit != 'true'
+        run: curl -fsSL https://cef-builds.spotifycdn.com/${{ env.CEF_ARCHIVE }} -o cef.tar.bz2
+
+      - name: Extract CEF
+        run: mkdir -p cef && tar -xjf cef.tar.bz2 -C cef --strip-components=1
+
+      - name: Patch CEF cmake file
+        run: sed -i 's|/WX||g' cef/cmake/cef_variables.cmake
+
+      - name: Cache OpenCV
+        id: cache-opencv
+        uses: actions/cache@v4
+        with:
+          path: opencv.exe
+          key: ${{ runner.os }}-opencv-${{ env.OPENCV_VERSION }}
+
+      - name: Download OpenCV
+        if: steps.cache-opencv.outputs.cache-hit != 'true'
+        run: curl -fsSL https://github.com/opencv/opencv/releases/download/${{ env.OPENCV_VERSION }}/opencv-${{ env.OPENCV_VERSION }}-windows.exe -o opencv.exe
+
+      - name: Extract OpenCV
+        run: |
+          7z x opencv.exe -oopencv -y > /dev/null
+          config=$(find opencv -path '*/x64/vc16/lib/OpenCVConfig.cmake' | head -n 1)
+          test -n "$config"
+          echo "OPENCV_DIR=$(cygpath -m "$(dirname "$config")")" >> "$GITHUB_ENV"
+
+      - name: Cache libgit2
+        id: cache-libgit2
+        uses: actions/cache@v4
+        with:
+          path: libgit2
+          key: ${{ runner.os }}-libgit2-${{ env.LIBGIT2_VERSION }}
+
+      - name: Build libgit2
+        if: steps.cache-libgit2.outputs.cache-hit != 'true'
+        run: |
+          git clone --depth 1 --branch v${{ env.LIBGIT2_VERSION }} https://github.com/libgit2/libgit2.git libgit2-src
+          cmake -S libgit2-src -B libgit2-build -DBUILD_TESTS=OFF -DBUILD_CLI=OFF -DBUILD_EXAMPLES=OFF
+          cmake --build libgit2-build --config Release --parallel
+          cmake --install libgit2-build --config Release --prefix libgit2
+
+      - name: Configure CMake
+        run: |
+          cmake -B build -A x64 \
+            -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} \
+            -DCEF_ROOT="$(cygpath -m "$PWD/cef")" \
+            -DOpenCV_DIR="$OPENCV_DIR" \
+            -DCMAKE_PREFIX_PATH="$(cygpath -m "$PWD/libgit2");$(cygpath -m "$QT_ROOT_DIR")"
+
+      - name: Build
+        run: cmake --build build --config ${{ env.BUILD_TYPE }} --parallel
