@@ -56,8 +56,9 @@ jobs:
         id: cache-flatpak-build
         uses: actions/cache@v6
         with:
-          path: build-dir
-          key: ${{ runner.os }}-flatpak-build
+          path: .flatpak-builder
+          key: ${{ runner.os }}-flatpak-builder-${{ hashFiles('flatpak/**') }}
+          restore-keys: ${{ runner.os }}-flatpak-builder-
 
       - name: Install dependencies
         run: sudo apt-get update && sudo apt-get install -y flatpak-builder
@@ -69,4 +70,4 @@ jobs:
         run: flatpak install --noninteractive flathub org.kde.Platform//5.15-25.08 org.kde.Sdk//5.15-25.08
 
       - name: Build
-        run: flatpak-builder build-dir flatpak/io.botfather.Nightly.yaml
+        run: flatpak-builder --force-clean build-dir flatpak/io.botfather.Nightly.yaml
