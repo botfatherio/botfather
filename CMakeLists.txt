@@ -4,6 +4,9 @@ project(botfather)
 # Allow find_package to use <PackageName>_ROOT  variables
 cmake_policy(SET CMP0074 NEW)
 
+# Write compile_commands.json to the build directory for clangd and other tools
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # Enable compilation of libcef_dll_wrapper 3.3578.1861 with gcc 14
 include(CheckCXXCompilerFlag)
 check_cxx_compiler_flag("-Wno-error=template-id-cdtor" COMPILER_SUPPORTS_TEMPLATE_ID_CDTOR)
